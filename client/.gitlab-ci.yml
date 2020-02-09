@@ -1,0 +1,40 @@
+image: gradle:6.1.1-jdk13
+
+stages:
+  - build
+  - validate
+  - test
+
+variables:
+  # Disable the Gradle daemon to ensure isolated runs of the CI pipeline.
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+client-build:
+  stage: build
+  script:
+    gradle --build-cache :client:assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build/
+      - .gradle/
+
+client-checkstyle:
+  stage: validate
+  script: gradle :client:checkstyleMain :server:checkstyleTest
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build/
+      - .gradle/
+  allow_failure: true
+
+client-test:
+  stage: test
+  script:
+    gradle :client:test
