@@ -15,6 +15,7 @@ Add your own name (do not add the names for others!) to the section below.
 | ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Tsin Yu Huang | T.Y.Huang@student.tudelft.nl |
 | ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/2523/avatar.png?width=400) | Ana Băltărețu | A.Baltaretu@student.tudelft.nl |
 | ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/2570/avatar.png?width=400) | Hendy Liang | H.Liang-3@student.tudelft.nl |
+| ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/2487/avatar.png?width=400) | Willem Stuijt | W.L.StuijtGiacaman@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
