@@ -1,0 +1,28 @@
+Bikes:
+They are at a building 
+Return to same building or different buildings
+Building needs to have a bike station to use bikes
+Bikes are limited per campus
+Reservations have a definite timeslot
+
+Hand in with a mock database
+Multiple clients have to be able to query the server and see the effects
+
+Just store password/username not third-party authentication (hashed)
+
+Sign-up enter password twice
+
+Admin has different GUI, first one is just in the database
+
+List them in the begin -> Calendar later on
+
+Facilities: TV's and Whiteboards
+
+Food stores are tied to buildings, multiple food stores can be in a building.
+Building doesn't have to have a food store.
+Food is unlimited, should have price but is free
+You can pick up at a time, or deliver to your room in the SAME building
+
+Filter on entire campus
+
+Searching buildings on name (OPTIONAL)
