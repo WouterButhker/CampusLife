@@ -14,6 +14,7 @@ Check that everybody is present.
 
 # Points of action
  - How does SpotBugs work?
+ - Go over the first database sketch
  - Read Resources and Tools (on BrightSpace)
  - Create a planning and put it on GitLab
 	 - Implement all items on the todo list
