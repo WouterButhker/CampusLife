@@ -12,6 +12,7 @@ public class User {
     @GeneratedValue
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "username")
     private String username;
 

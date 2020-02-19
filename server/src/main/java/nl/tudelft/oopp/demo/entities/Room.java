@@ -32,12 +32,27 @@ public class Room {
     @Column(name = "building")
     private Integer building;
 
-    public Room()
-    {
+    public Room() {
 
     }
 
-    public Room(String roomCode, String name, Integer capacity, boolean hasWhiteboard, boolean hasTV, Integer rights, Integer building)  {
+    /**
+     * Makes a new room with the given parameters.
+     * @param roomCode the abreviation of the room
+     * @param name the actual name of the room
+     * @param capacity how many spaces when empty
+     * @param hasWhiteboard if the room has a whiteboard
+     * @param hasTV if the room has a TV
+     * @param rights (minimum) required to reserve this room
+     * @param building in which the room is
+     */
+    public Room(String roomCode,
+                String name,
+                Integer capacity,
+                boolean hasWhiteboard,
+                boolean hasTV,
+                Integer rights,
+                Integer building)  {
         this.roomCode = roomCode;
         this.name = name;
         this.capacity = capacity;
@@ -106,16 +121,20 @@ public class Room {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Room)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Room)) {
+            return false;
+        }
         Room room = (Room) o;
-        return hasWhiteboard == room.hasWhiteboard &&
-                hasTV == room.hasTV &&
-                roomCode.equals(room.roomCode) &&
-                name.equals(room.name) &&
-                capacity.equals(room.capacity) &&
-                rights.equals(room.rights) &&
-                building.equals(room.building);
+        return hasWhiteboard == room.hasWhiteboard
+                && hasTV == room.hasTV
+                && roomCode.equals(room.roomCode)
+                && name.equals(room.name)
+                && capacity.equals(room.capacity)
+                && rights.equals(room.rights)
+                && building.equals(room.building);
     }
 
     @Override
