@@ -40,4 +40,17 @@ public class BuildingController {
         return "Saved";
     }
 
+    /**
+     * Get a list of codes and names of all the buildings.
+     * @return a list with format "number name"
+     */
+    @GetMapping(path = "/code+name")
+    public List<String> getBuildingsCodeAndName() {
+        List<String> response = buildingRepository.findAllBuildingsCodeAndName();
+        for (int i = 0; i < response.size(); i++) {
+            String current = response.get(i);
+            response.set(i, current.replace(',', ' '));
+        }
+        return response;
+    }
 }

@@ -11,4 +11,12 @@ public class ServerCommunicationTest {
     public void testRandomQuote() {
         assertNotNull(ServerCommunication.getQuote());
     }
+
+    @Test
+    public void testGetBuildingsCodeAndName() {
+        String[] buildingsCodeAndName = ServerCommunication.getBuildingsCodeAndName();
+        for (int i = 0; i < buildingsCodeAndName.length; i++)
+            System.out.println(buildingsCodeAndName[i]);
+        assertNotNull(buildingsCodeAndName);
+    }
 }
