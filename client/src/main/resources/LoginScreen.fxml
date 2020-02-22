@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.LoginScreenController">
+  <children>
+    <Pane layoutX="67.0" layoutY="29.0" prefHeight="342.0" prefWidth="467.0">
+      <children>
+        <Label layoutX="203.0" layoutY="29.0" text="Welcome" />
+        <Label layoutX="134.0" layoutY="82.0" text="Username" />
+        <Label layoutX="135.0" layoutY="151.0" text="Password" />
+        <PasswordField fx:id="passwordField" layoutX="134.0" layoutY="171.0" prefWidth="200.0" />
+        <TextField fx:id="usernameField" layoutX="134.0" layoutY="102.0" prefWidth="200.0" />
+        <Button fx:id="loginButton" layoutX="198.0" layoutY="210.0" mnemonicParsing="false" onAction="#onLoginClicked" text="Login" />
+        <Hyperlink fx:id="registerLink" layoutX="85.0" layoutY="256.0" onAction="#onRegisterClicked" text="Dont have an account? click here to register" />
+      </children>
+    </Pane>
+  </children>
+</AnchorPane>
