@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="nl.tudelft.oopp.demo.controllers.MainSceneController">
-    <Label text="Hello world!"/>
-    <Label text="This is a simple demo application."/>
-    <Button fx:id="button" text="Click me!" onAction="#buttonClicked"/>
+<VBox alignment="CENTER" prefHeight="117.0" prefWidth="312.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.MainSceneController">
+    <Label prefWidth="138.0" text="Hello world!" />
+    <Label text="This is a simple demo application." />
+    <Button fx:id="button" alignment="CENTER" onAction="#buttonClicked" prefHeight="47.0" prefWidth="87.0" text="Click me!" />
 </VBox>
