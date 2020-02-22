@@ -21,4 +21,13 @@ public class ServerCommunicationTest {
         }
         else System.out.println("NULL");
     }
+
+    @Test
+    public void testAddBuildingToDatabase() {
+        Integer buildingCode = 20;
+        String name = "Aula";
+        String location = "Mekelweg 5";
+        String openingHours = "08:00-22:00";
+        ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+    }
 }
