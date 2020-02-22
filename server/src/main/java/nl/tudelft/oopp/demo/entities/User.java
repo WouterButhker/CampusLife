@@ -6,12 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "username")
     private String username;
 
