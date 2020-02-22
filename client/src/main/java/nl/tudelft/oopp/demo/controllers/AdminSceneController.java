@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -10,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -18,9 +23,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class AdminSceneController implements Initializable {
 
@@ -78,9 +80,12 @@ public class AdminSceneController implements Initializable {
     private void loadDataBikes() {
         if (bikeBuildings != null) {
             bikeBuildings.getItems().addAll(ServerCommunication.getBuildingsCodeAndName());
-            bikeBuildings.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            SingleSelectionModel<String> selectionModel = bikeBuildings.getSelectionModel();
+            selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
                 @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                public void changed(ObservableValue<? extends String> observable,
+                                    String oldValue,
+                                    String newValue) {
                     updateNumberBikes();
                 }
             });
@@ -91,15 +96,19 @@ public class AdminSceneController implements Initializable {
 
     private int updateNumberBikes() {
         String building = bikeBuildings.getValue();
-        //Relay to the backend what the building is and retrieve a number of bikes and store it in int bikes
+        // Relay to the backend what the building is and
+        // retrieve a number of bikes and store it in int bikes
         int bikes = 5;
         numberBikes.setText(Integer.toString(bikes));
-       // return bikes;
+        // return bikes;
         return bikes;
     }
 
+    /**
+     * Add a bike to the database.
+     */
     public void addBike() {
-        if(bikeBuildings.getValue() != null) {
+        if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes++;
             //send the new bikes to the backend
@@ -107,8 +116,11 @@ public class AdminSceneController implements Initializable {
         }
     }
 
+    /**
+     * Remove a bike from the database.
+     */
     public void removeBike() {
-        if(bikeBuildings.getValue() != null) {
+        if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes--;
             //send the new bikes to the backend
@@ -206,7 +218,7 @@ public class AdminSceneController implements Initializable {
             buildingCode = Integer.parseInt(buildingCodeInput.getText());
             codeFound = true;
         } catch (NumberFormatException e) {
-
+            e.printStackTrace();
         }
         //String openingHours = openingHoursInput.getText();
         String openingHours = "08:00-22:00";
