@@ -5,12 +5,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import java.io.IOException;
@@ -60,6 +65,9 @@ public class AdminSceneController implements Initializable {
 
     @FXML
     private TextField openingHoursInput;
+
+    @FXML
+    private Text submitStatus;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -189,7 +197,7 @@ public class AdminSceneController implements Initializable {
     }
 
     @FXML
-    private void submitNewBuilding() {
+    private void submitNewBuilding() throws IOException {
         String location = locationInput.getText();
         String name = nameInput.getText();
         boolean codeFound = false;
@@ -202,11 +210,22 @@ public class AdminSceneController implements Initializable {
         }
         //String openingHours = openingHoursInput.getText();
         String openingHours = "08:00-22:00";
+
+        Text submitStatus = new Text();
         if (location != null && name != null && codeFound && openingHours != null) {
-            System.out.println(buildingCode + name + location + openingHours);
-           // ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+            ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+            submitStatus.setText("Building successfully added!");
         } else {
-            System.out.println("input is wrong/not all fields are entered");
+            submitStatus.setText("The input is wrong or not all fields are entered");
         }
+
+        StackPane root = new StackPane(submitStatus);
+        root.setPrefSize(300, 200);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(modifyBuildingsExit.getScene().getWindow());
+        stage.showAndWait();
     }
 }
