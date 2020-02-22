@@ -3,7 +3,7 @@
 
 Date:           17.02.2020\
 Main focus:     General questions\
-Chair:          ???\
+Chair:          Wouter Büthker
 Note taker:     Hendy Liang
 
 # Opening
@@ -37,7 +37,11 @@ Check that everybody is present.
     - Make a list of all the tasks we can think of
 
 # Action points for next week (Scrum board)
-What is this???? \
+- Work out details of the specific components of the application
+- Divide the work
+- Planning poker
+- Scorion reviews
+- Start coding
 *Every week you fill the Scrum board with new action points for that week. See the to do list for the items you should implement.*
 
 # Questions for the TA
@@ -53,6 +57,14 @@ What is this???? \
 - [ ]  do food stores need a location/name/code?
 - [ ]  do food products need photos/name/what they are made of?
 - [ ]  should you be able to order food anytime or only when you have reserved a room? (like order food after you made the reservation, or not even have a reservation at all to order food)
+- [ ]  Do we need a to display the types of parking lots around the building?
+- [ ]  Do we need a list of buildings to choose from that leads to a list of rooms or just a list of rooms?
+- [ ]  Should we do searching after name?
+- [ ]  Show which building have a room available at some selected time?
+- [ ]  Do we have to deal with time zones?
+- [ ]  Do bikes need a specific building/place to rent from?
+- [ ]  Should the admin be able to search for users? And have like a list of users to upgrade the roles?
+- [ ]  Do rooms need different opening hours from the building?
 
 # Closing
 *Now you can start working on the project. Good luck!*
