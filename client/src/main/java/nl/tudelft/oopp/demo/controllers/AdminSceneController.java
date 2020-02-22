@@ -2,8 +2,6 @@ package nl.tudelft.oopp.demo.controllers;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,12 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -53,34 +49,45 @@ public class AdminSceneController implements Initializable {
     @FXML
     private Button modifyRightsExit;
 
+    @FXML
+    private TextField locationInput;
+
+    @FXML
+    private TextField nameInput;
+
+    @FXML
+    private TextField buildingCodeInput;
+
+    @FXML
+    private TextField openingHoursInput;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //loadDataBikes();
+        loadDataBikes();
     }
 
 
     private void loadDataBikes() {
-        String[] test = new String[3];
-        test[0] = "wow";
-        test[1] = "oWoah";
-        test[2] = "oNoah";
-        //bikeBuildings.getItems().addAll(ServerCommunication.getBuildingsCodeAndName());
-        bikeBuildings.getItems().addAll(test);
-        bikeBuildings.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                updateNumberBikes();
-            }
-        });
+        if (bikeBuildings != null) {
+            bikeBuildings.getItems().addAll(ServerCommunication.getBuildingsCodeAndName());
+            bikeBuildings.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    updateNumberBikes();
+                }
+            });
+        }
+
     }
 
 
     private int updateNumberBikes() {
         String building = bikeBuildings.getValue();
         //Relay to the backend what the building is and retrieve a number of bikes and store it in int bikes
-       // numberBikes.setText(Integer.toString(bikes));
+        int bikes = 5;
+        numberBikes.setText(Integer.toString(bikes));
        // return bikes;
-        return 5;
+        return bikes;
     }
 
     public void addBike() {
@@ -179,5 +186,27 @@ public class AdminSceneController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    private void submitNewBuilding() {
+        String location = locationInput.getText();
+        String name = nameInput.getText();
+        boolean codeFound = false;
+        int buildingCode = 0;
+        try {
+            buildingCode = Integer.parseInt(buildingCodeInput.getText());
+            codeFound = true;
+        } catch (NumberFormatException e) {
+
+        }
+        //String openingHours = openingHoursInput.getText();
+        String openingHours = "08:00-22:00";
+        if (location != null && name != null && codeFound && openingHours != null) {
+            System.out.println(buildingCode + name + location + openingHours);
+           // ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+        } else {
+            System.out.println("input is wrong/not all fields are entered");
+        }
     }
 }
