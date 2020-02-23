@@ -1,10 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "room")
@@ -29,8 +26,9 @@ public class Room {
     @Column(name = "rights")
     private Integer rights;
 
-    @Column(name = "building")
-    private Integer building;
+    @ManyToOne
+    @JoinColumn(name = "building")
+    private Building building;
 
     public Room() {
 
@@ -52,7 +50,7 @@ public class Room {
                 boolean hasWhiteboard,
                 boolean hasTV,
                 Integer rights,
-                Integer building)  {
+                Building building)  {
         this.roomCode = roomCode;
         this.name = name;
         this.capacity = capacity;
@@ -87,7 +85,7 @@ public class Room {
         return rights;
     }
 
-    public Integer getBuilding() {
+    public Building getBuilding() {
         return building;
     }
 
@@ -115,7 +113,7 @@ public class Room {
         this.rights = rights;
     }
 
-    public void setBuilding(Integer building) {
+    public void setBuilding(Building building) {
         this.building = building;
     }
 

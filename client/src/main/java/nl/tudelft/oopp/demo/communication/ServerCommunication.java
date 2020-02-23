@@ -86,4 +86,28 @@ public class ServerCommunication {
             e.printStackTrace();
         }
     }
+
+    public static void addRoomToDatabase(String roomCode,
+                                         String name,
+                                         Integer capacity,
+                                         Boolean hasWhiteboard,
+                                         Boolean hasTV,
+                                         Integer rights,
+                                         Integer building) {
+        roomCode = roomCode.replace(" ", "%20");
+        name = name.replace(" ", "%20");
+        URI myUri = URI.create("http://localhost:8080/rooms/add?roomCode=" + roomCode
+                + "&name=" + name + "&capacity=" + capacity + "&hasWhiteboard=" + hasWhiteboard
+                + "&hasTV=" + hasTV + "&rights=" + rights +"&building=" + building);
+        System.out.println(myUri);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

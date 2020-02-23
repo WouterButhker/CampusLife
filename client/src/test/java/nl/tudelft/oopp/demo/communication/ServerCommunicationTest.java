@@ -30,4 +30,16 @@ public class ServerCommunicationTest {
         String openingHours = "08:00-22:00";
         ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
     }
+
+    @Test
+    public void testAddRoomToDatabase() {
+        String roomCode = "PC 3";
+        String name = "PC hall 3";
+        Integer capacity = 36;
+        Boolean hasWhiteboard = true;
+        Boolean hasTV = false;
+        Integer rights = 1;
+        Integer building = 35;
+        ServerCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
+    }
 }

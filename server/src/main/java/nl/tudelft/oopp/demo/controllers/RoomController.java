@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class RoomController {
                                            @RequestParam boolean hasWhiteboard,
                                            @RequestParam boolean hasTV,
                                            @RequestParam Integer rights,
-                                           @RequestParam Integer building) {
+                                           @RequestParam Building building) {
         Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
         roomRepository.save(room);
         return "Saved";
