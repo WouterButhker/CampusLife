@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
+   <children>
+      <Text layoutX="112.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the rights screen &gt;.&gt;">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+      <Button fx:id="modifyRightsExit" layoutX="432.0" layoutY="51.0" mnemonicParsing="false" onAction="#modifyRightsExit" text="Back" />
+   </children>
+</AnchorPane>
