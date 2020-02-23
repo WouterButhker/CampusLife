@@ -4,7 +4,7 @@
 Date:           24.02.2020\
 Main focus:     Demo API endpoints + server talk\
 Chair:          Ana Băltărețu\
-Note taker:     {Insert Here}
+Note taker:     Tsin Yu Huang
 
 # Opening
 Check that everybody is present.\
