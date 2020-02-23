@@ -87,6 +87,16 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * For adding a room to the database.
+     * @param roomCode the code (abreviation) of the room
+     * @param name the actual name of the room
+     * @param capacity seat capacity
+     * @param hasWhiteboard if the room has a whiteboard is true
+     * @param hasTV if the room has a TV is true
+     * @param rights the rights required to reserve this room
+     * @param building the building where it belongs to
+     */
     public static void addRoomToDatabase(String roomCode,
                                          String name,
                                          Integer capacity,
@@ -98,8 +108,7 @@ public class ServerCommunication {
         name = name.replace(" ", "%20");
         URI myUri = URI.create("http://localhost:8080/rooms/add?roomCode=" + roomCode
                 + "&name=" + name + "&capacity=" + capacity + "&hasWhiteboard=" + hasWhiteboard
-                + "&hasTV=" + hasTV + "&rights=" + rights +"&building=" + building);
-        System.out.println(myUri);
+                + "&hasTV=" + hasTV + "&rights=" + rights + "&building=" + building);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
         HttpResponse<String> response = null;
         try {
