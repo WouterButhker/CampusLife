@@ -87,6 +87,13 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Delete a building from the database by passing the building code.
+     * @param buildingCode the number of the building
+     * @return 1 if the building was deleted
+     *         0 if there was no building with that code
+     *         something else otherwise
+     */
     public static String deleteBuildingFromDatabase(Integer buildingCode) {
         URI myUri = URI.create("http://localhost:8080/buildings/delete?buildingCode=" + buildingCode);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
@@ -135,6 +142,11 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Returns a list of all the rooms that are part of the building.
+     * @param building the number of the building you want to see the rooms from
+     * @return a list of rooms from that building
+     */
     public static String getAllRoomsFromBuilding(Integer building) {
         URI myUri = URI.create("http://localhost:8080/rooms/getRoomsFromBuilding?building=" + building);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
@@ -150,6 +162,11 @@ public class ServerCommunication {
         return "";
     }
 
+    /**
+     * Returns a list of all the Room NAMES that are part of the building.
+     * @param building the number of the building you want to see the Room NAMES from
+     * @return a list of NAMES from that building
+     */
     public static String getAllRoomNamesFromBuilding(Integer building) {
         URI myUri = URI.create("http://localhost:8080/rooms/getRoomNamesFromBuilding?building=" + building);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
