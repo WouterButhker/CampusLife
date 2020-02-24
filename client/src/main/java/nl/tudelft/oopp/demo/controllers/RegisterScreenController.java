@@ -18,6 +18,9 @@ public class RegisterScreenController {
     private URL location;
 
     @FXML
+    private Button backButton;
+
+    @FXML
     private PasswordField passwordField;
 
     @FXML
@@ -31,15 +34,16 @@ public class RegisterScreenController {
 
 
     @FXML
-    void onRegisterClicked(ActionEvent event) {
-    }
-
-    @FXML
     void onBackClicked(ActionEvent event) {
     }
 
     @FXML
+    void onRegisterClicked(ActionEvent event) {
+    }
+
+    @FXML
     void initialize() {
+        assert backButton != null : "fx:id=\"backButton\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
         assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
         assert reEnterPasswordField != null : "fx:id=\"reEnterPasswordField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
         assert registerButton != null : "fx:id=\"registerButton\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
@@ -49,4 +53,3 @@ public class RegisterScreenController {
     }
 
 }
-
