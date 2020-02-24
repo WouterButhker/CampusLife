@@ -44,4 +44,22 @@ public class ServerCommunicationTest {
         Integer building = 35;
         ServerCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
     }
+
+    @Test
+    public void testGetAllRoomsFromBuilding() {
+        Integer building = 35;
+        System.out.println("---------------------------");
+        System.out.println("Test = testGetAllRoomsFromBuilding");
+        System.out.println(ServerCommunication.getAllRoomsFromBuilding(building));
+        System.out.println("---------------------------");
+    }
+
+    @Test
+    public void testGetAllRoomNamesFromBuilding() {
+        Integer building = 35;
+        System.out.println("---------------------------");
+        System.out.println("Test = testGetAllRoomNamesFromBuilding");
+        System.out.println(ServerCommunication.getAllRoomNamesFromBuilding(building));
+        System.out.println("---------------------------");
+    }
 }

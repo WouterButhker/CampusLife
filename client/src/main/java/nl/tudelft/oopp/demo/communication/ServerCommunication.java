@@ -87,6 +87,21 @@ public class ServerCommunication {
         }
     }
 
+    public static String deleteBuildingFromDatabase(Integer buildingCode) {
+        URI myUri = URI.create("http://localhost:8080/buildings/delete?buildingCode=" + buildingCode);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "-1";
+    }
+
     /**
      * For adding a room to the database.
      * @param roomCode the code (abreviation) of the room
@@ -118,5 +133,35 @@ public class ServerCommunication {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getAllRoomsFromBuilding(Integer building) {
+        URI myUri = URI.create("http://localhost:8080/rooms/getRoomsFromBuilding?building=" + building);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String getAllRoomNamesFromBuilding(Integer building) {
+        URI myUri = URI.create("http://localhost:8080/rooms/getRoomNamesFromBuilding?building=" + building);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

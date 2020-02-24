@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
@@ -47,4 +48,14 @@ public class RoomController {
         return "Saved";
     }
 
+
+    @GetMapping(path = "/getRoomsFromBuilding")
+    public List<Room> getAllRoomsFromBuilding(@RequestParam Building building) {
+        return roomRepository.allRoomsFromBuilding(building);
+    }
+
+    @GetMapping(path = "/getRoomNamesFromBuilding")
+    public List<String> getAllRoomNamesFromBuilding(@RequestParam Building building) {
+        return roomRepository.allRoomNamesFromBuilding(building);
+    }
 }
