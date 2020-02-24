@@ -15,10 +15,10 @@
         <Label layoutX="151.0" layoutY="138.0" text="Password" />
         <PasswordField fx:id="passwordField" layoutX="151.0" layoutY="158.0" prefWidth="200.0" />
         <TextField fx:id="usernameField" layoutX="151.0" layoutY="102.0" prefWidth="200.0" />
-        <Button id="loginButton" fx:id="registerButton" layoutX="198.0" layoutY="254.0" mnemonicParsing="false" onAction="#onLoginClicked" text="Register" />
+        <Button id="loginButton" fx:id="registerButton" layoutX="198.0" layoutY="254.0" mnemonicParsing="false" onAction="#onRegisterClicked" text="Register" />
         <Label layoutX="151.0" layoutY="192.0" text="Re-enter password" />
         <PasswordField id="passwordField" fx:id="reEnterPasswordField" layoutX="151.0" layoutY="212.0" prefWidth="200.0" />
-        <Button fx:id="backButton" layoutX="7.0" layoutY="8.0" mnemonicParsing="false" text="&lt;-" />
+        <Button fx:id="backButton" layoutX="7.0" layoutY="8.0" mnemonicParsing="false" onAction="#onBackClicked" text="&lt;-" />
       </children>
     </Pane>
   </children>

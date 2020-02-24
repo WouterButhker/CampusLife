@@ -31,7 +31,11 @@ public class RegisterScreenController {
 
 
     @FXML
-    void onLoginClicked(ActionEvent event) {
+    void onRegisterClicked(ActionEvent event) {
+    }
+
+    @FXML
+    void onBackClicked(ActionEvent event) {
     }
 
     @FXML
