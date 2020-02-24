@@ -16,6 +16,7 @@ Demo API endpoints.
 # Points of action
  - Get feedback on API endpoints.
  - Ask TA if there is anything that we are not on track with.
+ - Ask TA for options regarding authentication. Should we use HTTP requests like we are using for sending other data or something else?
  - Talk about hosting the server. Ask any questions you can think of about server-database communication.
  - Ask TA what "CRUD rooms + buildings (in database)" and "Draft reservations" implies in detail.
  - Ask any technical questions that came up during the week.
