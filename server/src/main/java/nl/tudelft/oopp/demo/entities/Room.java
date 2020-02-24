@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "room")
 public class Room {
+
     @Id
     @Column(name = "code")
     private String roomCode;
@@ -18,7 +18,7 @@ public class Room {
     private String name;
 
     @Column(name = "capacity")
-    private int capacity;
+    private Integer capacity;
 
     @Column(name = "whiteboard")
     private boolean hasWhiteboard;
@@ -26,37 +26,42 @@ public class Room {
     @Column(name = "tv")
     private boolean hasTV;
 
-    // TODO: add class userRole or something
-    //@Column(name = "rights")
-    //private UserRole userRole;
+    @Column(name = "rights")
+    private Integer rights;
 
-    // TODO: figure out foreign keys
-    // TODO: add building class
-    //@Column(name = "building")
-    //private Building building;
+    @Column(name = "building")
+    private Integer building;
 
+    public Room() {
 
-    // TODO: add user and building
+    }
 
     /**
-     *  Create new Room instance.
-     * @param roomCode unique room identifier
-     * @param name name of the room
-     * @param capacity maximum number of people allowed in the room
-     * @param hasWhiteboard true if there is a whiteboard in the room
-     * @param hasTV true if there is a TV in the room
+     * Makes a new room with the given parameters.
+     * @param roomCode the abreviation of the room
+     * @param name the actual name of the room
+     * @param capacity how many spaces when empty
+     * @param hasWhiteboard if the room has a whiteboard
+     * @param hasTV if the room has a TV
+     * @param rights (minimum) required to reserve this room
+     * @param building in which the room is
      */
-    public Room(String roomCode, String name, int capacity, boolean hasWhiteboard, boolean hasTV) {
+    public Room(String roomCode,
+                String name,
+                Integer capacity,
+                boolean hasWhiteboard,
+                boolean hasTV,
+                Integer rights,
+                Integer building)  {
         this.roomCode = roomCode;
         this.name = name;
         this.capacity = capacity;
         this.hasWhiteboard = hasWhiteboard;
         this.hasTV = hasTV;
+        this.rights = rights;
+        this.building = building;
     }
 
-    public Room() {
-
-    }
 
     public String getRoomCode() {
         return roomCode;
@@ -78,20 +83,62 @@ public class Room {
         return hasTV;
     }
 
+    public Integer getRights() {
+        return rights;
+    }
+
+    public Integer getBuilding() {
+        return building;
+    }
+
+    public void setRoomCode(String roomCode) {
+        this.roomCode = roomCode;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setHasWhiteboard(boolean hasWhiteboard) {
+        this.hasWhiteboard = hasWhiteboard;
+    }
+
+    public void setHasTV(boolean hasTV) {
+        this.hasTV = hasTV;
+    }
+
+    public void setRights(Integer rights) {
+        this.rights = rights;
+    }
+
+    public void setBuilding(Integer building) {
+        this.building = building;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Room)) {
             return false;
         }
         Room room = (Room) o;
-        return roomCode.equals(room.roomCode);
+        return hasWhiteboard == room.hasWhiteboard
+                && hasTV == room.hasTV
+                && roomCode.equals(room.roomCode)
+                && name.equals(room.name)
+                && capacity.equals(room.capacity)
+                && rights.equals(room.rights)
+                && building.equals(room.building);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roomCode);
+        return Objects.hash(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
     }
 }
