@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.views.MainMenuRoute;
 
 
 public class LoginScreenController {
@@ -33,6 +35,8 @@ public class LoginScreenController {
 
     @FXML
     void onLoginClicked(ActionEvent event) {
+        RoutingScene routingScene = (RoutingScene) passwordField.getScene();
+        routingScene.pushRoute(new MainMenuRoute());
     }
 
     @FXML
