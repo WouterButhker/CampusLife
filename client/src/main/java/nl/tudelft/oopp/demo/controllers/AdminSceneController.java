@@ -127,7 +127,7 @@ public class AdminSceneController implements Initializable {
     private void loadBuildings() {
         if (anchorPaneBuildings != null && vBoxBuildings != null) {
             int numBuildings = 10;
-            String[] buildings = ServerCommunication.getBuildingsCodeAndName();
+            String[] buildings = BuildingCommunication.getBuildingsCodeAndName();
             anchorPaneBuildings.setPrefHeight(50 * numBuildings);
             //One HBox is 50 x 300
             //The entire AnchorPane holding all the HBoxes is 50*numBuildings x 300
