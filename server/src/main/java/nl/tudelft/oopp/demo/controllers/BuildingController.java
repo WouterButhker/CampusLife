@@ -4,6 +4,7 @@ import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,5 +53,16 @@ public class BuildingController {
             response.set(i, current.replace(',', ' '));
         }
         return response;
+    }
+
+    @Transactional
+    @GetMapping(path = "/delete")
+    public Integer deleteBuilding(@RequestParam Integer buildingCode) {
+        return buildingRepository.deleteBuildingWithCode(buildingCode);
+    }
+
+    @GetMapping(path = "/count")
+    public Integer countBuildings() {
+        return buildingRepository.countAllBuildings();
     }
 }

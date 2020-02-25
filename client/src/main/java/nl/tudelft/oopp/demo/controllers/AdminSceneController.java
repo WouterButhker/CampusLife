@@ -29,6 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
 public class AdminSceneController implements Initializable {
@@ -95,7 +96,7 @@ public class AdminSceneController implements Initializable {
 
     private void loadDataBikes() {
         if (bikeBuildings != null) {
-            bikeBuildings.getItems().addAll(ServerCommunication.getBuildingsCodeAndName());
+            bikeBuildings.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
             SingleSelectionModel<String> selectionModel = bikeBuildings.getSelectionModel();
             selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
                 @Override
@@ -126,7 +127,7 @@ public class AdminSceneController implements Initializable {
     private void loadBuildings() {
         if (anchorPaneBuildings != null && vBoxBuildings != null) {
             int numBuildings = 10;
-            String[] buildings = ServerCommunication.getBuildingsCodeAndName();
+            String[] buildings = BuildingCommunication.getBuildingsCodeAndName();
             anchorPaneBuildings.setPrefHeight(50 * numBuildings);
             //One HBox is 50 x 300
             //The entire AnchorPane holding all the HBoxes is 50*numBuildings x 300
@@ -289,9 +290,8 @@ public class AdminSceneController implements Initializable {
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
         Text submitStatus = new Text();
-        if (!location.equals("") && !name.equals("") && codeFound
-                && fromChoicebox.getValue() != null && toChoicebox.getValue() != null) {
-            ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+        if (location != null && name != null && codeFound && openingHours != null) {
+            BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
             submitStatus.setText("Building successfully added!");
         } else {
             submitStatus.setText("The input is wrong or not all fields are entered");
