@@ -83,6 +83,10 @@ public class BuildingCommunication {
         return "-1";
     }
 
+    /**
+     * Counts all the buildings from the database.
+     * @return an string with a number of all the buildings
+     */
     public static String countAllBuildings() {
         URI myUri = URI.create("http://localhost:8080/buildings/count");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
