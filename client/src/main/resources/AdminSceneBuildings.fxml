@@ -21,15 +21,26 @@
       <Text layoutX="13.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
       <TextField fx:id="nameInput" layoutX="117.0" layoutY="150.0" promptText="Enter" />
       <TextField fx:id="buildingCodeInput" layoutX="118.0" layoutY="191.0" promptText="Enter" />
-      <TextField fx:id="openingHours" layoutX="117.0" layoutY="238.0" promptText="Enter" />
       <Text layoutX="18.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
       <Text layoutX="16.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening hours" />
       <Text layoutX="18.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building code" />
-      <Text layoutX="371.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deleting a new building">
+      <Text layoutX="371.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All the buildings:">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="submitNewBuilding" layoutX="165.0" layoutY="280.0" mnemonicParsing="false" onAction="#submitNewBuilding" text="Submit" />
+      <Button fx:id="submitNewBuilding" layoutX="165.0" layoutY="329.0" mnemonicParsing="false" onAction="#submitNewBuilding" text="Submit" />
+      <ChoiceBox fx:id="fromChoicebox" layoutX="107.0" layoutY="250.0" prefHeight="19.0" prefWidth="73.0" />
+      <ChoiceBox fx:id="toChoicebox" layoutX="211.0" layoutY="250.0" prefHeight="26.0" prefWidth="79.0" />
+      <Text layoutX="122.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From:" />
+      <Text layoutX="240.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To:" />
+      <ScrollPane layoutX="361.0" layoutY="111.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="213.0" prefWidth="206.0">
+        <content>
+          <AnchorPane fx:id="anchorPaneBuildings" minHeight="0.0" minWidth="0.0" prefHeight="257.0" prefWidth="300.0">
+               <children>
+                  <VBox fx:id="vBoxBuildings" />
+               </children></AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>
