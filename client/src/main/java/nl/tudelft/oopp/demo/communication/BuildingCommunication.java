@@ -85,20 +85,20 @@ public class BuildingCommunication {
 
     /**
      * Counts all the buildings from the database.
-     * @return an string with a number of all the buildings
+     * @return an int with a number of all the buildings
      */
-    public static String countAllBuildings() {
+    public static Integer countAllBuildings() {
         URI myUri = URI.create("http://localhost:8080/buildings/count");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
+            return Integer.parseInt(response.body());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "0";
+        return 0;
     }
 }

@@ -9,7 +9,7 @@ public class OtherBuildingTests {
 
     @Test
     public void testCountBuildings() {
-        String response = BuildingCommunication.countAllBuildings();
+        Integer response = BuildingCommunication.countAllBuildings();
         System.out.println("---------------------------");
         System.out.println("Test = testCountBuildings");
         System.out.println(response);
