@@ -60,4 +60,9 @@ public class BuildingController {
     public Integer deleteBuilding(@RequestParam Integer buildingCode) {
         return buildingRepository.deleteBuildingWithCode(buildingCode);
     }
+
+    @GetMapping(path = "/count")
+    public Integer countBuildings() {
+        return buildingRepository.countAllBuildings();
+    }
 }

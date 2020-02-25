@@ -19,6 +19,9 @@ public interface BuildingRepository extends JpaRepository<Building, Integer> {
     @Query("DELETE FROM Building b WHERE b.buildingCode = ?1")
     Integer deleteBuildingWithCode(Integer myBuilding);
 
+    @Query("SELECT COUNT(buildingCode) FROM Building")
+    Integer countAllBuildings();
+
     // @Query("DELETE FROM building where buildingCode = 3;")
     // String removeBuilding()
 }

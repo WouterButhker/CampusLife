@@ -82,4 +82,19 @@ public class BuildingCommunication {
         }
         return "-1";
     }
+
+    public static String countAllBuildings() {
+        URI myUri = URI.create("http://localhost:8080/buildings/count");
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "0";
+    }
 }
