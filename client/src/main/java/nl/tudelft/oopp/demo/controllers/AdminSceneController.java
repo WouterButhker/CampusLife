@@ -17,15 +17,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-<<<<<<< HEAD
 import javafx.scene.control.Label;
-=======
 import javafx.scene.control.SingleSelectionModel;
->>>>>>> e43f1ae205604ca7f38d7565a8dd925c665d1a09
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -80,6 +80,7 @@ public class AdminSceneController implements Initializable {
 
     @FXML
     private AnchorPane anchorPaneBuildings;
+
 
     @FXML
     private VBox vBoxBuildings;
@@ -148,8 +149,10 @@ public class AdminSceneController implements Initializable {
                 modify.setPrefSize(50, 40);
                 Button delete = new Button("delete");
                 delete.setPrefSize(50, 40);
-                hBox.setPadding(new Insets(5, 5, 5 ,5));
-                String css = "-fx-border-color: black;\n-fx-border-insets: 5\n;-fx-border-style: solid";
+                hBox.setPadding(new Insets(5, 5, 5,5));
+                String css = "-fx-border-color: black;\n"
+                        + "-fx-border-insets: 5\n;"
+                        + "-fx-border-style: solid";
                 hBox.setStyle(css);
                 hBox.getChildren().addAll(imageView, text, modify, delete);
                 vBoxBuildings.getChildren().add(hBox);
@@ -168,15 +171,10 @@ public class AdminSceneController implements Initializable {
         return bikes;
     }
 
-<<<<<<< HEAD
-    @FXML
-    private void addBike() {
-=======
     /**
      * Add a bike to the database.
      */
     public void addBike() {
->>>>>>> e43f1ae205604ca7f38d7565a8dd925c665d1a09
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes++;
@@ -185,15 +183,10 @@ public class AdminSceneController implements Initializable {
         }
     }
 
-<<<<<<< HEAD
-    @FXML
-    private void removeBike() {
-=======
     /**
      * Remove a bike from the database.
      */
     public void removeBike() {
->>>>>>> e43f1ae205604ca7f38d7565a8dd925c665d1a09
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes--;
@@ -296,7 +289,8 @@ public class AdminSceneController implements Initializable {
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
         Text submitStatus = new Text();
-        if (!location.equals("") && !name.equals("") && codeFound && fromChoicebox.getValue() != null && toChoicebox.getValue() != null) {
+        if (!location.equals("") && !name.equals("") && codeFound
+                && fromChoicebox.getValue() != null && toChoicebox.getValue() != null) {
             ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
             submitStatus.setText("Building successfully added!");
         } else {
@@ -307,7 +301,8 @@ public class AdminSceneController implements Initializable {
             submitStatus.setText("The building code has to be a number!");
         }
 
-        if ((fromChoicebox.getValue() != null && toChoicebox.getValue() != null) && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) >= 0) {
+        if ((fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
+                && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) >= 0) {
             submitStatus.setText("These opening hours don't make sense");
         }
 
