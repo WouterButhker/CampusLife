@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,16 +18,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-<<<<<<< HEAD
 import javafx.scene.control.Label;
-=======
 import javafx.scene.control.SingleSelectionModel;
->>>>>>> e43f1ae205604ca7f38d7565a8dd925c665d1a09
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
@@ -168,15 +167,11 @@ public class AdminSceneController implements Initializable {
         return bikes;
     }
 
-<<<<<<< HEAD
-    @FXML
-    private void addBike() {
-=======
     /**
      * Add a bike to the database.
      */
-    public void addBike() {
->>>>>>> e43f1ae205604ca7f38d7565a8dd925c665d1a09
+    @FXML
+    private void addBike() {
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes++;
@@ -184,16 +179,11 @@ public class AdminSceneController implements Initializable {
             updateNumberBikes();
         }
     }
-
-<<<<<<< HEAD
-    @FXML
-    private void removeBike() {
-=======
     /**
      * Remove a bike from the database.
      */
-    public void removeBike() {
->>>>>>> e43f1ae205604ca7f38d7565a8dd925c665d1a09
+    @FXML
+    private void removeBike() {
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes--;
@@ -217,6 +207,16 @@ public class AdminSceneController implements Initializable {
         Stage stage = (Stage) modifyBuildingsExit.getScene().getWindow();
         Parent root;
         root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void refreshBuildingsPage() throws IOException {
+        Stage stage = (Stage) modifyBuildingsExit.getScene().getWindow();
+        Parent root;
+        root = FXMLLoader.load(getClass().getResource("/AdminSceneBuildings.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -283,7 +283,7 @@ public class AdminSceneController implements Initializable {
     }
 
     @FXML
-    private void submitNewBuilding() {
+    private void submitNewBuilding() throws IOException {
         String location = locationInput.getText();
         String name = nameInput.getText();
         boolean codeFound = false;
@@ -292,11 +292,11 @@ public class AdminSceneController implements Initializable {
             buildingCode = Integer.parseInt(buildingCodeInput.getText().trim());
             codeFound = true;
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            System.out.println("not a proper number");
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
         Text submitStatus = new Text();
-        if (!location.equals("") && !name.equals("") && codeFound && fromChoicebox.getValue() != null && toChoicebox.getValue() != null) {
+        if (!location.equals("") && !name.equals("") && codeFound && fromChoicebox.getValue() != null && toChoicebox.getValue() != null && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) < 0) {
             ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
             submitStatus.setText("Building successfully added!");
         } else {
@@ -311,7 +311,20 @@ public class AdminSceneController implements Initializable {
             submitStatus.setText("These opening hours don't make sense");
         }
 
-        StackPane root = new StackPane(submitStatus);
+        Button back = new Button("Okay! take me back");
+        submitStatus.setTextAlignment(TextAlignment.CENTER);
+        back.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Button button = (Button) event.getSource();
+                Stage stage = (Stage) button.getScene().getWindow();
+                stage.close();
+            }
+        });
+        VBox vBox = new VBox(submitStatus, back);
+        vBox.setPrefSize(300, 200);
+        vBox.setAlignment(Pos.CENTER);
+        AnchorPane root = new AnchorPane(vBox);
         root.setPrefSize(300, 200);
         Scene scene = new Scene(root);
         Stage stage = new Stage();
@@ -320,6 +333,5 @@ public class AdminSceneController implements Initializable {
         stage.initOwner(modifyBuildingsExit.getScene().getWindow());
         stage.showAndWait();
     }
-
 
 }
