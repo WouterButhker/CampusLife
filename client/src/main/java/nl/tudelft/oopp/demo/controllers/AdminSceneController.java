@@ -23,11 +23,15 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
 public class AdminSceneController implements Initializable {
@@ -93,7 +97,7 @@ public class AdminSceneController implements Initializable {
 
     private void loadDataBikes() {
         if (bikeBuildings != null) {
-            bikeBuildings.getItems().addAll(ServerCommunication.getBuildingsCodeAndName());
+            bikeBuildings.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
             SingleSelectionModel<String> selectionModel = bikeBuildings.getSelectionModel();
             selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
                 @Override
@@ -123,8 +127,8 @@ public class AdminSceneController implements Initializable {
 
     private void loadBuildings() {
         if (anchorPaneBuildings != null && vBoxBuildings != null) {
-            int numBuildings = 10;
-            String[] buildings = ServerCommunication.getBuildingsCodeAndName();
+            int numBuildings = BuildingCommunication.countAllBuildings();
+            String[] buildings = BuildingCommunication.getBuildingsCodeAndName();
             anchorPaneBuildings.setPrefHeight(50 * numBuildings);
             //One HBox is 50 x 300
             //The entire AnchorPane holding all the HBoxes is 50*numBuildings x 300
@@ -147,8 +151,10 @@ public class AdminSceneController implements Initializable {
                 modify.setPrefSize(50, 40);
                 Button delete = new Button("delete");
                 delete.setPrefSize(50, 40);
-                hBox.setPadding(new Insets(5, 5, 5 ,5));
-                String css = "-fx-border-color: black;\n-fx-border-insets: 5\n;-fx-border-style: solid";
+                hBox.setPadding(new Insets(5, 5, 5,5));
+                String css = "-fx-border-color: black;\n"
+                        + "-fx-border-insets: 5\n;"
+                        + "-fx-border-style: solid";
                 hBox.setStyle(css);
                 hBox.getChildren().addAll(imageView, text, modify, delete);
                 vBoxBuildings.getChildren().add(hBox);
@@ -170,8 +176,12 @@ public class AdminSceneController implements Initializable {
     /**
      * Add a bike to the database.
      */
+<<<<<<< HEAD
     @FXML
     private void addBike() {
+=======
+    public void addBike() {
+>>>>>>> d4e9e3eac8c8f130742c4046d3d71628ba71fd5c
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes++;
@@ -179,11 +189,19 @@ public class AdminSceneController implements Initializable {
             updateNumberBikes();
         }
     }
+<<<<<<< HEAD
     /**
      * Remove a bike from the database.
      */
     @FXML
     private void removeBike() {
+=======
+
+    /**
+     * Remove a bike from the database.
+     */
+    public void removeBike() {
+>>>>>>> d4e9e3eac8c8f130742c4046d3d71628ba71fd5c
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes--;
@@ -298,6 +316,8 @@ public class AdminSceneController implements Initializable {
         Text submitStatus = new Text();
         if (!location.equals("") && !name.equals("") && codeFound && fromChoicebox.getValue() != null && toChoicebox.getValue() != null && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) < 0) {
             ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+        if (location != null && name != null && codeFound && openingHours != null) {
+            BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
             submitStatus.setText("Building successfully added!");
         } else {
             submitStatus.setText("The input is wrong or not all fields are entered");
@@ -307,7 +327,8 @@ public class AdminSceneController implements Initializable {
             submitStatus.setText("The building code has to be a number!");
         }
 
-        if ((fromChoicebox.getValue() != null && toChoicebox.getValue() != null) && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) >= 0) {
+        if ((fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
+                && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) >= 0) {
             submitStatus.setText("These opening hours don't make sense");
         }
 
