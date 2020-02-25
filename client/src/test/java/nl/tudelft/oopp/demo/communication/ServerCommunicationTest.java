@@ -14,7 +14,7 @@ public class ServerCommunicationTest {
 
     @Test
     public void testGetBuildingsCodeAndName() {
-        String[] buildingsCodeAndName = ServerCommunication.getBuildingsCodeAndName();
+        String[] buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
         /*
         if (buildingsCodeAndName != null) {
             for (int i = 0; i < buildingsCodeAndName.length; i++)
@@ -30,7 +30,7 @@ public class ServerCommunicationTest {
         String name = "Aula";
         String location = "Mekelweg 5";
         String openingHours = "08:00-22:00";
-        ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+        BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class ServerCommunicationTest {
         Boolean hasTV = false;
         Integer rights = 1;
         Integer building = 35;
-        ServerCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
+        RoomCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ServerCommunicationTest {
         Integer building = 35;
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllRoomsFromBuilding");
-        System.out.println(ServerCommunication.getAllRoomsFromBuilding(building));
+        System.out.println(RoomCommunication.getAllRoomsFromBuilding(building));
         System.out.println("---------------------------");
     }
 
@@ -59,7 +59,7 @@ public class ServerCommunicationTest {
         Integer building = 35;
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllRoomNamesFromBuilding");
-        System.out.println(ServerCommunication.getAllRoomNamesFromBuilding(building));
+        System.out.println(RoomCommunication.getAllRoomNamesFromBuilding(building));
         System.out.println("---------------------------");
     }
 }

@@ -12,7 +12,7 @@ public class DeleteBuildingTest {
         Integer buildingCode = 1;
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllRoomsFromBuilding");
-        String response = ServerCommunication.deleteBuildingFromDatabase(buildingCode);
+        String response = BuildingCommunication.deleteBuildingFromDatabase(buildingCode);
         if (response.equals("1"))
             System.out.println("Deleted building with code " + buildingCode);
         else if (response.equals("0"))

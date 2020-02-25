@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
 public class AdminSceneController implements Initializable {
@@ -79,7 +80,7 @@ public class AdminSceneController implements Initializable {
 
     private void loadDataBikes() {
         if (bikeBuildings != null) {
-            bikeBuildings.getItems().addAll(ServerCommunication.getBuildingsCodeAndName());
+            bikeBuildings.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
             SingleSelectionModel<String> selectionModel = bikeBuildings.getSelectionModel();
             selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
                 @Override
@@ -225,7 +226,7 @@ public class AdminSceneController implements Initializable {
 
         Text submitStatus = new Text();
         if (location != null && name != null && codeFound && openingHours != null) {
-            ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+            BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
             submitStatus.setText("Building successfully added!");
         } else {
             submitStatus.setText("The input is wrong or not all fields are entered");
