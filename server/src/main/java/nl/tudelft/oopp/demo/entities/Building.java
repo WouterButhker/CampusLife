@@ -76,6 +76,11 @@ public class Building {
         this.openingHours = openingHours;
     }
 
+    public String toString() {
+        return "[\"buildingCode\":\"" + buildingCode + "\",\"name\":\"" + name
+                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours + "\"]";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
