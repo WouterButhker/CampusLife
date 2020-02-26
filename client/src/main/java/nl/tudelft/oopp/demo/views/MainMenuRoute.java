@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -13,10 +15,11 @@ import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainMenuRoute extends Route {
+    public static final String BIKES_STRING = "Reserve a bike";
+    public static final String ROOMS_STRING = "Reserve a room";
+    public static final String FOOD_STRING = "Order food";
+
     private ScrollPane scrollPane;
     private VBox rootContainer;
     private Text universityTitle;
@@ -27,6 +30,10 @@ public class MainMenuRoute extends Route {
     private HBox buttonsRow;
     private List<RectangularImageButton> mainButtons;
 
+    /**
+     * Creates a MainMenuRoute which is the Route that displays the option to order
+     * food, reserve a room or a bike. Also displays all the buildings
+     */
     public MainMenuRoute() {
         rootContainer = new VBox();
         rootContainer.setAlignment(Pos.TOP_CENTER);
@@ -40,7 +47,7 @@ public class MainMenuRoute extends Route {
 
         List<String> buildings = new ArrayList<>();
         for (int i = 0; i < 17; i++) {
-            buildings.add(" Building "+Integer.toString(i));
+            buildings.add(" Building " + Integer.toString(i));
         }
         BuildingsGridView buildingsGrid = new BuildingsGridView(buildings);
         rootContainer.getChildren().add(buildingsGrid);
@@ -64,13 +71,13 @@ public class MainMenuRoute extends Route {
 
         mainButtons = new ArrayList<>();
         Image bikesImage = new Image("/images/main-screen-bike.jpg");
-        RectangularImageButton bikesButton = new RectangularImageButton(bikesImage, "  Reserve a bike");
+        RectangularImageButton bikesButton = new RectangularImageButton(bikesImage, BIKES_STRING);
         mainButtons.add(bikesButton);
         Image roomsImage = new Image("/images/main-screen-rooms.jpg");
-        RectangularImageButton roomsButton = new RectangularImageButton(roomsImage, "  Reserve a room");
+        RectangularImageButton roomsButton = new RectangularImageButton(roomsImage, ROOMS_STRING);
         mainButtons.add(roomsButton);
         Image foodImage = new Image("/images/main-screen-food.jpg");
-        RectangularImageButton foodButton = new RectangularImageButton(foodImage, "  Order food");
+        RectangularImageButton foodButton = new RectangularImageButton(foodImage, FOOD_STRING);
         mainButtons.add(foodButton);
         buttonsRow.getChildren().addAll(mainButtons);
 
@@ -94,8 +101,11 @@ public class MainMenuRoute extends Route {
 
     private void resizeDisplay(Number newWidth) {
         /*
-         This route should display the title, main buttons, buildings title and then the buildings below
-         the building buttons should be partially covered so as to not make them the main thing */
+         This route should display the title, main buttons,
+         buildings title and then the buildings below
+         the building buttons should be partially covered so
+         as to not make them the main thing
+         */
 
         rootContainer.setPadding(new Insets(20, 0, 0, 0));
 
