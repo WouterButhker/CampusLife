@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
 @RestController
 @RequestMapping(path = "/buildings")
 public class BuildingController {
@@ -32,14 +34,23 @@ public class BuildingController {
      * @return Saved
      */
     @GetMapping(path = "/add")
-    public @ResponseBody String addNewBuilding(@RequestParam Integer buildingCode,
-                                           @RequestParam String name,
-                                           @RequestParam String location,
-                                           @RequestParam String openingHours) {
-        Building room = new Building(buildingCode, name, location, openingHours);
-        buildingRepository.save(room);
+    public @ResponseBody
+    String addNewBuilding(@RequestParam Integer buildingCode,
+                          @RequestParam String name,
+                          @RequestParam String location,
+                          @RequestParam String openingHours) {
+        Building building = new Building(buildingCode, name, location, openingHours);
+        buildingRepository.save(building);
         return "Saved";
     }
+
+    //@RequestMapping(path = "/addBuilding", method = RequestMethod.POST,
+    //consumes = "application/json", produces = "application/json")
+    //@PostMapping(path = "/addBuilding", consumes = "application/json",
+    //produces = "application/json")
+    //public void addBuilding(@RequestBody Building building) {
+    //buildingRepository.save(building);
+    //}
 
     /**
      * Get a list of codes and names of all the buildings.
