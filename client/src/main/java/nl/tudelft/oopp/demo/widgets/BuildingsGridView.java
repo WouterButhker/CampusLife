@@ -1,13 +1,12 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BuildingsGridView extends GridPane {
     private List<String> buildings;
@@ -15,7 +14,8 @@ public class BuildingsGridView extends GridPane {
     private Listener listener;
 
     /**
-     * Creates a GridView that displays the buildings as buttons that can be pressed and throw an event
+     * Creates a GridView that displays the buildings as buttons
+     * that can be pressed and throw an event.
      * @param buildings the list of buildings to be displayed
      */
     public BuildingsGridView(List<String> buildings) {
@@ -33,7 +33,7 @@ public class BuildingsGridView extends GridPane {
     }
 
     /**
-     * Sets the listener for click events
+     * Sets the listener for click events.
      * @param listener the listener
      */
     public void setListener(Listener listener) {
