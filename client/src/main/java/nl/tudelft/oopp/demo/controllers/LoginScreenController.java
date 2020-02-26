@@ -45,12 +45,14 @@ public class LoginScreenController {
 
     @FXML
     void initialize() {
-        assert loginButton != null : "fx:id=\"loginButton\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-        assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-        assert registerLink != null : "fx:id=\"registerLink\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-        assert usernameField != null : "fx:id=\"usernameField\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-
-
+        assert loginButton != null : "fx:id=\"loginButton\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
+        assert passwordField != null : "fx:id=\"passwordField\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
+        assert registerLink != null : "fx:id=\"registerLink\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
+        assert usernameField != null : "fx:id=\"usernameField\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
     }
 
 }
