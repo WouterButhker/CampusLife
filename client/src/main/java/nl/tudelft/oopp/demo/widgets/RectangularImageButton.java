@@ -25,7 +25,7 @@ public class RectangularImageButton extends StackPane {
     private StackPane labelPane;
 
     /**
-     * Creates RectangularImageButton with an image as background and a label of text
+     * Creates RectangularImageButton with an image as background and a label of text.
      * @param image the background image
      * @param text the label
      */
@@ -34,7 +34,7 @@ public class RectangularImageButton extends StackPane {
     }
 
     /**
-     * Creates RectangularImageButton with an image as background and a label of text
+     * Creates RectangularImageButton with an image as background and a label of text.
      * @param image the background image
      * @param text the label
      * @param preserveRatio if the image should preserve the ratio
@@ -106,7 +106,7 @@ public class RectangularImageButton extends StackPane {
     }
 
     /**
-     * This function sets the width of the RectangularImageButton
+     * This function sets the width of the RectangularImageButton.
      * @param width the width in pixels
      */
     public void setFitWidth(double width) {
@@ -114,7 +114,7 @@ public class RectangularImageButton extends StackPane {
     }
 
     /**
-     * This function sets the height of the RectangularImageButton
+     * This function sets the height of the RectangularImageButton.
      * @param height the height in pixels
      */
     public void setFitHeight(double height) {
@@ -122,7 +122,7 @@ public class RectangularImageButton extends StackPane {
     }
 
     /**
-     * Getter for the fitWidthProperty of this object
+     * Getter for the fitWidthProperty of this object.
      * @return the fitWidthProperty of this object
      */
     public DoubleProperty fitWidthProperty() {
@@ -130,7 +130,7 @@ public class RectangularImageButton extends StackPane {
     }
 
     /**
-     * Getter for the fitHeightProperty of this object
+     * Getter for the fitHeightProperty of this object.
      * @return the fitHeightProperty of this object
      */
     public DoubleProperty fitHeightProperty() {
