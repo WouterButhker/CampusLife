@@ -13,7 +13,8 @@ public class GetAllBuildingsTest {
         List<Building> buildings = BuildingCommunication.getAllBuildings();
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllBuildings");
-        System.out.println(buildings.toString());
+        if (buildings != null)
+            System.out.println(buildings.toString());
     }
 
 }
