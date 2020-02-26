@@ -3,25 +3,32 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
 public class AdminSceneController implements Initializable {
@@ -34,9 +41,6 @@ public class AdminSceneController implements Initializable {
 
     @FXML
     private Button modifyBuildingsEnter;
-
-    @FXML
-    private Button modifyBuildingsExit;
 
     @FXML
     private Button modifyRoomsEnter;
@@ -56,20 +60,6 @@ public class AdminSceneController implements Initializable {
     @FXML
     private Button modifyRightsExit;
 
-    @FXML
-    private TextField locationInput;
-
-    @FXML
-    private TextField nameInput;
-
-    @FXML
-    private TextField buildingCodeInput;
-
-    @FXML
-    private TextField openingHoursInput;
-
-    @FXML
-    private Text submitStatus;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,7 +69,7 @@ public class AdminSceneController implements Initializable {
 
     private void loadDataBikes() {
         if (bikeBuildings != null) {
-            bikeBuildings.getItems().addAll(ServerCommunication.getBuildingsCodeAndName());
+            bikeBuildings.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
             SingleSelectionModel<String> selectionModel = bikeBuildings.getSelectionModel();
             selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
                 @Override
@@ -90,7 +80,6 @@ public class AdminSceneController implements Initializable {
                 }
             });
         }
-
     }
 
 
@@ -107,7 +96,8 @@ public class AdminSceneController implements Initializable {
     /**
      * Add a bike to the database.
      */
-    public void addBike() {
+    @FXML
+    private void addBike() {
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes++;
@@ -119,7 +109,8 @@ public class AdminSceneController implements Initializable {
     /**
      * Remove a bike from the database.
      */
-    public void removeBike() {
+    @FXML
+    private void removeBike() {
         if (bikeBuildings.getValue() != null) {
             int bikes = updateNumberBikes();
             bikes--;
@@ -138,15 +129,9 @@ public class AdminSceneController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    private void modifyBuildingsExit() throws IOException {
-        Stage stage = (Stage) modifyBuildingsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+
+
+
 
     @FXML
     private void modifyRoomsEnter() throws IOException {
@@ -208,36 +193,6 @@ public class AdminSceneController implements Initializable {
         stage.show();
     }
 
-    @FXML
-    private void submitNewBuilding() throws IOException {
-        String location = locationInput.getText();
-        String name = nameInput.getText();
-        boolean codeFound = false;
-        int buildingCode = 0;
-        try {
-            buildingCode = Integer.parseInt(buildingCodeInput.getText());
-            codeFound = true;
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        //String openingHours = openingHoursInput.getText();
-        String openingHours = "08:00-22:00";
 
-        Text submitStatus = new Text();
-        if (location != null && name != null && codeFound && openingHours != null) {
-            ServerCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
-            submitStatus.setText("Building successfully added!");
-        } else {
-            submitStatus.setText("The input is wrong or not all fields are entered");
-        }
 
-        StackPane root = new StackPane(submitStatus);
-        root.setPrefSize(300, 200);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(modifyBuildingsExit.getScene().getWindow());
-        stage.showAndWait();
-    }
 }

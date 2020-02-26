@@ -4,13 +4,31 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
+<AnchorPane prefHeight="630.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
    <children>
-      <Text layoutX="121.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the rooms page">
+      <Text layoutX="332.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the rooms page">
          <font>
             <Font size="36.0" />
          </font>
       </Text>
-      <Button fx:id="modifyRoomsExit" layoutX="463.0" layoutY="36.0" mnemonicParsing="false" onAction="#modifyRoomsExit" text="Back" />
+      <Button fx:id="modifyRoomsExit" layoutX="896.0" layoutY="60.0" mnemonicParsing="false" onAction="#modifyRoomsExit" text="Back" />
+      <Text layoutX="130.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adding a new room">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <TextField layoutX="130.0" layoutY="173.0" />
+      <TextField layoutX="130.0" layoutY="217.0" />
+      <TextField layoutX="130.0" layoutY="258.0" />
+      <CheckBox layoutX="131.0" layoutY="407.0" mnemonicParsing="false" text="TV" />
+      <CheckBox layoutX="131.0" layoutY="373.0" mnemonicParsing="false" text="Whiteboard" />
+      <ChoiceBox layoutX="129.0" layoutY="338.0" prefWidth="150.0" />
+      <ChoiceBox layoutX="129.0" layoutY="302.0" prefWidth="150.0" />
+      <Text layoutX="39.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room code" />
+      <Text layoutX="37.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room name" />
+      <Text layoutX="46.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Capacity" />
+      <Text layoutX="47.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building" />
+      <Text layoutX="27.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Who can use it?" />
+      <Text layoutX="45.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Facilities:" />
    </children>
 </AnchorPane>
