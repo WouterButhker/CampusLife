@@ -25,11 +25,11 @@ public class BuildingsGridView extends GridPane {
         });
     }
 
-    private final int buildingsPerRow = 5;
     private void addButtons() {
         for (int i = 0; i < buildings.size(); i++) {
             Image image = new Image("/images/main-screen-default-building.jpg");
             RectangularImageButton button = new RectangularImageButton(image, buildings.get(i));
+            int buildingsPerRow = 5;
             add(button, i % buildingsPerRow, i / buildingsPerRow, 1, 1);
             buildingButtons.add(button);
         }

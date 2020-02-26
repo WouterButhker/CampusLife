@@ -24,7 +24,26 @@ public class RectangularImageButton extends StackPane {
     private ImageView imageView;
     private StackPane labelPane;
 
+    /**
+     * Creates RectangularImageButton with an image as background and a label of text
+     * @param image the background image
+     * @param text the label
+     */
     public RectangularImageButton(Image image, String text) {
+        draw(image, text, true);
+    }
+
+    /**
+     * Creates RectangularImageButton with an image as background and a label of text
+     * @param image the background image
+     * @param text the label
+     * @param preserveRatio if the image should preserve the ratio
+     */
+    public RectangularImageButton(Image image, String text, boolean preserveRatio) {
+        draw(image, text, preserveRatio);
+    }
+
+    private void draw(Image image, String text, boolean preserveRatio) {
         this.image = image;
         this.text = text;
 
@@ -33,7 +52,8 @@ public class RectangularImageButton extends StackPane {
         hoverShade.setVisible(false);
 
         imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(preserveRatio);
+
         setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -85,18 +105,34 @@ public class RectangularImageButton extends StackPane {
         hoverShade.setVisible(false);
     }
 
+    /**
+     * This function sets the width of the RectangularImageButton
+     * @param width the width in pixels
+     */
     public void setFitWidth(double width) {
         imageView.setFitWidth(width);
     }
 
+    /**
+     * This function sets the height of the RectangularImageButton
+     * @param height the height in pixels
+     */
     public void setFitHeight(double height) {
         imageView.setFitHeight(height);
     }
 
+    /**
+     * Getter for the fitWidthProperty of this object
+     * @return the fitWidthProperty of this object
+     */
     public DoubleProperty fitWidthProperty() {
         return imageView.fitWidthProperty();
     }
 
+    /**
+     * Getter for the fitHeightProperty of this object
+     * @return the fitHeightProperty of this object
+     */
     public DoubleProperty fitHeightProperty() {
         return imageView.fitHeightProperty();
     }
