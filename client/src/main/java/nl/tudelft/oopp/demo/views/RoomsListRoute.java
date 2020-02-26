@@ -3,10 +3,7 @@ package nl.tudelft.oopp.demo.views;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.*;
@@ -50,6 +47,7 @@ public class RoomsListRoute extends Route {
         filterTitle = new Text("Filters:");
         filterTitle.getStyleClass().add("university-main-title");
         filters.getChildren().add(filterTitle);
+        filters.setTranslateX(5);
 
         //filter checkboxes
         CheckBox available = new CheckBox();
@@ -60,13 +58,16 @@ public class RoomsListRoute extends Route {
         mediumRoom.setText("Medium rooms");
         CheckBox largeRoom = new CheckBox();
         largeRoom.setText("Large rooms");
-        CheckBox anyRoom = new CheckBox();
-        anyRoom.setText("Any rooms");
-        filters.getChildren().addAll(available, smallRoom, mediumRoom, largeRoom, anyRoom);
-        filters.setSpacing(5);
-        filters.setPrefHeight(170);
+        filters.getChildren().addAll(available, smallRoom, mediumRoom, largeRoom);
+        filters.setSpacing(6);
+        filters.setPrefHeight(150);
         filters.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(1))));
         rootContainer.getChildren().add(filters);
+
+        Button b = new Button("back");
+        b.setTranslateX(5);
+        b.setTranslateY(160);
+        rootContainer.getChildren().add(b);
 
         //container for the rooms
         VBox rooms = new VBox();

@@ -17,19 +17,21 @@ public class RoomsGridView extends GridPane {
         roomButtons = new ArrayList<>();
         addButtons();
 
+        double scalar = 1.8;
+
         sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            resizeDisplay(newScene.getWidth());
+            resizeDisplay(newScene.getWidth() * scalar);
             newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                resizeDisplay(newWidth);
+                resizeDisplay(newWidth.doubleValue() * scalar);
             });
         });
     }
 
-    private final int roomsPerRow = 3;
+    private final int roomsPerRow = 2;
     private void addButtons() {
         for (int i = 0; i < rooms.size(); i++) {
             Image image = new Image("https://cdn.mos.cms.futurecdn.net/K5nhgMGSRCzdppKW9bQcMd.jpg");
-            RectangularImageButton button = new RectangularImageButton(image, rooms.get(i));
+            RectangularImageButton button = new RectangularImageButton(image, rooms.get(i) + "\nThis room has:");
             add(button, i % roomsPerRow, i / roomsPerRow, 1, 1);
             roomButtons.add(button);
         }
