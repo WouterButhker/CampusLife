@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -9,6 +10,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.views.MainMenuRoute;
 
 
@@ -41,6 +43,13 @@ public class LoginScreenController {
 
     @FXML
     void onRegisterClicked(ActionEvent event) {
+        RoutingScene routingScene = (RoutingScene) passwordField.getScene();
+        try {
+            URL xmlUrl = getClass().getResource("/AdminScene.fxml");
+            routingScene.pushRoute(new XmlRoute(xmlUrl));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
