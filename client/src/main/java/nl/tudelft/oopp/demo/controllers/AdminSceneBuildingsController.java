@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,11 +27,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.ResourceBundle;
 
 public class AdminSceneBuildingsController implements Initializable {
 
@@ -103,7 +102,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     }
                 });
                 modify.setPrefSize(45, 40);
-                modify.setPadding(new Insets(0, 0, 0 ,0));
+                modify.setPadding(new Insets(0, 0, 0,0));
 
                 Button delete = new Button("delete");
                 delete.setPrefSize(45, 40);
@@ -113,11 +112,12 @@ public class AdminSceneBuildingsController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         Button button = (Button) event.getSource();
-                        BuildingCommunication.deleteBuildingFromDatabase(Integer.parseInt(button.getId()));
+                        Integer buttonId = Integer.parseInt(button.getId());
+                        BuildingCommunication.deleteBuildingFromDatabase(buttonId);
                         loadBuildings();
                     }
                 });
-                delete.setPadding(new Insets(0, 0 , 0 ,0));
+                delete.setPadding(new Insets(0, 0, 0,0));
 
                 building.setPadding(new Insets(5, 5, 5,5));
                 String css = "-fx-border-color: black;\n"
@@ -166,7 +166,8 @@ public class AdminSceneBuildingsController implements Initializable {
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
         Text submitStatus = new Text();
-        if (!location.equals("") && !name.equals("") && codeFound && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
+        if (!location.equals("") && !name.equals("") && codeFound
+                && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
                 && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) < 0) {
             BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
             submitStatus.setText("Building successfully added!");

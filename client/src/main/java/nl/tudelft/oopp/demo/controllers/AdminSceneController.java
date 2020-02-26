@@ -3,7 +3,6 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -106,6 +105,7 @@ public class AdminSceneController implements Initializable {
             updateNumberBikes();
         }
     }
+
     /**
      * Remove a bike from the database.
      */
