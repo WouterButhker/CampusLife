@@ -31,6 +31,7 @@ public class Room {
     @Column(name = "rights")
     private Integer rights;
 
+    //@Id
     @ManyToOne
     @JoinColumn(name = "building")
     private Building building;

@@ -29,9 +29,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 
-
-
-
 public class AdminSceneBuildingsController implements Initializable {
 
     @FXML
