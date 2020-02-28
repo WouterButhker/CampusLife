@@ -27,13 +27,13 @@ public class UserController {
      * @param username of the current user
      * @return
      */
-    @GetMapping(path = "/add")
-    public @ResponseBody
-    String addNewUser(@RequestParam String username) {
-        User user = new User();
-        user.setUsername(username);
-        usersRepository.save(user);
-        return "Saved";
-    }
+//    @GetMapping(path = "/add")
+//    public @ResponseBody
+//    String addNewUser(@RequestParam String username) {
+//        User user = new User();
+//        user.setUsername(username);
+//        usersRepository.save(user);
+//        return "Saved";
+//    }
 
 }

@@ -4,13 +4,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 public class LoginScreenController {
+
+
 
     @FXML
     private ResourceBundle resources;
@@ -33,6 +41,16 @@ public class LoginScreenController {
 
     @FXML
     void onLoginClicked(ActionEvent event) {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        login();
+//        if (!ServerCommunication.authenticate(username, password)) {
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setTitle("Error");
+//            alert.setHeaderText(null);
+//            alert.setContentText("FAILED");
+//            alert.showAndWait();
+//        };
     }
 
     @FXML
@@ -45,6 +63,13 @@ public class LoginScreenController {
         assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'LoginScreen.fxml'.";
         assert registerLink != null : "fx:id=\"registerLink\" was not injected: check your FXML file 'LoginScreen.fxml'.";
         assert usernameField != null : "fx:id=\"usernameField\" was not injected: check your FXML file 'LoginScreen.fxml'.";
+
+
+    }
+
+    @FXML
+    private void login() {
+        //Authentication authToken = new UsernamePasswordAuthenticationToken(usernameField.getText(), passwordField.getText());
 
 
     }

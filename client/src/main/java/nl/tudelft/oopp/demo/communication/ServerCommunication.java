@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.communication;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +18,8 @@ import java.util.stream.Stream;
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
+    private static final String SERVER_URL = "http://localhost:8080";
+    private static PasswordEncoder encoder = passwordEncoder();
 
     /**
      * Retrieves a quote from the server.
@@ -22,7 +27,7 @@ public class ServerCommunication {
      * @throws Exception if communication with the server fails.
      */
     public static String getQuote() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(SERVER_URL + "/quote")).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -41,7 +46,7 @@ public class ServerCommunication {
      * @return array of all the buildings, format: "code name"
      */
     public static String[] getBuildingsCodeAndName() {
-        URI myUri = URI.create("http://localhost:8080/buildings/code+name");
+        URI myUri = URI.create(SERVER_URL + "/buildings/code+name");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
         HttpResponse<String> response = null;
         try {
@@ -60,6 +65,10 @@ public class ServerCommunication {
         return null;
     }
 
+    public static void auth() {
+
+    }
+
     /**
      * For adding buildings to the database.
      * @param buildingCode the number of the building
@@ -74,16 +83,37 @@ public class ServerCommunication {
         name = name.replace(" ", "%20");
         location = location.replace(" ", "%20");
         openingHours = openingHours.replace(" ", "%20");
-        URI myUri = URI.create("http://localhost:8080/buildings/add?buildingCode=" + buildingCode
+        URI myUri = URI.create(SERVER_URL + "/buildings/add?buildingCode=" + buildingCode
                 + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static boolean authenticate(String user, String pass) {
+        // TODO: ENCRYPT PASSWORDS
+
+        //URI uri = URI.create(SERVER_URL + "/login/login?user=" + user + "&pass=" + pass);
+        URI uri = URI.create(SERVER_URL + "/login");
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(uri).build();
+        HttpResponse<String> response = null;
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("Response: " + response.body());
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        return Boolean.parseBoolean(response.toString());
+    }
+
+    private static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
 }
