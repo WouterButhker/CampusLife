@@ -72,6 +72,10 @@ public class Building {
                 + location + ", " + openingHours + ", " + "image" + "}";
     }
 
+    public String getNameAndCode() {
+        return this.name + " " + this.code;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

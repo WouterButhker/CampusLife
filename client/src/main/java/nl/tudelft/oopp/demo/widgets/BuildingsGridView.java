@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.views.RoomsListRoute;
 
 public class BuildingsGridView extends GridPane {
-    private List<String> buildings;
+    private List<Building> buildings;
     private List<RectangularImageButton> buildingButtons;
     private Listener listener;
 
@@ -18,7 +22,7 @@ public class BuildingsGridView extends GridPane {
      * that can be pressed and throw an event.
      * @param buildings the list of buildings to be displayed
      */
-    public BuildingsGridView(List<String> buildings) {
+    public BuildingsGridView(List<Building> buildings) {
         this.buildings = buildings;
 
         buildingButtons = new ArrayList<>();
@@ -43,18 +47,27 @@ public class BuildingsGridView extends GridPane {
     private void addButtons() {
         for (int i = 0; i < buildings.size(); i++) {
             Image image = new Image("/images/main-screen-default-building.jpg");
-            RectangularImageButton button = new RectangularImageButton(image, buildings.get(i));
+            RectangularImageButton button = new RectangularImageButton(image, buildings.get(i).getNameAndCode());
             int buildingsPerRow = 5;
-            add(button, i % buildingsPerRow, i / buildingsPerRow, 1, 1);
+            this.add(button, i % buildingsPerRow, i / buildingsPerRow, 1, 1);
             buildingButtons.add(button);
 
             int finalI = i;
+
+
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (listener != null) {
                         listener.onBuildingClicked(finalI);
+                        System.out.println("A button has been clicked");
                     }
+                    System.out.println(buildings.get(finalI).getCode());
+
+                    RectangularImageButton button = (RectangularImageButton) event.getSource();
+                    RoutingScene routingScene = (RoutingScene) button.getScene();
+                    routingScene.pushRoute(new RoomsListRoute());
+
                 }
             });
         }
