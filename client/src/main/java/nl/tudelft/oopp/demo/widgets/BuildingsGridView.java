@@ -29,10 +29,12 @@ public class BuildingsGridView extends GridPane {
         addButtons();
 
         sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            resizeDisplay(newScene.getWidth());
-            newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                resizeDisplay(newWidth);
-            });
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth());
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth);
+                });
+            }
         });
     }
 
@@ -47,7 +49,8 @@ public class BuildingsGridView extends GridPane {
     private void addButtons() {
         for (int i = 0; i < buildings.size(); i++) {
             Image image = new Image("/images/main-screen-default-building.jpg");
-            RectangularImageButton button = new RectangularImageButton(image, buildings.get(i).getNameAndCode());
+            RectangularImageButton button = new RectangularImageButton(image,
+                                            buildings.get(i).getNameAndCode());
             int buildingsPerRow = 5;
             this.add(button, i % buildingsPerRow, i / buildingsPerRow, 1, 1);
             buildingButtons.add(button);
@@ -60,9 +63,9 @@ public class BuildingsGridView extends GridPane {
                 public void handle(MouseEvent event) {
                     if (listener != null) {
                         listener.onBuildingClicked(finalI);
-                        System.out.println("A button has been clicked");
+                        // System.out.println("A button has been clicked");
                     }
-                    System.out.println(buildings.get(finalI).getCode());
+                    // System.out.println(buildings.get(finalI).getCode());
 
                     RectangularImageButton button = (RectangularImageButton) event.getSource();
                     RoutingScene routingScene = (RoutingScene) button.getScene();

@@ -1,17 +1,21 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-
-import java.util.ArrayList;
-import java.util.List;
+import nl.tudelft.oopp.demo.entities.Room;
 
 public class RoomsGridView extends GridPane {
-    private List<String> rooms;
+    private List<Room> rooms;
     private List<RectangularImageButton> roomButtons;
 
-    public RoomsGridView(List<String> rooms) {
+    /**
+     * Creates the Grid View of the room list page.
+     * @param rooms a list with all the rooms that need to be displayed
+     */
+    public RoomsGridView(List<Room> rooms) {
         this.rooms = rooms;
 
         roomButtons = new ArrayList<>();
@@ -28,10 +32,13 @@ public class RoomsGridView extends GridPane {
     }
 
     private final int roomsPerRow = 2;
+
     private void addButtons() {
         for (int i = 0; i < rooms.size(); i++) {
-            Image image = new Image("https://cdn.mos.cms.futurecdn.net/K5nhgMGSRCzdppKW9bQcMd.jpg");
-            RectangularImageButton button = new RectangularImageButton(image, rooms.get(i) + "\nThis room has:");
+            Image image = new Image(
+                    "https://cdn.mos.cms.futurecdn.net/K5nhgMGSRCzdppKW9bQcMd.jpg");
+            RectangularImageButton button = new RectangularImageButton(image,
+                    rooms.get(i).getName());
             add(button, i % roomsPerRow, i / roomsPerRow, 1, 1);
             roomButtons.add(button);
         }

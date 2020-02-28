@@ -84,10 +84,12 @@ public class MainMenuRoute extends Route {
 
         // Resize layout on width change
         rootContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            resizeDisplay(newScene.getWidth());
-            newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                resizeDisplay(newWidth);
-            });
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth());
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth);
+                });
+            }
         });
     }
 
