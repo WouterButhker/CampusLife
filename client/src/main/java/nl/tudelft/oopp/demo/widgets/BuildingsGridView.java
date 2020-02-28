@@ -66,8 +66,7 @@ public class BuildingsGridView extends GridPane {
 
                     RectangularImageButton button = (RectangularImageButton) event.getSource();
                     RoutingScene routingScene = (RoutingScene) button.getScene();
-                    routingScene.pushRoute(new RoomsListRoute());
-
+                    routingScene.pushRoute(new RoomsListRoute(buildings.get(finalI).getCode()));
                 }
             });
         }

@@ -12,11 +12,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 import nl.tudelft.oopp.demo.widgets.RoomsGridView;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +39,7 @@ public class RoomsListRoute extends Route {
     private VBox filters;
     private Text filterTitle;
 
-    public RoomsListRoute() {
+    public RoomsListRoute(int buildingCode) {
         rootContainer = new AnchorPane();
 //        rootContainer.setAlignment(Pos.TOP_CENTER);
 //        rootContainer.setSpacing(20);
@@ -65,6 +69,7 @@ public class RoomsListRoute extends Route {
         rootContainer.getChildren().add(filters);
 
         Button b = new Button("back");
+//        b.addEventHandler(MouseEvent );
         b.setTranslateX(5);
         b.setTranslateY(160);
         rootContainer.getChildren().add(b);
@@ -76,6 +81,8 @@ public class RoomsListRoute extends Route {
         rooms.setPrefWidth(430);
 
         List<String> roomsList = new ArrayList<>();
+        ///List<Room> replace the String!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        String roomList = RoomCommunication.getAllRoomsFromBuilding(buildingCode);
         for (int i = 0; i < 17; i++) {
             roomsList.add(" Room "+Integer.toString(i));
         }
