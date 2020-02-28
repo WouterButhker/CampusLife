@@ -42,6 +42,6 @@
                </children></AnchorPane>
         </content>
       </ScrollPane>
-      <Button layoutX="950.0" layoutY="73.0" mnemonicParsing="false" onAction="#refreshBuildingsPage" text="Refresh" />
+      <Button layoutX="400.0" layoutY="73.0" mnemonicParsing="false" onAction="#refreshBuildingsPage" text="Refresh" />
    </children>
 </AnchorPane>

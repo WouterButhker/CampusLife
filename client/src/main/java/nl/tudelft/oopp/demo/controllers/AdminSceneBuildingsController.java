@@ -17,16 +17,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.text.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 
+
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AdminSceneBuildingsController implements Initializable {
@@ -58,23 +58,23 @@ public class AdminSceneBuildingsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadOpeningHoursChoices();
+        if (toChoicebox != null && fromChoicebox != null) {
+            loadOpeningHoursChoices(toChoicebox, fromChoicebox);
+        }
         loadBuildings();
     }
 
-    private void loadOpeningHoursChoices() {
-        if (toChoicebox != null && fromChoicebox != null) {
-            String[] times = new String[25];
-            for (int i = 0; i < 25; i++) {
-                if (i < 10) {
-                    times[i] = "0" + i + ":00";
-                } else {
-                    times[i] = i + ":00";
-                }
+    private void loadOpeningHoursChoices(ChoiceBox<String> to, ChoiceBox<String> from) {
+        String[] times = new String[25];
+        for (int i = 0; i < 25; i++) {
+            if (i < 10) {
+                times[i] = "0" + i + ":00";
+            } else {
+                times[i] = i + ":00";
             }
-            toChoicebox.getItems().addAll(times);
-            fromChoicebox.getItems().addAll(times);
         }
+        to.getItems().addAll(times);
+        from.getItems().addAll(times);
     }
 
     private void loadBuildings() {
@@ -99,7 +99,7 @@ public class AdminSceneBuildingsController implements Initializable {
                 modify.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-
+                        createModifyPopup();
                     }
                 });
                 modify.setPrefSize(45, 40);
@@ -162,7 +162,7 @@ public class AdminSceneBuildingsController implements Initializable {
             buildingCode = Integer.parseInt(buildingCodeInput.getText().trim());
             codeFound = true;
         } catch (NumberFormatException e) {
-            System.out.println("not a proper number");
+            System.out.println("Not a proper number");
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
         Text submitStatus = new Text();
@@ -173,7 +173,7 @@ public class AdminSceneBuildingsController implements Initializable {
             try {
                 refreshBuildingsPage();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Refresh failed");
             }
 
         } else {
@@ -190,7 +190,6 @@ public class AdminSceneBuildingsController implements Initializable {
         }
 
         Button back = new Button("Okay! take me back");
-        submitStatus.setTextAlignment(TextAlignment.CENTER);
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -215,13 +214,91 @@ public class AdminSceneBuildingsController implements Initializable {
     private void createModifyPopup() {
         VBox root = new VBox();
         root.setPrefSize(400, 500);
-        Text header = new Text("Modify your building");
 
+        Text header = new Text("Modify your building");
+        header.setFont(Font.font("System", 24));
+        HBox headerBox = new HBox(header);
+        headerBox.setPadding(new Insets(20, 100 ,10 ,100));
+
+        Label addressText = new Label("Address :");
+        HBox addressTextBox = new HBox(addressText);
+        addressText.setPadding(new Insets(20, 175 ,0 ,175));
+
+        Pane spacer1 = new Pane();
+        spacer1.setPrefSize(125, 20);
+        TextField address = new TextField("address");
+        address.setPrefSize(150,20);
+        HBox addressBox = new HBox(spacer1, address);
+        addressBox.setPadding(new Insets(10, 0, 0, 0));
+
+        Label nameText = new Label("Name :");
+        HBox nameTextBox = new HBox(nameText);
+        nameTextBox.setPadding(new Insets(10, 175 ,0 ,175));
+
+        Pane spacer2 = new Pane();
+        spacer2.setPrefSize(125, 20);
+        TextField name = new TextField("name");
+        name.setPrefSize(150, 20);
+        HBox nameBox = new HBox(spacer2, name);
+        nameBox.setPadding(new Insets(10, 0, 0, 0));
+
+        Label buildingCodeText = new Label("Building Code :");
+        HBox buildingCodeTextBox = new HBox(buildingCodeText);
+        buildingCodeTextBox.setPadding(new Insets(10, 150 ,0 ,150));
+
+        Pane spacer3 = new Pane();
+        spacer3.setPrefSize(125, 20);
+        TextField buildingCode = new TextField("buildingCode");
+        buildingCode.setPrefSize(150, 20);
+        HBox buildingCodeBox = new HBox(spacer3, buildingCode);
+        buildingCodeBox.setPadding(new Insets(10, 0, 0, 0));
+
+        Label openingHoursText = new Label("Opening hours :");
+        HBox openingHoursTextBox = new HBox(openingHoursText);
+        openingHoursTextBox.setPadding(new Insets(10, 150 ,0 ,150));
+
+        Label fromText = new Label("From:");
+        fromText.setPrefSize(75, 20);
+        Label toText = new Label("To:");
+        toText.setPrefSize(75,20);
+        Pane spacer6 = new Pane();
+        spacer6.setPrefSize(100, 20);
+        Pane spacer7 = new Pane();
+        spacer7.setPrefSize(50, 20);
+        HBox fromToBox = new HBox(spacer6, fromText, spacer7, toText);
+        fromToBox.setPadding(new Insets(10, 0, 00, 0));
+
+        Pane spacer4 = new Pane();
+        spacer4.setPrefSize(100, 20);
+        Pane spacer5 = new Pane();
+        spacer5.setPrefSize(50, 20);
+        ChoiceBox<String> from = new ChoiceBox<>();
+        from.setPrefSize(75, 20);
+        ChoiceBox<String> to = new ChoiceBox<>();
+        to.setPrefSize(75, 20);
+        loadOpeningHoursChoices(to, from);
+        HBox openingHours = new HBox(spacer4, from, spacer5, to);
+        openingHours.setPadding(new Insets(10, 0 ,10 , 0));
+
+        Button submit = new Button("submit");
+        submit.setPrefSize(100, 20);
+        HBox submitBox = new HBox(submit);
+        submitBox.setPadding(new Insets(10, 150,10, 150));
+        submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+        root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox, nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox, fromToBox, openingHours, submitBox);
         Stage stage = new Stage();
-        //stage.setScene(scene);
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(modifyBuildingsExit.getScene().getWindow());
         stage.showAndWait();
     }
+
+
 }
 

@@ -30,7 +30,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
-import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
 public class AdminSceneController implements Initializable {
 
@@ -45,9 +44,6 @@ public class AdminSceneController implements Initializable {
 
     @FXML
     private Button modifyRoomsEnter;
-
-    @FXML
-    private Button modifyRoomsExit;
 
     @FXML
     private Button modifyFoodEnter;
@@ -138,16 +134,6 @@ public class AdminSceneController implements Initializable {
         Stage stage = (Stage) modifyRoomsEnter.getScene().getWindow();
         Parent root;
         root = FXMLLoader.load(getClass().getResource("/AdminSceneRooms.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    private void modifyRoomsExit() throws IOException {
-        Stage stage = (Stage) modifyRoomsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
