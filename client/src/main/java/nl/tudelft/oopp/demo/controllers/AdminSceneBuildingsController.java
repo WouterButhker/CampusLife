@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,15 +22,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+
 
 public class AdminSceneBuildingsController implements Initializable {
 
@@ -103,7 +106,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     }
                 });
                 modify.setPrefSize(45, 40);
-                modify.setPadding(new Insets(0, 0, 0 ,0));
+                modify.setPadding(new Insets(0, 0, 0,0));
 
                 Button delete = new Button("delete");
                 delete.setPrefSize(45, 40);
@@ -113,11 +116,12 @@ public class AdminSceneBuildingsController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         Button button = (Button) event.getSource();
-                        BuildingCommunication.deleteBuildingFromDatabase(Integer.parseInt(button.getId()));
+                        int code = Integer.parseInt(button.getId());
+                        BuildingCommunication.deleteBuildingFromDatabase(code);
                         loadBuildings();
                     }
                 });
-                delete.setPadding(new Insets(0, 0 , 0 ,0));
+                delete.setPadding(new Insets(0, 0,0,0));
 
                 building.setPadding(new Insets(5, 5, 5,5));
                 String css = "-fx-border-color: black;\n"
@@ -166,8 +170,9 @@ public class AdminSceneBuildingsController implements Initializable {
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
         Text submitStatus = new Text();
-        if (!location.equals("") && !name.equals("") && codeFound && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
-                && fromChoicebox.getValue().compareTo(toChoicebox.getValue()) < 0) {
+        if (!location.equals("") && !name.equals("") && codeFound
+               && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
+               &&  fromChoicebox.getValue().compareTo(toChoicebox.getValue()) < 0) {
             BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
             submitStatus.setText("Building successfully added!");
             try {
@@ -218,11 +223,12 @@ public class AdminSceneBuildingsController implements Initializable {
         Text header = new Text("Modify your building");
         header.setFont(Font.font("System", 24));
         HBox headerBox = new HBox(header);
-        headerBox.setPadding(new Insets(20, 100 ,10 ,100));
+        headerBox.setPadding(new Insets(20, 100,10,100));
 
         Label addressText = new Label("Address :");
+        addressText.setPadding(new Insets(20, 175,0,175));
         HBox addressTextBox = new HBox(addressText);
-        addressText.setPadding(new Insets(20, 175 ,0 ,175));
+        addressTextBox.setPadding(new Insets(0));
 
         Pane spacer1 = new Pane();
         spacer1.setPrefSize(125, 20);
@@ -233,7 +239,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
-        nameTextBox.setPadding(new Insets(10, 175 ,0 ,175));
+        nameTextBox.setPadding(new Insets(10, 175,0,175));
 
         Pane spacer2 = new Pane();
         spacer2.setPrefSize(125, 20);
@@ -244,7 +250,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
         Label buildingCodeText = new Label("Building Code :");
         HBox buildingCodeTextBox = new HBox(buildingCodeText);
-        buildingCodeTextBox.setPadding(new Insets(10, 150 ,0 ,150));
+        buildingCodeTextBox.setPadding(new Insets(10, 150,0,150));
 
         Pane spacer3 = new Pane();
         spacer3.setPrefSize(125, 20);
@@ -255,7 +261,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
         Label openingHoursText = new Label("Opening hours :");
         HBox openingHoursTextBox = new HBox(openingHoursText);
-        openingHoursTextBox.setPadding(new Insets(10, 150 ,0 ,150));
+        openingHoursTextBox.setPadding(new Insets(10, 150,0,150));
 
         Label fromText = new Label("From:");
         fromText.setPrefSize(75, 20);
@@ -266,7 +272,7 @@ public class AdminSceneBuildingsController implements Initializable {
         Pane spacer7 = new Pane();
         spacer7.setPrefSize(50, 20);
         HBox fromToBox = new HBox(spacer6, fromText, spacer7, toText);
-        fromToBox.setPadding(new Insets(10, 0, 00, 0));
+        fromToBox.setPadding(new Insets(10, 0, 0, 0));
 
         Pane spacer4 = new Pane();
         spacer4.setPrefSize(100, 20);
@@ -278,7 +284,7 @@ public class AdminSceneBuildingsController implements Initializable {
         to.setPrefSize(75, 20);
         loadOpeningHoursChoices(to, from);
         HBox openingHours = new HBox(spacer4, from, spacer5, to);
-        openingHours.setPadding(new Insets(10, 0 ,10 , 0));
+        openingHours.setPadding(new Insets(10, 0,10, 0));
 
         Button submit = new Button("submit");
         submit.setPrefSize(100, 20);
@@ -290,7 +296,9 @@ public class AdminSceneBuildingsController implements Initializable {
 
             }
         });
-        root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox, nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox, fromToBox, openingHours, submitBox);
+        root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox,
+                nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox,
+                fromToBox, openingHours, submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);

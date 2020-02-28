@@ -1,16 +1,13 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-
-import java.awt.*;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -63,17 +60,17 @@ public class AdminSceneRoomsController implements Initializable {
 
     private void loadBuildings() {
         if (buildingList != null) {
-           buildingList.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
+            buildingList.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
         }
     }
 
     private void loadRights() {
         if (rightsList != null) {
-           String[] rights = new String[3];
-           rights[0] = "Student";
-           rights[1] = "Employee";
-           rights[2] = "Admin";
-           rightsList.getItems().addAll(rights);
+            String[] rights = new String[3];
+            rights[0] = "Student";
+            rights[1] = "Employee";
+            rights[2] = "Admin";
+            rightsList.getItems().addAll(rights);
         }
     }
 
@@ -89,8 +86,6 @@ public class AdminSceneRoomsController implements Initializable {
 
     @FXML
     private void submitNewRoom() {
-        String roomCode = roomCodeInput.getText();
-        String roomName = roomNameInput.getText();
         int capacity = 0;
         boolean capacityCorrect = false;
         try {
@@ -131,10 +126,16 @@ public class AdminSceneRoomsController implements Initializable {
         boolean whiteboard = whiteboardBox.selectedProperty().get();
         boolean tv = tvBox.selectedProperty().get();
 
+        String roomCode = roomCodeInput.getText();
+        String roomName = roomNameInput.getText();
+
         Text submitStatus = new Text();
-        if (!roomCode.equals("") && !roomName.equals("") && capacityCorrect && buildingFound && rightsFound) {
-            RoomCommunication.addRoomToDatabase(roomCode, roomName, capacity, whiteboard, tv, rights, buildingCode);
-            submitStatus.setText("Room has been successfully added to " + buildingList.getValue().split("")[1]);
+        if (!roomCode.equals("") && !roomName.equals("") && capacityCorrect
+                && buildingFound && rightsFound) {
+            RoomCommunication.addRoomToDatabase(roomCode, roomName,
+                    capacity, whiteboard, tv, rights, buildingCode);
+            submitStatus.setText("Room has been successfully added to "
+                    + buildingList.getValue().split("")[1]);
             try {
                 refreshRoomsPage();
             } catch (IOException e) {
