@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class LoginController {
 
-
-
     @Autowired
     private UserRepository userRepository;
 
