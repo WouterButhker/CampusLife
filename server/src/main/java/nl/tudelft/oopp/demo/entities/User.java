@@ -9,7 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
-public class Users implements UserDetails {
+@Table(name = "users")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // same as SQL autoincrement
@@ -35,13 +36,13 @@ public class Users implements UserDetails {
      * @param password the users password, bcrypt
      * @param role the users access level
      */
-    public Users(String username, String password, String role) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public Users() {
+    public User() {
 
     }
 

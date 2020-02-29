@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.Users;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class UserController {
     private UserRepository usersRepository;
 
     @GetMapping(path = "/all")
-    public List<Users> getAll() {
+    public List<User> getAll() {
         return usersRepository.findAll();
     }
 
