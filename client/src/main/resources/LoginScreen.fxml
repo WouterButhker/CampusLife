@@ -10,8 +10,8 @@
         <Label layoutX="203.0" layoutY="29.0" text="Welcome" />
         <Label layoutX="134.0" layoutY="82.0" text="Username" />
         <Label layoutX="135.0" layoutY="151.0" text="Password" />
-        <PasswordField fx:id="passwordField" layoutX="134.0" layoutY="171.0" prefWidth="200.0" />
         <TextField fx:id="usernameField" layoutX="134.0" layoutY="102.0" prefWidth="200.0" />
+        <PasswordField fx:id="passwordField" layoutX="134.0" layoutY="171.0" prefWidth="200.0" />
         <Button fx:id="loginButton" layoutX="198.0" layoutY="210.0" mnemonicParsing="false" onAction="#onLoginClicked" text="Login" />
         <Hyperlink fx:id="registerLink" layoutX="85.0" layoutY="256.0" onAction="#onRegisterClicked" text="Dont have an account? click here to register" />
             <Button fx:id="test" layoutX="308.0" layoutY="210.0" mnemonicParsing="false" onAction="#toRoomsList" text="Button" />

@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,6 +30,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.entities.Building;
 
 public class AdminSceneBuildingsController implements Initializable {
 
@@ -81,7 +84,7 @@ public class AdminSceneBuildingsController implements Initializable {
         if (anchorPaneBuildings != null && buildingsList != null) {
             buildingsList.getChildren().clear();
             int numBuildings = BuildingCommunication.countAllBuildings();
-            String[] buildings = BuildingCommunication.getBuildingsCodeAndName();
+            List<Building> buildings = BuildingCommunication.getAllBuildings();
             anchorPaneBuildings.setPrefHeight(61 * numBuildings);
             //One HBox is 60 x 400
             //The entire AnchorPane holding all the HBoxes is 60*numBuildings x 400
@@ -92,14 +95,17 @@ public class AdminSceneBuildingsController implements Initializable {
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(65);
                 imageView.setFitHeight(40);
-                Label text = new Label(buildings[i]);
+                Label text = new Label(buildings.get(i).getCode() + " " + buildings.get(i).getName()
+                + " " + buildings.get(i).getLocation() + " " + buildings.get(i).getOpeningHours());
                 text.setPrefSize(225, 40);
+                text.setPadding(new Insets(0, 0, 0, 10));
 
+                int finalI = i;
                 Button modify = new Button("modify");
                 modify.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        createModifyPopup();
+                        createModifyPopup(buildings.get(finalI));
                     }
                 });
                 modify.setPrefSize(45, 40);
@@ -107,14 +113,10 @@ public class AdminSceneBuildingsController implements Initializable {
 
                 Button delete = new Button("delete");
                 delete.setPrefSize(45, 40);
-                String[] split = buildings[i].split(" ");
-                delete.setId(split[0]);
                 delete.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        Button button = (Button) event.getSource();
-                        int code = Integer.parseInt(button.getId());
-                        BuildingCommunication.deleteBuildingFromDatabase(code);
+                        BuildingCommunication.deleteBuildingFromDatabase(buildings.get(finalI).getCode());
                         loadBuildings();
                     }
                 });
@@ -213,7 +215,7 @@ public class AdminSceneBuildingsController implements Initializable {
         stage.showAndWait();
     }
 
-    private void createModifyPopup() {
+    private void createModifyPopup(Building building) {
         VBox root = new VBox();
         root.setPrefSize(400, 500);
 
@@ -229,7 +231,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
         Pane spacer1 = new Pane();
         spacer1.setPrefSize(125, 20);
-        TextField address = new TextField("address");
+        TextField address = new TextField(building.getLocation());
         address.setPrefSize(150,20);
         HBox addressBox = new HBox(spacer1, address);
         addressBox.setPadding(new Insets(10, 0, 0, 0));
@@ -240,7 +242,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
         Pane spacer2 = new Pane();
         spacer2.setPrefSize(125, 20);
-        TextField name = new TextField("name");
+        TextField name = new TextField(building.getName());
         name.setPrefSize(150, 20);
         HBox nameBox = new HBox(spacer2, name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
@@ -251,7 +253,8 @@ public class AdminSceneBuildingsController implements Initializable {
 
         Pane spacer3 = new Pane();
         spacer3.setPrefSize(125, 20);
-        TextField buildingCode = new TextField("buildingCode");
+        TextField buildingCode = new TextField(Integer.toString(building.getCode()));
+        buildingCode.setEditable(false);
         buildingCode.setPrefSize(150, 20);
         HBox buildingCodeBox = new HBox(spacer3, buildingCode);
         buildingCodeBox.setPadding(new Insets(10, 0, 0, 0));
@@ -280,6 +283,9 @@ public class AdminSceneBuildingsController implements Initializable {
         ChoiceBox<String> to = new ChoiceBox<>();
         to.setPrefSize(75, 20);
         loadOpeningHoursChoices(to, from);
+        String[] chosenHours = building.getOpeningHours().split("-");
+        from.setValue(chosenHours[0]);
+        to.setValue(chosenHours[1]);
         HBox openingHours = new HBox(spacer4, from, spacer5, to);
         openingHours.setPadding(new Insets(10, 0,10, 0));
 
@@ -290,6 +296,21 @@ public class AdminSceneBuildingsController implements Initializable {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                String openingHours = from.getValue() + "-" + to.getValue();
+                Label status = modifyBuilding(address.getText(), name.getText(), building.getCode(), openingHours);
+                if (status == null) {
+                    Button button = (Button) event.getSource();
+                    Stage stage = (Stage) button.getScene().getWindow();
+                    stage.close();
+                    loadBuildings();
+                } else {
+                    try {
+                        root.getChildren().remove(11);
+                        root.getChildren().add(status);
+                    } catch (IndexOutOfBoundsException e) {
+                        root.getChildren().add(status);
+                    }
+                }
 
             }
         });
@@ -304,6 +325,27 @@ public class AdminSceneBuildingsController implements Initializable {
         stage.showAndWait();
     }
 
+    private Label modifyBuilding(String address, String name, int buildingCode, String openingHours) {
+        boolean openingHoursCorrect = false;
+        String[] fromTo = openingHours.split("-");
+        Label result = null;
+        if (fromTo[0].compareTo(fromTo[1]) < 0) {
+            openingHoursCorrect = true;
+        } else {
+            result = new Label("These opening hours don't make sense");
+        }
 
+        if (!address.equals("") && !name.equals("") && openingHoursCorrect) {
+            BuildingCommunication.addBuildingToDatabase(buildingCode, name, address, openingHours);
+        } else {
+            if (result == null) {
+                result = new Label("All the fields have to be entered");
+            }
+        }
+        if (result != null) {
+            result.setPadding(new Insets(10, 100, 0,100));
+        }
+        return result;
+    }
 }
 

@@ -3,6 +3,9 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,10 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -22,6 +22,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
+import nl.tudelft.oopp.demo.entities.Building;
+
+import javax.print.DocFlavor;
 
 public class AdminSceneRoomsController implements Initializable {
 
@@ -52,6 +55,15 @@ public class AdminSceneRoomsController implements Initializable {
     @FXML
     private Button submit;
 
+    @FXML
+    private ChoiceBox<String> buildingList2;
+
+    @FXML
+    private AnchorPane anchorPaneRooms;
+
+    @FXML
+    private VBox rooms;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadBuildings();
@@ -61,6 +73,18 @@ public class AdminSceneRoomsController implements Initializable {
     private void loadBuildings() {
         if (buildingList != null) {
             buildingList.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
+        }
+        if (buildingList2 != null) {
+            buildingList2.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
+            SingleSelectionModel<String> selectionModel = buildingList2.getSelectionModel();
+            selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable,
+                                    String oldValue, String newValue) {
+                    int buildingCode = Integer.parseInt(newValue.split(" ")[0]);
+                    loadRooms(buildingCode);
+                }
+            });
         }
     }
 
@@ -97,10 +121,10 @@ public class AdminSceneRoomsController implements Initializable {
 
         boolean buildingFound = false;
         int buildingCode = 0;
-        try {
-            buildingCode = Integer.parseInt(buildingList.getValue().split("")[0]);
+        if (buildingList.getValue() != null) {
+            buildingCode = Integer.parseInt(buildingList.getValue().split(" ")[0]);
             buildingFound = true;
-        } catch (NumberFormatException e) {
+        } else {
             System.out.println("No building selected");
         }
 
@@ -108,7 +132,7 @@ public class AdminSceneRoomsController implements Initializable {
         int rights = 0;
         boolean rightsFound = false;
         //This if statement allows to add more levels of rights in the long term
-        if (!rightsString.equals("")) {
+        if (rightsString != null) {
             rightsFound = true;
             if (rightsString.equals("Student")) {
                 rights = 0;
@@ -135,7 +159,7 @@ public class AdminSceneRoomsController implements Initializable {
             RoomCommunication.addRoomToDatabase(roomCode, roomName,
                     capacity, whiteboard, tv, rights, buildingCode);
             submitStatus.setText("Room has been successfully added to "
-                    + buildingList.getValue().split("")[1]);
+                    + buildingList.getValue().split(" ")[1]);
             try {
                 refreshRoomsPage();
             } catch (IOException e) {
@@ -188,4 +212,9 @@ public class AdminSceneRoomsController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    private void loadRooms(int buildingCode) {
+
+    }
+
 }
