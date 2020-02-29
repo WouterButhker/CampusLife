@@ -45,7 +45,7 @@ public class LoginScreenController {
     @FXML
     void toRoomsList(ActionEvent event) {
         RoutingScene routingScene = (RoutingScene) passwordField.getScene();
-        routingScene.pushRoute(new RoomsListRoute());
+        routingScene.pushRoute(new RoomsListRoute(0));
     }
 
     @FXML

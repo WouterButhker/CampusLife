@@ -4,12 +4,11 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Quote;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.repositories.QuoteRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 public class BuildingTest {
@@ -26,7 +25,7 @@ public class BuildingTest {
         buildingRepository.save(building);
 
         Building building2 = buildingRepository.getOne((Integer) 1);
-        assertEquals(building, building2);
+        Assertions.assertEquals(building, building2);
         System.out.println(building2.toString());
     }
 }

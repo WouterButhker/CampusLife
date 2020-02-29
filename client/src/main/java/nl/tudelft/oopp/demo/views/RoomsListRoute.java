@@ -1,24 +1,35 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 import nl.tudelft.oopp.demo.widgets.RoomsGridView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RoomsListRoute extends Route {
 
@@ -35,10 +46,12 @@ public class RoomsListRoute extends Route {
     private VBox filters;
     private Text filterTitle;
 
-    public RoomsListRoute() {
+    /**
+     * A route that displays the list of rooms from a Building and also filters.
+     * @param buildingCode the number of the building beeing displayed
+     */
+    public RoomsListRoute(Integer buildingCode) {
         rootContainer = new AnchorPane();
-//        rootContainer.setAlignment(Pos.TOP_CENTER);
-//        rootContainer.setSpacing(20);
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
@@ -61,7 +74,8 @@ public class RoomsListRoute extends Route {
         filters.getChildren().addAll(available, smallRoom, mediumRoom, largeRoom);
         filters.setSpacing(6);
         filters.setPrefHeight(150);
-        filters.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(1))));
+        filters.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
+                new CornerRadii(0), new BorderWidths(1))));
         rootContainer.getChildren().add(filters);
 
         Button b = new Button("back");
@@ -72,20 +86,14 @@ public class RoomsListRoute extends Route {
         //container for the rooms
         VBox rooms = new VBox();
         rooms.setTranslateX(140);
-        rooms.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(0), new BorderWidths(1))));
+        rooms.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
+                new CornerRadii(0), new BorderWidths(1))));
         rooms.setPrefWidth(430);
 
-        List<String> roomsList = new ArrayList<>();
-        for (int i = 0; i < 17; i++) {
-            roomsList.add(" Room "+Integer.toString(i));
-        }
-        RoomsGridView buildingsGrid = new RoomsGridView(roomsList);
+        List<Room> roomList = RoomCommunication.getAllRoomsFromBuilding(buildingCode);
+        RoomsGridView buildingsGrid = new RoomsGridView(roomList);
         rooms.getChildren().add(buildingsGrid);
-
         rootContainer.getChildren().add(rooms);
-
-
-
     }
 
     @Override
@@ -96,9 +104,11 @@ public class RoomsListRoute extends Route {
 
 
     private void resizeDisplay(Number newWidth) {
-    /*
-     This route should display the title, main buttons, buildings title and then the buildings below
-     the building buttons should be partially covered so as to not make them the main thing */
+        /*
+        This route should display the title, main buttons, buildings title
+        and then the buildings below the building buttons should be partially
+        covered so as to not make them the main thing
+        */
 
         rootContainer.setPadding(new Insets(20, 0, 0, 0));
 
