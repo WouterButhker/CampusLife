@@ -107,14 +107,20 @@ public class BuildingCommunication {
         return 0;
     }
 
-    private static Building parseBuilding(String inputBuilding) {
+
+    /**
+     * This transforms the JSON of a building into a Building object.
+     * @param inputBuilding a JSON with a building
+     * @return a Building object.
+     */
+    public static Building parseBuilding(String inputBuilding) {
         inputBuilding = inputBuilding.replace("{", "");
         inputBuilding = inputBuilding.replace("}", "");
         String[] parameters = inputBuilding.split(",");
-        int[] val = new int[]{15, 7, 11, 15};
         for (int i = 0; i < parameters.length; i++) {
-            parameters[i] = parameters[i].substring(val[i]);
-            parameters[i] = parameters[i].replace("\"", "");
+            String[] miniParams = parameters[i].split(":");
+            miniParams[1] = miniParams[1].replace("\"", "");
+            parameters[i] = miniParams[1];
         }
         Integer code = Integer.parseInt(parameters[0]);
         String name = parameters[1];
@@ -128,6 +134,9 @@ public class BuildingCommunication {
         List<Building> listOfBuildings = new ArrayList<>();
         inputBuildings = inputBuildings.replace("[", "");
         inputBuildings = inputBuildings.replace("]", "");
+        if (inputBuildings.equals("")) {
+            return listOfBuildings;
+        }
         String[] listOfStrings = inputBuildings.split("(},)");
         for (int i = 0; i < listOfStrings.length; i++) {
             listOfBuildings.add(parseBuilding(listOfStrings[i]));
