@@ -5,6 +5,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.scene.image.Image;
+import nl.tudelft.oopp.demo.entities.Building;
+
 
 public class BuildingCommunication {
 
@@ -100,5 +105,61 @@ public class BuildingCommunication {
             e.printStackTrace();
         }
         return 0;
+    }
+
+
+    /**
+     * This transforms the JSON of a building into a Building object.
+     * @param inputBuilding a JSON with a building
+     * @return a Building object.
+     */
+    public static Building parseBuilding(String inputBuilding) {
+        inputBuilding = inputBuilding.replace("{", "");
+        inputBuilding = inputBuilding.replace("}", "");
+        String[] parameters = inputBuilding.split(",");
+        for (int i = 0; i < parameters.length; i++) {
+            String[] miniParams = parameters[i].split(":");
+            miniParams[1] = miniParams[1].replace("\"", "");
+            parameters[i] = miniParams[1];
+        }
+        Integer code = Integer.parseInt(parameters[0]);
+        String name = parameters[1];
+        String location = parameters[2];
+        String openingHours = parameters[3];
+        return new Building(code, name, location, openingHours,
+                "/images/main-screen-default-building.jpg");
+    }
+
+    private static List<Building> parseBuildings(String inputBuildings) {
+        List<Building> listOfBuildings = new ArrayList<>();
+        inputBuildings = inputBuildings.replace("[", "");
+        inputBuildings = inputBuildings.replace("]", "");
+        if (inputBuildings.equals("")) {
+            return listOfBuildings;
+        }
+        String[] listOfStrings = inputBuildings.split("(},)");
+        for (int i = 0; i < listOfStrings.length; i++) {
+            listOfBuildings.add(parseBuilding(listOfStrings[i]));
+        }
+        return listOfBuildings;
+    }
+
+    /**
+     * Returns a list of all the buildings from the database.
+     * @return list of buildings
+     */
+    public static List<Building> getAllBuildings() {
+        URI myUri = URI.create("http://localhost:8080/buildings/all");
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return parseBuildings(response.body());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

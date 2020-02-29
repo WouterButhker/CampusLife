@@ -5,31 +5,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
-import nl.tudelft.oopp.demo.communication.ServerCommunication;
+
 
 public class AdminSceneController implements Initializable {
 
@@ -44,9 +31,6 @@ public class AdminSceneController implements Initializable {
 
     @FXML
     private Button modifyRoomsEnter;
-
-    @FXML
-    private Button modifyRoomsExit;
 
     @FXML
     private Button modifyFoodEnter;
@@ -138,16 +122,6 @@ public class AdminSceneController implements Initializable {
         Stage stage = (Stage) modifyRoomsEnter.getScene().getWindow();
         Parent root;
         root = FXMLLoader.load(getClass().getResource("/AdminSceneRooms.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    private void modifyRoomsExit() throws IOException {
-        Stage stage = (Stage) modifyRoomsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

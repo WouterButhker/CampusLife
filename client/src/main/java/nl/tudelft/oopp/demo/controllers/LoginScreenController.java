@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.views.MainMenuRoute;
+import nl.tudelft.oopp.demo.views.RoomsListRoute;
 
 
 public class LoginScreenController {
@@ -39,6 +40,12 @@ public class LoginScreenController {
     void onLoginClicked(ActionEvent event) {
         RoutingScene routingScene = (RoutingScene) passwordField.getScene();
         routingScene.pushRoute(new MainMenuRoute());
+    }
+
+    @FXML
+    void toRoomsList(ActionEvent event) {
+        RoutingScene routingScene = (RoutingScene) passwordField.getScene();
+        routingScene.pushRoute(new RoomsListRoute(0));
     }
 
     @FXML

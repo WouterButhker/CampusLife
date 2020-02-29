@@ -9,7 +9,7 @@ public class Building {
     private String name;
     private String location;
     private String openingHours;
-    private Image image;
+    private String image;
 
     /**
      * Creates a new Building object.
@@ -19,7 +19,7 @@ public class Building {
      * @param openingHours a String with format hh:mm-hh:mm
      * @param image a photo of the building
      */
-    public Building(Integer code, String name, String location, String openingHours, Image image) {
+    public Building(Integer code, String name, String location, String openingHours, String image) {
         this.code = code;
         this.name = name;
         this.location = location;
@@ -59,12 +59,21 @@ public class Building {
         this.openingHours = openingHours;
     }
 
-    public Image getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(String image) {
         this.image = image;
+    }
+
+    public String toString() {
+        return "{" + code + ", " + name + ", "
+                + location + ", " + openingHours + ", " + "image" + "}";
+    }
+
+    public String getNameAndCode() {
+        return this.name + " " + this.code;
     }
 
     @Override

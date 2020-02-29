@@ -11,8 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
@@ -48,17 +50,9 @@ public class MainMenuRoute extends Route {
         createButtonsRow();
         createBuildingsTitle();
 
-        List<String> buildings = new ArrayList<>();
-        for (int i = 0; i < 17; i++) {
-            buildings.add(" Building " + Integer.toString(i));
-        }
-        BuildingsGridView buildingsGrid = new BuildingsGridView(buildings);
-        buildingsGrid.setListener(new BuildingsGridView.Listener() {
-            @Override
-            public void onBuildingClicked(int buildingId) {
-                System.out.println(buildingId);
-            }
-        });
+        List<Building> buildingsList = BuildingCommunication.getAllBuildings();
+
+        BuildingsGridView buildingsGrid = new BuildingsGridView(buildingsList);
         rootContainer.getChildren().add(buildingsGrid);
     }
 
