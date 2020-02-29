@@ -6,15 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 
 public class LoginScreenController {
 
@@ -51,6 +42,8 @@ public class LoginScreenController {
 //            alert.setContentText("FAILED");
 //            alert.showAndWait();
 //        };
+
+        ServerCommunication.getAdmin(username, password);
     }
 
     @FXML

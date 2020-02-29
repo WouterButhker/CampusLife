@@ -1,19 +1,18 @@
 package nl.tudelft.oopp.demo.communication;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Stream;
+import java.util.Base64;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 public class ServerCommunication {
 
@@ -27,7 +26,8 @@ public class ServerCommunication {
      * @throws Exception if communication with the server fails.
      */
     public static String getQuote() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(SERVER_URL + "/quote")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET()
+                .uri(URI.create(SERVER_URL + "/quote")).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -48,18 +48,15 @@ public class ServerCommunication {
     public static String[] getBuildingsCodeAndName() {
         URI myUri = URI.create(SERVER_URL + "/buildings/code+name");
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String responseString = response.body();
             responseString = responseString.replace("[", "");
             responseString = responseString.replace("]", "");
             responseString = responseString.replace("\"", "");
-            String[] buildingsCodeAndName = responseString.split(",");
-            return buildingsCodeAndName;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return responseString.split(",");
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -115,5 +112,37 @@ public class ServerCommunication {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Sends a basic (authenticated) get request to /admin and prints the response.
+     *
+     * @param user username
+     * @param pass password
+     *
+     */
+    public static void getAdmin(String user, String pass) {
+        //pass = passwordEncoder().encode(pass);
+        //URI uri = URI.create(SERVER_URL + "/login");
+        //HttpRequest request = HttpRequest.newBuilder().GET().uri(uri).build();
 
+        HttpEntity request = new HttpEntity(createHeaders(user, pass));
+        ResponseEntity<String> response;
+        try {
+            response = new RestTemplate()
+                    .exchange(SERVER_URL + "/admin", HttpMethod.GET, request, String.class);
+            System.out.println(response.getBody());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    private static HttpHeaders createHeaders(String username, String password) {
+        String auth = username + ":" + password;
+        System.out.println(auth);
+        String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + encodedauth);
+        System.out.println(headers.toString());
+        return headers;
+
+    }
 }
