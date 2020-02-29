@@ -5,3 +5,7 @@
 .main-screen-medium-text {
     -fx-font: 28px Tahoma;
 }
+
+.app-bar-link-style {
+    -fx-text-fill: #000000
+}
