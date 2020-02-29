@@ -78,6 +78,8 @@ public class RectangularImageButton extends StackPane {
             labelBackground.setWidth(newWidth.doubleValue());
             labelBackground.setHeight(newWidth.doubleValue() * 0.3);
             labelBackgroundOffset.setHeight(newWidth.doubleValue() * 0.71);
+            setMaxWidth(newWidth.doubleValue());
+            labelPane.setMaxWidth(newWidth.doubleValue());
         });
         // Create label
         label = new Text(text);
