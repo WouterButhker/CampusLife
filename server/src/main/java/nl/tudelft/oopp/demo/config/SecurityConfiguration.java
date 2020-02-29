@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.config;
 
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,16 +22,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
+    @Qualifier("customUserDetailsService")
+    @Autowired
+    UserDetailsService userDetailsService;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery("select username, password, enabled " +
-                        "from users " +
-                        "where username=?")
-                .authoritiesByUsernameQuery("select username,role " +
-                        "from users " +
-                        "where username=?");
+        auth.userDetailsService(userDetailsService);
 
     }
 
