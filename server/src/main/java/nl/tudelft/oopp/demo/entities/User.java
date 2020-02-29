@@ -24,6 +24,27 @@ public class User {
     @Column(name = "role")
     private Integer role;
 
+    public User() {
+
+    }
+
+    /**
+     *
+     * @param id the unique id of the user
+     * @param username the username of the user
+     * @param password the password of the user
+     * @param role the role of the user
+     */
+    public User(Integer id,
+                    String username,
+                    String password,
+                    Integer role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     public Integer getId() {
         return id;
     }
