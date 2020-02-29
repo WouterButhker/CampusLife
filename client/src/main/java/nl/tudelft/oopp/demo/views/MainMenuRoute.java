@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
@@ -41,7 +42,9 @@ public class MainMenuRoute extends Route {
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        createTitle();
+        rootContainer.getChildren().add(new AppBar());
+
+        //createTitle();
         createButtonsRow();
         createBuildingsTitle();
 
@@ -50,6 +53,12 @@ public class MainMenuRoute extends Route {
             buildings.add(" Building " + Integer.toString(i));
         }
         BuildingsGridView buildingsGrid = new BuildingsGridView(buildings);
+        buildingsGrid.setListener(new BuildingsGridView.Listener() {
+            @Override
+            public void onBuildingClicked(int buildingId) {
+                System.out.println(buildingId);
+            }
+        });
         rootContainer.getChildren().add(buildingsGrid);
     }
 
@@ -83,10 +92,12 @@ public class MainMenuRoute extends Route {
 
         // Resize layout on width change
         rootContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            resizeDisplay(newScene.getWidth());
-            newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                resizeDisplay(newWidth);
-            });
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth());
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth);
+                });
+            }
         });
     }
 
@@ -107,7 +118,7 @@ public class MainMenuRoute extends Route {
          as to not make them the main thing
          */
 
-        rootContainer.setPadding(new Insets(20, 0, 0, 0));
+        rootContainer.setPadding(new Insets(0, 0, 0, 0));
 
         buildingsTitleContainer.setMinWidth(newWidth.doubleValue());
 
