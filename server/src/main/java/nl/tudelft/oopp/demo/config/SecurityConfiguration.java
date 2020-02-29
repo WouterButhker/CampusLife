@@ -22,13 +22,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-    @Qualifier("customUserDetailsService")
     @Autowired
-    UserDetailsService userDetailsService;
+    CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(customUserDetailsService);
 
     }
 
@@ -47,8 +46,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationManager authenticationManager() throws Exception {
-//        return super.authenticationManager();
-//    }
 }
