@@ -62,12 +62,12 @@ public class AdminSceneBuildingsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (toChoicebox != null && fromChoicebox != null) {
-            loadOpeningHoursChoices(toChoicebox, fromChoicebox);
+            loadOpeningHoursChoices(fromChoicebox, toChoicebox);
         }
         loadBuildings();
     }
 
-    private void loadOpeningHoursChoices(ChoiceBox<String> to, ChoiceBox<String> from) {
+    private void loadOpeningHoursChoices(ChoiceBox<String> from, ChoiceBox<String> to) {
         String[] times = new String[25];
         for (int i = 0; i < 25; i++) {
             if (i < 10) {
@@ -95,8 +95,10 @@ public class AdminSceneBuildingsController implements Initializable {
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(65);
                 imageView.setFitHeight(40);
+                System.out.println(buildings.get(i).getOpeningHours());
                 Label text = new Label(buildings.get(i).getCode() + " " + buildings.get(i).getName()
-                + " " + buildings.get(i).getLocation() + " " + buildings.get(i).getOpeningHours());
+                    + "\n" + buildings.get(i).getLocation() + " "
+                        + buildings.get(i).getOpeningHours());
                 text.setPrefSize(225, 40);
                 text.setPadding(new Insets(0, 0, 0, 10));
 
@@ -116,7 +118,8 @@ public class AdminSceneBuildingsController implements Initializable {
                 delete.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        BuildingCommunication.deleteBuildingFromDatabase(buildings.get(finalI).getCode());
+                        int code = buildings.get(finalI).getCode();
+                        BuildingCommunication.deleteBuildingFromDatabase(code);
                         loadBuildings();
                     }
                 });
@@ -168,6 +171,7 @@ public class AdminSceneBuildingsController implements Initializable {
             System.out.println("Not a proper number");
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
+        System.out.println(openingHours);
         Text submitStatus = new Text();
         if (!location.equals("") && !name.equals("") && codeFound
                && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
@@ -297,7 +301,8 @@ public class AdminSceneBuildingsController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 String openingHours = from.getValue() + "-" + to.getValue();
-                Label status = modifyBuilding(address.getText(), name.getText(), building.getCode(), openingHours);
+                Label status = modifyBuilding(address.getText(), name.getText(),
+                        building.getCode(), openingHours);
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -325,7 +330,8 @@ public class AdminSceneBuildingsController implements Initializable {
         stage.showAndWait();
     }
 
-    private Label modifyBuilding(String address, String name, int buildingCode, String openingHours) {
+    private Label modifyBuilding(String address, String name,
+                                 int buildingCode, String openingHours) {
         boolean openingHoursCorrect = false;
         String[] fromTo = openingHours.split("-");
         Label result = null;
