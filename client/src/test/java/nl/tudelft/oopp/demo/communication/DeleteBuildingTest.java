@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class DeleteBuildingTest {
 
     @Test
-    public void testAddBuildingToDatabaseForDeletion() {
+    public void testDeleteBuilding() {
         Integer buildingCode = 1;
         System.out.println("---------------------------");
-        System.out.println("Test = testGetAllRoomsFromBuilding");
+        System.out.println("Test = testDeleteBuilding");
         String response = BuildingCommunication.deleteBuildingFromDatabase(buildingCode);
         if (response.equals("1"))
             System.out.println("Deleted building with code " + buildingCode);
