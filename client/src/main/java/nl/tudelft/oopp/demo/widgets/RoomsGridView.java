@@ -24,10 +24,12 @@ public class RoomsGridView extends GridPane {
         double scalar = 1.8;
 
         sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            resizeDisplay(newScene.getWidth() * scalar);
-            newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                resizeDisplay(newWidth.doubleValue() * scalar);
-            });
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth() * scalar);
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth.doubleValue() * scalar);
+                });
+            }
         });
     }
 

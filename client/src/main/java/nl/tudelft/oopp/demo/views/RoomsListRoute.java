@@ -27,6 +27,7 @@ import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 import nl.tudelft.oopp.demo.widgets.RoomsGridView;
@@ -34,7 +35,7 @@ import nl.tudelft.oopp.demo.widgets.RoomsGridView;
 public class RoomsListRoute extends Route {
 
     private ScrollPane scrollPane;
-    private AnchorPane rootContainer;
+    private VBox rootContainer;
     private Text universityTitle;
 
     private HBox buildingsTitleContainer;
@@ -51,7 +52,11 @@ public class RoomsListRoute extends Route {
      * @param buildingCode the number of the building beeing displayed
      */
     public RoomsListRoute(Integer buildingCode) {
-        rootContainer = new AnchorPane();
+        rootContainer = new VBox();
+
+        AppBar appBar = new AppBar();
+        rootContainer.getChildren().add(appBar);
+
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
@@ -77,11 +82,6 @@ public class RoomsListRoute extends Route {
         filters.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
                 new CornerRadii(0), new BorderWidths(1))));
         rootContainer.getChildren().add(filters);
-
-        Button b = new Button("back");
-        b.setTranslateX(5);
-        b.setTranslateY(160);
-        rootContainer.getChildren().add(b);
 
         //container for the rooms
         VBox rooms = new VBox();
