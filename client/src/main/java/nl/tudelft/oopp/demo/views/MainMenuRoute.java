@@ -2,17 +2,21 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
@@ -78,6 +82,14 @@ public class MainMenuRoute extends Route {
         mainButtons.add(bikesButton);
         Image roomsImage = new Image("/images/main-screen-rooms.jpg");
         RectangularImageButton roomsButton = new RectangularImageButton(roomsImage, ROOMS_STRING);
+        roomsButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RectangularImageButton button = (RectangularImageButton) event.getSource();
+                RoutingScene routingScene = (RoutingScene) button.getScene();
+                routingScene.pushRoute(new RoomsListRoute());
+            }
+        });
         mainButtons.add(roomsButton);
         Image foodImage = new Image("/images/main-screen-food.jpg");
         RectangularImageButton foodButton = new RectangularImageButton(foodImage, FOOD_STRING);

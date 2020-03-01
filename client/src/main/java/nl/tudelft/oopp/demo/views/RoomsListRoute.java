@@ -48,9 +48,20 @@ public class RoomsListRoute extends Route {
 
     /**
      * A route that displays the list of rooms from a Building and also filters.
-     * @param buildingCode the number of the building beeing displayed
+     * @param buildingCode the number of the building being displayed
      */
     public RoomsListRoute(Integer buildingCode) {
+        createRootElement(RoomCommunication.getAllRoomsFromBuilding(buildingCode));
+    }
+
+    /**
+     * Instantiates a RoomsListRoute that displays all rooms.
+     */
+    public RoomsListRoute() {
+        createRootElement(RoomCommunication.getAllRooms());
+    }
+
+    private void createRootElement(List<Room> roomList) {
         rootContainer = new VBox();
 
         AppBar appBar = new AppBar();
@@ -89,7 +100,6 @@ public class RoomsListRoute extends Route {
                 new CornerRadii(0), new BorderWidths(1))));
         rooms.setPrefWidth(430);
 
-        List<Room> roomList = RoomCommunication.getAllRoomsFromBuilding(buildingCode);
         RoomsGridView buildingsGrid = new RoomsGridView(roomList);
         rooms.getChildren().add(buildingsGrid);
         buildingsGrid.setListener(new RoomsGridView.Listener() {
