@@ -23,9 +23,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -85,7 +85,7 @@ public class AdminSceneBuildingsController implements Initializable {
             buildingsList.getChildren().clear();
             int numBuildings = BuildingCommunication.countAllBuildings();
             List<Building> buildings = BuildingCommunication.getAllBuildings();
-            anchorPaneBuildings.setPrefHeight(61 * numBuildings);
+            anchorPaneBuildings.setPrefHeight(82 * numBuildings);
             //One HBox is 60 x 400
             //The entire AnchorPane holding all the HBoxes is 60*numBuildings x 400
             for (int i = 0; i < numBuildings; i++) {
@@ -94,12 +94,12 @@ public class AdminSceneBuildingsController implements Initializable {
                 Image image = new Image("images/TuDelftTempIMG.jpg");
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(65);
-                imageView.setFitHeight(40);
-                System.out.println(buildings.get(i).getOpeningHours());
-                Label text = new Label(buildings.get(i).getCode() + " " + buildings.get(i).getName()
-                    + "\n" + buildings.get(i).getLocation() + " "
-                        + buildings.get(i).getOpeningHours());
-                text.setPrefSize(225, 40);
+                imageView.setFitHeight(60);
+                Label text = new Label("Building Code: " + buildings.get(i).getCode()
+                        + " | " + buildings.get(i).getName()
+                        + "\nOpening Hours: " + buildings.get(i).getOpeningHours() + "\n"
+                        + buildings.get(i).getLocation());
+                text.setPrefSize(225, 60);
                 text.setPadding(new Insets(0, 0, 0, 10));
 
                 int finalI = i;
@@ -112,6 +112,8 @@ public class AdminSceneBuildingsController implements Initializable {
                 });
                 modify.setPrefSize(45, 40);
                 modify.setPadding(new Insets(0, 0, 0,0));
+                StackPane modifyPane = new StackPane(modify);
+                modifyPane.setPadding(new Insets(10, 0, 10, 0));
 
                 Button delete = new Button("delete");
                 delete.setPrefSize(45, 40);
@@ -124,6 +126,8 @@ public class AdminSceneBuildingsController implements Initializable {
                     }
                 });
                 delete.setPadding(new Insets(0, 0,0,0));
+                StackPane deletePane = new StackPane(delete);
+                deletePane.setPadding(new Insets(10, 0, 10, 0));
 
                 building.setPadding(new Insets(5, 5, 5,5));
                 String css = "-fx-border-color: black;\n"
@@ -132,7 +136,7 @@ public class AdminSceneBuildingsController implements Initializable {
                         + "-fx-border-width: 1;"
                         + "-fx-border-radius: 10;";
                 building.setStyle(css);
-                building.getChildren().addAll(imageView, text, modify, delete);
+                building.getChildren().addAll(imageView, text, modifyPane, deletePane);
                 buildingsList.getChildren().add(building);
             }
         }
@@ -171,7 +175,6 @@ public class AdminSceneBuildingsController implements Initializable {
             System.out.println("Not a proper number");
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
-        System.out.println(openingHours);
         Text submitStatus = new Text();
         if (!location.equals("") && !name.equals("") && codeFound
                && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
