@@ -2,14 +2,18 @@ package nl.tudelft.oopp.demo.widgets;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.entities.Room;
 
 public class RoomsGridView extends GridPane {
     private List<Room> rooms;
     private List<RectangularImageButton> roomButtons;
+
+    private Listener listener;
 
     /**
      * Creates the Grid View of the room list page.
@@ -24,10 +28,12 @@ public class RoomsGridView extends GridPane {
         double scalar = 1.8;
 
         sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            resizeDisplay(newScene.getWidth() * scalar);
-            newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                resizeDisplay(newWidth.doubleValue() * scalar);
-            });
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth() * scalar);
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth.doubleValue() * scalar);
+                });
+            }
         });
     }
 
@@ -39,6 +45,15 @@ public class RoomsGridView extends GridPane {
                     "https://cdn.mos.cms.futurecdn.net/K5nhgMGSRCzdppKW9bQcMd.jpg");
             RectangularImageButton button = new RectangularImageButton(image,
                     rooms.get(i).getName());
+            int finalI = i;
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (listener != null) {
+                        listener.onRoomClicked(rooms.get(finalI));
+                    }
+                }
+            });
             add(button, i % roomsPerRow, i / roomsPerRow, 1, 1);
             roomButtons.add(button);
         }
@@ -54,5 +69,17 @@ public class RoomsGridView extends GridPane {
         setPadding(new Insets(0, 0, 0, spacing));
         setHgap(spacing);
         setVgap(spacing);
+    }
+
+    /**
+     * Sets the listener of this RoomsGridView.
+     * @param listener the listener
+     */
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    public interface Listener {
+        void onRoomClicked(Room room);
     }
 }

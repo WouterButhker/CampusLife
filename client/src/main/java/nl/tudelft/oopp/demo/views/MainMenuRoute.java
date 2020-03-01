@@ -13,8 +13,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
@@ -44,7 +44,7 @@ public class MainMenuRoute extends Route {
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        rootContainer.getChildren().add(new AppBar());
+        rootContainer.getChildren().add(new AppBar(true));
 
         //createTitle();
         createButtonsRow();

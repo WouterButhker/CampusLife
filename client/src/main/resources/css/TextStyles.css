@@ -9,3 +9,11 @@
 .app-bar-link-style {
     -fx-text-fill: #000000
 }
+
+.room-display-title {
+    -fx-font: 40px Tahoma;
+}
+
+.room-display-text {
+    -fx-font: 24px Tahoma;
+}

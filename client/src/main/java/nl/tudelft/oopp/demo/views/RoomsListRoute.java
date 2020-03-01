@@ -21,12 +21,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 import nl.tudelft.oopp.demo.widgets.RoomsGridView;
@@ -34,7 +34,7 @@ import nl.tudelft.oopp.demo.widgets.RoomsGridView;
 public class RoomsListRoute extends Route {
 
     private ScrollPane scrollPane;
-    private AnchorPane rootContainer;
+    private VBox rootContainer;
     private Text universityTitle;
 
     private HBox buildingsTitleContainer;
@@ -51,7 +51,11 @@ public class RoomsListRoute extends Route {
      * @param buildingCode the number of the building beeing displayed
      */
     public RoomsListRoute(Integer buildingCode) {
-        rootContainer = new AnchorPane();
+        rootContainer = new VBox();
+
+        AppBar appBar = new AppBar();
+        rootContainer.getChildren().add(appBar);
+
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
@@ -78,11 +82,6 @@ public class RoomsListRoute extends Route {
                 new CornerRadii(0), new BorderWidths(1))));
         rootContainer.getChildren().add(filters);
 
-        Button b = new Button("back");
-        b.setTranslateX(5);
-        b.setTranslateY(160);
-        rootContainer.getChildren().add(b);
-
         //container for the rooms
         VBox rooms = new VBox();
         rooms.setTranslateX(140);
@@ -93,6 +92,13 @@ public class RoomsListRoute extends Route {
         List<Room> roomList = RoomCommunication.getAllRoomsFromBuilding(buildingCode);
         RoomsGridView buildingsGrid = new RoomsGridView(roomList);
         rooms.getChildren().add(buildingsGrid);
+        buildingsGrid.setListener(new RoomsGridView.Listener() {
+            @Override
+            public void onRoomClicked(Room room) {
+                RoutingScene routingScene = getRoutingScene();
+                routingScene.pushRoute(new RoomDisplayRoute(room));
+            }
+        });
         rootContainer.getChildren().add(rooms);
     }
 
