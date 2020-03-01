@@ -72,7 +72,7 @@ public class RectangularImageButton extends StackPane {
 
         // Create label background
         labelBackground = new Rectangle();
-        labelBackground.setFill(Color.LIGHTSKYBLUE);
+        labelBackground.setStyle("-fx-fill: -secondary-color");
         // And offset, this is used so that the label is not in the middle of the image
         labelBackgroundOffset = new Rectangle();
         imageView.fitWidthProperty().addListener((obs, oldWidth, newWidth) -> {
@@ -93,6 +93,7 @@ public class RectangularImageButton extends StackPane {
         labelContainer.setAlignment(Pos.CENTER_LEFT);
         // Create label
         label = new Text(text);
+        label.getStyleClass().add("rec-image-button-label");
         labelContainer.getChildren().add(label);
         StackPane.setAlignment(label, Pos.CENTER_LEFT);
         // Add to labelPane

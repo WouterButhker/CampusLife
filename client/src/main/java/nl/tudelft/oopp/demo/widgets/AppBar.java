@@ -46,7 +46,7 @@ public class AppBar extends StackPane {
     }
 
     private void addComponents() {
-        setStyle("-fx-background-color: #64B5F6");
+        setStyle("-fx-background-color: -primary-color");
         setAlignment(Pos.CENTER_LEFT);
 
         universityTitle = new Text("TUDelft");

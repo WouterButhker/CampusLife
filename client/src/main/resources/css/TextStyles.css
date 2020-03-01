@@ -1,3 +1,5 @@
+@import url("palette.css")
+
 .university-main-title {
     -fx-font: 40px Tahoma;
 }
@@ -6,8 +8,12 @@
     -fx-font: 28px Tahoma;
 }
 
+.rec-image-button-label {
+    -fx-fill: -secondary-color-text;
+}
+
 .app-bar-link-style {
-    -fx-text-fill: #000000
+    -fx-text-fill: -primary-color-text;
 }
 
 .room-display-title {

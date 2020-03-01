@@ -115,7 +115,7 @@ public class RoomDisplayRoute extends Route {
         infoContainer.getChildren().add(capacityText);
         rootContainer.getChildren().add(roomTitle);
         rootContainer.getChildren().add(infoContainer);
-        rootContainer.setStyle("-fx-background-color: #64B5F6");
+        rootContainer.setStyle("-fx-background-color: -secondary-color-dark");
 
         return rootContainer;
     }
@@ -132,7 +132,7 @@ public class RoomDisplayRoute extends Route {
         rootContainer.setPadding(new Insets(8, 8, 8, 8));
         rootContainer.setSpacing(8);
         rootContainer.getChildren().addAll(locatedAtText, button);
-        rootContainer.setStyle("-fx-background-color: #64B5F6");
+        rootContainer.setStyle("-fx-background-color: -secondary-color-dark");
         return rootContainer;
     }
 
