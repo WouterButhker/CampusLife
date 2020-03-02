@@ -17,9 +17,9 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <TextField fx:id="roomCodeInput" layoutX="130.0" layoutY="173.0" />
-      <TextField fx:id="roomNameInput" layoutX="130.0" layoutY="217.0" />
-      <TextField fx:id="capacityInput" layoutX="130.0" layoutY="258.0" />
+      <TextField fx:id="roomCodeInput" layoutX="130.0" layoutY="173.0" promptText="Room code" />
+      <TextField fx:id="roomNameInput" layoutX="130.0" layoutY="217.0" promptText="Room name" />
+      <TextField fx:id="capacityInput" layoutX="130.0" layoutY="258.0" promptText="Capacity" />
       <CheckBox fx:id="tvBox" layoutX="131.0" layoutY="407.0" mnemonicParsing="false" text="TV" />
       <CheckBox fx:id="whiteboardBox" layoutX="131.0" layoutY="373.0" mnemonicParsing="false" text="Whiteboard" />
       <ChoiceBox fx:id="rightsList" layoutX="129.0" layoutY="338.0" prefWidth="150.0" />
@@ -32,5 +32,14 @@
       <Text layoutX="45.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Facilities:" />
       <Button fx:id="submit" layoutX="130.0" layoutY="455.0" mnemonicParsing="false" onAction="#submitNewRoom" text="Submit" />
       <Button layoutX="373.0" layoutY="130.0" mnemonicParsing="false" onAction="#refreshRoomsPage" text="Refresh" />
+      <ChoiceBox fx:id="buildingList2" layoutX="634.0" layoutY="117.0" prefWidth="150.0" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="604.0" layoutY="157.0" prefHeight="432.0" prefWidth="417.0">
+        <content>
+          <AnchorPane fx:id="anchorPaneRooms" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
+               <children>
+                  <VBox fx:id="roomsList" />
+               </children></AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

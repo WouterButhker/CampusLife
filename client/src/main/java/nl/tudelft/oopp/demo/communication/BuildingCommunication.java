@@ -121,6 +121,11 @@ public class BuildingCommunication {
             String[] miniParams = parameters[i].split(":");
             miniParams[1] = miniParams[1].replace("\"", "");
             parameters[i] = miniParams[1];
+            if (i == 3)
+            {
+                miniParams[3] = miniParams[3].replace("\"", "");
+                parameters[i] += ":" + miniParams[2] + ":" + miniParams[3];
+            }
         }
         Integer code = Integer.parseInt(parameters[0]);
         String name = parameters[1];

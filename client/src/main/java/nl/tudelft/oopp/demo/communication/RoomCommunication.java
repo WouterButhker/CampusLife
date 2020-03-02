@@ -143,7 +143,20 @@ public class RoomCommunication {
         return null;
     }
 
-
+    public static String deleteRoomFromDatabase(String roomCode) {
+        URI myUri = URI.create("http://localhost:8080/rooms/delete?roomCode=" + roomCode);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "-1";
+    }
 
 
 
