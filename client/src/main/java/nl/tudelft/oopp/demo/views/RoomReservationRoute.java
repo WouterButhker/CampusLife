@@ -58,7 +58,8 @@ public class RoomReservationRoute extends Route {
                 String endTime = timeEnd.getText();
 
                 // TODO make a call to make reservation in the back-end
-                ReservationCommunication.addReservationToDatabase(4, roomCode, beginTime + "-" + endTime);
+                ReservationCommunication.addReservationToDatabase(4,
+                        roomCode, beginTime + "-" + endTime);
 
             }
         });

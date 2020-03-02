@@ -43,20 +43,14 @@ public class LoginScreenController {
     }
 
     @FXML
-    void toRoomsList(ActionEvent event) {
-        RoutingScene routingScene = (RoutingScene) passwordField.getScene();
-        routingScene.pushRoute(new RoomsListRoute(0));
-    }
-
-    @FXML
     void onRegisterClicked(ActionEvent event) {
         RoutingScene routingScene = (RoutingScene) passwordField.getScene();
-        try {
-            URL xmlUrl = getClass().getResource("/AdminScene.fxml");
-            routingScene.pushRoute(new XmlRoute(xmlUrl));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            URL xmlUrl = getClass().getResource("/AdminScene.fxml");
+//            routingScene.pushRoute(new XmlRoute(xmlUrl));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @FXML

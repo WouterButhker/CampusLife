@@ -1,7 +1,13 @@
 package nl.tudelft.oopp.demo.entities;
 
-import javax.persistence.*;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "reservation")
@@ -27,7 +33,12 @@ public class Reservation {
 
     }
 
-
+    /**
+     * Make a Reservation object.
+     * @param user the User that makes the reservation
+     * @param room the Room that is reserved
+     * @param timeSlot the time at which the Room is reserved
+     */
     public Reservation(User user,
                        Room room,
                        String timeSlot)  {
@@ -71,15 +82,20 @@ public class Reservation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Reservation)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Reservation)) {
+            return false;
+        }
         Reservation that = (Reservation) o;
-        return id.equals(that.id) &&
-                user.equals(that.user) &&
-                room.equals(that.room) &&
-                timeSlot.equals(that.timeSlot);
+        return id.equals(that.id)
+                && user.equals(that.user)
+                && room.equals(that.room)
+                && timeSlot.equals(that.timeSlot);
     }
 
     public String toString() {
-        return "[" + id + ", " + user + ", " + room + ", " + timeSlot + "]";    }
+        return "[" + id + ", " + user + ", " + room + ", " + timeSlot + "]";
+    }
 }

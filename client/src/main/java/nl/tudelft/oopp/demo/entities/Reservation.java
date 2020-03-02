@@ -10,6 +10,13 @@ public class Reservation {
     /// DATE
     private String timeSlot;
 
+    /**
+     * Make a Reservation object.
+     * @param id the number of the reservation
+     * @param user the User(id) that made the reservation
+     * @param room the Room(roomCode) that is reserved
+     * @param timeSlot the time at which the Room is reserved
+     */
     public Reservation(Integer id, Integer user, String room, String timeSlot) {
         this.id = id;
         this.user = user;
@@ -51,8 +58,12 @@ public class Reservation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Reservation)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Reservation)) {
+            return false;
+        }
         Reservation that = (Reservation) o;
         return id.equals(that.id)
                 && user.equals(that.user)

@@ -143,6 +143,11 @@ public class RoomCommunication {
         return null;
     }
 
+    /**
+     * Deletes a Room from the database.
+     * @param roomCode the code for the room that needs to be removed
+     * @return
+     */
     public static String deleteRoomFromDatabase(String roomCode) {
         URI myUri = URI.create("http://localhost:8080/rooms/delete?roomCode=" + roomCode);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
