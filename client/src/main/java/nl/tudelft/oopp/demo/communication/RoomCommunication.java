@@ -11,7 +11,6 @@ import nl.tudelft.oopp.demo.entities.Room;
 
 public class RoomCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
 
     /**
      * For adding a room to the database.
@@ -32,16 +31,13 @@ public class RoomCommunication {
                                          Integer building) {
         roomCode = roomCode.replace(" ", "%20");
         name = name.replace(" ", "%20");
-        URI myUri = URI.create("http://localhost:8080/rooms/add?roomCode=" + roomCode
+        String url = "/rooms/add?roomCode=" + roomCode
                 + "&name=" + name + "&capacity=" + capacity + "&hasWhiteboard=" + hasWhiteboard
-                + "&hasTV=" + hasTV + "&rights=" + rights + "&building=" + building);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+                + "&hasTV=" + hasTV + "&rights=" + rights + "&building=" + building;
+
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            ServerCommunication.authenticatedRequest(url);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -52,15 +48,11 @@ public class RoomCommunication {
      * @return a list of rooms from that building
      */
     public static List<Room> getAllRoomsFromBuilding(Integer building) {
-        URI myUri = URI.create("http://localhost:8080/rooms/getRoomsFromBuilding?building=" + building);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/rooms/getRoomsFromBuilding?building=" + building;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return parseRooms(response.body());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -72,15 +64,11 @@ public class RoomCommunication {
      * @return a list of NAMES from that building
      */
     public static String getAllRoomNamesFromBuilding(Integer building) {
-        URI myUri = URI.create("http://localhost:8080/rooms/getRoomNamesFromBuilding?building=" + building);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/rooms/getRoomNamesFromBuilding?building=" + building;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+            return ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception  e) {
             e.printStackTrace();
         }
         return "";
@@ -129,15 +117,11 @@ public class RoomCommunication {
      * @return list of Rooms
      */
     public static List<Room> getAllRooms() {
-        URI myUri = URI.create("http://localhost:8080/rooms/all");
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/rooms/all";
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return parseRooms(response.body());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -149,15 +133,11 @@ public class RoomCommunication {
      * @return
      */
     public static String deleteRoomFromDatabase(String roomCode) {
-        URI myUri = URI.create("http://localhost:8080/rooms/delete?roomCode=" + roomCode);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/rooms/delete?roomCode=" + roomCode;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+            return ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "-1";

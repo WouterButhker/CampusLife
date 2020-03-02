@@ -51,6 +51,7 @@ public class ServerCommunication {
     }
 
     public static ResponseEntity<String> authenticatedRequest(String link) throws Exception {
+        // TODO: throw exception when authentication fails
         ResponseEntity<String> response;
         HttpEntity request = new HttpEntity(authenticationHeader);
 

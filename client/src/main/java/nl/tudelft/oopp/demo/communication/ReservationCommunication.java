@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Reservation;
+import org.springframework.http.ResponseEntity;
 
 
 public class ReservationCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
 
     /**
      * Adds a reservation to the database via HTTP request.
@@ -26,18 +26,15 @@ public class ReservationCommunication {
                                              /// DATE
                                              String timeSlot) {
         room = room.replace(" ", "%20");
-        URI myUri = URI.create("http://localhost:8080/reservations/add?user=" + userId
-                + "&room=" + room + "&timeSlot=" + timeSlot);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/reservations/add?user=" + userId
+                + "&room=" + room + "&timeSlot=" + timeSlot;
+
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             room = room.replace("%20", " ");
-            System.out.println(response.body() + " reservation for user "
+            System.out.println(response.getBody() + " reservation for user "
                     + userId + " at room " + room + " at time " + timeSlot);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
