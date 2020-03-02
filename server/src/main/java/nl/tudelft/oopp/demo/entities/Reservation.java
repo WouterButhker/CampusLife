@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.entities;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,10 +23,12 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;          // user id
 
     @ManyToOne
     @JoinColumn(name = "room")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;          // room code
 
     @Column(name = "timeSlot")

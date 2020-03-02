@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.entities;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +37,7 @@ public class Room {
     //@Id
     @ManyToOne
     @JoinColumn(name = "building")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Building building;
 
     public Room() {
