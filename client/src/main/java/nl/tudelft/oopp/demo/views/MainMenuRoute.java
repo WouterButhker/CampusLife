@@ -92,6 +92,14 @@ public class MainMenuRoute extends Route {
         mainButtons.add(roomsButton);
         Image foodImage = new Image("/images/main-screen-food.jpg");
         RectangularImageButton foodButton = new RectangularImageButton(foodImage, FOOD_STRING);
+        foodButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RectangularImageButton button = (RectangularImageButton) event.getSource();
+                RoutingScene routingScene = (RoutingScene) button.getScene();
+                routingScene.pushRoute(new RestaurantsListRoute());
+            }
+        });
         mainButtons.add(foodButton);
         buttonsRow.getChildren().addAll(mainButtons);
 
