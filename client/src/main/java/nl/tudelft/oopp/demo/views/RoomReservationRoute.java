@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.widgets.AppBar;
@@ -57,6 +58,8 @@ public class RoomReservationRoute extends Route {
                 String endTime = timeEnd.getText();
 
                 // TODO make a call to make reservation in the back-end
+                ReservationCommunication.addReservationToDatabase(4, roomCode, beginTime + "-" + endTime);
+
             }
         });
         horizontalContainer.getChildren().add(submitButton);
