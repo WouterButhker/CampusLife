@@ -20,20 +20,13 @@ public class BuildingCommunication {
      * @return array of all the buildings, format: "code name"
      */
     public static String[] getBuildingsCodeAndName() {
-        URI myUri = URI.create("http://localhost:8080/buildings/code+name");
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseString = response.body();
+            String responseString = ServerCommunication.authenticatedRequest("/buildings/code+name").getBody();
             responseString = responseString.replace("[", "");
             responseString = responseString.replace("]", "");
             responseString = responseString.replace("\"", "");
-            String[] buildingsCodeAndName = responseString.split(",");
-            return buildingsCodeAndName;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return responseString.split(",");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -53,15 +46,12 @@ public class BuildingCommunication {
         name = name.replace(" ", "%20");
         location = location.replace(" ", "%20");
         openingHours = openingHours.replace(" ", "%20");
-        URI myUri = URI.create("http://localhost:8080/buildings/add?buildingCode=" + buildingCode
-                + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/buildings/add?buildingCode=" + buildingCode
+                + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours;
+
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            ServerCommunication.authenticatedRequest(url);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -74,15 +64,10 @@ public class BuildingCommunication {
      *         something else otherwise
      */
     public static String deleteBuildingFromDatabase(Integer buildingCode) {
-        URI myUri = URI.create("http://localhost:8080/buildings/delete?buildingCode=" + buildingCode);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/buildings/delete?buildingCode=" + buildingCode;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "-1";
@@ -93,15 +78,11 @@ public class BuildingCommunication {
      * @return an int with a number of all the buildings
      */
     public static Integer countAllBuildings() {
-        URI myUri = URI.create("http://localhost:8080/buildings/count");
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/buildings/count";
+
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return Integer.parseInt(response.body());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return Integer.parseInt(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
@@ -153,15 +134,11 @@ public class BuildingCommunication {
      * @return list of buildings
      */
     public static List<Building> getAllBuildings() {
-        URI myUri = URI.create("http://localhost:8080/buildings/all");
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/buildings/all";
+
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return parseBuildings(response.body());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return parseBuildings(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
