@@ -43,11 +43,16 @@ public class RegisterScreenController {
 
     @FXML
     void initialize() {
-        assert backButton != null : "fx:id=\"backButton\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert reEnterPasswordField != null : "fx:id=\"reEnterPasswordField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert registerButton != null : "fx:id=\"registerButton\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert usernameField != null : "fx:id=\"usernameField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
+        assert backButton != null : "fx:id=\"backButton\" was not injected: "
+                + "check your FXML file 'RegisterScreen.fxml'.";
+        assert passwordField != null : "fx:id=\"passwordField\" was not injected: "
+                + "check your FXML file 'RegisterScreen.fxml'.";
+        assert reEnterPasswordField != null : "fx:id=\"reEnterPasswordField\" was not injected: "
+                + "check your FXML file 'RegisterScreen.fxml'.";
+        assert registerButton != null : "fx:id=\"registerButton\" was not injected: "
+                + "check your FXML file 'RegisterScreen.fxml'.";
+        assert usernameField != null : "fx:id=\"usernameField\" was not injected: "
+                + "check your FXML file 'RegisterScreen.fxml'.";
 
 
     }

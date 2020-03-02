@@ -4,6 +4,7 @@ import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,14 +32,23 @@ public class BuildingController {
      * @return Saved
      */
     @GetMapping(path = "/add")
-    public @ResponseBody String addNewBuilding(@RequestParam Integer buildingCode,
-                                           @RequestParam String name,
-                                           @RequestParam String location,
-                                           @RequestParam String openingHours) {
-        Building room = new Building(buildingCode, name, location, openingHours);
-        buildingRepository.save(room);
+    public @ResponseBody
+    String addNewBuilding(@RequestParam Integer buildingCode,
+                          @RequestParam String name,
+                          @RequestParam String location,
+                          @RequestParam String openingHours) {
+        Building building = new Building(buildingCode, name, location, openingHours);
+        buildingRepository.save(building);
         return "Saved";
     }
+
+    //@RequestMapping(path = "/addBuilding", method = RequestMethod.POST,
+    //consumes = "application/json", produces = "application/json")
+    //@PostMapping(path = "/addBuilding", consumes = "application/json",
+    //produces = "application/json")
+    //public void addBuilding(@RequestBody Building building) {
+    //buildingRepository.save(building);
+    //}
 
     /**
      * Get a list of codes and names of all the buildings.
@@ -52,5 +62,16 @@ public class BuildingController {
             response.set(i, current.replace(',', ' '));
         }
         return response;
+    }
+
+    @Transactional
+    @GetMapping(path = "/delete")
+    public Integer deleteBuilding(@RequestParam Integer buildingCode) {
+        return buildingRepository.deleteBuildingWithCode(buildingCode);
+    }
+
+    @GetMapping(path = "/count")
+    public Integer countBuildings() {
+        return buildingRepository.countAllBuildings();
     }
 }

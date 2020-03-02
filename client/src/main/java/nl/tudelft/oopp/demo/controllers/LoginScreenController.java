@@ -4,12 +4,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.core.XmlRoute;
+import nl.tudelft.oopp.demo.views.MainMenuRoute;
+import nl.tudelft.oopp.demo.views.RoomsListRoute;
+
 import javafx.scene.control.*;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
 public class LoginScreenController {
-
-
 
     @FXML
     private ResourceBundle resources;
@@ -32,39 +35,33 @@ public class LoginScreenController {
 
     @FXML
     void onLoginClicked(ActionEvent event) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-        login();
-//        if (!ServerCommunication.authenticate(username, password)) {
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle("Error");
-//            alert.setHeaderText(null);
-//            alert.setContentText("FAILED");
-//            alert.showAndWait();
-//        };
-
-        ServerCommunication.getAdmin(username, password);
+        RoutingScene routingScene = (RoutingScene) passwordField.getScene();
+        routingScene.pushRoute(new MainMenuRoute());
     }
 
     @FXML
     void onRegisterClicked(ActionEvent event) {
+        RoutingScene routingScene = (RoutingScene) passwordField.getScene();
+        /*
+        try {
+            URL xmlUrl = getClass().getResource("/AdminScene.fxml");
+            routingScene.pushRoute(new XmlRoute(xmlUrl));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
     }
 
     @FXML
     void initialize() {
-        assert loginButton != null : "fx:id=\"loginButton\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-        assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-        assert registerLink != null : "fx:id=\"registerLink\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-        assert usernameField != null : "fx:id=\"usernameField\" was not injected: check your FXML file 'LoginScreen.fxml'.";
-
-
-    }
-
-    @FXML
-    private void login() {
-        //Authentication authToken = new UsernamePasswordAuthenticationToken(usernameField.getText(), passwordField.getText());
-
-
+        assert loginButton != null : "fx:id=\"loginButton\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
+        assert passwordField != null : "fx:id=\"passwordField\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
+        assert registerLink != null : "fx:id=\"registerLink\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
+        assert usernameField != null : "fx:id=\"usernameField\" was not injected: "
+                + "check your FXML file 'LoginScreen.fxml'.";
     }
 
 }
