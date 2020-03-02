@@ -1,14 +1,5 @@
 package nl.tudelft.oopp.demo.communication;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Reservation;
 import org.springframework.http.ResponseEntity;
 
 

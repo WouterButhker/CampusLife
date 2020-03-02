@@ -1,19 +1,12 @@
 package nl.tudelft.oopp.demo.communication;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.image.Image;
 import nl.tudelft.oopp.demo.entities.Building;
 
 
 public class BuildingCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
 
     /**
      * Retrieves all the buildings codes and names from the database and returns an array.

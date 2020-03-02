@@ -1,22 +1,14 @@
 package nl.tudelft.oopp.demo.communication;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 public class ServerCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
     public static final String SERVER_URL = "http://localhost:8080";
     private static HttpHeaders authenticationHeader;
 
