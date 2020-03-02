@@ -35,6 +35,7 @@ public class RoomsListRoute extends Route {
 
     private ScrollPane scrollPane;
     private VBox rootContainer;
+    private AnchorPane ap;
     private Text universityTitle;
 
     private HBox buildingsTitleContainer;
@@ -63,7 +64,7 @@ public class RoomsListRoute extends Route {
 
     private void createRootElement(List<Room> roomList) {
         rootContainer = new VBox();
-
+        ap = new AnchorPane();
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
 
@@ -91,7 +92,7 @@ public class RoomsListRoute extends Route {
         filters.setPrefHeight(150);
         filters.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
                 new CornerRadii(0), new BorderWidths(1))));
-        rootContainer.getChildren().add(filters);
+        ap.getChildren().add(filters);
 
         //container for the rooms
         VBox rooms = new VBox();
@@ -109,7 +110,9 @@ public class RoomsListRoute extends Route {
                 routingScene.pushRoute(new RoomDisplayRoute(room));
             }
         });
-        rootContainer.getChildren().add(rooms);
+        ap.getChildren().add(rooms);
+
+        rootContainer.getChildren().add(ap);
     }
 
     @Override
