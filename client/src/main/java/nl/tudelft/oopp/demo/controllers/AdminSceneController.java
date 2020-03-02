@@ -13,12 +13,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.core.XmlRoute;
+import nl.tudelft.oopp.demo.widgets.AppBar;
 
 
 public class AdminSceneController implements Initializable {
+
+    @FXML
+    private VBox mainBox;
 
     @FXML
     private ChoiceBox<String> bikeBuildings;
@@ -36,20 +46,18 @@ public class AdminSceneController implements Initializable {
     private Button modifyFoodEnter;
 
     @FXML
-    private Button modifyFoodExit;
-
-    @FXML
     private Button modifyRightsEnter;
-
-    @FXML
-    private Button modifyRightsExit;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataBikes();
+        addAppBar();
     }
 
+    private void addAppBar() {
+        mainBox.getChildren().add(0, new AppBar());
+    }
 
     private void loadDataBikes() {
         if (bikeBuildings != null) {
@@ -105,68 +113,31 @@ public class AdminSceneController implements Initializable {
 
     @FXML
     private void modifyBuildingsEnter() throws IOException {
-        Stage stage = (Stage) modifyBuildingsEnter.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminSceneBuildings.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        RoutingScene scene = (RoutingScene) modifyBuildingsEnter.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneBuildings.fxml"));
+        scene.pushRoute(route);
     }
-
-
-
-
 
     @FXML
     private void modifyRoomsEnter() throws IOException {
-        Stage stage = (Stage) modifyRoomsEnter.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminSceneRooms.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        RoutingScene scene = (RoutingScene) modifyRoomsEnter.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneRooms.fxml"));
+        scene.pushRoute(route);
     }
 
     @FXML
     private void modifyFoodEnter() throws IOException {
-        Stage stage = (Stage) modifyFoodEnter.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminSceneFood.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    private void modifyFoodExit() throws IOException {
-        Stage stage = (Stage) modifyFoodExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        RoutingScene scene = (RoutingScene) modifyFoodEnter.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneFood.fxml"));
+        scene.pushRoute(route);
     }
 
     @FXML
     private void modifyRightsEnter() throws IOException {
-        Stage stage = (Stage) modifyRightsEnter.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminSceneRights.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        RoutingScene scene = (RoutingScene) modifyRightsEnter.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneRights.fxml"));
+        scene.pushRoute(route);
     }
-
-    @FXML
-    private void modifyRightsExit() throws IOException {
-        Stage stage = (Stage) modifyRightsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
 
 
 }

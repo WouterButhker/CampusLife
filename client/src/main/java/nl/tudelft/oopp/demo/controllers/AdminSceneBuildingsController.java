@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -30,12 +29,16 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.widgets.AppBar;
 
 public class AdminSceneBuildingsController implements Initializable {
 
     @FXML
-    private Button modifyBuildingsExit;
+    private VBox mainBox;
     
     @FXML
     private TextField locationInput;
@@ -65,6 +68,11 @@ public class AdminSceneBuildingsController implements Initializable {
             loadOpeningHoursChoices(fromChoicebox, toChoicebox);
         }
         loadBuildings();
+        addAppBar();
+    }
+
+    private void addAppBar() {
+        mainBox.getChildren().add(0, new AppBar());
     }
 
     private void loadOpeningHoursChoices(ChoiceBox<String> from, ChoiceBox<String> to) {
@@ -143,23 +151,11 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     @FXML
-    private void modifyBuildingsExit() throws IOException {
-        Stage stage = (Stage) modifyBuildingsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    private void refreshBuildingsPage() throws IOException {
-        Stage stage = (Stage) modifyBuildingsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminSceneBuildings.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    private void refreshBuildingsPage() throws Exception {
+        RoutingScene scene = (RoutingScene) mainBox.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneBuildings.fxml"));
+        scene.popRoute();
+        scene.pushRoute(route);
     }
 
     @FXML
@@ -183,7 +179,7 @@ public class AdminSceneBuildingsController implements Initializable {
             submitStatus.setText("Building successfully added!");
             try {
                 refreshBuildingsPage();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.out.println("Refresh failed");
             }
 
@@ -218,7 +214,7 @@ public class AdminSceneBuildingsController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(modifyBuildingsExit.getScene().getWindow());
+        stage.initOwner(buildingsList.getScene().getWindow());
         stage.showAndWait();
     }
 
@@ -329,7 +325,7 @@ public class AdminSceneBuildingsController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(modifyBuildingsExit.getScene().getWindow());
+        stage.initOwner(buildingsList.getScene().getWindow());
         stage.showAndWait();
     }
 
