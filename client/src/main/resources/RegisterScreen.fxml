@@ -18,10 +18,22 @@
         <Button id="loginButton" fx:id="registerButton" layoutX="257.0" layoutY="316.0" mnemonicParsing="false" onAction="#onRegisterClicked" text="Register" />
         <Label layoutX="210.0" layoutY="254.0" text="Re-enter password" />
         <PasswordField id="passwordField" fx:id="reEnterPasswordField" layoutX="210.0" layoutY="274.0" prefWidth="200.0" />
-        <Pane id="popUp" fx:id="popup" layoutX="210.0" layoutY="83.0" prefHeight="144.0" prefWidth="200.0" visible="false">
+        <Pane id="popUp" fx:id="popupPassword1" layoutX="210.0" layoutY="83.0" prefHeight="144.0" prefWidth="200.0" visible="false">
           <children>
-            <Button fx:id="okButton" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#onOkClicked" text="Ok" />
-            <TextArea layoutX="0.0" layoutY="0.0" prefHeight="102.9999915527369" prefWidth="200.0" text="The passwords you entered did not match, please re-type your password" wrapText="true" />
+            <Button id="okButton" fx:id="okButtonPassword1" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#onOkPassword1Clicked" text="Ok" />
+            <TextArea layoutX="0.0" layoutY="0.0" prefHeight="102.9999915527369" prefWidth="200.0" text="The passwords you entered did not match, please re-type your password" visible="true" wrapText="true" />
+          </children>
+        </Pane>
+        <Pane id="popUp" fx:id="popupUsername" layoutX="210.0" layoutY="83.0" prefHeight="144.0" prefWidth="200.0" visible="false">
+          <children>
+            <Button id="okButton" fx:id="okButtonUsername" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#onOkUsernameClicked" text="Ok" />
+            <TextArea layoutX="0.0" layoutY="0.0" prefHeight="102.9999915527369" prefWidth="200.0" text="  Please enter a username" wrapText="true" />
+          </children>
+        </Pane>
+        <Pane id="popUp" fx:id="popupPassword2" layoutX="210.0" layoutY="83.0" prefHeight="144.0" prefWidth="200.0" visible="false">
+          <children>
+            <Button id="okButton" fx:id="okButtonPassword2" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#onOkPassword2Clicked" text="Ok" />
+            <TextArea layoutX="0.0" layoutY="0.0" prefHeight="102.9999915527369" prefWidth="200.0" text="  Please enter a password" wrapText="true" />
           </children>
         </Pane>
       </children>

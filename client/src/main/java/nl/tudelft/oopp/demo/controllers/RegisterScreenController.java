@@ -19,13 +19,25 @@ public class RegisterScreenController {
     private URL location;
 
     @FXML
-    private Button okButton;
+    private Button okButtonPassword1;
+
+    @FXML
+    private Button okButtonPassword2;
+
+    @FXML
+    private Button okButtonUsername;
 
     @FXML
     private PasswordField passwordField;
 
     @FXML
-    private Pane popup;
+    private Pane popupPassword1;
+
+    @FXML
+    private Pane popupPassword2;
+
+    @FXML
+    private Pane popupUsername;
 
     @FXML
     private PasswordField reEnterPasswordField;
@@ -37,28 +49,53 @@ public class RegisterScreenController {
     private TextField usernameField;
 
     @FXML
-    void onOkClicked(ActionEvent event) {
-        popup.setVisible(false);
+    void onOkPassword1Clicked(ActionEvent event) {
+        popupPassword1.setVisible(false);
+        passwordField.setText("");
+        reEnterPasswordField.setText("");
+    }
+
+    @FXML
+    void onOkPassword2Clicked(ActionEvent event) {
+        popupPassword2.setVisible(false);
+    }
+
+    @FXML
+    void onOkUsernameClicked(ActionEvent event) {
+        popupUsername.setVisible(false);
     }
 
     @FXML
     void onRegisterClicked(ActionEvent event) {
-        if(!(passwordField.getText().equals(reEnterPasswordField.getText()))) {
-            popup.setVisible(true);
+        if(usernameField.getText().equals("")) {
+            popupUsername.setVisible(true);
+        } else if(passwordField.getText().equals("")) {
+            popupPassword2.setVisible(true);
+        } else if(!(passwordField.getText().equals(reEnterPasswordField.getText()))) {
+            popupPassword1.setVisible(true);
+        } else {
+            register(usernameField.getText(), passwordField.getText());
         }
     }
-
+    private static void register(String username, String password) {
+        System.out.println(username + " " + password);
+    }
 
     @FXML
     void initialize() {
-        assert okButton != null : "fx:id=\"okButton\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
+        assert okButtonPassword1 != null : "fx:id=\"okButtonPassword1\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
+        assert okButtonPassword2 != null : "fx:id=\"okButtonPassword2\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
+        assert okButtonUsername != null : "fx:id=\"okButtonUsername\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
         assert passwordField != null : "fx:id=\"passwordField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert popup != null : "fx:id=\"popup\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
+        assert popupPassword1 != null : "fx:id=\"popupPassword1\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
+        assert popupPassword2 != null : "fx:id=\"popupPassword2\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
+        assert popupUsername != null : "fx:id=\"popupUsername\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
         assert reEnterPasswordField != null : "fx:id=\"reEnterPasswordField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
         assert registerButton != null : "fx:id=\"registerButton\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
         assert usernameField != null : "fx:id=\"usernameField\" was not injected: check your FXML file 'RegisterScreen.fxml'.";
 
 
     }
+
 
 }

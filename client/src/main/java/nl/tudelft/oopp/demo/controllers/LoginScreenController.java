@@ -45,14 +45,14 @@ public class LoginScreenController {
     @FXML
     void onRegisterClicked(ActionEvent event) {
         RoutingScene routingScene = (RoutingScene) passwordField.getScene();
-        /*
+
         try {
-            URL xmlUrl = getClass().getResource("/AdminScene.fxml");
+            URL xmlUrl = getClass().getResource("/RegisterScreen.fxml");
             routingScene.pushRoute(new XmlRoute(xmlUrl));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
+
     }
 
     @FXML
