@@ -24,7 +24,7 @@ Add your own name (do not add the names for others!) to the section below.
 <!-- - Preferably add a recognisable photo, otherwise add your GitLab photo -->
 <!-- - (please make sure the photos have the same size) --> 
 
-Making changes so Sven knows I used Git to update the README file... ~Andra
+Making changes so Sven knows I used Git to update the README file... ~ Andra-Diana Maglas
 
 ## How to run it
 
