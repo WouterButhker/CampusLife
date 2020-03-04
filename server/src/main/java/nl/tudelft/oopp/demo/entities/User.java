@@ -30,10 +30,6 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean accountIsEnabled = true;
 
-    public User() {
-
-    }
-
     /**
      *
      * @param id the unique id of the user
@@ -44,7 +40,7 @@ public class User implements UserDetails {
     public User(Integer id,
                     String username,
                     String password,
-                    Integer role) {
+                    String role) {
         this.id = id;
         this.username = username;
         this.password = password;
