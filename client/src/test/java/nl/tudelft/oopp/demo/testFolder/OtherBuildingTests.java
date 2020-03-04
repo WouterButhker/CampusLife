@@ -1,5 +1,6 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.testFolder;
 
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
