@@ -24,8 +24,10 @@ public class RoomCommunication {
                                          Boolean hasTV,
                                          Integer rights,
                                          Integer building) {
+        /*
         roomCode = roomCode.replace(" ", "%20");
         name = name.replace(" ", "%20");
+         */
         String url = "/rooms/add?roomCode=" + roomCode
                 + "&name=" + name + "&capacity=" + capacity + "&hasWhiteboard=" + hasWhiteboard
                 + "&hasTV=" + hasTV + "&rights=" + rights + "&building=" + building;

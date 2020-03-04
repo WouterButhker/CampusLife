@@ -14,7 +14,8 @@ public class BuildingCommunication {
      */
     public static String[] getBuildingsCodeAndName() {
         try {
-            String responseString = ServerCommunication.authenticatedRequest("/buildings/code+name").getBody();
+            String responseString = ServerCommunication.authenticatedRequest(
+                    "/buildings/code+name").getBody();
             responseString = responseString.replace("[", "");
             responseString = responseString.replace("]", "");
             responseString = responseString.replace("\"", "");
@@ -36,9 +37,11 @@ public class BuildingCommunication {
                                              String name,
                                              String location,
                                              String openingHours) {
+        /*
         name = name.replace(" ", "%20");
         location = location.replace(" ", "%20");
         openingHours = openingHours.replace(" ", "%20");
+         */
         String url = "/buildings/add?buildingCode=" + buildingCode
                 + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours;
 
