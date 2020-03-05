@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Restaurant {
     private String name;
@@ -9,6 +10,12 @@ public class Restaurant {
     private String openingHours;
     private List<String> menu;
 
+    /** Creates a new Restaurant object
+     * @param name String with the name of the Restaurant
+     * @param buildingCode the code of the building the Restaurant is in
+     * @param openingHours a String with format hh:mm-hh:mm
+     * @param menu a List of foods
+     */
     public Restaurant(String name,
                       Integer buildingCode,
                       String openingHours,
@@ -61,5 +68,10 @@ public class Restaurant {
         return name.equals(restaurant.name)
                 && buildingCode == restaurant.buildingCode
                 && openingHours.equals(restaurant.openingHours);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, buildingCode, openingHours, menu);
     }
 }
