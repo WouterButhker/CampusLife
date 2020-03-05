@@ -6,19 +6,36 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.LoginScreenController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.RegisterScreenController">
   <children>
-    <Pane layoutX="67.0" layoutY="32.0" prefHeight="342.0" prefWidth="467.0">
+    <Pane layoutX="0.0" layoutY="0.0" prefHeight="400.0" prefWidth="600.0">
       <children>
-        <Label layoutX="151.0" layoutY="21.0" text="Create Account" />
-        <Label layoutX="151.0" layoutY="82.0" text="Username" />
-        <Label layoutX="151.0" layoutY="138.0" text="Password" />
-        <PasswordField fx:id="passwordField" layoutX="151.0" layoutY="158.0" prefWidth="200.0" />
-        <TextField fx:id="usernameField" layoutX="151.0" layoutY="102.0" prefWidth="200.0" />
-        <Button id="loginButton" fx:id="registerButton" layoutX="198.0" layoutY="254.0" mnemonicParsing="false" onAction="#onRegisterClicked" text="Register" />
-        <Label layoutX="151.0" layoutY="192.0" text="Re-enter password" />
-        <PasswordField id="passwordField" fx:id="reEnterPasswordField" layoutX="151.0" layoutY="212.0" prefWidth="200.0" />
-        <Button fx:id="backButton" layoutX="7.0" layoutY="8.0" mnemonicParsing="false" onAction="#onBackClicked" text="&lt;-" />
+        <Label layoutX="210.0" layoutY="83.0" text="Create Account" />
+        <Label layoutX="210.0" layoutY="144.0" text="Username" />
+        <Label layoutX="210.0" layoutY="200.0" text="Password" />
+        <PasswordField fx:id="passwordField" layoutX="210.0" layoutY="220.0" prefWidth="200.0" />
+        <TextField fx:id="usernameField" layoutX="210.0" layoutY="164.0" prefWidth="200.0" />
+        <Button id="loginButton" fx:id="registerButton" layoutX="257.0" layoutY="316.0" mnemonicParsing="false" onAction="#onRegisterClicked" text="Register" />
+        <Label layoutX="210.0" layoutY="254.0" text="Re-enter password" />
+        <PasswordField id="passwordField" fx:id="reEnterPasswordField" layoutX="210.0" layoutY="274.0" prefWidth="200.0" />
+        <Pane id="popUp" fx:id="popupPassword1" layoutX="210.0" layoutY="83.0" prefHeight="144.0" prefWidth="200.0" visible="false">
+          <children>
+            <Button id="okButton" fx:id="okButtonPassword1" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#onOkPassword1Clicked" text="Ok" />
+            <TextArea layoutX="0.0" layoutY="0.0" prefHeight="102.9999915527369" prefWidth="200.0" text="The passwords you entered did not match, please re-type your password" visible="true" wrapText="true" />
+          </children>
+        </Pane>
+        <Pane id="popUp" fx:id="popupUsername" layoutX="210.0" layoutY="83.0" prefHeight="144.0" prefWidth="200.0" visible="false">
+          <children>
+            <Button id="okButton" fx:id="okButtonUsername" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#onOkUsernameClicked" text="Ok" />
+            <TextArea layoutX="0.0" layoutY="0.0" prefHeight="102.9999915527369" prefWidth="200.0" text="  Please enter a username" wrapText="true" />
+          </children>
+        </Pane>
+        <Pane id="popUp" fx:id="popupPassword2" layoutX="210.0" layoutY="83.0" prefHeight="144.0" prefWidth="200.0" visible="false">
+          <children>
+            <Button id="okButton" fx:id="okButtonPassword2" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#onOkPassword2Clicked" text="Ok" />
+            <TextArea layoutX="0.0" layoutY="0.0" prefHeight="102.9999915527369" prefWidth="200.0" text="  Please enter a password" wrapText="true" />
+          </children>
+        </Pane>
       </children>
     </Pane>
   </children>

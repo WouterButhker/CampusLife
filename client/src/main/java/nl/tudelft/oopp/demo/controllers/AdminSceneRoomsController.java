@@ -34,14 +34,17 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
+import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Room;
-
+import nl.tudelft.oopp.demo.widgets.AppBar;
 
 
 public class AdminSceneRoomsController implements Initializable {
 
     @FXML
-    private Button modifyRoomsExit;
+    private VBox mainBox;
 
     @FXML
     private TextField roomCodeInput;
@@ -80,6 +83,11 @@ public class AdminSceneRoomsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadBuildings();
         loadRights();
+        addAppBar();
+    }
+
+    private void addAppBar() {
+        mainBox.getChildren().add(0, new AppBar());
     }
 
     private void loadBuildings() {
@@ -109,16 +117,6 @@ public class AdminSceneRoomsController implements Initializable {
             rights[2] = "Admin";
             rightsList.getItems().addAll(rights);
         }
-    }
-
-    @FXML
-    private void modifyRoomsExit() throws IOException {
-        Stage stage = (Stage) modifyRoomsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminScene.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     @FXML
@@ -175,7 +173,7 @@ public class AdminSceneRoomsController implements Initializable {
                     + buildingList.getValue().split(" ")[1]);
             try {
                 refreshRoomsPage();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.out.println("Refresh failed");
             }
         } else {
@@ -212,18 +210,16 @@ public class AdminSceneRoomsController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(modifyRoomsExit.getScene().getWindow());
+        //stage.initOwner(buildingList.getScene().getWindow());
         stage.showAndWait();
     }
 
     @FXML
-    private void refreshRoomsPage() throws IOException {
-        Stage stage = (Stage) modifyRoomsExit.getScene().getWindow();
-        Parent root;
-        root = FXMLLoader.load(getClass().getResource("/AdminSceneRooms.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    private void refreshRoomsPage() throws Exception {
+        RoutingScene scene = (RoutingScene) mainBox.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneRooms.fxml"));
+        scene.popRoute();
+        scene.pushRoute(route);
     }
 
     private void loadRooms(String buildingCodeString) {
@@ -393,7 +389,7 @@ public class AdminSceneRoomsController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(modifyRoomsExit.getScene().getWindow());
+        stage.initOwner(buildingList.getScene().getWindow());
         stage.showAndWait();
     }
 
