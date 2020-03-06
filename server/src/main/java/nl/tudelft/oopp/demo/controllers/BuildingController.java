@@ -36,8 +36,9 @@ public class BuildingController {
     String addNewBuilding(@RequestParam Integer buildingCode,
                           @RequestParam String name,
                           @RequestParam String location,
-                          @RequestParam String openingHours) {
-        Building building = new Building(buildingCode, name, location, openingHours);
+                          @RequestParam String openingHours,
+                          @RequestParam Integer bikes) {
+        Building building = new Building(buildingCode, name, location, openingHours, bikes);
         buildingRepository.save(building);
         return "Saved";
     }
