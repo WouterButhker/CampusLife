@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,10 +16,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -60,6 +60,12 @@ public class AdminSceneBuildingsController implements Initializable {
 
     @FXML
     private VBox buildingsList;
+
+    @FXML
+    private CheckBox hasBikeStationCheck;
+
+    @FXML
+    private TextField bikeAmountInput;
 
 
     @Override
@@ -292,6 +298,35 @@ public class AdminSceneBuildingsController implements Initializable {
         HBox openingHours = new HBox(spacer4, from, spacer5, to);
         openingHours.setPadding(new Insets(10, 0,10, 0));
 
+        //HBox for the text saying "Bike station:"
+        Pane spacer8 = new Pane();
+        spacer8.setPrefSize(160, 20);
+        Label bikeStationText = new Label("Bike station:");
+        bikeStationText.setPrefSize(75, 20);
+        HBox bikeStationTextBox = new HBox(spacer8, bikeStationText);
+        fromToBox.setPadding(new Insets(10, 0, 0, 0));
+
+        //HBox for the CheckBox and the TextField
+        Pane spacer9 = new Pane();
+        spacer9.setPrefSize(100, 20);
+        CheckBox hasBikeStationCB = new CheckBox("has bike station");
+        TextField bikesAmountInput = new TextField();
+        bikesAmountInput.setPromptText("Amount");
+        bikesAmountInput.setMaxWidth(60);
+        bikesAmountInput.setVisible(hasBikeStationCB.isSelected());
+        Pane spacer10 = new Pane();
+        spacer10.setPrefSize(20, 20);
+        hasBikeStationCB.setOnAction((value) -> {
+            if (hasBikeStationCB.isSelected()) {
+                bikesAmountInput.setVisible(true);
+            }
+            else {
+                bikesAmountInput.setVisible(false);
+            }
+        });
+        HBox bikeStationInput = new HBox(spacer9, hasBikeStationCB, spacer10, bikesAmountInput);
+        bikeStationInput.setPadding(new Insets(10, 0, 0, 0));
+
         Button submit = new Button("submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
@@ -319,7 +354,8 @@ public class AdminSceneBuildingsController implements Initializable {
         });
         root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox,
                 nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox,
-                fromToBox, openingHours, submitBox);
+                fromToBox, openingHours, bikeStationTextBox, bikeStationInput,
+                submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -350,6 +386,16 @@ public class AdminSceneBuildingsController implements Initializable {
             result.setPadding(new Insets(10, 100, 0,100));
         }
         return result;
+    }
+
+    @FXML
+    private void hasBikeStation() {
+        if (hasBikeStationCheck.isSelected()) {
+            bikeAmountInput.setVisible(true);
+        }
+        else {
+            bikeAmountInput.setVisible(false);
+        }
     }
 }
 
