@@ -40,7 +40,7 @@ public class CalendarWidget extends VBox {
     private Listener listener;
 
     public CalendarWidget() {
-        setStyle("-fx-background-color: -primary-color-light;");
+        setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
         calendarGrid = new GridPane();
         calendarGrid.setHgap(8);
         calendarGrid.setVgap(8);
@@ -124,12 +124,24 @@ public class CalendarWidget extends VBox {
         currentMonth.add(Calendar.MONTH, 1);
 
         redrawCalendar();
+
+        Calendar selected = (Calendar) currentMonth.clone();
+        selected.set(Calendar.DAY_OF_MONTH, selectedDay + 1);
+        if (listener != null) {
+            listener.onDayClicked(selected);
+        }
     }
 
     private void prevMonth() {
         currentMonth.add(Calendar.MONTH, -1);
 
         redrawCalendar();
+
+        Calendar selected = (Calendar) currentMonth.clone();
+        selected.set(Calendar.DAY_OF_MONTH, selectedDay + 1);
+        if (listener != null) {
+            listener.onDayClicked(selected);
+        }
     }
 
     public void setMonth(int month, int year) {

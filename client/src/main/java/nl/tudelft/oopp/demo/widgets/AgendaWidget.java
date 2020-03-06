@@ -37,7 +37,7 @@ public class AgendaWidget extends VBox {
     public AgendaWidget(Listener listener) {
         this.listener = listener;
 
-        setStyle("-fx-background-color: -primary-color-light;");
+        setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
         setPadding(new Insets(8));
         setSpacing(8);
         setAlignment(Pos.CENTER);
@@ -95,6 +95,8 @@ public class AgendaWidget extends VBox {
 
     public void removeSelection() {
         selectedBlock = -1;
+
+        redrawBlocks();
     }
 
     private void scrollDown() {
