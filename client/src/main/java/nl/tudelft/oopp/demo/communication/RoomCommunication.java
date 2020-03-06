@@ -1,7 +1,11 @@
 package nl.tudelft.oopp.demo.communication;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 
 public class RoomCommunication {
@@ -24,8 +28,10 @@ public class RoomCommunication {
                                          Boolean hasTV,
                                          Integer rights,
                                          Integer building) {
+        /*
         roomCode = roomCode.replace(" ", "%20");
         name = name.replace(" ", "%20");
+         */
         String url = "/rooms/add?roomCode=" + roomCode
                 + "&name=" + name + "&capacity=" + capacity + "&hasWhiteboard=" + hasWhiteboard
                 + "&hasTV=" + hasTV + "&rights=" + rights + "&building=" + building;
@@ -69,40 +75,34 @@ public class RoomCommunication {
         return "";
     }
 
-    private static Room parseRoom(String inputRoom) {
-        String[] building = inputRoom.split(",\"building\":");
-        inputRoom = building[0];
-        inputRoom = inputRoom.replace("{", "");
-        inputRoom = inputRoom.replace("}", "");
-        String[] parameters = inputRoom.split(",");
-        for (int i = 0; i < parameters.length; i++) {
-            String[] miniParams = parameters[i].split(":");
-            miniParams[1] = miniParams[1].replace("\"", "");
-            parameters[i] = miniParams[1];
-        }
-        String code = parameters[0];
-        String name = parameters[1];
-        Integer capacity = Integer.parseInt(parameters[2]);
-        boolean hasWhiteboard = Boolean.parseBoolean(parameters[3]);
-        boolean hasTV = Boolean.parseBoolean(parameters[4]);
-        Integer rights = Integer.parseInt(parameters[5]);
-        Integer buildingCode = null;
-        if (!building[1].equals("null")) {
-            buildingCode = BuildingCommunication.parseBuilding(building[1]).getCode();
-        }
+    /**
+     * Parses a Room from a JSON object.
+     * @param inputRoom JSON object with room attributes
+     * @return Room object
+     */
+    public static Room parseRoom(JsonObject inputRoom) {
+        String code = inputRoom.get("roomCode").getAsString();
+        String name = inputRoom.get("name").getAsString();
+        Integer capacity = inputRoom.get("capacity").getAsInt();
+        boolean hasWhiteboard = inputRoom.get("hasWhiteboard").getAsBoolean();
+        boolean hasTV = inputRoom.get("hasTV").getAsBoolean();
+        Integer rights = inputRoom.get("rights").getAsInt();
+        Integer buildingCode = BuildingCommunication.parseBuilding(
+                inputRoom.get("building").getAsJsonObject()).getCode();
         return new Room(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
     }
 
+    /**
+     * Parses a List of Rooms from a string input.
+     * @param inputRooms a JSON string as an array of rooms.
+     * @return List of Rooms
+     */
     private static List<Room> parseRooms(String inputRooms) {
+        JsonParser jsonParser = new JsonParser();
+        JsonArray jsonArray = jsonParser.parse(inputRooms).getAsJsonArray();
         List<Room> listOfRooms = new ArrayList<>();
-        inputRooms = inputRooms.replace("[", "");
-        inputRooms = inputRooms.replace("]", "");
-        if (inputRooms.equals("")) {
-            return listOfRooms;
-        }
-        String[] listOfStrings = inputRooms.split("(},)");
-        for (int i = 0; i < listOfStrings.length; i++) {
-            listOfRooms.add(parseRoom(listOfStrings[i]));
+        for (int i = 0; i < jsonArray.size(); i++) {
+            listOfRooms.add(parseRoom(jsonArray.get(i).getAsJsonObject()));
         }
         return listOfRooms;
     }
@@ -114,7 +114,6 @@ public class RoomCommunication {
     public static List<Room> getAllRooms() {
         String url = "/rooms/all";
         try {
-
             return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,10 +136,4 @@ public class RoomCommunication {
         }
         return "-1";
     }
-
-
-
-
-
-
 }

@@ -1,6 +1,14 @@
 package nl.tudelft.oopp.demo.communication;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import nl.tudelft.oopp.demo.entities.Reservation;
+import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ReservationCommunication {
@@ -30,57 +38,37 @@ public class ReservationCommunication {
         }
     }
 
-    /*
-    public static Reservation parseReservation(String inputReservation) {
-        inputReservation = inputReservation.replace("{", "");
-        inputReservation = inputReservation.replace("}", "");
-        String[] parameters = inputReservation.split(",");
-        for (int i = 0; i < parameters.length; i++) {
-            String[] miniParams = parameters[i].split(":");
-            miniParams[1] = miniParams[1].replace("\"", "");
-            parameters[i] = miniParams[1];
-            if (i == 3)
-            {
-                miniParams[3] = miniParams[3].replace("\"", "");
-                parameters[i] += ":" + miniParams[2] + ":" + miniParams[3];
-            }
-            System.out.println(parameters[i]);
-        }
-        Integer id = Integer.parseInt(parameters[0]);
-        Integer user = Integer.parseInt(parameters[1]);
-        String room = parameters[2];
-        String timeSlot = parameters[3];
+    private static Reservation parseReservation(JsonObject inputReservation) {
+        Integer id = inputReservation.get("id").getAsInt();
+        System.out.println(id);
+        Integer user = inputReservation.get(inputReservation.get("user").getAsJsonObject().get("id").getAsString()).getAsInt();
+        System.out.println(user);
+        String room = RoomCommunication.parseRoom(inputReservation.get("room").getAsJsonObject()).getCode();
+        System.out.println(room);
+        String timeSlot = inputReservation.get("timeSlot").getAsString();
+        System.out.println(timeSlot);
         return new Reservation(id, user, room, timeSlot);
     }
 
     private static List<Reservation> parseReservations(String inputReservations) {
+        JsonParser jsonParser = new JsonParser();
+        JsonArray jsonArray = jsonParser.parse(inputReservations).getAsJsonArray();
         List<Reservation> listOfReservations = new ArrayList<>();
-        inputReservations = inputReservations.replace("[", "");
-        inputReservations = inputReservations.replace("]", "");
-        if (inputReservations.equals("")) {
-            return listOfReservations;
-        }
-        String[] listOfStrings = inputReservations.split("(},)");
-        for (int i = 0; i < listOfStrings.length; i++) {
-            listOfReservations.add(parseReservation()r(listOfStrings[i]));
+        for (int i = 0; i < jsonArray.size(); i++) {
+            listOfReservations.add(parseReservation(jsonArray.get(i).getAsJsonObject()));
         }
         return listOfReservations;
     }
 
     public static List<Reservation> getAllReservations() {
-        URI myUri = URI.create("http://localhost:8080/reservations/all");
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/reservations/all";
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return parseReservations(response.body());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    */
+
 
 }

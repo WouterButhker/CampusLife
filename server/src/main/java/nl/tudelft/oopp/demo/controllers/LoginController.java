@@ -2,7 +2,9 @@ package nl.tudelft.oopp.demo.controllers;
 
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class LoginController {
@@ -10,6 +12,12 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Login method.
+     * @param user the username
+     * @param pass the password
+     * @return response for the login attempt
+     */
     @GetMapping(path = "/login")
     public String login(@RequestParam String user, @RequestParam String pass) {
         if (user.equals("admin")) {

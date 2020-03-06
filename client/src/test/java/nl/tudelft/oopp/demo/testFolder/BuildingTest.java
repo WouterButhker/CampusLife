@@ -1,24 +1,18 @@
-package nl.tudelft.oopp.demo;
+package nl.tudelft.oopp.demo.testFolder;
 
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.repositories.BuildingRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
-public class BuildingTest {
-    @Autowired
-    private BuildingRepository buildingRepository;
+class BuildingTest {
 
     private Integer code;
     private String name;
     private String location;
     private String openingHours;
+    private String image;
     private Building b;
 
     @BeforeEach
@@ -27,8 +21,9 @@ public class BuildingTest {
         name = "The Arena";
         location = "CityStreetRoute";
         openingHours = "08:00-22:00";
+        image = "https://cdn.bulbagarden.net/upload/3/36/Canalave_Gym_anime.png";
 
-        b = new Building(code, name, location, openingHours);
+        b = new Building(code, name, location, openingHours, image);
     }
 
     @Test
@@ -37,14 +32,14 @@ public class BuildingTest {
     }
 
     @Test
-    void getBuildingCodeTest() {
-        assertEquals(code, b.getBuildingCode());
+    void getCodeTest() {
+        assertEquals(code, b.getCode());
     }
 
     @Test
-    void setBuildingCodeTest() {
-        b.setBuildingCode(1337);
-        assertEquals(1337, b.getBuildingCode());
+    void setCodeTest() {
+        b.setCode(1337);
+        assertEquals(1337, b.getCode());
     }
 
     @Test
@@ -81,34 +76,29 @@ public class BuildingTest {
     }
 
     @Test
+    void getImageTest() {
+        assertEquals(image, b.getImage());
+    }
+
+    @Test
+    void setImageTest() {
+        b.setImage("https://cdn.bulbagarden.net/upload/7/79/Canalave_Gym_Battlefield.png");
+        assertEquals("https://cdn.bulbagarden.net/upload/7/79/Canalave_Gym_Battlefield.png", b.getImage());
+    }
+
+    @Test
     void toStringTest() {
-        assertEquals("[\"buildingCode\":\"" + code + "\",\"name\":\"" + name
-                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours + "\"]"
-                , b.toString());
+        assertEquals("{" + code + ", " + name + ", " + location + ", " + openingHours + ", " + "image" + "}", b.toString());
     }
 
     @Test
     void equalsTest() {
-        Building bCopy = new Building(code, name, location, openingHours);
+        Building bCopy = new Building(code, name, location, openingHours, image);
         assertEquals(b, bCopy);
     }
 
     @Test
     void hashCodeTest() {
         assertTrue(Integer.class.isInstance(b.hashCode()));
-    }
-
-    @Test
-    public void saveAndRetrieveQuote() {
-        Integer buildingCode = 1;
-        String name = "Delete Me";
-        String location = "Please";
-        String openingHours = "08:00-22:00";
-        Building building = new Building(buildingCode, name, location, openingHours);
-        buildingRepository.save(building);
-
-        Building building2 = buildingRepository.getOne((Integer) 1);
-        Assertions.assertEquals(building, building2);
-        System.out.println(building2.toString());
     }
 }

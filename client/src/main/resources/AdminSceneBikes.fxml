@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminSceneBikes">
+   <children>
+      <TextField layoutX="47.0" layoutY="107.0" promptText="Building selector" />
+      <ToolBar prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: lightblue;">
+         <items>
+            <Label alignment="CENTER" contentDisplay="TOP" text="Somehow put Willem's toolbar here">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </Label>
+         </items>
+      </ToolBar>
+      <Button layoutX="396.0" layoutY="107.0" mnemonicParsing="false" text="Update" />
+      <Label layoutX="47.0" layoutY="133.0" text="Amount of bikes:" />
+      <TextField layoutX="220.0" layoutY="107.0" promptText="New amount of bikes" />
+   </children>
+</AnchorPane>

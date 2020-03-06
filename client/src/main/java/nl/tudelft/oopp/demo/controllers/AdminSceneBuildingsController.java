@@ -182,7 +182,6 @@ public class AdminSceneBuildingsController implements Initializable {
             } catch (Exception e) {
                 System.out.println("Refresh failed");
             }
-
         } else {
             submitStatus.setText("The input is wrong or not all fields are entered");
         }
@@ -203,6 +202,7 @@ public class AdminSceneBuildingsController implements Initializable {
                 Button button = (Button) event.getSource();
                 Stage stage = (Stage) button.getScene().getWindow();
                 stage.close();
+                loadBuildings();
             }
         });
         VBox buildingBox = new VBox(submitStatus, back);
@@ -214,7 +214,7 @@ public class AdminSceneBuildingsController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(buildingsList.getScene().getWindow());
+        //stage.initOwner(mainBox.getScene().getWindow());
         stage.showAndWait();
     }
 
@@ -306,7 +306,6 @@ public class AdminSceneBuildingsController implements Initializable {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
                     stage.close();
-                    loadBuildings();
                 } else {
                     try {
                         root.getChildren().remove(11);
@@ -325,7 +324,7 @@ public class AdminSceneBuildingsController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(buildingsList.getScene().getWindow());
+        stage.initOwner(mainBox.getScene().getWindow());
         stage.showAndWait();
     }
 
