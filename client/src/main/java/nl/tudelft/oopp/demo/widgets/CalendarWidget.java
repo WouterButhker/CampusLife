@@ -39,6 +39,8 @@ public class CalendarWidget extends VBox {
     private int selectedDay;
     private Listener listener;
 
+    private Rectangle filler;
+
     public CalendarWidget() {
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
         calendarGrid = new GridPane();
@@ -74,6 +76,10 @@ public class CalendarWidget extends VBox {
             });
             dateBoxes.add(dateBox);
         }
+
+        filler = new Rectangle();
+        filler.setFill(Color.TRANSPARENT);
+        GridPane.setConstraints(filler, 6, 7, 1, 1);
 
         leftArrow = new Button();
         leftArrow.getStyleClass().add("left-arrow");
@@ -159,6 +165,8 @@ public class CalendarWidget extends VBox {
         for (DateBox dateBox : dateBoxes) {
             dateBox.setPrefWidth(newWidth / 7);
         }
+        filler.setWidth(newWidth / 7);
+        filler.setHeight(newWidth / 7);
 
         monthTextContainer.setPrefWidth(newWidth / 7 * 5 + 8 * 6);
         monthTextContainer.setPrefHeight(newWidth / 7);
@@ -170,6 +178,8 @@ public class CalendarWidget extends VBox {
 
     private void redrawCalendar() {
         calendarGrid.getChildren().clear();
+
+        calendarGrid.getChildren().add(filler);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
         monthText.setText(dateFormat.format(currentMonth.getTime()));
