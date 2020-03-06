@@ -64,4 +64,77 @@ public class RoomController {
     public Integer deleteRoom(@RequestParam String roomCode) {
         return roomRepository.deleteRoomWithCode(roomCode);
     }
+
+    @GetMapping(path = "/filter/rights")
+    public List<Room> getAllRoomsWithTV(@RequestParam Building building,
+                                        @RequestParam Integer rights) {
+        return roomRepository.allRoomsWithRights(building, rights);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithCapacity")
+    public List<Room> getAllRoomsWithWhiteBoard(@RequestParam Building building,
+                                                @RequestParam Integer lowerCapacity,
+                                                @RequestParam Integer upperCapacity) {
+        return roomRepository.allRoomsWithCapacity(building, lowerCapacity, upperCapacity);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithTV")
+    public List<Room> getAllRoomsWithTV(@RequestParam Building building) {
+        return roomRepository.allRoomsWithTV(building);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithWhiteBoard")
+    public List<Room> getAllRoomsWithWhiteBoard(@RequestParam Building building) {
+        return roomRepository.allRoomsWithWhiteBoard(building);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithWhiteBoardAndRights")
+    public List<Room> getAllRoomsWithWhiteBoardAndRights(@RequestParam Building building,
+                                                         @RequestParam Integer myRights) {
+        return roomRepository.allRoomsWithWhiteBoardAndRights(building, myRights);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithTVAndRights")
+    public List<Room> getAllRoomsWithTVAndRights(@RequestParam Building building,
+                                                 @RequestParam Integer myRights) {
+        return roomRepository.allRoomsWithTVAndRights(building, myRights);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithCapacityAndRights")
+    public List<Room> getAllRoomsWithCapacityAndRights(@RequestParam Building building,
+                                                @RequestParam Integer lowerCapacity,
+                                                @RequestParam Integer upperCapacity,
+                                                @RequestParam Integer myRights) {
+        return roomRepository.allRoomsWithCapacityAndRights(building, lowerCapacity, upperCapacity, myRights);
+    }
+
+    @GetMapping(path = "/filter/allRoomsWithCapacityAndRightsAndWhiteBoard")
+    public List<Room> getAllRoomsWithCapacityAndRightsAndWhiteBoard(@RequestParam Building building,
+                                                @RequestParam Integer lowerCapacity,
+                                                @RequestParam Integer upperCapacity,
+                                                @RequestParam Integer myRights) {
+        return roomRepository.allRoomsWithCapacityAndRightsAndWhiteBoard(building, lowerCapacity, upperCapacity, myRights);
+    }
+
+    @GetMapping(path = "/filter/allRoomsWithCapacityAndRightsAndTV")
+    public List<Room> getAllRoomsWithCapacityAndRightsAndTV(@RequestParam Building building,
+                                                            @RequestParam Integer lowerCapacity,
+                                                            @RequestParam Integer upperCapacity,
+                                                            @RequestParam Integer myRights) {
+        return roomRepository.allRoomsWithCapacityAndRightsAndTV(building, lowerCapacity, upperCapacity, myRights);
+    }
+
+    @GetMapping(path = "/filter/allRoomsWithRightsAndWhiteBoardAndTV")
+    public List<Room> getAllRoomsWithRightsAndWhiteBoardAndTV(@RequestParam Building building,
+                                                              @RequestParam Integer myRights) {
+        return roomRepository.allRoomsWithRightsAndWhiteBoardAndTV(building, myRights);
+    }
+
+    @GetMapping(path = "/filter/allRoomsWithCapacityAndRightsAndWhiteBoardAndTV")
+    public List<Room> getAllRoomsWithCapacityAndRightsAndWhiteBoardAndTV(@RequestParam Building building,
+                                                                    @RequestParam Integer lowerCapacity,
+                                                                    @RequestParam Integer upperCapacity,
+                                                                    @RequestParam Integer myRights) {
+        return roomRepository.allRoomsWithCapacityAndRightsAndWhiteBoardAndTV(building, lowerCapacity, upperCapacity, myRights);
+    }
 }

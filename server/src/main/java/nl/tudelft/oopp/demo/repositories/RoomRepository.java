@@ -18,4 +18,37 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     @Modifying
     @Query("DELETE FROM Room r WHERE r.roomCode = ?1")
     Integer deleteRoomWithCode(String myRoom);
+
+    @Query("SELECT r from Room r WHERE r.hasTV = true AND r.building = ?1")
+    List<Room> allRoomsWithTV(Building myBuilding);
+
+    @Query("SELECT r from Room r WHERE r.hasWhiteboard = true AND r.building = ?1")
+    List<Room> allRoomsWithWhiteBoard(Building myBuilding);
+
+    @Query("SELECT r from Room r WHERE r.rights <= ?2 AND r.building = ?1")
+    List<Room> allRoomsWithRights(Building myBuilding, Integer myRoomRights);
+
+    @Query("SELECT r from Room r WHERE r.capacity >= ?2 AND r.capacity <= ?3 AND r.building = ?1")
+    List<Room> allRoomsWithCapacity(Building myBuilding, Integer lowerCapacity, Integer upperCapacity);
+
+    @Query("SELECT r from Room r WHERE r.rights <= ?2 AND r.building = ?1 AND r.hasWhiteBoard = true")
+    List<Room> allRoomsWithWhiteBoardAndRights(Building myBuilding, Integer myRoomRights);
+
+    @Query("SELECT r from Room r WHERE r.rights <= ?2 AND r.building = ?1 AND r.hasTV = true")
+    List<Room> allRoomsWithTVAndRights(Building myBuilding, Integer myRoomRights);
+
+    @Query("SELECT r from Room r WHERE r.capacity >= ?2 AND r.capacity <= ?3 AND r.building = ?1 AND r.rights <= ?4")
+    List<Room> allRoomsWithCapacityAndRights(Building myBuilding, Integer lowerCapacity, Integer upperCapacity, Integer myRights);
+
+    @Query("SELECT r from Room r WHERE r.capacity >= ?2 AND r.capacity <= ?3 AND r.building = ?1 AND r.rights <= ?4 AND r.hasWhiteBoard = true")
+    List<Room> allRoomsWithCapacityAndRightsAndWhiteBoard(Building myBuilding, Integer lowerCapacity, Integer upperCapacity, Integer myRights);
+
+    @Query("SELECT r from Room r WHERE r.capacity >= ?2 AND r.capacity <= ?3 AND r.building = ?1 AND r.rights <= ?4 AND r.hasTV = true")
+    List<Room> allRoomsWithCapacityAndRightsAndTV(Building myBuilding, Integer lowerCapacity, Integer upperCapacity, Integer myRights);
+
+    @Query("SELECT r from Room r WHERE r.rights <= ?2 AND r.building = ?1 AND r.hasWhiteBoard = true AND r.hasTV = true")
+    List<Room> allRoomsWithRightsAndWhiteBoardAndTV(Building building, Integer myRights);
+
+    @Query("SELECT r from Room r WHERE r.capacity >= ?2 AND r.capacity <= ?3 AND r.building = ?1 AND r.rights <= ?4 AND r.hasWhiteBoard = true AND r.hasTV = true")
+    List<Room> allRoomsWithCapacityAndRightsAndWhiteBoardAndTV(Building myBuilding, Integer lowerCapacity, Integer upperCapacity, Integer myRights);
 }
