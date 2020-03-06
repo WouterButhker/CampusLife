@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
@@ -36,10 +37,9 @@ public class LoginScreenController {
     @FXML
     private TextField usernameField;
 
-
     @FXML
     void onLoginClicked(ActionEvent event) {
-        ServerCommunication.login(usernameField.getText(), passwordField.getText());
+        AuthenticationCommunication.login(usernameField.getText(), passwordField.getText());
         RoutingScene routingScene = (RoutingScene) passwordField.getScene();
         routingScene.pushRoute(new MainMenuRoute());
 
