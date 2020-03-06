@@ -20,6 +20,26 @@
     -fx-graphic: url('/images/arrow_right.png');
 }
 
+.up-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_up.png');
+}
+
+.up-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_up.png');
+}
+
+.down-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_down.png');
+}
+
+.down-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_down.png');
+}
+
 .available-date-box {
     -fx-background-color: -secondary-color;
     -fx-background-radius: 8;
@@ -48,4 +68,19 @@
 
 .otherday-date-text {
     -fx-fill: -secondary-color-text;
+}
+
+.available-agenda-block {
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.unavailable-agenda-block {
+    -fx-background-color: -secondary-color-light;
+    -fx-background-radius: 8;
+}
+
+.selected-agenda-block {
+    -fx-background-color: -accent-color;
+    -fx-background-radius: 8;
 }

@@ -102,8 +102,8 @@ public class CalendarWidget extends VBox {
 
         redrawCalendar();
 
-        resizeDisplay(getMaxWidth());
-        maxWidthProperty().addListener((obs, oldWidth, newWidth) -> {
+        resizeDisplay(getPrefWidth());
+        prefWidthProperty().addListener((obs, oldWidth, newWidth) -> {
             resizeDisplay(newWidth.doubleValue());
         });
     }
@@ -146,7 +146,7 @@ public class CalendarWidget extends VBox {
             dateBox.setPrefWidth(newWidth / 7);
         }
 
-        monthTextContainer.setPrefWidth(newWidth / 7 * 5);
+        monthTextContainer.setPrefWidth(newWidth / 7 * 5 + 8 * 6);
         monthTextContainer.setPrefHeight(newWidth / 7);
         leftArrow.setPrefWidth(newWidth / 7);
         leftArrow.setMinHeight(newWidth / 7);
@@ -207,7 +207,7 @@ public class CalendarWidget extends VBox {
             createComponents();
 
             resizeDisplay(getWidth());
-            widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            prefWidthProperty().addListener((obs, oldWidth, newWidth) -> {
                 resizeDisplay(newWidth.doubleValue());
             });
         }
@@ -249,7 +249,7 @@ public class CalendarWidget extends VBox {
             createComponents();
 
             resizeDisplay(getWidth());
-            widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            prefWidthProperty().addListener((obs, oldWidth, newWidth) -> {
                 resizeDisplay(newWidth.doubleValue());
             });
 
