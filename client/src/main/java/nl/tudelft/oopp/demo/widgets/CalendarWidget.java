@@ -65,8 +65,10 @@ public class CalendarWidget extends VBox {
                 public void handle(MouseEvent event) {
                     setSelectedDay(finalI + 1);
 
+                    Calendar selected = (Calendar) currentMonth.clone();
+                    selected.set(Calendar.DAY_OF_MONTH, finalI + 1);
                     if (listener != null) {
-                        listener.onDayClicked(selectedDay);
+                        listener.onDayClicked(selected);
                     }
                 }
             });
@@ -324,6 +326,6 @@ public class CalendarWidget extends VBox {
     }
 
     public interface Listener {
-        void onDayClicked(int day);
+        void onDayClicked(Calendar day);
     }
 }
