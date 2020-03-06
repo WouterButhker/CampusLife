@@ -82,6 +82,7 @@ public class RoomReservationRoute extends Route {
         horizontalContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
             if (newScene != null) {
                 resizeDisplay(newScene.getWidth());
+                agendaWidget.setPrefHeight(newScene.getHeight() * 0.65);
                 newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
                     resizeDisplay(newWidth.doubleValue());
                 });

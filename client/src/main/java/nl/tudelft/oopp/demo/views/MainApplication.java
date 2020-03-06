@@ -15,7 +15,7 @@ public class MainApplication extends Application {
         RoutingScene routingScene = new RoutingScene(loginRoute);
 
         routingScene.getStylesheets().add("css/TextStyles.css");
-        primaryStage.setMaximized(true);
+        routingScene.getStylesheets().add("css/calendar.css");
         primaryStage.setScene(routingScene);
         primaryStage.show();
     }
