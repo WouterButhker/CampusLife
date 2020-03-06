@@ -14,6 +14,7 @@ import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.CalendarWidget;
 
 public class RoomReservationRoute extends Route {
     private VBox rootElement;
@@ -67,6 +68,10 @@ public class RoomReservationRoute extends Route {
 
         horizontalContainer.setPadding(new Insets(16, 16, 16, 16));
         horizontalContainer.setSpacing(8);
+
+        CalendarWidget calendarWidget = new CalendarWidget();
+        calendarWidget.setMaxWidth(500);
+        rootElement.getChildren().add(calendarWidget);
     }
 
     @Override
