@@ -1,23 +1,15 @@
 package nl.tudelft.oopp.demo.views;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
-
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AgendaWidget;
@@ -94,7 +86,8 @@ public class RoomReservationRoute extends Route {
                     String fromString = format.format(fromTime.getTime());
                     String toString = format.format(toTime.getTime());
                     String timeslot = String.format("%s - %s", fromString, toString);
-                    ReservationCommunication.addReservationToDatabase(user, room.getCode(), timeslot);
+                    ReservationCommunication
+                            .addReservationToDatabase(user, room.getCode(), timeslot);
                     reservations.add(new Reservation(-1, user, room.getCode(), timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
@@ -139,8 +132,10 @@ public class RoomReservationRoute extends Route {
                     toTime.setTime(format.parse(toTimeString));
 
                     boolean sameDay =
-                            fromTime.get(Calendar.DAY_OF_YEAR) == selectedDate.get(Calendar.DAY_OF_YEAR)
-                            && fromTime.get(Calendar.YEAR) == selectedDate.get(Calendar.YEAR);
+                            (fromTime.get(Calendar.DAY_OF_YEAR)
+                                    == selectedDate.get(Calendar.DAY_OF_YEAR))
+                            && (fromTime.get(Calendar.YEAR)
+                                    == selectedDate.get(Calendar.YEAR));
 
                     System.out.println(sameDay);
                     System.out.println(fromTime.get(Calendar.HOUR_OF_DAY));

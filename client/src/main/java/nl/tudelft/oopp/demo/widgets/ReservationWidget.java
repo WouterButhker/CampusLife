@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,12 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.core.RoutingScene;
-import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class ReservationWidget extends VBox {
     private Room room;
@@ -37,6 +34,11 @@ public class ReservationWidget extends VBox {
     private Listener listener;
     private boolean reserveHidden = false;
 
+    /**
+     * Creates a new ReservationWidget.
+     * @param room the room for which the reservation will be made
+     * @param listener the listener who will listen to callbacks specified in the interface
+     */
     public ReservationWidget(Room room, Listener listener) {
         this.room = room;
 
@@ -91,6 +93,11 @@ public class ReservationWidget extends VBox {
         reserveButton.setVisible(!reserveHidden);
     }
 
+    /**
+     * Sets the from and to time to be displayed.
+     * @param from the beginning time of the reservation
+     * @param to the ending time of the reservation
+     */
     public void setPeriod(Calendar from, Calendar to) {
         this.from = from;
         this.to = to;

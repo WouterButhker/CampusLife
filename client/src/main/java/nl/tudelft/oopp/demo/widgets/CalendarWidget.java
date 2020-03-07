@@ -1,9 +1,12 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
@@ -14,16 +17,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.core.RoutingScene;
-import nl.tudelft.oopp.demo.entities.Reservation;
-import nl.tudelft.oopp.demo.views.RoomsListRoute;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
+/**
+ * The CalendarWidget is used to display a calendar whose dates can be selected.
+ */
 public class CalendarWidget extends VBox {
     private GridPane calendarGrid;
     private Calendar currentMonth;
@@ -42,6 +39,9 @@ public class CalendarWidget extends VBox {
 
     private Rectangle filler;
 
+    /**
+     * Creates a new CalendarWidget.
+     */
     public CalendarWidget() {
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
         calendarGrid = new GridPane();
@@ -118,9 +118,9 @@ public class CalendarWidget extends VBox {
     }
 
     private void setSelectedDay(int selectedDay) {
-        dateBoxes.get(this.selectedDay-1).setSelected(false);
+        dateBoxes.get(this.selectedDay - 1).setSelected(false);
         this.selectedDay = selectedDay;
-        dateBoxes.get(this.selectedDay-1).setSelected(true);
+        dateBoxes.get(this.selectedDay - 1).setSelected(true);
     }
 
     public void setListener(Listener listener) {
@@ -180,7 +180,8 @@ public class CalendarWidget extends VBox {
         calendarGrid.getChildren().addAll(dayBoxes);
 
         Calendar currentTime = Calendar.getInstance();
-        boolean isCurrentMonth = (currentMonth.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)
+        boolean isCurrentMonth =
+                (currentMonth.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)
             && (currentMonth.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)));
         int firstPosition = currentMonth.get(Calendar.DAY_OF_WEEK) - 2;
         if (firstPosition == -1) {

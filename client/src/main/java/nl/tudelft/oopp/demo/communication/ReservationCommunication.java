@@ -3,12 +3,10 @@ package nl.tudelft.oopp.demo.communication;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import nl.tudelft.oopp.demo.entities.Reservation;
-import nl.tudelft.oopp.demo.entities.Room;
-import org.springframework.http.ResponseEntity;
-
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.demo.entities.Reservation;
+import org.springframework.http.ResponseEntity;
 
 
 public class ReservationCommunication {
@@ -43,10 +41,14 @@ public class ReservationCommunication {
         System.out.println(id);
         Integer user = null;
         if (!inputReservation.get("user").isJsonNull()) {
-            user = Integer.parseInt(inputReservation.getAsJsonObject("user").get("id").getAsString());
+            user = Integer.parseInt(
+                    inputReservation.getAsJsonObject("user").get("id").getAsString()
+            );
         }
         //System.out.println(user);
-        String room = RoomCommunication.parseRoom(inputReservation.get("room").getAsJsonObject()).getCode();
+        String room = RoomCommunication.parseRoom(
+                inputReservation.get("room").getAsJsonObject()
+        ).getCode();
         System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
         System.out.println(timeSlot);
@@ -63,6 +65,10 @@ public class ReservationCommunication {
         return listOfReservations;
     }
 
+    /**
+     * Returns all reservations stored in the server.
+     * @return List with all the reservations
+     */
     public static List<Reservation> getAllReservations() {
         String url = "/reservations/all";
         try {
@@ -72,15 +78,5 @@ public class ReservationCommunication {
         }
         return null;
     }
-
-    public static void deleteAll() {
-        String url = "/reservations/delete";
-        try {
-            ServerCommunication.authenticatedRequest(url).getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }

@@ -1,11 +1,11 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -13,10 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.entities.Reservation;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AgendaWidget extends VBox {
     private static final int NUM_BLOCKS = 5;
@@ -36,6 +32,11 @@ public class AgendaWidget extends VBox {
     private List<AgendaBlock> agendaBlocks = new ArrayList<>();
     private boolean[] availabilites = new boolean[24];
 
+    /**
+     * Creates an AgendaWidget.
+     * @param listener the listener which listens to the callbacks
+     *                 specified in the interface
+     */
     public AgendaWidget(Listener listener) {
         this.listener = listener;
 
@@ -53,7 +54,11 @@ public class AgendaWidget extends VBox {
                     redrawBlocks();
 
                     if (listener != null) {
-                        listener.onBlockSelected(topBlock + finalI, topBlock + finalI + 1, availabilites[topBlock + finalI]);
+                        listener.onBlockSelected(
+                                topBlock + finalI,
+                                topBlock + finalI + 1,
+                                availabilites[topBlock + finalI]
+                        );
                     }
                 }
             });
@@ -95,12 +100,21 @@ public class AgendaWidget extends VBox {
         redrawBlocks();
     }
 
+    /**
+     * Sets which blocks of the agenda are available and which are not.
+     * Those who are not available have a different color
+     * @param availabilities an array of size 24 with availabilities for each hour
+     */
     public void setAvailabilities(boolean[] availabilities) {
         this.availabilites = availabilities;
 
         redrawBlocks();
     }
 
+    /**
+     * Removes the current selection of agenda block.
+     * This restores it to its normal color
+     */
     public void removeSelection() {
         selectedBlock = -1;
 
