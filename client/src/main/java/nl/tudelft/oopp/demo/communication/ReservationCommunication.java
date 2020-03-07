@@ -41,8 +41,11 @@ public class ReservationCommunication {
     private static Reservation parseReservation(JsonObject inputReservation) {
         Integer id = inputReservation.get("id").getAsInt();
         System.out.println(id);
-        Integer user = Integer.parseInt(inputReservation.getAsJsonObject("user").get("id").getAsString());
-        System.out.println(user);
+        Integer user = null;
+        if (!inputReservation.get("user").isJsonNull()) {
+            user = Integer.parseInt(inputReservation.getAsJsonObject("user").get("id").getAsString());
+        }
+        //System.out.println(user);
         String room = RoomCommunication.parseRoom(inputReservation.get("room").getAsJsonObject()).getCode();
         System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
@@ -68,6 +71,15 @@ public class ReservationCommunication {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void deleteAll() {
+        String url = "/reservations/delete";
+        try {
+            ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

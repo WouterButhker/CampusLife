@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.views.RoomsListRoute;
 
 import java.text.SimpleDateFormat;
@@ -150,14 +151,6 @@ public class CalendarWidget extends VBox {
         }
     }
 
-    public void setMonth(int month, int year) {
-        currentMonth.set(Calendar.MONTH, month);
-        currentMonth.set(Calendar.YEAR, year);
-        currentMonth.set(Calendar.DAY_OF_MONTH, 1);
-
-        redrawCalendar();
-    }
-
     private void resizeDisplay(double newWidth) {
         for (DayBox dayBox : dayBoxes) {
             dayBox.setPrefWidth(newWidth / 7);
@@ -195,12 +188,6 @@ public class CalendarWidget extends VBox {
         }
         for (int i = 0; i < currentMonth.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
             DateBox dateBox = dateBoxes.get(i);
-
-            if ((i + 1) == selectedDay) {
-                //dateBox.setSelected(true);
-            } else {
-                //dateBox.setSelected(false);
-            }
 
             if (isCurrentMonth && (i + 1) == currentTime.get(Calendar.DAY_OF_MONTH)) {
                 dateBox.setToday(true);

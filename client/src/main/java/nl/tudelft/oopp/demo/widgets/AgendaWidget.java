@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.entities.Reservation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class AgendaWidget extends VBox {
     private Button downButton;
 
     private List<AgendaBlock> agendaBlocks = new ArrayList<>();
+    private boolean[] availabilites = new boolean[24];
 
     public AgendaWidget(Listener listener) {
         this.listener = listener;
@@ -51,7 +53,7 @@ public class AgendaWidget extends VBox {
                     redrawBlocks();
 
                     if (listener != null) {
-                        listener.onBlockSelected(topBlock + finalI, topBlock + finalI + 1);
+                        listener.onBlockSelected(topBlock + finalI, topBlock + finalI + 1, availabilites[topBlock + finalI]);
                     }
                 }
             });
@@ -93,6 +95,12 @@ public class AgendaWidget extends VBox {
         redrawBlocks();
     }
 
+    public void setAvailabilities(boolean[] availabilities) {
+        this.availabilites = availabilities;
+
+        redrawBlocks();
+    }
+
     public void removeSelection() {
         selectedBlock = -1;
 
@@ -121,6 +129,8 @@ public class AgendaWidget extends VBox {
             } else {
                 agendaBlocks.get(i).setSelected(false);
             }
+
+            agendaBlocks.get(i).setAvailable(availabilites[(topBlock + i)]);
         }
     }
 
@@ -233,6 +243,6 @@ public class AgendaWidget extends VBox {
     }
 
     public interface Listener {
-        void onBlockSelected(int begin, int end);
+        void onBlockSelected(int begin, int end, boolean available);
     }
 }

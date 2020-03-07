@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +18,7 @@ import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AgendaWidget;
 import nl.tudelft.oopp.demo.widgets.AppBar;
@@ -35,13 +38,19 @@ public class RoomReservationRoute extends Route {
     private Calendar fromTime;
     private Calendar toTime;
 
+    private List<Reservation> reservations;
+    private Room room;
+
     /**
      * Instantiates a new RoomReservationRoute which displays the options
      * to reserve a room.
-     * @param roomCode the code of the room to be reserved
+     * @param room the room to be reserved
      */
-    public RoomReservationRoute(String roomCode) {
+    public RoomReservationRoute(Room room) {
+        this.room = room;
         rootElement = new VBox();
+
+        reservations = ReservationCommunication.getAllReservations();
 
         AppBar appBar = new AppBar();
         rootElement.getChildren().add(appBar);
@@ -59,11 +68,12 @@ public class RoomReservationRoute extends Route {
                 agendaWidget.removeSelection();
                 selectedDate = day;
                 reservationWidget.setPeriod(null, null);
+                agendaWidget.setAvailabilities(computeAvailabilities());
             }
         });
         agendaWidget = new AgendaWidget(new AgendaWidget.Listener() {
             @Override
-            public void onBlockSelected(int begin, int end) {
+            public void onBlockSelected(int begin, int end, boolean available) {
                 fromTime = (Calendar) selectedDate.clone();
                 fromTime.set(Calendar.HOUR_OF_DAY, begin);
                 fromTime.set(Calendar.MINUTE, 0);
@@ -72,9 +82,25 @@ public class RoomReservationRoute extends Route {
                 toTime.set(Calendar.MINUTE, 0);
 
                 reservationWidget.setPeriod(fromTime, toTime);
+                reservationWidget.setAvailable(available);
             }
         });
-        reservationWidget = new ReservationWidget(new Room("PC1", "PC-Hall 1", 10, true, true, 1, 1));
+        reservationWidget = new ReservationWidget(room, new ReservationWidget.Listener() {
+            @Override
+            public void onReserveClicked() {
+                if (fromTime != null) {
+                    int user = 0;
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
+                    String fromString = format.format(fromTime.getTime());
+                    String toString = format.format(toTime.getTime());
+                    String timeslot = String.format("%s - %s", fromString, toString);
+                    ReservationCommunication.addReservationToDatabase(user, room.getCode(), timeslot);
+                    reservations.add(new Reservation(-1, user, room.getCode(), timeslot));
+                    agendaWidget.setAvailabilities(computeAvailabilities());
+                    reservationWidget.setAvailable(false);
+                }
+            }
+        });
         horizontalContainer.getChildren().add(calendarWidget);
         horizontalContainer.getChildren().add(agendaWidget);
         horizontalContainer.getChildren().add(reservationWidget);
@@ -91,7 +117,45 @@ public class RoomReservationRoute extends Route {
                 });
             }
         });
+
+        agendaWidget.setAvailabilities(computeAvailabilities());
     }
+
+    private boolean[] computeAvailabilities() {
+        boolean[] availabilities = new boolean[24];
+        for (int i = 0; i < 24; i++) {
+            availabilities[i] = true;
+        }
+        for (Reservation reservation : reservations) {
+            System.out.println(reservation);
+            if (reservation.getRoom().equals(room.getCode())) {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
+                try {
+                    String fromTimeString = reservation.getTimeSlot().substring(0, 16);
+                    Calendar fromTime = Calendar.getInstance();
+                    fromTime.setTime(format.parse(fromTimeString));
+                    String toTimeString = reservation.getTimeSlot().substring(19);
+                    Calendar toTime = Calendar.getInstance();
+                    toTime.setTime(format.parse(toTimeString));
+
+                    boolean sameDay =
+                            fromTime.get(Calendar.DAY_OF_YEAR) == selectedDate.get(Calendar.DAY_OF_YEAR)
+                            && fromTime.get(Calendar.YEAR) == selectedDate.get(Calendar.YEAR);
+
+                    System.out.println(sameDay);
+                    System.out.println(fromTime.get(Calendar.HOUR_OF_DAY));
+                    if (sameDay) {
+                        availabilities[fromTime.get(Calendar.HOUR_OF_DAY)] = false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return availabilities;
+    }
+
+
 
     private void resizeDisplay(double newWidth) {
         calendarWidget.setPrefWidth(newWidth * 0.3);

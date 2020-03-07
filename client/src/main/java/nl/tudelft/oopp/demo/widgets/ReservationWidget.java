@@ -1,13 +1,16 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 
@@ -31,8 +34,10 @@ public class ReservationWidget extends VBox {
     private Text timeText;
 
     private Button reserveButton;
+    private Listener listener;
+    private boolean reserveHidden = false;
 
-    public ReservationWidget(Room room) {
+    public ReservationWidget(Room room, Listener listener) {
         this.room = room;
 
         setAlignment(Pos.CENTER);
@@ -66,6 +71,12 @@ public class ReservationWidget extends VBox {
         getChildren().add(timeContainer);
 
         reserveButton = new Button("Reserve");
+        reserveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                listener.onReserveClicked();
+            }
+        });
         getChildren().add(reserveButton);
 
         prefWidthProperty().addListener((obs, oldWidth, newWidth) -> {
@@ -73,6 +84,11 @@ public class ReservationWidget extends VBox {
         });
 
         updateDisplay();
+    }
+
+    public void setAvailable(boolean available) {
+        reserveHidden = !available;
+        reserveButton.setVisible(!reserveHidden);
     }
 
     public void setPeriod(Calendar from, Calendar to) {
@@ -101,7 +117,7 @@ public class ReservationWidget extends VBox {
         } else {
             dateContainer.setVisible(true);
             timeContainer.setVisible(true);
-            reserveButton.setVisible(true);
+            reserveButton.setVisible(!reserveHidden);
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd / MM / yyyy");
             System.out.println(dateFormat.format(from.getTime()));
@@ -112,5 +128,9 @@ public class ReservationWidget extends VBox {
             String toTime = timeFormat.format(to.getTime());
             timeText.setText(String.format("%s - %s", fromTime, toTime));
         }
+    }
+
+    public interface Listener {
+        void onReserveClicked();
     }
 }
