@@ -110,7 +110,13 @@ public class BuildingCommunication {
         String name = parameters[1];
         String location = parameters[2];
         String openingHours = parameters[3];
-        Integer bikes = Integer.parseInt(parameters[4]);
+        Integer bikes;
+        if (parameters[4].equals("null")) {
+            bikes = null;
+        }
+        else {
+            bikes = Integer.parseInt(parameters[4]);
+        }
         return new Building(code, name, location, openingHours,
                 "/images/main-screen-default-building.jpg", bikes);
     }

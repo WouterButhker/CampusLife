@@ -178,10 +178,19 @@ public class AdminSceneBuildingsController implements Initializable {
         }
         String openingHours = fromChoicebox.getValue() + "-" + toChoicebox.getValue();
         Text submitStatus = new Text();
+        Integer bikes = null;
+        if (hasBikeStationCheck.isSelected()) {
+            try {
+                bikes = Integer.parseInt(bikeAmountInput.getText());
+            }
+            catch (NumberFormatException e) {
+                submitStatus.setText("Invalid number");
+            }
+        }
         if (!location.equals("") && !name.equals("") && codeFound
                && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
                &&  fromChoicebox.getValue().compareTo(toChoicebox.getValue()) < 0) {
-            BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+            BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours, bikes);
             submitStatus.setText("Building successfully added!");
             try {
                 refreshBuildingsPage();
@@ -313,7 +322,13 @@ public class AdminSceneBuildingsController implements Initializable {
         TextField bikesAmountInput = new TextField();
         bikesAmountInput.setPromptText("Amount");
         bikesAmountInput.setMaxWidth(60);
+        if (building.getBikes() != null) {
+            hasBikeStationCB.setSelected(true);
+        }
         bikesAmountInput.setVisible(hasBikeStationCB.isSelected());
+        if (bikesAmountInput.isVisible()) {
+            bikesAmountInput.setText(Integer.toString(building.getBikes()));
+        }
         Pane spacer10 = new Pane();
         spacer10.setPrefSize(20, 20);
         hasBikeStationCB.setOnAction((value) -> {
@@ -335,8 +350,20 @@ public class AdminSceneBuildingsController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 String openingHours = from.getValue() + "-" + to.getValue();
+                Integer bikes = 0;
+                if (!hasBikeStationCheck.isSelected()) {
+                    bikes = null;
+                }
+                else {
+                    try {
+                        bikes = Integer.parseInt(bikeAmountInput.getText());
+                    }
+                    catch (NumberFormatException e) {
+//                        submitStatus.setText("Invalid number");
+                    }
+                }
                 Label status = modifyBuilding(address.getText(), name.getText(),
-                        building.getCode(), openingHours);
+                        building.getCode(), openingHours, bikes);
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -365,7 +392,7 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     private Label modifyBuilding(String address, String name,
-                                 int buildingCode, String openingHours) {
+                                 int buildingCode, String openingHours, Integer bikes) {
         boolean openingHoursCorrect = false;
         String[] fromTo = openingHours.split("-");
         Label result = null;
@@ -376,7 +403,7 @@ public class AdminSceneBuildingsController implements Initializable {
         }
 
         if (!address.equals("") && !name.equals("") && openingHoursCorrect) {
-            BuildingCommunication.addBuildingToDatabase(buildingCode, name, address, openingHours);
+            BuildingCommunication.addBuildingToDatabase(buildingCode, name, address, openingHours, bikes);
         } else {
             if (result == null) {
                 result = new Label("All the fields have to be entered");
