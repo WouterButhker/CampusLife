@@ -41,7 +41,7 @@ public class ReservationCommunication {
     private static Reservation parseReservation(JsonObject inputReservation) {
         Integer id = inputReservation.get("id").getAsInt();
         System.out.println(id);
-        Integer user = inputReservation.get(inputReservation.get("user").getAsJsonObject().get("id").getAsString()).getAsInt();
+        Integer user = Integer.parseInt(inputReservation.getAsJsonObject("user").get("id").getAsString());
         System.out.println(user);
         String room = RoomCommunication.parseRoom(inputReservation.get("room").getAsJsonObject()).getCode();
         System.out.println(room);
