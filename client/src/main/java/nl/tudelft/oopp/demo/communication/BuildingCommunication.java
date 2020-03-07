@@ -32,18 +32,21 @@ public class BuildingCommunication {
      * @param name the name of the building
      * @param location the street where the building is situated
      * @param openingHours time it is open with format hh:mm-hh:mm
+     * @param bikes amount of bikes at the building, null if it has no bike station
      */
     public static void addBuildingToDatabase(Integer buildingCode,
                                              String name,
                                              String location,
-                                             String openingHours) {
+                                             String openingHours,
+                                             Integer bikes) {
         /*
         name = name.replace(" ", "%20");
         location = location.replace(" ", "%20");
         openingHours = openingHours.replace(" ", "%20");
          */
         String url = "/buildings/add?buildingCode=" + buildingCode
-                + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours;
+                + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours
+                + "&bikes=" + bikes;
 
         try {
             ServerCommunication.authenticatedRequest(url);
@@ -107,8 +110,9 @@ public class BuildingCommunication {
         String name = parameters[1];
         String location = parameters[2];
         String openingHours = parameters[3];
+        Integer bikes = Integer.parseInt(parameters[4]);
         return new Building(code, name, location, openingHours,
-                "/images/main-screen-default-building.jpg");
+                "/images/main-screen-default-building.jpg", bikes);
     }
 
     private static List<Building> parseBuildings(String inputBuildings) {
