@@ -46,6 +46,12 @@ public class AdminSceneReservationsController {
         mainBox.getChildren().add(0, new AppBar());
     }
 
+    private void loadReservations() {
+        for(int i =0; i<10; i++) {
+
+        }
+    }
+
     @FXML
     private void initialize() {
         assert anchorPaneReservations != null : "fx:id=\"anchorPaneReservations\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
@@ -56,6 +62,7 @@ public class AdminSceneReservationsController {
         assert reservationsList != null : "fx:id=\"reservationsList\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
 
         addAppBar();
+        loadReservations();
     }
 
 }
