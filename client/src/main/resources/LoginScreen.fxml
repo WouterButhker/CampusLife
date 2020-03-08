@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.LoginScreenController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1540.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.LoginScreenController">
   <children>
-    <Pane layoutX="67.0" layoutY="29.0" prefHeight="342.0" prefWidth="467.0">
+    <Pane layoutX="0.0" layoutY="0.0" prefHeight="800.0" prefWidth="1540.0">
       <children>
-        <Label layoutX="203.0" layoutY="29.0" text="Welcome" />
-        <Label layoutX="134.0" layoutY="82.0" text="Username" />
-        <Label layoutX="135.0" layoutY="151.0" text="Password" />
-        <TextField fx:id="usernameField" layoutX="134.0" layoutY="102.0" prefWidth="200.0" />
-        <PasswordField fx:id="passwordField" layoutX="134.0" layoutY="171.0" prefWidth="200.0" />
-        <Button fx:id="loginButton" layoutX="198.0" layoutY="210.0" mnemonicParsing="false" onAction="#onLoginClicked" text="Login" />
-        <Hyperlink fx:id="registerLink" layoutX="85.0" layoutY="256.0" onAction="#onRegisterClicked" text="Dont have an account? click here to register" />
+        <Label layoutX="617.0" layoutY="26.0" prefHeight="126.951171875" prefWidth="306.0" text="Welcome">
+          <font>
+            <Font name="System Bold" size="69.0" />
+          </font>
+        </Label>
+        <Label layoutX="667.0" layoutY="301.0" text="Username">
+          <font>
+            <Font size="25.0" fx:id="x1" />
+          </font>
+        </Label>
+        <Label font="$x1" layoutX="666.0" layoutY="411.0" text="Password" />
+        <TextField fx:id="usernameField" layoutX="666.0" layoutY="343.0" prefHeight="33.251953125" prefWidth="227.0" text="" />
+        <PasswordField fx:id="passwordField" layoutX="667.0" layoutY="464.0" prefHeight="33.251953125" prefWidth="219.0" />
+        <Button fx:id="loginButton" layoutX="729.0" layoutY="539.0" mnemonicParsing="false" onAction="#onLoginClicked" prefHeight="33.251953125" prefWidth="95.0" text="Login" />
+        <Hyperlink fx:id="registerLink" font="$x1" layoutX="545.0" layoutY="640.0" onAction="#onRegisterClicked" text="Dont have an account? click here to register" />
       </children>
     </Pane>
   </children>
