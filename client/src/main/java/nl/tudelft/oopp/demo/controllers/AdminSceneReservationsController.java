@@ -47,19 +47,27 @@ public class AdminSceneReservationsController {
     }
 
     private void loadReservations() {
+        /*
         for(int i =0; i<10; i++) {
 
         }
+         */
     }
 
     @FXML
     private void initialize() {
-        assert anchorPaneReservations != null : "fx:id=\"anchorPaneReservations\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
-        assert deleteReservationButton != null : "fx:id=\"deleteReservationButton\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
-        assert mainBox != null : "fx:id=\"mainBox\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
-        assert mainPane != null : "fx:id=\"mainPane\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
-        assert reservationIdField != null : "fx:id=\"reservationIdField\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
-        assert reservationsList != null : "fx:id=\"reservationsList\" was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
+        assert anchorPaneReservations != null : "fx:id=\"anchorPaneReservations\" "
+                + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
+        assert deleteReservationButton != null : "fx:id=\"deleteReservationButton\" "
+                + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
+        assert mainBox != null : "fx:id=\"mainBox\" was not injected: "
+                + "check your FXML file 'AdminSceneReservations.fxml'.";
+        assert mainPane != null : "fx:id=\"mainPane\" was not injected: "
+                + "check your FXML file 'AdminSceneReservations.fxml'.";
+        assert reservationIdField != null : "fx:id=\"reservationIdField\" "
+                + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
+        assert reservationsList != null : "fx:id=\"reservationsList\" "
+                + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
 
         addAppBar();
         loadReservations();

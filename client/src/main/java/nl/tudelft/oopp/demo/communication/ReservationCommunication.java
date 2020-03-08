@@ -6,8 +6,8 @@ import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Reservation;
+import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.http.ResponseEntity;
-
 
 public class ReservationCommunication {
 
@@ -16,21 +16,20 @@ public class ReservationCommunication {
      * Adds a reservation to the database via HTTP request.
      * @param userId the id of the User that made the Reservation
      * @param room the roomCode of the Room that is reserved
-     * @param timeSlot the time at which the Room is reserved
+     * @param slot the time at which the Room is reserved
      */
     public static void addReservationToDatabase(Integer userId,
                                              String room,
-                                             /// DATE
-                                             String timeSlot) {
+                                             String slot) {
         room = room.replace(" ", "%20");
         String url = "/reservations/add?user=" + userId
-                + "&room=" + room + "&timeSlot=" + timeSlot;
+                + "&room=" + room + "&slot=" + slot;
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             room = room.replace("%20", " ");
             System.out.println(response.getBody() + " reservation for user "
-                    + userId + " at room " + room + " at time " + timeSlot);
+                    + userId + " at room " + room + " at slot " + slot);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,8 +65,8 @@ public class ReservationCommunication {
     }
 
     /**
-     * Returns all reservations stored in the server.
-     * @return List with all the reservations
+     * Returns a list of all the reservations from the database.
+     * @return List of Reservations
      */
     public static List<Reservation> getAllReservations() {
         String url = "/reservations/all";

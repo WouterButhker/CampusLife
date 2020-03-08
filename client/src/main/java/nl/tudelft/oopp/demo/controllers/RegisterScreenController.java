@@ -84,25 +84,25 @@ public class RegisterScreenController {
 
     @FXML
     void initialize() {
-        assert okButtonPassword1 != null : "fx:id=\"okButtonPassword1\""
+        assert okButtonPassword1 != null : "fx:id=\"okButtonPassword1\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert okButtonPassword2 != null : "fx:id=\"okButtonPassword2\""
+        assert okButtonPassword2 != null : "fx:id=\"okButtonPassword2\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert okButtonUsername != null : "fx:id=\"okButtonUsername\""
+        assert okButtonUsername != null : "fx:id=\"okButtonUsername\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert passwordField != null : "fx:id=\"passwordField\""
+        assert passwordField != null : "fx:id=\"passwordField\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert popupPassword1 != null : "fx:id=\"popupPassword1\""
+        assert popupPassword1 != null : "fx:id=\"popupPassword1\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert popupPassword2 != null : "fx:id=\"popupPassword2\""
+        assert popupPassword2 != null : "fx:id=\"popupPassword2\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert popupUsername != null : "fx:id=\"popupUsername\""
+        assert popupUsername != null : "fx:id=\"popupUsername\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert reEnterPasswordField != null : "fx:id=\"reEnterPasswordField\""
+        assert reEnterPasswordField != null : "fx:id=\"reEnterPasswordField\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert registerButton != null : "fx:id=\"registerButton\""
+        assert registerButton != null : "fx:id=\"registerButton\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
-        assert usernameField != null : "fx:id=\"usernameField\""
+        assert usernameField != null : "fx:id=\"usernameField\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
 
 
