@@ -34,7 +34,7 @@
             <ChoiceBox fx:id="toChoicebox" layoutX="274.0" layoutY="238.0" prefHeight="26.0" prefWidth="79.0" />
             <Text layoutX="140.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From:" />
             <Text layoutX="306.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To:" />
-            <ScrollPane hbarPolicy="NEVER" layoutX="646.0" layoutY="134.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="482.0" prefWidth="417.0">
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="646.0" layoutY="134.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="482.0" prefWidth="417.0">
               <content>
                 <AnchorPane fx:id="anchorPaneBuildings" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="400.0">
                      <children>

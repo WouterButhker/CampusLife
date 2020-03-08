@@ -67,6 +67,8 @@ public class AdminSceneBuildingsController implements Initializable {
     @FXML
     private TextField bikeAmountInput;
 
+    @FXML
+    private ScrollPane scrollPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -100,7 +102,13 @@ public class AdminSceneBuildingsController implements Initializable {
             buildingsList.getChildren().clear();
             int numBuildings = BuildingCommunication.countAllBuildings();
             List<Building> buildings = BuildingCommunication.getAllBuildings();
-            anchorPaneBuildings.setPrefHeight(82 * numBuildings);
+            int height = 82 * numBuildings;
+            if (height <= scrollPane.getPrefHeight()) {
+                scrollPane.setPrefWidth(400);
+            } else {
+                scrollPane.setPrefWidth(417);
+            }
+            anchorPaneBuildings.setPrefHeight(height);
             //One HBox is 60 x 400
             //The entire AnchorPane holding all the HBoxes is 60*numBuildings x 400
             for (int i = 0; i < numBuildings; i++) {
@@ -110,10 +118,17 @@ public class AdminSceneBuildingsController implements Initializable {
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(65);
                 imageView.setFitHeight(60);
+                Integer bikes = buildings.get(i).getBikes();
+                String bikesString;
+                if (bikes == null) {
+                    bikesString = "no station";
+                } else {
+                    bikesString = Integer.toString(bikes);
+                }
                 Label text = new Label("Building Code: " + buildings.get(i).getCode()
                         + " | " + buildings.get(i).getName()
                         + "\nOpening Hours: " + buildings.get(i).getOpeningHours() + "\n"
-                        + buildings.get(i).getLocation());
+                        + buildings.get(i).getLocation() + " | Bikes: " + bikesString);
                 text.setPrefSize(225, 60);
                 text.setPadding(new Insets(0, 0, 0, 10));
 
