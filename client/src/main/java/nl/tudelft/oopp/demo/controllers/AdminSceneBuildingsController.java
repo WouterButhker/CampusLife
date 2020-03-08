@@ -367,12 +367,12 @@ public class AdminSceneBuildingsController implements Initializable {
             public void handle(ActionEvent event) {
                 String openingHours = from.getValue() + "-" + to.getValue();
                 Integer bikes = 0;
-                if (!hasBikeStationCheck.isSelected()) {
+                if (!hasBikeStationCB.isSelected()) {
                     bikes = null;
                 }
                 else {
                     try {
-                        bikes = Integer.parseInt(bikeAmountInput.getText());
+                        bikes = Integer.parseInt(bikesAmountInput.getText());
                     }
                     catch (NumberFormatException e) {
 //                        submitStatus.setText("Invalid number");
