@@ -38,7 +38,7 @@ public class ReservationController {
     public @ResponseBody String addNewReservation(@RequestParam User user,
                                                   @RequestParam Room room,
                                                   @RequestParam String slot) {
-        String timeSlot = slot.substring(11, 18) + slot.substring(30);
+        String timeSlot = slot.substring(11, 19) + slot.substring(30);
         String date = slot.substring(0, 10);
         System.out.println(date);
         System.out.println(timeSlot);
