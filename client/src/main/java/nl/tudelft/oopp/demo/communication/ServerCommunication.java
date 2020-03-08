@@ -35,6 +35,11 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Login call for a user.
+     * @param username the username of that user
+     * @param password the encoded password
+     */
     public static void login(String username, String password) {
         if (authenticationHeader == null) {
             authenticationHeader = createHeaders(username, password);
