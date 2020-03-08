@@ -7,12 +7,6 @@ import org.junit.jupiter.api.Test;
 public class AddReservationTest {
 
     @Test
-    void test() {
-        System.out.println("this is a test");
-        assertNull(null);
-    }
-
-    @Test
     public void testAddReservationToDatabase() {
         System.out.println("TEST");
         ServerCommunication.login("random", "admin");
