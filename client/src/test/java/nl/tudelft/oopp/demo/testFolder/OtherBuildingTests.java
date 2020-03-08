@@ -1,12 +1,19 @@
 package nl.tudelft.oopp.demo.testFolder;
 
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class OtherBuildingTests {
+
+    @BeforeEach
+    void doBeforeEach() {
+        ServerCommunication.login("random", "admin");
+    }
 
     @Test
     public void testCountBuildings() {

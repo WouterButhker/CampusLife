@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.testFolder;
 
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,11 @@ class RoomTest {
     private Integer rights;
     private Integer buildingCode;
     private Room r;
+
+    @BeforeEach
+    void doBeforeEach() {
+        ServerCommunication.login("random", "admin");
+    }
 
     @BeforeEach
     void setUpper() {

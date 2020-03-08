@@ -18,21 +18,20 @@ public class ReservationCommunication {
      * Adds a reservation to the database via HTTP request.
      * @param userId the id of the User that made the Reservation
      * @param room the roomCode of the Room that is reserved
-     * @param timeSlot the time at which the Room is reserved
+     * @param slot the time at which the Room is reserved
      */
     public static void addReservationToDatabase(Integer userId,
                                              String room,
-                                             /// DATE
-                                             String timeSlot) {
+                                             String slot) {
         room = room.replace(" ", "%20");
         String url = "/reservations/add?user=" + userId
-                + "&room=" + room + "&timeSlot=" + timeSlot;
+                + "&room=" + room + "&slot=" + slot;
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             room = room.replace("%20", " ");
             System.out.println(response.getBody() + " reservation for user "
-                    + userId + " at room " + room + " at time " + timeSlot);
+                    + userId + " at room " + room + " at slot " + slot);
         } catch (Exception e) {
             e.printStackTrace();
         }
