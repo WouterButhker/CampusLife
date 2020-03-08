@@ -73,6 +73,7 @@ public class AdminSceneBuildingsController implements Initializable {
         if (toChoicebox != null && fromChoicebox != null) {
             loadOpeningHoursChoices(fromChoicebox, toChoicebox);
         }
+        bikeAmountInput.setVisible(false); //the amount input is made invisible before the 'has bike station' checkbox is selected.
         loadBuildings();
         addAppBar();
     }
