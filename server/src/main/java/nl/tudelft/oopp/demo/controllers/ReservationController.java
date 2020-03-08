@@ -42,7 +42,7 @@ public class ReservationController {
         String date = slot.substring(0, 10);
         System.out.println(date);
         System.out.println(timeSlot);
-        Reservation reservation = new Reservation(user, room, date, timeSlot);
+        Reservation reservation = new Reservation(user, room, date, slot);
         reservationRepository.save(reservation);
         return "Saved";
     }
