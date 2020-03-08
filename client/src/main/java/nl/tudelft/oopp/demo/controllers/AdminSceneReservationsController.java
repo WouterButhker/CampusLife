@@ -1,13 +1,18 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
 
@@ -47,11 +52,36 @@ public class AdminSceneReservationsController {
     }
 
     private void loadReservations() {
-        /*
-        for(int i =0; i<10; i++) {
-
+        ArrayList<Reservation> reservations = new ArrayList<Reservation>();
+        for(Integer i =0; i<10; i++) {
+            String room = "room" + i;
+            Reservation reservation = new Reservation(i, i, room, "12:30-14:30");
+            reservations.add(reservation);
         }
-         */
+
+        anchorPaneReservations.setPrefHeight(70 * reservations.size());
+
+        for(int i = 0; i<reservations.size(); i++) {
+            HBox reservation = new HBox();
+            reservation.setMaxWidth(642);
+            Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
+                    + "User: " + reservations.get(i).getUser() + " | "
+                    + "Room: " + reservations.get(i).getRoom() + " | "
+                    + "TimeSlot: " + reservations.get(i).getTimeSlot());
+            text.setPrefSize(642, 60);
+            text.setStyle("-fx-font: 17 arial;");
+
+            reservation.setPadding(new Insets(5, 5, 5,5));
+            String css = "-fx-border-color: black;\n"
+                    + "-fx-border-insets: 4\n;"
+                    + "-fx-border-style: solid\n;"
+                    + "-fx-border-width: 1;"
+                    + "-fx-border-radius: 10;";
+            reservation.setStyle(css);
+            reservation.getChildren().add(text);
+            reservationsList.getChildren().add(reservation);
+        }
+
     }
 
     @FXML
