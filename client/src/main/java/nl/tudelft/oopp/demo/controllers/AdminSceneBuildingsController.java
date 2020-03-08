@@ -384,6 +384,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
                     stage.close();
+                    loadBuildings();
                 } else {
                     try {
                         root.getChildren().remove(11);
