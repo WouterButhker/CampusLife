@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
+<AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
   <children>
     <VBox fx:id="mainBox">
       <children>
@@ -87,7 +86,7 @@
             </FlowPane>
             <FlowPane prefHeight="110.0" prefWidth="307.0">
               <children>
-                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrations" />
+                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Reservations" />
                 <Button id="modifyReservationsEnter" fx:id="modifyReservationsEnter" mnemonicParsing="false" onAction="#modifyReservationsEnter" text="Modify">
                   <FlowPane.margin>
                     <Insets left="10.0" />

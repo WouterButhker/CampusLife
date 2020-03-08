@@ -47,6 +47,12 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Authenticates a request for the current logged in user.
+     * @param link the URL the request was made to
+     * @return response from the server
+     * @throws Exception ///TODO
+     */
     public static ResponseEntity<String> authenticatedRequest(String link) throws Exception {
         // TODO: throw exception when authentication fails
         ResponseEntity<String> response;
@@ -58,6 +64,12 @@ public class ServerCommunication {
         return response;
     }
 
+    /**
+     * Creates headers for the authenticated user to make requests.
+     * @param username the username of the User
+     * @param password the password of the User
+     * @return the Headers
+     */
     public static HttpHeaders createHeaders(String username, String password) {
         String auth = username + ":" + password;
 

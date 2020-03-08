@@ -3,13 +3,11 @@ package nl.tudelft.oopp.demo.communication;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.http.ResponseEntity;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class ReservationCommunication {
 
@@ -40,9 +38,11 @@ public class ReservationCommunication {
     private static Reservation parseReservation(JsonObject inputReservation) {
         Integer id = inputReservation.get("id").getAsInt();
         System.out.println(id);
-        Integer user = inputReservation.get(inputReservation.get("user").getAsJsonObject().get("id").getAsString()).getAsInt();
+        Integer user = inputReservation.get(inputReservation.get("user")
+                .getAsJsonObject().get("id").getAsString()).getAsInt();
         System.out.println(user);
-        String room = RoomCommunication.parseRoom(inputReservation.get("room").getAsJsonObject()).getCode();
+        String room = RoomCommunication.parseRoom(inputReservation.get("room")
+                .getAsJsonObject()).getCode();
         System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
         System.out.println(timeSlot);
@@ -59,6 +59,10 @@ public class ReservationCommunication {
         return listOfReservations;
     }
 
+    /**
+     * Returns a list of all the reservations from the database.
+     * @return List of Reservations
+     */
     public static List<Reservation> getAllReservations() {
         String url = "/reservations/all";
         try {
