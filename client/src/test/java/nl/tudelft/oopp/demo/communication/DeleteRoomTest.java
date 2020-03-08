@@ -11,11 +11,13 @@ public class DeleteRoomTest {
         System.out.println("---------------------------");
         System.out.println("Test = testDeleteRoom");
         String response = RoomCommunication.deleteRoomFromDatabase(roomCode);
-        if (response.equals("1"))
+        if (response.equals("1")) {
             System.out.println("Deleted building with code " + roomCode);
-        else if (response.equals("0"))
+        } else if (response.equals("0")) {
             System.out.println("There was no building with code " + roomCode);
-        else System.out.println("Some other error!");
+        } else {
+            System.out.println("Some other error!");
+        }
         System.out.println("---------------------------");
     }
 

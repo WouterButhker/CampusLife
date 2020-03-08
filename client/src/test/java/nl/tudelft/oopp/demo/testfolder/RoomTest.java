@@ -1,11 +1,13 @@
-package nl.tudelft.oopp.demo.testFolder;
+package nl.tudelft.oopp.demo.testfolder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RoomTest {
 
@@ -16,7 +18,7 @@ class RoomTest {
     private boolean hasTV;
     private Integer rights;
     private Integer buildingCode;
-    private Room r;
+    private Room room;
 
     @BeforeEach
     void doBeforeEach() {
@@ -33,98 +35,100 @@ class RoomTest {
         rights = 2;
         buildingCode = 42;
 
-        r = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
+        room = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
     }
 
     @Test
     void constructorTest() {
-        assertNotNull(r);
+        assertNotNull(room);
     }
 
     @Test
     void getCodeTest() {
-        assertEquals(code, r.getCode());
+        assertEquals(code, room.getCode());
     }
 
     @Test
     void setCodeTest() {
-        r.setCode("42");
-        assertEquals("42", r.getCode());
+        room.setCode("42");
+        assertEquals("42", room.getCode());
     }
 
     @Test
     void getNameTest() {
-        assertEquals(name, r.getName());
+        assertEquals(name, room.getName());
     }
 
     @Test
     void setNameTest() {
-        r.setName("otherRoom");
-        assertEquals("otherRoom", r.getName());
+        room.setName("otherRoom");
+        assertEquals("otherRoom", room.getName());
     }
 
     @Test
     void getCapacityTest() {
-        assertEquals(capacity, r.getCapacity());
+        assertEquals(capacity, room.getCapacity());
     }
 
     @Test
     void setCapacityTest() {
-        r.setCapacity(50);
-        assertEquals(50, r.getCapacity());
+        room.setCapacity(50);
+        assertEquals(50, room.getCapacity());
     }
 
     @Test
     void hasWhiteboardTest() {
-        assertEquals(hasWhiteboard, r.isHasWhiteboard());
+        assertEquals(hasWhiteboard, room.isHasWhiteboard());
     }
 
     @Test
     void setHasWhiteboardTest() {
-        r.setHasWhiteboard(false);
-        assertEquals(false, r.isHasWhiteboard());
+        room.setHasWhiteboard(false);
+        assertEquals(false, room.isHasWhiteboard());
     }
 
     @Test
-    void hasTVTest() {
-        assertEquals(true, r.isHasTV());
+    void hasTvTest() {
+        assertEquals(true, room.isHasTV());
     }
 
     @Test
-    void setHasTVTest() {
-        r.setHasTV(false);
-        assertEquals(false, r.isHasTV());
+    void setHasTvTest() {
+        room.setHasTV(false);
+        assertEquals(false, room.isHasTV());
     }
 
     @Test
     void getRightsTest() {
-        assertEquals(rights, r.getRights());
+        assertEquals(rights, room.getRights());
     }
 
-//    @Test
-//    void setRightsTest() {
-//        TOOOOOOOO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-//    }
+    /*
+    @Test
+    void setRightsTest() {
+        //TODO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    }
+     */
 
     @Test
     void getBuildingCodeTest() {
-        assertEquals(buildingCode, r.getBuildingCode());
+        assertEquals(buildingCode, room.getBuildingCode());
     }
 
     @Test
     void setBuildingCodeTest() {
-        r.setBuildingCode(123123);
-        assertEquals(123123, r.getBuildingCode());
+        room.setBuildingCode(123123);
+        assertEquals(123123, room.getBuildingCode());
     }
 
     @Test
     void equalsTest() {
         Room copyRoom = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
-        assertEquals(r, copyRoom);
+        assertEquals(room, copyRoom);
     }
 
     @Test
     void hashCodeTest() {
-        assertTrue(Integer.class.isInstance(r.hashCode()));
+        assertTrue(Integer.class.isInstance(room.hashCode()));
     }
 }

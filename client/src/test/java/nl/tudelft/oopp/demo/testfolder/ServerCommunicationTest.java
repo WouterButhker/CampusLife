@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.testFolder;
+package nl.tudelft.oopp.demo.testfolder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -46,7 +46,8 @@ public class ServerCommunicationTest {
         Boolean hasTV = false;
         Integer rights = 1;
         Integer building = 35;
-        RoomCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
+        RoomCommunication.addRoomToDatabase(roomCode, name, capacity,
+                hasWhiteboard, hasTV, rights, building);
     }
 
     @Test

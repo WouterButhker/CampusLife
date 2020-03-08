@@ -1,9 +1,8 @@
 package nl.tudelft.oopp.demo.communication;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.junit.jupiter.api.Test;
 
 public class AddReservationTest {
 
