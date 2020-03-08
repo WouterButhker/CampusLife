@@ -44,9 +44,15 @@ public class BuildingCommunication {
         location = location.replace(" ", "%20");
         openingHours = openingHours.replace(" ", "%20");
          */
+        String bikesString;
+        if (bikes == null) {
+            bikesString = "#null";
+        } else {
+            bikesString = Integer.toString(bikes);
+        }
         String url = "/buildings/add?buildingCode=" + buildingCode
                 + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours
-                + "&bikes=" + bikes;
+                + "&bikes=" + bikesString;
 
         try {
             ServerCommunication.authenticatedRequest(url);
