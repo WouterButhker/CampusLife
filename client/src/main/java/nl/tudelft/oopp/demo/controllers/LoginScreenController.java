@@ -13,7 +13,6 @@ import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.views.MainMenuRoute;
-import nl.tudelft.oopp.demo.views.RoomsListRoute;
 
 
 
