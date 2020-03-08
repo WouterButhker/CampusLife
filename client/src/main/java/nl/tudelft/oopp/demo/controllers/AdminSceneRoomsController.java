@@ -15,12 +15,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -75,6 +70,9 @@ public class AdminSceneRoomsController implements Initializable {
 
     @FXML
     private AnchorPane anchorPaneRooms;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private VBox roomsList;
@@ -237,8 +235,13 @@ public class AdminSceneRoomsController implements Initializable {
             rooms = RoomCommunication.getAllRoomsFromBuilding(buildingCode);
         }
         int numRooms = rooms.size();
-        anchorPaneRooms.setPrefHeight(82 * numRooms);
-
+        int height = numRooms * 82;
+        anchorPaneRooms.setPrefHeight(height);
+        if (height <= scrollPane.getPrefHeight()) {
+            scrollPane.setPrefWidth(400);
+        } else {
+            scrollPane.setPrefWidth(417);
+        }
         for (int i = 0; i < numRooms; i++) {
             HBox room = new HBox();
             room.setMaxWidth(400);
@@ -247,8 +250,8 @@ public class AdminSceneRoomsController implements Initializable {
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
             Label text = new Label("Building Code: " + rooms.get(i).getBuildingCode()
-                    + "\n" + rooms.get(i).getName() + " " + rooms.get(i).getCode() + " "
-                    + rooms.get(i).getRights() + " capacity: " + rooms.get(i).getCapacity()
+                    + " | Room Code: "  + rooms.get(i).getCode() + "\n" + rooms.get(i).getName()
+                    + " " + rooms.get(i).getRights() + " capacity: " + rooms.get(i).getCapacity()
                     + "\nWhiteboard: " + rooms.get(i).isHasWhiteboard() + " TV: "
                     + rooms.get(i).isHasTV());
             text.setPrefSize(225, 60);
