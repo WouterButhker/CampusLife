@@ -90,9 +90,14 @@ public class Building {
         this.bikes = bikes;
     }
 
+    /**
+     * Makes a Building object into a String.
+     * @return String representation of a Building
+     */
     public String toString() {
         return "[\"buildingCode\":\"" + buildingCode + "\",\"name\":\"" + name
-                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours + "\",\"bikes\":\"" + bikes + "\"]";
+                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours
+                + "\",\"bikes\":\"" + bikes + "\"]";
     }
 
     @Override

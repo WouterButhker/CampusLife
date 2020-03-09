@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -16,7 +15,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -75,7 +79,8 @@ public class AdminSceneBuildingsController implements Initializable {
         if (toChoicebox != null && fromChoicebox != null) {
             loadOpeningHoursChoices(fromChoicebox, toChoicebox);
         }
-        bikeAmountInput.setVisible(false); //the amount input is made invisible before the 'has bike station' checkbox is selected.
+        bikeAmountInput.setVisible(false); //the amount input is made
+        // invisible before the 'has bike station' checkbox is selected.
         loadBuildings();
         addAppBar();
     }
@@ -198,15 +203,15 @@ public class AdminSceneBuildingsController implements Initializable {
         if (hasBikeStationCheck.isSelected()) {
             try {
                 bikes = Integer.parseInt(bikeAmountInput.getText());
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 submitStatus.setText("Invalid number");
             }
         }
         if (!location.equals("") && !name.equals("") && codeFound
                && (fromChoicebox.getValue() != null && toChoicebox.getValue() != null)
                &&  fromChoicebox.getValue().compareTo(toChoicebox.getValue()) < 0) {
-            BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours, bikes);
+            BuildingCommunication.addBuildingToDatabase(buildingCode,
+                    name, location, openingHours, bikes);
             submitStatus.setText("Building successfully added!");
             try {
                 refreshBuildingsPage();
@@ -328,7 +333,7 @@ public class AdminSceneBuildingsController implements Initializable {
         spacer8.setPrefSize(160, 20);
         Label bikeStationText = new Label("Bike station:");
         bikeStationText.setPrefSize(75, 20);
-        HBox bikeStationTextBox = new HBox(spacer8, bikeStationText);
+
         fromToBox.setPadding(new Insets(10, 0, 0, 0));
 
         //HBox for the CheckBox and the TextField
@@ -387,6 +392,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
             }
         });
+        HBox bikeStationTextBox = new HBox(spacer8, bikeStationText);
         root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox,
                 nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox,
                 fromToBox, openingHours, bikeStationTextBox, bikeStationInput,
@@ -426,7 +432,8 @@ public class AdminSceneBuildingsController implements Initializable {
         }
 
         if (!address.equals("") && !name.equals("") && openingHoursCorrect) {
-            BuildingCommunication.addBuildingToDatabase(buildingCode, name, address, openingHours, bikesInt);
+            BuildingCommunication.addBuildingToDatabase(buildingCode,
+                    name, address, openingHours, bikesInt);
         } else {
             if (result == null) {
                 result = new Label("All the fields have to be entered");

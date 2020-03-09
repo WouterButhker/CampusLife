@@ -21,7 +21,12 @@ public class Building {
      * @param image a photo of the building
      * @param bikes the amount of bikes at the building, null if building has no bike station
      */
-    public Building(Integer code, String name, String location, String openingHours, String image, Integer bikes) {
+    public Building(Integer code,
+                    String name,
+                    String location,
+                    String openingHours,
+                    String image,
+                    Integer bikes) {
         this.code = code;
         this.name = name;
         this.location = location;
