@@ -73,7 +73,7 @@ public class Building {
     }
 
     public String getNameAndCode() {
-        return this.name + " " + this.code;
+        return this.code + " " + this.name;
     }
 
     @Override

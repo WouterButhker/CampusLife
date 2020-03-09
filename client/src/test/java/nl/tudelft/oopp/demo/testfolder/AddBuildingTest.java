@@ -1,5 +1,6 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.testfolder;
 
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import org.junit.jupiter.api.Test;
 
 

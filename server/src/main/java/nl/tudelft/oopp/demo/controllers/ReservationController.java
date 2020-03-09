@@ -31,14 +31,18 @@ public class ReservationController {
      * Add a new Reservation to the database.
      * @param user the User that makes the reservation
      * @param room the Room that is reserved
-     * @param timeSlot the time at which the Room is reserved
+     * @param slot the time at which the Room is reserved
      * @return
      */
     @GetMapping(path = "/add")
     public @ResponseBody String addNewReservation(@RequestParam User user,
                                                   @RequestParam Room room,
-                                                  @RequestParam String timeSlot) {
-        Reservation reservation = new Reservation(user, room, timeSlot);
+                                                  @RequestParam String slot) {
+        String timeSlot = slot.substring(11, 19) + slot.substring(30);
+        String date = slot.substring(0, 10);
+        System.out.println(date);
+        System.out.println(timeSlot);
+        Reservation reservation = new Reservation(user, room, date, slot);
         reservationRepository.save(reservation);
         return "Saved";
     }

@@ -1,9 +1,7 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.testfolder;
 
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 public class DeleteBuildingTest {
 
@@ -13,11 +11,13 @@ public class DeleteBuildingTest {
         System.out.println("---------------------------");
         System.out.println("Test = testDeleteBuilding");
         String response = BuildingCommunication.deleteBuildingFromDatabase(buildingCode);
-        if (response.equals("1"))
+        if (response.equals("1")) {
             System.out.println("Deleted building with code " + buildingCode);
-        else if (response.equals("0"))
+        } else if (response.equals("0")) {
             System.out.println("There was no building with code " + buildingCode);
-        else System.out.println("Some other error!");
+        } else {
+            System.out.println("Some other error!");
+        }
         System.out.println("---------------------------");
     }
 

@@ -14,7 +14,8 @@ public class AddRoomTest {
         Boolean hasTV = true;
         Integer rights = 1;
         Integer building = 1;
-        RoomCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
+        RoomCommunication.addRoomToDatabase(roomCode, name, capacity,
+                hasWhiteboard, hasTV, rights, building);
     }
 
 }

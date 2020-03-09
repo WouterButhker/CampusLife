@@ -210,7 +210,7 @@ public class AdminSceneRoomsController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(buildingList.getScene().getWindow());
+        //stage.initOwner(buildingList.getScene().getWindow());
         stage.showAndWait();
     }
 

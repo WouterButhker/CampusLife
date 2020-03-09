@@ -6,105 +6,97 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
-   <children>
-      <VBox fx:id="mainBox">
-         <children>
-            <VBox prefHeight="275.0" prefWidth="383.0">
-               <children>
-                  <FlowPane prefHeight="30.0" prefWidth="303.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bikes">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Text fx:id="numberBikes" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                           <FlowPane.margin>
-                              <Insets left="10.0" />
-                           </FlowPane.margin>
-                        </Text>
-                         <Button mnemonicParsing="false" onAction="#removeBike" text="-">
-                           <FlowPane.margin>
-                              <Insets left="10.0" />
-                           </FlowPane.margin>
-                        </Button>
-                         <Button mnemonicParsing="false" onAction="#addBike" text="+">
-                           <FlowPane.margin>
-                              <Insets left="10.0" />
-                           </FlowPane.margin>
-                        </Button>
-                         <ChoiceBox fx:id="bikeBuildings" prefWidth="150.0">
-                           <FlowPane.margin>
-                              <Insets left="15.0" />
-                           </FlowPane.margin>
-                         </ChoiceBox>
-                     </children>
-                  </FlowPane>
-                  <FlowPane prefHeight="30.0" prefWidth="316.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Buildings">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="modifyBuildingsEnter" mnemonicParsing="false" onAction="#modifyBuildingsEnter" text="Modify">
-                           <FlowPane.margin>
-                              <Insets left="10.0" />
-                           </FlowPane.margin>
-                        </Button>
-                     </children>
-                  </FlowPane>
-                  <FlowPane prefHeight="30.0" prefWidth="292.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rooms">
-                           <FlowPane.margin>
-                              <Insets />
-                           </FlowPane.margin>
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="modifyRoomsEnter" mnemonicParsing="false" onAction="#modifyRoomsEnter" text="Modify">
-                           <FlowPane.margin>
-                              <Insets left="10.0" />
-                           </FlowPane.margin>
-                        </Button>
-                     </children>
-                  </FlowPane>
-                  <FlowPane prefHeight="30.0" prefWidth="312.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Food">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" text="Modify">
-                           <FlowPane.margin>
-                              <Insets left="10.0" />
-                           </FlowPane.margin>
-                        </Button>
-                     </children>
-                  </FlowPane>
-                  <FlowPane prefHeight="110.0" prefWidth="307.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rights">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="modifyRightsEnter" mnemonicParsing="false" onAction="#modifyRightsEnter" text="Modify">
-                           <FlowPane.margin>
-                              <Insets left="10.0" />
-                           </FlowPane.margin>
-                        </Button>
-                     </children>
-                  </FlowPane>
-               </children>
-      
-            </VBox>
-         </children></VBox>
-   </children>
+  <children>
+    <VBox fx:id="mainBox">
+      <children>
+        <VBox prefHeight="275.0" prefWidth="383.0">
+          <children>
+            <FlowPane prefHeight="30.0" prefWidth="303.0">
+              <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bikes">
+                  <font>
+                    <Font size="16.0" fx:id="x1" />
+                  </font>
+                </Text>
+                <Text fx:id="numberBikes" font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Text>
+                <Button mnemonicParsing="false" onAction="#removeBike" text="-">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#addBike" text="+">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Button>
+                <ChoiceBox fx:id="bikeBuildings" prefWidth="150.0">
+                  <FlowPane.margin>
+                    <Insets left="15.0" />
+                  </FlowPane.margin>
+                </ChoiceBox>
+              </children>
+            </FlowPane>
+            <FlowPane prefHeight="30.0" prefWidth="316.0">
+              <children>
+                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Buildings" />
+                <Button fx:id="modifyBuildingsEnter" mnemonicParsing="false" onAction="#modifyBuildingsEnter" text="Modify">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Button>
+              </children>
+            </FlowPane>
+            <FlowPane prefHeight="30.0" prefWidth="292.0">
+              <children>
+                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Rooms">
+                  <FlowPane.margin>
+                    <Insets />
+                  </FlowPane.margin>
+                </Text>
+                <Button fx:id="modifyRoomsEnter" mnemonicParsing="false" onAction="#modifyRoomsEnter" text="Modify">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Button>
+              </children>
+            </FlowPane>
+            <FlowPane prefHeight="29.999900000002526" prefWidth="383.0">
+              <children>
+                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Food" />
+                <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" text="Modify">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Button>
+              </children>
+            </FlowPane>
+            <FlowPane prefHeight="30.0" prefWidth="383.0">
+              <children>
+                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Rights" />
+                <Button fx:id="modifyRightsEnter" mnemonicParsing="false" onAction="#modifyRightsEnter" text="Modify">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Button>
+              </children>
+            </FlowPane>
+            <FlowPane prefHeight="110.0" prefWidth="307.0">
+              <children>
+                <Text font="$x1" strokeType="OUTSIDE" strokeWidth="0.0" text="Reservations" />
+                <Button id="modifyReservationsEnter" fx:id="modifyReservationsEnter" mnemonicParsing="false" onAction="#modifyReservationsEnter" text="Modify">
+                  <FlowPane.margin>
+                    <Insets left="10.0" />
+                  </FlowPane.margin>
+                </Button>
+              </children>
+            </FlowPane>
+          </children>
+        </VBox>
+      </children>
+    </VBox>
+  </children>
 </AnchorPane>

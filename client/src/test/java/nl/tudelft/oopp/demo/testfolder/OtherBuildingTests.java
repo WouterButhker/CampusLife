@@ -1,11 +1,16 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.testfolder;
 
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-
 public class OtherBuildingTests {
+
+    @BeforeEach
+    void doBeforeEach() {
+        ServerCommunication.login("random", "admin");
+    }
 
     @Test
     public void testCountBuildings() {
@@ -21,14 +26,16 @@ public class OtherBuildingTests {
         System.out.println("---------------------------");
         System.out.println("Test = testGetBuildingsCodeAndName");
         if (buildingsCodeAndName != null) {
-            for (int i = 0; i < buildingsCodeAndName.length; i++)
+            for (int i = 0; i < buildingsCodeAndName.length; i++) {
                 System.out.println(buildingsCodeAndName[i]);
+            }
+        } else {
+            System.out.println("NULL");
         }
-        else System.out.println("NULL");
         System.out.println("---------------------------");
     }
 
-    /**
+    /*
     @Test
     public void testAddBuildingToDatabase() {
         Integer buildingCode = 20;

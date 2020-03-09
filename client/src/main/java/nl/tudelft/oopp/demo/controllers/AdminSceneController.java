@@ -48,6 +48,9 @@ public class AdminSceneController implements Initializable {
     @FXML
     private Button modifyRightsEnter;
 
+    @FXML
+    private Button modifyReservationsEnter;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -136,6 +139,13 @@ public class AdminSceneController implements Initializable {
     private void modifyRightsEnter() throws IOException {
         RoutingScene scene = (RoutingScene) modifyRightsEnter.getScene();
         Route route = new XmlRoute(getClass().getResource("/AdminSceneRights.fxml"));
+        scene.pushRoute(route);
+    }
+
+    @FXML
+    private void modifyReservationsEnter() throws IOException {
+        RoutingScene scene = (RoutingScene) modifyReservationsEnter.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneReservations.fxml"));
         scene.pushRoute(route);
     }
 
