@@ -20,7 +20,7 @@ public class RestaurantsGridView extends GridPane {
     /**
      * Creates a GridView that displays the restaurants as buttons
      * that can be pressed and throw an event.
-     * @param restaurants the list of buildings to be displayed
+     * @param restaurants the list of restaurants to be displayed
      */
     public RestaurantsGridView(List<String> restaurants) {
         this.restaurants = restaurants;
@@ -50,8 +50,8 @@ public class RestaurantsGridView extends GridPane {
         for (int i = 0; i < restaurants.size(); i++) {
             Image image = new Image("/images/main-screen-food.jpg");
             RectangularImageButton button = new RectangularImageButton(image, restaurants.get(i));
-            int buildingsPerRow = 5;
-            this.add(button, i % buildingsPerRow, i / buildingsPerRow, 1, 1);
+            int restaurantsPerRow = 5;
+            this.add(button, i % restaurantsPerRow, i / restaurantsPerRow, 1, 1);
             restaurantButtons.add(button);
 
             int finalI = i;
@@ -61,7 +61,7 @@ public class RestaurantsGridView extends GridPane {
                 @Override
                 public void handle(MouseEvent event) {
                     if (listener != null) {
-                        listener.onBuildingClicked(finalI);
+                        listener.onRestaurantClicked(finalI);
                     }
                 }
             });
@@ -81,6 +81,6 @@ public class RestaurantsGridView extends GridPane {
     }
 
     public interface Listener {
-        void onBuildingClicked(int buildingId);
+        void onRestaurantClicked(int buildingId);
     }
 }
