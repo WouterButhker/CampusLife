@@ -95,7 +95,7 @@ public class BuildingTest {
     @Test
     void toStringTest() {
         assertEquals("[\"buildingCode\":\"" + code + "\",\"name\":\"" + name
-                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours + "\"]"
+                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours + "\",\"bikes\":\"" + bikes +  "\"]"
                 , b.toString());
     }
 
