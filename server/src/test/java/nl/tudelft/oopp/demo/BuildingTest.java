@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.demo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import org.junit.jupiter.api.Assertions;
@@ -7,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class BuildingTest {
@@ -20,7 +22,7 @@ public class BuildingTest {
     private String location;
     private String openingHours;
     private Integer bikes;
-    private Building b;
+    private Building building;
 
     @BeforeEach
     void setUpper() {
@@ -29,85 +31,84 @@ public class BuildingTest {
         location = "CityStreetRoute";
         openingHours = "08:00-22:00";
         bikes = 5;
-        b = new Building(code, name, location, openingHours, bikes);
+        building = new Building(code, name, location, openingHours, bikes);
     }
 
     @Test
     void constructorTest() {
-        assertNotNull(b);
+        assertNotNull(building);
     }
 
     @Test
     void getBuildingCodeTest() {
-        assertEquals(code, b.getBuildingCode());
+        assertEquals(code, building.getBuildingCode());
     }
 
     @Test
     void setBuildingCodeTest() {
-        b.setBuildingCode(1337);
-        assertEquals(1337, b.getBuildingCode());
+        building.setBuildingCode(1337);
+        assertEquals(1337, building.getBuildingCode());
     }
 
     @Test
     void getNameTest() {
-        assertEquals(name, b.getName());
+        assertEquals(name, building.getName());
     }
 
     @Test
     void setNameTest() {
-        b.setName("Canalave gym");
-        assertEquals("Canalave gym", b.getName());
+        building.setName("Canalave gym");
+        assertEquals("Canalave gym", building.getName());
     }
 
     @Test
     void getLocationTest() {
-        assertEquals(location, b.getLocation());
+        assertEquals(location, building.getLocation());
     }
 
     @Test
     void setLocationTest() {
-        b.setLocation("Canalave City");
-        assertEquals("Canalave City", b.getLocation());
+        building.setLocation("Canalave City");
+        assertEquals("Canalave City", building.getLocation());
     }
 
     @Test
     void getOpeningHoursTest() {
-        assertEquals(openingHours, b.getOpeningHours());
+        assertEquals(openingHours, building.getOpeningHours());
     }
 
     @Test
     void setOpeningHoursTest() {
-        b.setOpeningHours("09:00-21:61");
-        assertEquals("09:00-21:61", b.getOpeningHours());
+        building.setOpeningHours("09:00-21:61");
+        assertEquals("09:00-21:61", building.getOpeningHours());
     }
 
     @Test
     void getBikesTest() {
-        assertEquals(bikes, b.getBikes());
+        assertEquals(bikes, building.getBikes());
     }
 
     @Test
     void setBikesTest() {
-        b.setBikes(21);
-        assertEquals(21, b.getBikes());
+        building.setBikes(21);
+        assertEquals(21, building.getBikes());
     }
 
     @Test
     void toStringTest() {
-        assertEquals("[\"buildingCode\":\"" + code + "\",\"name\":\"" + name
-                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours + "\",\"bikes\":\"" + bikes +  "\"]"
-                , b.toString());
+        assertEquals("[\"buildingCode\":\"" + code + "\",\"name\":\"" + name + "\",\"location\":\""
+                + location + "\",\"openingHours\":\"" + openingHours + "\",\"bikes\":\"" + bikes + "\"]", building.toString());
     }
 
     @Test
     void equalsTest() {
-        Building bCopy = new Building(code, name, location, openingHours, bikes);
-        assertEquals(b, bCopy);
+        Building buildingCopy = new Building(code, name, location, openingHours, bikes);
+        assertEquals(building, buildingCopy);
     }
 
     @Test
     void hashCodeTest() {
-        assertTrue(Integer.class.isInstance(b.hashCode()));
+        assertTrue(Integer.class.isInstance(building.hashCode()));
     }
 
     @Test

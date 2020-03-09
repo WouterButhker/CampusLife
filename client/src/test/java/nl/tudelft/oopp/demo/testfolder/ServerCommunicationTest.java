@@ -1,15 +1,20 @@
-package nl.tudelft.oopp.demo.testFolder;
+package nl.tudelft.oopp.demo.testfolder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 public class ServerCommunicationTest {
 
+    @BeforeEach
+    void doBeforeEach() {
+        ServerCommunication.login("random", "admin");
+    }
 
     @Test
     public void testGetBuildingsCodeAndName() {
@@ -42,7 +47,8 @@ public class ServerCommunicationTest {
         Boolean hasTV = false;
         Integer rights = 1;
         Integer building = 35;
-        RoomCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
+        RoomCommunication.addRoomToDatabase(roomCode, name, capacity,
+                hasWhiteboard, hasTV, rights, building);
     }
 
     @Test

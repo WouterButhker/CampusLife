@@ -50,7 +50,7 @@ public class BuildingsGridView extends GridPane {
         for (int i = 0; i < buildings.size(); i++) {
             Image image = new Image("/images/main-screen-default-building.jpg");
             RectangularImageButton button = new RectangularImageButton(image,
-                                            buildings.get(i).getName());
+                                            buildings.get(i).getNameAndCode());
             int buildingsPerRow = 5;
             this.add(button, i % buildingsPerRow, i / buildingsPerRow, 1, 1);
             buildingButtons.add(button);
