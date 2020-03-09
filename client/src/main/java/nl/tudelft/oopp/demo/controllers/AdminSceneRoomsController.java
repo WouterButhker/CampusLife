@@ -346,7 +346,16 @@ public class AdminSceneRoomsController implements Initializable {
         ChoiceBox<String> rights = new ChoiceBox<String>();
         rights.setPrefSize(100, 20);
         rights.getItems().addAll("Student", "Employee", "Admin");
-        rights.setValue("Student");
+        int rightsInt = room.getRights();
+        switch (rightsInt) {
+            case 0 : rights.setValue("Student");
+                     break;
+            case 1 : rights.setValue("Employee");
+                     break;
+            case 2 : rights.setValue("Admin");
+                     break;
+            default: rights.setValue("Student");
+        }
         HBox rightsBox = new HBox(spacer6, rights);
         rightsBox.setPadding(new Insets(10, 0, 10, 0));
 
