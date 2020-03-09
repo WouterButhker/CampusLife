@@ -6,17 +6,7 @@ import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -35,7 +25,7 @@ public class RoomsListRoute extends Route {
 
     private ScrollPane scrollPane;
     private VBox rootContainer;
-    private AnchorPane ap;
+    private HBox hBox;
     private Text universityTitle;
 
     private HBox buildingsTitleContainer;
@@ -64,42 +54,54 @@ public class RoomsListRoute extends Route {
 
     private void createRootElement(List<Room> roomList) {
         rootContainer = new VBox();
-        ap = new AnchorPane();
+        hBox = new HBox();
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
 
-        scrollPane = new ScrollPane(rootContainer);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
         //filter box container
         filters = new VBox();
+        filters.setPadding(new Insets(5));
         filterTitle = new Text("Filters:");
         filterTitle.getStyleClass().add("university-main-title");
         filters.getChildren().add(filterTitle);
         filters.setTranslateX(5);
 
-        //filter checkboxes
-        CheckBox available = new CheckBox();
-        available.setText("Available");
-        CheckBox smallRoom = new CheckBox();
-        smallRoom.setText("Small rooms");
-        CheckBox mediumRoom = new CheckBox();
-        mediumRoom.setText("Medium rooms");
-        CheckBox largeRoom = new CheckBox();
-        largeRoom.setText("Large rooms");
-        filters.getChildren().addAll(available, smallRoom, mediumRoom, largeRoom);
-        filters.setSpacing(6);
-        filters.setPrefHeight(150);
-        filters.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
-                new CornerRadii(0), new BorderWidths(1))));
-        ap.getChildren().add(filters);
+        //making filter boxes
+        CheckBox hasWhiteboard = new CheckBox("white board");
+        hasWhiteboard.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        hasWhiteboard.setPadding(new Insets(8, 16, 8, 16));
+        hasWhiteboard.setPrefWidth(130);
+
+        CheckBox hasTV = new CheckBox("TV");
+        hasTV.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        hasTV.setPadding(new Insets(8, 16, 8, 16));
+        hasTV.setPrefWidth(130);
+
+        TextField minCap = new TextField();
+        minCap.setPromptText("Minimal capacity");
+        minCap.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        minCap.setPadding(new Insets(8, 16, 8, 16));
+        minCap.setPrefWidth(130);
+
+        TextField maxCap = new TextField();
+        maxCap.setPromptText("Maximal capacity");
+        maxCap.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        maxCap.setPadding(new Insets(8, 16, 8, 16));
+        maxCap.setPrefWidth(130);
+
+        Button apply = new Button("Apply filters");
+        apply.setStyle("-fx-background-radius: 16;");
+        apply.setPadding(new Insets(8, 16, 8, 16));
+        apply.setPrefWidth(130);
+
+        filters.getChildren().addAll(hasWhiteboard, hasTV, minCap, maxCap, apply);
+        filters.setSpacing(5);
+        filters.setMaxHeight(140);
+        hBox.getChildren().add(filters);
+
 
         //container for the rooms
         VBox rooms = new VBox();
-        rooms.setTranslateX(140);
-        rooms.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
-                new CornerRadii(0), new BorderWidths(1))));
-        rooms.setPrefWidth(430);
 
         RoomsGridView buildingsGrid = new RoomsGridView(roomList);
         rooms.getChildren().add(buildingsGrid);
@@ -110,14 +112,19 @@ public class RoomsListRoute extends Route {
                 routingScene.pushRoute(new RoomDisplayRoute(room));
             }
         });
-        ap.getChildren().add(rooms);
 
-        rootContainer.getChildren().add(ap);
+        scrollPane = new ScrollPane(rooms);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color:transparent;");
+        hBox.getChildren().add(scrollPane);
+
+        rootContainer.getChildren().add(hBox);
     }
 
     @Override
     public Parent getRootElement() {
-        return scrollPane;
+        return rootContainer;
     }
 
 
