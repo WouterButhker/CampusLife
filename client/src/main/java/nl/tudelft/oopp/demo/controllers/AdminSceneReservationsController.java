@@ -1,9 +1,13 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static nl.tudelft.oopp.demo.communication.ReservationCommunication.getAllReservations;
+import static nl.tudelft.oopp.demo.communication.ReservationCommunication.deleteReservationFromDatabase;
+
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -14,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+
 
 
 public class AdminSceneReservationsController {
@@ -52,24 +57,31 @@ public class AdminSceneReservationsController {
     }
 
     private void loadReservations() {
-        ArrayList<Reservation> reservations = new ArrayList<Reservation>();
-        for(Integer i =0; i<10; i++) {
-            String room = "room" + i;
-            Reservation reservation = new Reservation(i, i, room, "12:30-14:30");
-            reservations.add(reservation);
-        }
+        List<Reservation> reservations = getAllReservations();
 
+        reservationsList.getChildren().clear();
         anchorPaneReservations.setPrefHeight(70 * reservations.size());
 
-        for(int i = 0; i<reservations.size(); i++) {
+        for (int i = 0; i < reservations.size(); i++) {
             HBox reservation = new HBox();
-            reservation.setMaxWidth(642);
+            reservation.setMaxWidth(1011);
             Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
                     + "User: " + reservations.get(i).getUser() + " | "
                     + "Room: " + reservations.get(i).getRoom() + " | "
                     + "TimeSlot: " + reservations.get(i).getTimeSlot());
-            text.setPrefSize(642, 60);
+            text.setPrefSize(900, 60);
             text.setStyle("-fx-font: 17 arial;");
+
+            int finalI = i;
+            Button delete = new Button("delete");
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    Integer id = reservations.get(finalI).getId();
+                    deleteReservationFromDatabase(id);
+                    loadReservations();
+                }
+            });
 
             reservation.setPadding(new Insets(5, 5, 5,5));
             String css = "-fx-border-color: black;\n"
@@ -78,7 +90,7 @@ public class AdminSceneReservationsController {
                     + "-fx-border-width: 1;"
                     + "-fx-border-radius: 10;";
             reservation.setStyle(css);
-            reservation.getChildren().add(text);
+            reservation.getChildren().addAll(text, delete);
             reservationsList.getChildren().add(reservation);
         }
 

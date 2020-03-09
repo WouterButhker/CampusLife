@@ -14,28 +14,20 @@
             <Font size="36.0" />
           </font>
         </Text>
-        <TextField id="locationInput" fx:id="reservationIdField" layoutX="56.0" layoutY="172.0" prefHeight="26.0" prefWidth="238.0" promptText="ID" />
-        <Text layoutX="55.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delete a reservation">
+        <Text layoutX="49.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of reservations">
           <font>
             <Font size="24.0" fx:id="x1" />
           </font>
         </Text>
-        <Text font="$x1" layoutX="445.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of reservations" />
-        <ScrollPane hbarPolicy="NEVER" layoutX="445.0" layoutY="129.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="471.0" prefWidth="642.0">
+        <ScrollPane hbarPolicy="NEVER" layoutX="49.0" layoutY="129.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="462.0" prefWidth="1011.0">
           <content>
-            <AnchorPane id="anchorPaneReservations" fx:id="anchorPaneReservations" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="400.0">
+            <AnchorPane fx:id="anchorPaneReservations" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1011.0">
               <children>
-                <VBox id="reservationsList" fx:id="reservationsList" prefHeight="26.0" prefWidth="568.0" rotate="0.0" AnchorPane.bottomAnchor="-26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-168.0" AnchorPane.topAnchor="0.0" />
+                <VBox fx:id="reservationsList" prefHeight="26.0" prefWidth="568.0" rotate="0.0" AnchorPane.bottomAnchor="-26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-168.0" AnchorPane.topAnchor="0.0" />
               </children>
             </AnchorPane>
           </content>
         </ScrollPane>
-        <Text layoutX="56.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reservation ID">
-          <font>
-            <Font size="17.0" />
-          </font>
-        </Text>
-        <Button fx:id="deleteReservationButton" layoutX="56.0" layoutY="218.0" mnemonicParsing="false" onAction="#onDeleteClicked" text="Delete" />
       </children>
     </AnchorPane>
   </children>
