@@ -21,6 +21,7 @@ public class BuildingTest {
     private String name;
     private String location;
     private String openingHours;
+    private Integer bikes;
     private Building building;
 
     @BeforeEach
@@ -29,8 +30,8 @@ public class BuildingTest {
         name = "The Arena";
         location = "CityStreetRoute";
         openingHours = "08:00-22:00";
-
-        building = new Building(code, name, location, openingHours);
+        bikes = 5;
+        building = new Building(code, name, location, openingHours, bikes);
     }
 
     @Test
@@ -83,14 +84,26 @@ public class BuildingTest {
     }
 
     @Test
+    void getBikesTest() {
+        assertEquals(bikes, building.getBikes());
+    }
+
+    @Test
+    void setBikesTest() {
+        building.setBikes(21);
+        assertEquals(21, building.getBikes());
+    }
+
+    @Test
     void toStringTest() {
         assertEquals("[\"buildingCode\":\"" + code + "\",\"name\":\"" + name + "\",\"location\":\""
-                + location + "\",\"openingHours\":\"" + openingHours + "\"]", building.toString());
+                + location + "\",\"openingHours\":\"" + openingHours
+                + "\",\"bikes\":\"" + bikes + "\"]", building.toString());
     }
 
     @Test
     void equalsTest() {
-        Building buildingCopy = new Building(code, name, location, openingHours);
+        Building buildingCopy = new Building(code, name, location, openingHours, bikes);
         assertEquals(building, buildingCopy);
     }
 
@@ -105,7 +118,7 @@ public class BuildingTest {
         String name = "Delete Me";
         String location = "Please";
         String openingHours = "08:00-22:00";
-        Building building = new Building(buildingCode, name, location, openingHours);
+        Building building = new Building(buildingCode, name, location, openingHours, bikes);
         buildingRepository.save(building);
 
         Building building2 = buildingRepository.getOne((Integer) 1);

@@ -8,7 +8,8 @@ public class ServerCommunication {
     public static final String SERVER_URL = "http://localhost:8080";
 
 
-    public static ResponseEntity<String> authenticatedRequest(String link) throws AuthenticationException {
+    public static ResponseEntity<String> authenticatedRequest(String link)
+            throws AuthenticationException {
         return AuthenticationCommunication.authenticatedRequest(link);
     }
 

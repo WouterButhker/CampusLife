@@ -2,12 +2,12 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.io.Serializable;
 
-public class UserDTO implements Serializable {
+public class UserDtO implements Serializable {
     private String username;
     private String password;
 
 
-    public UserDTO(String user, String pass) {
+    public UserDtO(String user, String pass) {
         this.username = user;
         this.password = pass;
     }
@@ -35,7 +35,6 @@ public class UserDTO implements Serializable {
      * be a concise but informative representation that is easy for a
      * person to read.
      * It is recommended that all subclasses override this method.
-     * <p>
      * The {@code toString} method for class {@code Object}
      * returns a string consisting of the name of the class of which the
      * object is an instance, the at-sign character `{@code @}', and
@@ -51,6 +50,6 @@ public class UserDTO implements Serializable {
      */
     @Override
     public String toString() {
-        return "User: " + this.username+ " pass: " + password;
+        return "User: " + this.username + " pass: " + password;
     }
 }

@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.UserDTO;
-import org.springframework.http.*;
+import nl.tudelft.oopp.demo.entities.UserDtO;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.AuthenticationException;
@@ -36,12 +40,12 @@ public class AuthenticationCommunication {
      * @param user the user to be added to the database
      * @return the server response
      */
-    public static ResponseEntity<String> register(UserDTO user) {
+    public static ResponseEntity<String> register(UserDtO user) {
 
         String url = SERVER_URL + "/register";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<UserDTO> request = new HttpEntity<>(user, headers);
+        HttpEntity<UserDtO> request = new HttpEntity<>(user, headers);
 
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();

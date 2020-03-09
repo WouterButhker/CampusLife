@@ -63,6 +63,7 @@ public class User implements UserDetails {
 
     }
 
+
     /**
      * Returns the authorities granted to the user. Cannot return <code>null</code>.
      *

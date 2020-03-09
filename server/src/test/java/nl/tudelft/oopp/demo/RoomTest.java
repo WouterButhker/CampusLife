@@ -29,7 +29,7 @@ class RoomTest {
         hasWhiteboard = true;
         hasTV = true;
         rights = 2;
-        building = new Building(123, "Test Building", "Somewhere", "11:11-22:22");
+        building = new Building(123, "Test Building", "Somewhere", "11:11-22:22", 42);
 
         room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
     }
@@ -113,9 +113,9 @@ class RoomTest {
 
     @Test
     void setBuildingTest() {
-        Building b = new Building(987, "Other Building", "Everywhere", "00:00-24:00");
-        room.setBuilding(b);
-        assertEquals(b, room.getBuilding());
+        Building building = new Building(987, "Other Building", "Everywhere", "00:00-24:00", 42);
+        room.setBuilding(building);
+        assertEquals(building, room.getBuilding());
     }
 
     @Test
