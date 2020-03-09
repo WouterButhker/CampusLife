@@ -5,15 +5,12 @@ import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import nl.tudelft.oopp.demo.core.RoutingScene;
-import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.views.RoomsListRoute;
-
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantsGridView extends GridPane {
-    private List<String> restaurants;
+    private List<Restaurant> restaurants;
     private List<RectangularImageButton> restaurantButtons;
     private Listener listener;
 
@@ -22,7 +19,7 @@ public class RestaurantsGridView extends GridPane {
      * that can be pressed and throw an event.
      * @param restaurants the list of restaurants to be displayed
      */
-    public RestaurantsGridView(List<String> restaurants) {
+    public RestaurantsGridView(List<Restaurant> restaurants) {
         this.restaurants = restaurants;
 
         restaurantButtons = new ArrayList<>();
@@ -49,7 +46,7 @@ public class RestaurantsGridView extends GridPane {
     private void addButtons() {
         for (int i = 0; i < restaurants.size(); i++) {
             Image image = new Image("/images/main-screen-food.jpg");
-            RectangularImageButton button = new RectangularImageButton(image, restaurants.get(i));
+            RectangularImageButton button = new RectangularImageButton(image, restaurants.get(i).getName());
             int restaurantsPerRow = 5;
             this.add(button, i % restaurantsPerRow, i / restaurantsPerRow, 1, 1);
             restaurantButtons.add(button);

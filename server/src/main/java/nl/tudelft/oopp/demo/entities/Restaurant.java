@@ -1,11 +1,30 @@
 package nl.tudelft.oopp.demo.entities;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "restaurant")
 public class Restaurant {
+
+    @Id
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "buildingCode")
     private Integer buildingCode;
+
+    @Column(name = "openingHours")
     private String openingHours;
+
+    /*
+    @Column(name = "menu")
+    private String menu;
+     */
+
+    public Restaurant() {
+
+    }
 
     /** Creates a new Restaurant object
      * @param name String with the name of the Restaurant
@@ -55,4 +74,5 @@ public class Restaurant {
     public int hashCode() {
         return Objects.hash(name, buildingCode, openingHours);
     }
+
 }
