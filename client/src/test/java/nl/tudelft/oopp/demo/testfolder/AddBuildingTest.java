@@ -12,7 +12,9 @@ public class AddBuildingTest {
         String name = "Delete Me";
         String location = "Please";
         String openingHours = "08:00-22:00";
-        BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+        Integer bikes = 42;
+        BuildingCommunication.addBuildingToDatabase(buildingCode,
+                name, location, openingHours, bikes);
     }
 
 }
