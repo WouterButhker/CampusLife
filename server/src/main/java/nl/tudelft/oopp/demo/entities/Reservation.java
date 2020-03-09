@@ -30,6 +30,9 @@ public class Reservation {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;          // room code
 
+    @Column(name = "date")
+    private String date;
+
     @Column(name = "timeSlot")
     private String timeSlot;
 
@@ -45,11 +48,13 @@ public class Reservation {
      */
     public Reservation(User user,
                        Room room,
+                       String date,
                        String timeSlot)  {
         System.out.println(this.id);
         this.user = user;
         this.room = room;
         this.timeSlot = timeSlot;
+        this.date = date;
     }
 
     public Integer getId() {
@@ -76,6 +81,14 @@ public class Reservation {
         this.room = room;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getTimeSlot() {
         return timeSlot;
     }
@@ -100,6 +113,6 @@ public class Reservation {
     }
 
     public String toString() {
-        return "[" + id + ", " + user + ", " + room + ", " + timeSlot + "]";
+        return "[" + id + ", " + user + ", " + room + ", " + date + ", " + timeSlot + "]";
     }
 }

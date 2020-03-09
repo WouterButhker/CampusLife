@@ -2,10 +2,18 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.util.Collection;
 import java.util.Collections;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 
 
 @Entity
@@ -31,7 +39,7 @@ public class User implements UserDetails {
     private boolean accountIsEnabled = true;
 
     /**
-     *
+     * Creates a User object.
      * @param id the unique id of the user
      * @param username the username of the user
      * @param password the password of the user
