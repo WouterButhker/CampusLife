@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,14 @@ public class RestaurantController {
     private RestaurantRepository restaurantRepository;
 
     @GetMapping(path = "/all")
-    public List<Restaurant> getAll() { return restaurantRepository.findAll(); }
+    public List<Restaurant> getAll() {
+        return restaurantRepository.findAll();
+    }
 
     /**
      * Adds a new restaurant to the database.
-     * @param name the actual (full) name
+     *
+     * @param name         the actual (full) name
      * @param buildingCode the number of the building
      * @param openingHours format aa:bb-cc:dd
      * @return Saved
@@ -29,9 +31,9 @@ public class RestaurantController {
     @GetMapping(path = "/add")
     public @ResponseBody
     String addNewRestaurant(@RequestParam String name,
-                          @RequestParam Integer buildingCode,
-                          @RequestParam String openingHours) {
-        Restaurant restaurant = new Restaurant( name, buildingCode, openingHours);
+                            @RequestParam Integer buildingCode,
+                            @RequestParam String openingHours) {
+        Restaurant restaurant = new Restaurant(name, buildingCode, openingHours);
         restaurantRepository.save(restaurant);
         return "Saved";
     }

@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class RestaurantsGridView extends GridPane {
     /**
      * Creates a GridView that displays the restaurants as buttons
      * that can be pressed and throw an event.
+     *
      * @param restaurants the list of restaurants to be displayed
      */
     public RestaurantsGridView(List<Restaurant> restaurants) {
@@ -37,6 +39,7 @@ public class RestaurantsGridView extends GridPane {
 
     /**
      * Sets the listener for click events.
+     *
      * @param listener the listener
      */
     public void setListener(Listener listener) {

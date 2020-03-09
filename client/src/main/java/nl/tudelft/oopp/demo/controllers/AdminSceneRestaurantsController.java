@@ -19,12 +19,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
-import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Restaurant;
-import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
 import java.net.URL;
@@ -118,7 +116,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
             Label text = new Label("Building Code: " + restaurants.get(i).getBuildingCode()
-                   + "\n" + restaurants.get(i).getName());
+                    + "\n" + restaurants.get(i).getName());
             text.setPrefSize(225, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
@@ -130,7 +128,7 @@ public class AdminSceneRestaurantsController implements Initializable {
                 }
             });
             modify.setPrefSize(45, 40);
-            modify.setPadding(new Insets(0, 0, 0,0));
+            modify.setPadding(new Insets(0, 0, 0, 0));
             StackPane modifyPane = new StackPane(modify);
             modifyPane.setPadding(new Insets(10, 0, 10, 0));
             Button delete = new Button("delete");
@@ -142,10 +140,10 @@ public class AdminSceneRestaurantsController implements Initializable {
                 }
             });
             delete.setPrefSize(45, 40);
-            delete.setPadding(new Insets(0, 0,0,0));
+            delete.setPadding(new Insets(0, 0, 0, 0));
             StackPane deletePane = new StackPane(delete);
             deletePane.setPadding(new Insets(10, 0, 10, 0));
-            restaurant.setPadding(new Insets(5, 5, 5,5));
+            restaurant.setPadding(new Insets(5, 5, 5, 5));
             String css = "-fx-border-color: black;\n"
                     + "-fx-border-insets: 4\n;"
                     + "-fx-border-style: solid\n;"
@@ -227,11 +225,11 @@ public class AdminSceneRestaurantsController implements Initializable {
         Text header = new Text("Modify your room");
         header.setFont(Font.font("System", 24));
         HBox headerBox = new HBox(header);
-        headerBox.setPadding(new Insets(20, 125,10,125));
+        headerBox.setPadding(new Insets(20, 125, 10, 125));
 
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
-        nameTextBox.setPadding(new Insets(10, 175,0,175));
+        nameTextBox.setPadding(new Insets(10, 175, 0, 175));
 
         Pane spacer = new Pane();
         spacer.setPrefSize(125, 20);
@@ -242,7 +240,7 @@ public class AdminSceneRestaurantsController implements Initializable {
 
         Label openingHoursText = new Label("Opening hours :");
         HBox openingHoursTextBox = new HBox(openingHoursText);
-        openingHoursTextBox.setPadding(new Insets(10, 175,0,175));
+        openingHoursTextBox.setPadding(new Insets(10, 175, 0, 175));
 
         Pane spacer2 = new Pane();
         spacer2.setPrefSize(125, 20);
@@ -254,7 +252,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         Button submit = new Button("Submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
-        submitBox.setPadding(new Insets(10, 150,10, 150));
+        submitBox.setPadding(new Insets(10, 150, 10, 150));
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

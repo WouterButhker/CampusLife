@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.demo.entities;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -26,8 +29,10 @@ public class Restaurant {
 
     }
 
-    /** Creates a new Restaurant object
-     * @param name String with the name of the Restaurant
+    /**
+     * Creates a new Restaurant object
+     *
+     * @param name         String with the name of the Restaurant
      * @param buildingCode the code of the building the Restaurant is in
      * @param openingHours a String with format hh:mm-hh:mm
      */
@@ -42,16 +47,23 @@ public class Restaurant {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public Integer getBuildingCode() { return buildingCode; }
-    public void setBuildingCode(Integer buildingCode) { this.buildingCode = buildingCode; }
+    public Integer getBuildingCode() {
+        return buildingCode;
+    }
+
+    public void setBuildingCode(Integer buildingCode) {
+        this.buildingCode = buildingCode;
+    }
 
     public String getOpeningHours() {
         return openingHours;
     }
+
     public void setOpeningHours(String openingHours) {
         this.openingHours = openingHours;
     }

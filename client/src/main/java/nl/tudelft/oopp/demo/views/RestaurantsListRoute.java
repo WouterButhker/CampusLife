@@ -9,7 +9,6 @@ import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.RestaurantsGridView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantsListRoute extends Route {
@@ -30,6 +29,7 @@ public class RestaurantsListRoute extends Route {
         mainContainer.getChildren().add(appBar);
         mainContainer.getChildren().add(scrollPane);
     }
+
     @Override
     public Parent getRootElement() {
         return mainContainer;
