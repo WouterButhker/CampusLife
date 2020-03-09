@@ -48,12 +48,21 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    /**
+     * Make a new user entity.
+     * @param username of the current User
+     * @param password of the current User
+     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.role = "Student";
     }
 
+    /**
+     * Makes a new User object using another user. // TODO explain
+     * @param user another User
+     */
     public User(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
@@ -153,7 +162,6 @@ public class User implements UserDetails {
      * be a concise but informative representation that is easy for a
      * person to read.
      * It is recommended that all subclasses override this method.
-     * <p>
      * The {@code toString} method for class {@code Object}
      * returns a string consisting of the name of the class of which the
      * object is an instance, the at-sign character `{@code @}', and

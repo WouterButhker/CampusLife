@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-import nl.tudelft.oopp.demo.entities.UserDTO;
+import nl.tudelft.oopp.demo.entities.UserDtO;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.http.ResponseEntity;
@@ -87,7 +87,7 @@ public class RegisterScreenController {
 
     private static void register(String username, String password) {
 
-        UserDTO user = new UserDTO(username, new BCryptPasswordEncoder().encode(password));
+        UserDtO user = new UserDtO(username, new BCryptPasswordEncoder().encode(password));
 
         ResponseEntity<String> response = AuthenticationCommunication.register(user);
 
