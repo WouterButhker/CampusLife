@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -75,6 +76,9 @@ public class AdminSceneRoomsController implements Initializable {
 
     @FXML
     private AnchorPane anchorPaneRooms;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private VBox roomsList;
@@ -237,8 +241,13 @@ public class AdminSceneRoomsController implements Initializable {
             rooms = RoomCommunication.getAllRoomsFromBuilding(buildingCode);
         }
         int numRooms = rooms.size();
-        anchorPaneRooms.setPrefHeight(82 * numRooms);
-
+        int height = numRooms * 82;
+        anchorPaneRooms.setPrefHeight(height);
+        if (height <= scrollPane.getPrefHeight()) {
+            scrollPane.setPrefWidth(400);
+        } else {
+            scrollPane.setPrefWidth(417);
+        }
         for (int i = 0; i < numRooms; i++) {
             HBox room = new HBox();
             room.setMaxWidth(400);
@@ -247,8 +256,8 @@ public class AdminSceneRoomsController implements Initializable {
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
             Label text = new Label("Building Code: " + rooms.get(i).getBuildingCode()
-                    + "\n" + rooms.get(i).getName() + " " + rooms.get(i).getCode() + " "
-                    + rooms.get(i).getRights() + " capacity: " + rooms.get(i).getCapacity()
+                    + " | Room Code: "  + rooms.get(i).getCode() + "\n" + rooms.get(i).getName()
+                    + " " + rooms.get(i).getRights() + " capacity: " + rooms.get(i).getCapacity()
                     + "\nWhiteboard: " + rooms.get(i).isHasWhiteboard() + " TV: "
                     + rooms.get(i).isHasTV());
             text.setPrefSize(225, 60);
@@ -337,7 +346,16 @@ public class AdminSceneRoomsController implements Initializable {
         ChoiceBox<String> rights = new ChoiceBox<String>();
         rights.setPrefSize(100, 20);
         rights.getItems().addAll("Student", "Employee", "Admin");
-        rights.setValue("Student");
+        int rightsInt = room.getRights();
+        switch (rightsInt) {
+            case 0 : rights.setValue("Student");
+                     break;
+            case 1 : rights.setValue("Employee");
+                     break;
+            case 2 : rights.setValue("Admin");
+                     break;
+            default: rights.setValue("Student");
+        }
         HBox rightsBox = new HBox(spacer6, rights);
         rightsBox.setPadding(new Insets(10, 0, 10, 0));
 

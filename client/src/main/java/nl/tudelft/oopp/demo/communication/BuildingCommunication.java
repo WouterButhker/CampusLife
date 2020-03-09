@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.demo.communication;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
-
 
 public class BuildingCommunication {
 
@@ -32,18 +34,27 @@ public class BuildingCommunication {
      * @param name the name of the building
      * @param location the street where the building is situated
      * @param openingHours time it is open with format hh:mm-hh:mm
+     * @param bikes amount of bikes at the building, null if it has no bike station
      */
     public static void addBuildingToDatabase(Integer buildingCode,
                                              String name,
                                              String location,
-                                             String openingHours) {
+                                             String openingHours,
+                                             Integer bikes) {
         /*
         name = name.replace(" ", "%20");
         location = location.replace(" ", "%20");
         openingHours = openingHours.replace(" ", "%20");
          */
+        String bikesString;
+        if (bikes == null) {
+            bikesString = "#null";
+        } else {
+            bikesString = Integer.toString(bikes);
+        }
         String url = "/buildings/add?buildingCode=" + buildingCode
-                + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours;
+                + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours
+                + "&bikes=" + bikesString;
 
         try {
             ServerCommunication.authenticatedRequest(url);
@@ -90,37 +101,28 @@ public class BuildingCommunication {
      * @param inputBuilding a JSON with a building
      * @return a Building object.
      */
-    public static Building parseBuilding(String inputBuilding) {
-        inputBuilding = inputBuilding.replace("{", "");
-        inputBuilding = inputBuilding.replace("}", "");
-        String[] parameters = inputBuilding.split(",");
-        for (int i = 0; i < parameters.length; i++) {
-            String[] miniParams = parameters[i].split(":");
-            miniParams[1] = miniParams[1].replace("\"", "");
-            parameters[i] = miniParams[1];
-            if (i == 3) {
-                miniParams[3] = miniParams[3].replace("\"", "");
-                parameters[i] += ":" + miniParams[2] + ":" + miniParams[3];
-            }
+    public static Building parseBuilding(JsonObject inputBuilding) {
+        System.out.println(inputBuilding);
+        Integer code = inputBuilding.get("buildingCode").getAsInt();
+        String name = inputBuilding.get("name").getAsString();
+        String location = inputBuilding.get("location").getAsString();
+        String openingHours = inputBuilding.get("openingHours").getAsString();
+        Integer bikes;
+        if (inputBuilding.get("bikes").isJsonNull()) {
+            bikes = null;
+        } else {
+            bikes = inputBuilding.get("bikes").getAsInt();
         }
-        Integer code = Integer.parseInt(parameters[0]);
-        String name = parameters[1];
-        String location = parameters[2];
-        String openingHours = parameters[3];
         return new Building(code, name, location, openingHours,
-                "/images/main-screen-default-building.jpg");
+                "/images/main-screen-default-building.jpg", bikes);
     }
 
     private static List<Building> parseBuildings(String inputBuildings) {
+        JsonParser jsonParser = new JsonParser();
+        JsonArray jsonArray = jsonParser.parse(inputBuildings).getAsJsonArray();
         List<Building> listOfBuildings = new ArrayList<>();
-        inputBuildings = inputBuildings.replace("[", "");
-        inputBuildings = inputBuildings.replace("]", "");
-        if (inputBuildings.equals("")) {
-            return listOfBuildings;
-        }
-        String[] listOfStrings = inputBuildings.split("(},)");
-        for (int i = 0; i < listOfStrings.length; i++) {
-            listOfBuildings.add(parseBuilding(listOfStrings[i]));
+        for (int i = 0; i < jsonArray.size(); i++) {
+            listOfBuildings.add(parseBuilding(jsonArray.get(i).getAsJsonObject()));
         }
         return listOfBuildings;
     }
