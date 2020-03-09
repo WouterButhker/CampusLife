@@ -3,10 +3,30 @@ This document contains questions we want to ask and things we want to discuss wi
 Points of action:
 Show our current version of application.
 Go over our future plan -> see if they agree with everything.
-Foods with a dropdown for type so think sushi, pizza, whatever and then in the dropdown menu is the actual food with prices.
-Bikes -> first and second question.
-For profile page -> show oom reservations and food reservations and whether or not you have rented a bike and the ability to cancel them.
-Also show history and be able to delete old reservations if wanted.
+
+current pages
+ - login
+ - register
+ - main screen
+ - admin
+    - main admin page
+    - admin buildings
+    - admin rooms
+    - admin reservations
+- buildings screen
+- rooms screen
+- single room screen
+- single building screen
+- reserve a room page
+
+upcoming pages
+- reserve a bike page
+- order food page
+- admin
+    - edit food page
+    - change rights page
+- user profile page
+
 
 Questions:
 Should we be able to reserve a bike for in the future? So let's say for one hour from now on or only for from this moment onwards?
@@ -15,4 +35,17 @@ If you reserve a bike, can someone reserve a bike before you if there are no oth
 
 Is it okay if our application only works on maximized?
 Is it correct that all days have the same opening hours?
+
+
+
+
+
+Foods with a dropdown for type so think sushi, pizza, whatever and then in the dropdown menu is the actual food with prices.
+Bikes -> first and second question.
+For profile page -> show oom reservations and food reservations and whether or not you have rented a bike and the ability to cancel them.
+Also show history and be able to delete old reservations if wanted.
+
+
+
+
 
