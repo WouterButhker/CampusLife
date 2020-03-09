@@ -2,9 +2,9 @@ package nl.tudelft.oopp.demo.testfolder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
-import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ public class ServerCommunicationTest {
 
     @BeforeEach
     void doBeforeEach() {
-        ServerCommunication.login("random", "admin");
+        AuthenticationCommunication.login("random", "admin");
     }
 
     @Test
