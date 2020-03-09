@@ -350,8 +350,7 @@ public class AdminSceneBuildingsController implements Initializable {
         hasBikeStationCB.setOnAction((value) -> {
             if (hasBikeStationCB.isSelected()) {
                 bikesAmountInput.setVisible(true);
-            }
-            else {
+            } else {
                 bikesAmountInput.setVisible(false);
             }
         });
@@ -366,17 +365,9 @@ public class AdminSceneBuildingsController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 String openingHours = from.getValue() + "-" + to.getValue();
-                Integer bikes = 0;
+                String bikes = bikesAmountInput.getText();
                 if (!hasBikeStationCB.isSelected()) {
                     bikes = null;
-                }
-                else {
-                    try {
-                        bikes = Integer.parseInt(bikesAmountInput.getText());
-                    }
-                    catch (NumberFormatException e) {
-//                        submitStatus.setText("Invalid number");
-                    }
                 }
                 Label status = modifyBuilding(address.getText(), name.getText(),
                         building.getCode(), openingHours, bikes);
@@ -387,7 +378,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     loadBuildings();
                 } else {
                     try {
-                        root.getChildren().remove(11);
+                        root.getChildren().remove(13);
                         root.getChildren().add(status);
                     } catch (IndexOutOfBoundsException e) {
                         root.getChildren().add(status);
@@ -409,10 +400,25 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     private Label modifyBuilding(String address, String name,
-                                 int buildingCode, String openingHours, Integer bikes) {
+                                 int buildingCode, String openingHours, String bikes) {
         boolean openingHoursCorrect = false;
         String[] fromTo = openingHours.split("-");
         Label result = null;
+        Integer bikesInt = null;
+        // checking if bikes input is actually valid
+        if (bikes == null) {
+            bikesInt = null;
+        } else {
+            try {
+                bikesInt = Integer.parseInt(bikes.trim());
+                if (bikesInt < 0) {
+                    result = new Label("The amount of bikes cannot be negative");
+                }
+            } catch (NumberFormatException e) {
+                result = new Label("The amount of bikes is not a number");
+            }
+        }
+
         if (fromTo[0].compareTo(fromTo[1]) < 0) {
             openingHoursCorrect = true;
         } else {
@@ -420,7 +426,7 @@ public class AdminSceneBuildingsController implements Initializable {
         }
 
         if (!address.equals("") && !name.equals("") && openingHoursCorrect) {
-            BuildingCommunication.addBuildingToDatabase(buildingCode, name, address, openingHours, bikes);
+            BuildingCommunication.addBuildingToDatabase(buildingCode, name, address, openingHours, bikesInt);
         } else {
             if (result == null) {
                 result = new Label("All the fields have to be entered");
@@ -436,8 +442,7 @@ public class AdminSceneBuildingsController implements Initializable {
     private void hasBikeStation() {
         if (hasBikeStationCheck.isSelected()) {
             bikeAmountInput.setVisible(true);
-        }
-        else {
+        } else {
             bikeAmountInput.setVisible(false);
         }
     }
