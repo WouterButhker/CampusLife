@@ -14,7 +14,7 @@ public class MainApplication extends Application {
         Route loginRoute = new XmlRoute(getClass().getResource("/LoginScreen.fxml"));
         RoutingScene routingScene = new RoutingScene(loginRoute);
 
-        routingScene.getStylesheets().add("css/TextStyles.css");
+        routingScene.getStylesheets().add("css/text-styles.css");
         routingScene.getStylesheets().add("css/calendar.css");
         primaryStage.setScene(routingScene);
         primaryStage.show();
