@@ -43,6 +43,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
+            <Button fx:id="uploadButton" layoutX="261.0" layoutY="412.0" mnemonicParsing="false" onAction="#upload" text="Upload" />
          </children>
       </AnchorPane>
    </children>

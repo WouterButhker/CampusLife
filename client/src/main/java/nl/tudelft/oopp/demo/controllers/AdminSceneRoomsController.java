@@ -422,4 +422,9 @@ public class AdminSceneRoomsController implements Initializable {
 
         return null;
     }
+
+    @FXML
+    private void upload() {
+        //
+    }
 }
