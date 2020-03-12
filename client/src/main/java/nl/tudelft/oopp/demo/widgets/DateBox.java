@@ -9,6 +9,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+/**
+ * The DateBox widget is simply a square with rounder corners.
+ * It has a number in the middle representing the date and has various states:
+ * available, selected and if the date displayed is today. This changes it's colour.
+ * It is a component of the CalendarWidget.
+ */
 public class DateBox extends StackPane {
     private int day;
     private boolean isAvailable;
@@ -20,6 +26,13 @@ public class DateBox extends StackPane {
     private VBox hoverGlow;
     private Rectangle hoverGlowRectangle;
 
+    /**
+     * Creates a new DateBox.
+     * @param day the day to be shown
+     * @param isAvailable if it is clickable
+     * @param isSelected if it is selected
+     * @param isToday true if it is today's date
+     */
     public DateBox(int day, boolean isAvailable, boolean isSelected, boolean isToday) {
         this.day = day;
         this.isAvailable = isAvailable;

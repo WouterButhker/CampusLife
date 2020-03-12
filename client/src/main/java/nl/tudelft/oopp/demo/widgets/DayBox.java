@@ -5,12 +5,21 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * The DayBox widget.
+ * A transparent square with a character in the middle.
+ * Used to display the day of the month in the CalendarWidget.
+ */
 public class DayBox extends StackPane {
     private char day;
 
     private VBox container;
     private Text numberText;
 
+    /**
+     * Creates a DayBox.
+     * @param day the char supposed to be the initial of the day
+     */
     public DayBox(char day) {
         this.day = day;
 
