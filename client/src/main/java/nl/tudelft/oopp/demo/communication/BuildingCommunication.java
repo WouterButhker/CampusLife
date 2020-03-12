@@ -33,7 +33,7 @@ public class BuildingCommunication {
      * @param buildingCode the number of the building
      * @param name the name of the building
      * @param location the street where the building is situated
-     * @param openingHours time it is open with format hh:mm-hh:mm
+     * @param openingHours time it is open with format hh:mm-hh:mm for every day of the week separated by a ","
      * @param bikes amount of bikes at the building, null if it has no bike station
      */
     public static void addBuildingToDatabase(Integer buildingCode,
@@ -55,7 +55,6 @@ public class BuildingCommunication {
         String url = "/buildings/add?buildingCode=" + buildingCode
                 + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours
                 + "&bikes=" + bikesString;
-
         try {
             ServerCommunication.authenticatedRequest(url);
         } catch (Exception e) {
