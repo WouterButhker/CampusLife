@@ -98,14 +98,14 @@ public class AdminSceneBuildingsController implements Initializable {
         // invisible before the 'has bike station' checkbox is selected.
         loadBuildings();
         addAppBar();
-        tempAddWeeks(new Weekdays());
+        AddWeekCalendar(new Weekdays());
     }
 
     private void addAppBar() {
         mainBox.getChildren().add(0, new AppBar());
     }
 
-    private void tempAddWeeks(Weekdays weekdays) {
+    private void AddWeekCalendar(Weekdays weekdays) {
         this.week = new WeekWidget(weekdays);
         mainBox.getChildren().add(1, week);
         List<Node> times = week.getTimes().getChildren();
@@ -137,7 +137,7 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     private void loadOpenClosed(ChoiceBox<String> open) {
-        String[] options = {"Open", "Closed"};
+        String[] options = {"Open", Weekdays.getClosed()};
         open.getItems().addAll(options);
         SingleSelectionModel<String> singleSelectionModel = open.getSelectionModel();
         singleSelectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -195,8 +195,8 @@ public class AdminSceneBuildingsController implements Initializable {
 
     private void updateCurrent() {
         //if the building should be closed on that day
-        if (open.getValue().equals("Closed")) {
-            week.dayChanged(week.getCurrent(), "Closed");
+        if (open.getValue().equals(Weekdays.getClosed())) {
+            week.dayChanged(week.getCurrent(), Weekdays.getClosed());
             return;
         }
 
@@ -443,7 +443,7 @@ public class AdminSceneBuildingsController implements Initializable {
         spacer11.setPrefSize(50, 20);
         ChoiceBox<String> options = new ChoiceBox<>();
         options.setPrefSize(75, 20);
-        options.getItems().addAll("Open", "Closed");
+        options.getItems().addAll("Open", Weekdays.getClosed());
         options.setValue("Open");
         ChoiceBox<String> from = new ChoiceBox<>();
         from.setPrefSize(75, 20);
@@ -462,8 +462,8 @@ public class AdminSceneBuildingsController implements Initializable {
                     week.setCurrent(current);
                     week.redraw();
 
-                    if (options.getValue().equals("Closed")) {
-                        week.dayChanged(week.getCurrent(), "Closed");
+                    if (options.getValue().equals(Weekdays.getClosed())) {
+                        week.dayChanged(week.getCurrent(), Weekdays.getClosed());
                         return;
                     }
 
@@ -483,8 +483,8 @@ public class AdminSceneBuildingsController implements Initializable {
         EventHandler<ActionEvent> fromToEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (options.getValue().equals("Closed")) {
-                    week.dayChanged(week.getCurrent(), "Closed");
+                if (options.getValue().equals(Weekdays.getClosed())) {
+                    week.dayChanged(week.getCurrent(), Weekdays.getClosed());
                     return;
                 }
 
@@ -508,12 +508,12 @@ public class AdminSceneBuildingsController implements Initializable {
             public void handle(ActionEvent event) {
                 ChoiceBox<String> source = (ChoiceBox<String>) event.getSource();
                 String status = source.getValue();
-                if (status.equals("Closed")) {
+                if (status.equals(Weekdays.getClosed())) {
                     fromText.setVisible(false);
                     toText.setVisible(false);
                     from.setVisible(false);
                     to.setVisible(false);
-                    week.dayChanged(week.getCurrent(), "Closed");
+                    week.dayChanged(week.getCurrent(), Weekdays.getClosed());
                 }
                 if (status.equals("Open")) {
                     fromText.setVisible(true);

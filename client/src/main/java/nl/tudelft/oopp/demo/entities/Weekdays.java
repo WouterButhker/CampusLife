@@ -8,6 +8,8 @@ public class Weekdays {
 
     private List<String> openingHours;
 
+    public static final String CLOSED = "Closed";
+
     /**
      * The empty constructor for creating a new empty Weekdays Object.
      */
@@ -15,7 +17,7 @@ public class Weekdays {
         this.openingHours = new ArrayList<>(7);
 
         for (int i = 0; i < 7; i++) {
-            openingHours.add("Closed");
+            openingHours.add(CLOSED);
         }
     }
 
@@ -93,6 +95,9 @@ public class Weekdays {
         openingHours.set(6, newOpeningHours);
     }
 
+    public static String getClosed() {
+        return CLOSED;
+    }
 
     /**
      * A method that checks if all of the opening hours in the week have correct opening hours.
@@ -100,12 +105,20 @@ public class Weekdays {
      */
     public boolean checkCorrectness() {
         for (int i = 0; i < 7; i++) {
-            if (!openingHours.get(i).equals("Closed") && openingHours.get(i).split("-")[0]
+            if (!openingHours.get(i).equals(CLOSED) && openingHours.get(i).split("-")[0]
                     .compareTo(openingHours.get(i).split("-")[1]) >= 0) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Method that sets the selected day to Closed
+     * @param id The day that has to be set to Closed
+     */
+    public void setClosed(int id) {
+        openingHours.set(id, CLOSED);
     }
 
     @Override
