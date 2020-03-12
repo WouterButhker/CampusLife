@@ -98,14 +98,14 @@ public class AdminSceneBuildingsController implements Initializable {
         // invisible before the 'has bike station' checkbox is selected.
         loadBuildings();
         addAppBar();
-        AddWeekCalendar(new Weekdays());
+        addWeekCalendar(new Weekdays());
     }
 
     private void addAppBar() {
         mainBox.getChildren().add(0, new AppBar());
     }
 
-    private void AddWeekCalendar(Weekdays weekdays) {
+    private void addWeekCalendar(Weekdays weekdays) {
         this.week = new WeekWidget(weekdays);
         mainBox.getChildren().add(1, week);
         List<Node> times = week.getTimes().getChildren();

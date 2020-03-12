@@ -114,8 +114,8 @@ public class Weekdays {
     }
 
     /**
-     * Method that sets the selected day to Closed
-     * @param id The day that has to be set to Closed
+     * Method that sets the selected day to Closed.
+     * @param id The day that has to be set to Closed.
      */
     public void setClosed(int id) {
         openingHours.set(id, CLOSED);
