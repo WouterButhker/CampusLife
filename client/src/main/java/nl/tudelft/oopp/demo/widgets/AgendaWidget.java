@@ -190,6 +190,7 @@ public class AgendaWidget extends VBox {
             getChildren().add(background);
 
             this.time = new Text(time);
+            this.time.getStyleClass().add("reservation-date-text");
             timeContainer = new VBox();
             timeContainer.setPadding(new Insets(16));
             timeContainer.getChildren().add(this.time);
@@ -223,6 +224,8 @@ public class AgendaWidget extends VBox {
             });
             prefHeightProperty().addListener((obs, oldHeight, newHeight) -> {
                 backgroundRectangle.setHeight(newHeight.doubleValue());
+
+                this.time.setStyle("-fx-font-size: " + newHeight.doubleValue() * 0.15);
 
                 hoverGlow.setHeight(newHeight.doubleValue());
             });
