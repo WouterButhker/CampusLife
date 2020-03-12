@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
@@ -50,6 +51,7 @@ public class AppBar extends StackPane {
         setAlignment(Pos.CENTER_LEFT);
 
         universityTitle = new Text("TUDelft");
+        universityTitle.getStyleClass().add("app-bar-title");
         titleContainer = new HBox();
         titleContainer.getChildren().add(universityTitle);
         titleContainer.setAlignment(Pos.CENTER);
