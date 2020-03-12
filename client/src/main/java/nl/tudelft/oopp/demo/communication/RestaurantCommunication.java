@@ -20,7 +20,7 @@ public class RestaurantCommunication {
     public static void addRestaurantToDatabase(String name,
                                                Integer buildingCode,
                                                String openingHours) {
-        String url = "/restaurants/add?name=" + name + "&buildingCode=" + buildingCode + "&openingHours" + openingHours;
+        String url = "/restaurants/add?name=" + name + "&buildingCode=" + buildingCode + "&openingHours=" + openingHours;
 
         try {
             ServerCommunication.authenticatedRequest(url);
