@@ -80,6 +80,13 @@ public class AppBar extends StackPane {
 
         signOutLink = new Hyperlink("Sign Out");
         signOutLink.getStyleClass().add("app-bar-link-style");
+        signOutLink.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RoutingScene routingScene = (RoutingScene) getScene();
+                routingScene.popAll();
+            }
+        });
         rightContainer.getChildren().add(signOutLink);
         rightContainer.setPadding(new Insets(0, 20, 0, 0));
         getChildren().add(rightContainer);
