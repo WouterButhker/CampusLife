@@ -76,4 +76,14 @@ public class ReservationCommunication {
         return null;
     }
 
+    public static List<Reservation> getMyReservations() {
+        String url = "/reservations/myReservations?user=" + AuthenticationCommunication.myUserId;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
