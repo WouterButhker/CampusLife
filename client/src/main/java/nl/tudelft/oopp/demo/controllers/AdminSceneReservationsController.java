@@ -19,10 +19,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-
-import static nl.tudelft.oopp.demo.communication.ReservationCommunication.*;
 
 
 public class AdminSceneReservationsController {
@@ -78,14 +77,14 @@ public class AdminSceneReservationsController {
     }
 
     private void loadReservations(String choice) {
-        List<Reservation> reservations;
+        List<Reservation> reservations = new ArrayList<>();
         if (choice.equals("Show by user")) {
-            //reservations = getAllReservationsForUser((Integer.parseInt(userOrRoomField.getText())));
+            reservations = ReservationCommunication.getAllReservationsForUser(Integer.parseInt(userOrRoomField.getText()));
         } else if (choice.equals("Show by room")) {
             System.out.println(userOrRoomField.getText());
-            //reservations = getAllReservationsForRoom(userOrRoomField.getText());
+            reservations = ReservationCommunication.getAllReservationsForRoom(userOrRoomField.getText());
         } else {
-            reservations = getAllReservations();
+            reservations = ReservationCommunication.getAllReservations();
         }
 
         reservationsList.getChildren().clear();
@@ -103,11 +102,12 @@ public class AdminSceneReservationsController {
 
             int finalI = i;
             Button delete = new Button("delete");
+            List<Reservation> finalReservations = reservations;
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    Integer id = reservations.get(finalI).getId();
-                    deleteReservationFromDatabase(id);
+                    Integer id = finalReservations.get(finalI).getId();
+                    ReservationCommunication.deleteReservationFromDatabase(id);
                     loadReservations(choiceBox.getValue().toString());
                 }
             });
