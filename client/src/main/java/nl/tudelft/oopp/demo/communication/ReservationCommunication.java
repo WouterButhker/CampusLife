@@ -76,4 +76,47 @@ public class ReservationCommunication {
         return null;
     }
 
+    /**
+     * Returns a list of all the reservations a specific user has made.
+     * @param user the User whose reservations you are looking for
+     * @return A List of Reservations
+     */
+    public static List<Reservation> getAllReservationsForUser(Integer user) {
+        String url = "/reservations/allForUser?user=" + user;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of all the reservations that were made for a specific room.
+     * @param room the Room whose reservations you are looking for
+     * @return A List of Reservations
+     */
+    public static List<Reservation> getAllReservationsForRoom(String room) {
+        String url = "/reservations/allForRoom?room=" + room;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a reservation with the specified id from the database.
+     * @param id the id of the reservation
+     */
+    public static void deleteReservationFromDatabase(Integer id) {
+        String url = "/reservations/delete?id=" + id;
+        try {
+            ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
