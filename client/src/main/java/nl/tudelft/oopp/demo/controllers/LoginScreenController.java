@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
@@ -19,6 +21,11 @@ import nl.tudelft.oopp.demo.views.MainMenuRoute;
 public class LoginScreenController {
 
 
+    @FXML
+    private HBox hBox1;
+
+    @FXML
+    private VBox vBox;
 
     @FXML
     private ResourceBundle resources;
@@ -70,6 +77,11 @@ public class LoginScreenController {
                 + "check your FXML file 'LoginScreen.fxml'.";
         assert usernameField != null : "fx:id=\"usernameField\" was not injected: "
                 + "check your FXML file 'LoginScreen.fxml'.";
+
+        loginButton.setStyle("-fx-font-size: 17");
+        passwordField.setStyle("-fx-font-size: 17");
+        usernameField.setStyle("-fx-font-size: 17");
+        vBox.setStyle("-fx-background-color: -primary-color");
     }
 
 }
