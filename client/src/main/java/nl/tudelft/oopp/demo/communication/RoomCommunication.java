@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public class RoomCommunication {
 
@@ -135,5 +136,19 @@ public class RoomCommunication {
             e.printStackTrace();
         }
         return "-1";
+    }
+
+    public static List<Room> getFilteredRoomFromBuilding(Integer building, Integer myRights,
+                                                         Boolean hasTV, Boolean hasWhiteboard,
+                                                         Integer minCap, Integer maxCap) {
+        String url = "/rooms/filter/getFilteredRooms?myBuilding=" + building
+                + "&myRights=" + myRights + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
+                + "&minCap=" + minCap + "&maxCap=" + maxCap;
+        try {
+            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

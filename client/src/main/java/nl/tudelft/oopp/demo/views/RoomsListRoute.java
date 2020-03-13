@@ -3,6 +3,9 @@ package nl.tudelft.oopp.demo.views;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -11,15 +14,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import jdk.jfr.Event;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 import nl.tudelft.oopp.demo.widgets.RoomsGridView;
+import org.controlsfx.control.RangeSlider;
 
 public class RoomsListRoute extends Route {
 
@@ -42,17 +46,17 @@ public class RoomsListRoute extends Route {
      * @param buildingCode the number of the building being displayed
      */
     public RoomsListRoute(Integer buildingCode) {
-        createRootElement(RoomCommunication.getAllRoomsFromBuilding(buildingCode));
+        createRootElement(RoomCommunication.getAllRoomsFromBuilding(buildingCode), buildingCode);
     }
 
     /**
      * Instantiates a RoomsListRoute that displays all rooms.
      */
     public RoomsListRoute() {
-        createRootElement(RoomCommunication.getAllRooms());
+        createRootElement(RoomCommunication.getAllRooms(), 0);
     }
 
-    private void createRootElement(List<Room> roomList) {
+    private void createRootElement(List<Room> roomList, Integer buildingCode) {
         rootContainer = new VBox();
         hBox = new HBox();
         AppBar appBar = new AppBar();
@@ -61,9 +65,6 @@ public class RoomsListRoute extends Route {
         //filter box container
         filters = new VBox();
         filters.setPadding(new Insets(5));
-        filterTitle = new Text("Filters:");
-        filterTitle.getStyleClass().add("university-main-title");
-        filters.getChildren().add(filterTitle);
         filters.setTranslateX(5);
 
         //making filter boxes
@@ -78,40 +79,80 @@ public class RoomsListRoute extends Route {
         hasTV.setPrefWidth(130);
 
         TextField minCap = new TextField();
-        minCap.setPromptText("Minimal capacity");
-        minCap.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
-        minCap.setPadding(new Insets(8, 16, 8, 16));
-        minCap.setPrefWidth(130);
-
+        minCap.setPromptText("Min");
+        minCap.setPrefWidth(50);
         TextField maxCap = new TextField();
-        maxCap.setPromptText("Maximal capacity");
-        maxCap.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
-        maxCap.setPadding(new Insets(8, 16, 8, 16));
-        maxCap.setPrefWidth(130);
+        maxCap.setPromptText("Max");
+        maxCap.setPrefWidth(50);
+        HBox capacities = new HBox(10, minCap, maxCap);
+        capacities.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        capacities.setPadding(new Insets(4, 16, 4, 16));
+        capacities.setPrefWidth(130);
 
         Button apply = new Button("Apply filters");
         apply.setStyle("-fx-background-radius: 16;");
         apply.setPadding(new Insets(8, 16, 8, 16));
         apply.setPrefWidth(130);
 
-        filters.getChildren().addAll(hasWhiteboard, hasTV, minCap, maxCap, apply);
+        Text errorMessage = new Text();
+
+        filters.getChildren().addAll(hasWhiteboard, hasTV, capacities, apply, errorMessage);
         filters.setSpacing(5);
         filters.setMaxHeight(140);
         hBox.getChildren().add(filters);
 
-
         //container for the rooms
         VBox rooms = new VBox();
 
-        RoomsGridView buildingsGrid = new RoomsGridView(roomList);
-        rooms.getChildren().add(buildingsGrid);
-        buildingsGrid.setListener(new RoomsGridView.Listener() {
+        RoomsGridView roomsGrid = new RoomsGridView(roomList);
+        rooms.getChildren().add(roomsGrid);
+        roomsGrid.setListener(new RoomsGridView.Listener() {
             @Override
             public void onRoomClicked(Room room) {
                 RoutingScene routingScene = getRoutingScene();
                 routingScene.pushRoute(new RoomDisplayRoute(room));
             }
         });
+
+        apply.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Integer building = buildingCode;
+                Integer myRights = 2; /////CHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANNNNNNNGEEEEEEEEEEE
+                Boolean hasTVBool = hasTV.isSelected();
+                Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
+
+                if (!errorMessage.getText().equals("")) {
+                    errorMessage.setText("");
+                }
+
+                Integer minCapInt = 0;
+                if (!minCap.getText().equals("")) {
+                    try {
+                        minCapInt = Integer.parseInt(minCap.getText());
+                    } catch (NumberFormatException e) {
+                        errorMessage.setText("This is not a number!");
+                    }
+                }
+
+                Integer maxCapInt = Integer.MAX_VALUE;
+                if (!maxCap.getText().equals("")) {
+                    try {
+                        maxCapInt = Integer.parseInt(maxCap.getText());
+                    } catch (NumberFormatException e) {
+                        errorMessage.setText("This is not a number!");
+                    }
+                }
+
+                createRootElement(RoomCommunication.getFilteredRoomFromBuilding(building, myRights, hasTVBool,
+                                                                                hasWhiteboardBool, minCapInt, maxCapInt),
+                                                                                buildingCode);
+                if (errorMessage.getText().equals("")) {
+                    errorMessage.setText("Filters applied!");
+                }
+            }
+        });
+
 
         scrollPane = new ScrollPane(rooms);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -121,6 +162,7 @@ public class RoomsListRoute extends Route {
 
         rootContainer.getChildren().add(hBox);
     }
+
 
     @Override
     public Parent getRootElement() {
