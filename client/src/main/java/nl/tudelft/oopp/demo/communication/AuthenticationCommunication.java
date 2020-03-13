@@ -19,6 +19,8 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class AuthenticationCommunication {
+    public static Integer myUserId;
+    public static String myUserRole;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -32,7 +34,38 @@ public class AuthenticationCommunication {
         //TODO: check if credentials are correct
         // make request to /login to retrieve user role
         authenticationHeader = createHeaders(username, password);
+        saveUserId(username);
+        saveUserRole(username);
+    }
 
+    /**
+     * Save the Id of the logged in User in a static variable.
+     * @param username the username of the current User
+     */
+    public static void saveUserId(String username) {
+        ResponseEntity<String> response = authenticatedRequest(
+                "/rest/users/getId?username=" + username);
+        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
+            System.out.println("USER id: " + response.getBody());
+            myUserId = Integer.parseInt(response.getBody());
+        } else {
+            System.out.println("Login failed");
+        }
+    }
+
+    /**
+     * Save the Role of the logged in User in a static variable.
+     * @param username the username of the current User
+     */
+    public static void saveUserRole(String username) {
+        ResponseEntity<String> response = authenticatedRequest(
+                "/rest/users/getRole?username=" + username);
+        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
+            System.out.println("USER role: " + response.getBody());
+            myUserRole = response.getBody();
+        } else {
+            System.out.println("Login failed");
+        }
     }
 
     /**
@@ -79,7 +112,6 @@ public class AuthenticationCommunication {
 
         response = new RestTemplate()
                 .exchange(SERVER_URL + link, HttpMethod.GET, request, String.class);
-        System.out.println("Made request to: " + link);
         return response;
     }
 

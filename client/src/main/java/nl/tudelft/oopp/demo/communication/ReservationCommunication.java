@@ -21,13 +21,11 @@ public class ReservationCommunication {
     public static void addReservationToDatabase(Integer userId,
                                              String room,
                                              String slot) {
-        room = room.replace(" ", "%20");
         String url = "/reservations/add?user=" + userId
                 + "&room=" + room + "&slot=" + slot;
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
-            room = room.replace("%20", " ");
             System.out.println(response.getBody() + " reservation for user "
                     + userId + " at room " + room + " at slot " + slot);
         } catch (Exception e) {

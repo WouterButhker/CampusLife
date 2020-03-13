@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
@@ -47,7 +48,13 @@ public class MainMenuRoute extends Route {
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        rootContainer.getChildren().add(new AppBar(true));
+        Boolean isAdmin = false;
+        if (AuthenticationCommunication.myUserRole.equals("Admin")) {
+            isAdmin = true;
+        }
+
+
+        rootContainer.getChildren().add(new AppBar(isAdmin));
 
         //createTitle();
         createButtonsRow();

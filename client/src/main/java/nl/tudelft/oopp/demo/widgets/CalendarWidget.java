@@ -104,6 +104,7 @@ public class CalendarWidget extends VBox {
         monthTextContainer = new HBox();
         monthTextContainer.setAlignment(Pos.CENTER);
         monthText = new Text("");
+        monthText.getStyleClass().add("month-text");
         monthTextContainer.getChildren().add(monthText);
         topBar.getChildren().addAll(leftArrow, monthTextContainer, rightArrow);
         getChildren().add(topBar);
@@ -160,6 +161,8 @@ public class CalendarWidget extends VBox {
         }
         filler.setWidth(newWidth / 7);
         filler.setHeight(newWidth / 7);
+
+        monthText.setStyle("-fx-font-size: " + newWidth / 7 / 3);
 
         monthTextContainer.setPrefWidth(newWidth / 7 * 5 + 8 * 6);
         monthTextContainer.setPrefHeight(newWidth / 7);
