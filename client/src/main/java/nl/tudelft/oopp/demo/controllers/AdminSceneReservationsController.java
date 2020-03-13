@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -89,15 +88,17 @@ public class AdminSceneReservationsController {
         if (choice.equals("Show by user")) {
             List<Reservation> res = new ArrayList<Reservation>();
             for (int i = 0; i < reservations.size(); i++) {
-                if (reservations.get(i).getUser()!=null && reservations.get(i).getUser().equals(userOrRoomField.getText())) {
+                if (reservations.get(i).getUser() != null
+                        && reservations.get(i).getUser().equals(userOrRoomField.getText())) {
                     res.add(reservations.get(i));
                 }
             }
             return res;
-        } else  if(choice.equals("Show by room")){
+        } else  if (choice.equals("Show by room")) {
             List<Reservation> res = new ArrayList<Reservation>();
             for (int i = 0; i < reservations.size(); i++) {
-                if (reservations.get(i).getRoom() != null && reservations.get(i).getRoom().equals(userOrRoomField.getText())) {
+                if (reservations.get(i).getRoom() != null
+                        && reservations.get(i).getRoom().equals(userOrRoomField.getText())) {
                     res.add(reservations.get(i));
                 }
             }
@@ -109,7 +110,7 @@ public class AdminSceneReservationsController {
 
     private void loadReservations(String choice) {
         List<Reservation> reservations;
-        if(choice.equals("Show all")) {
+        if (choice.equals("Show all")) {
             reservations = getAllReservations();
         } else {
             reservations = getReservations();
@@ -173,27 +174,29 @@ public class AdminSceneReservationsController {
         ));
         choiceBox.getSelectionModel().selectFirst();
         loadReservations("Show all");
-        choiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-                String choice = (String)choiceBox.getItems().get((Integer) number2);
-                if (choice.equals("Show by user")) {
-                    selectUserOrRoom.setText("Please enter the desired username");
-                } else if (choice.equals("Show by room")) {
-                    selectUserOrRoom.setText("Please enter the desired room name");
-                }
-                if(!choice.equals("Show all")) {
-                    userOrRoomField.setVisible(true);
-                    userOrRoomField.setText("");
-                    ok.setVisible(true);
-                } else {
-                    selectUserOrRoom.setText("");
-                    userOrRoomField.setVisible(false);
-                    ok.setVisible(false);
-                    loadReservations(choice);
-                }
-            }
-        });
+        choiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<?
+                            extends Number> observableValue, Number num, Number num2) {
+                        String choice = (String)choiceBox.getItems().get((Integer) num2);
+                        if (choice.equals("Show by user")) {
+                            selectUserOrRoom.setText("Please enter the desired username");
+                        } else if (choice.equals("Show by room")) {
+                            selectUserOrRoom.setText("Please enter the desired room name");
+                        }
+                        if (!choice.equals("Show all")) {
+                            userOrRoomField.setVisible(true);
+                            userOrRoomField.setText("");
+                            ok.setVisible(true);
+                        } else {
+                            selectUserOrRoom.setText("");
+                            userOrRoomField.setVisible(false);
+                            ok.setVisible(false);
+                            loadReservations(choice);
+                        }
+                    }
+                });
     }
 
 }
