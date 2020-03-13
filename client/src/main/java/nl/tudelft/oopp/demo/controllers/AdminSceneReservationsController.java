@@ -65,11 +65,10 @@ public class AdminSceneReservationsController {
 
     @FXML
     void onOkClicked(ActionEvent event) {
-        if(choiceBox.getValue().toString().equals("Show by user")) {
+        if (choiceBox.getValue().toString().equals("Show by user")) {
             try {
                 Integer.parseInt(userOrRoomField.getText());
-            }
-            catch( Exception e ) {
+            } catch (Exception e) {
                 selectUserOrRoom.setText("Please input a valid userID number");
                 return;
             }
@@ -85,9 +84,11 @@ public class AdminSceneReservationsController {
     private void loadReservations(String choice) {
         List<Reservation> reservations = new ArrayList<>();
         if (choice.equals("Show by user")) {
-            reservations = ReservationCommunication.getAllReservationsForUser(Integer.parseInt(userOrRoomField.getText()));
+            reservations = ReservationCommunication
+                    .getAllReservationsForUser(Integer.parseInt(userOrRoomField.getText()));
         } else if (choice.equals("Show by room")) {
-            reservations = ReservationCommunication.getAllReservationsForRoom(userOrRoomField.getText());
+            reservations = ReservationCommunication
+                    .getAllReservationsForRoom(userOrRoomField.getText());
         } else {
             reservations = ReservationCommunication.getAllReservations();
         }
