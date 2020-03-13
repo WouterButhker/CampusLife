@@ -38,9 +38,17 @@
             </FXCollections>
           </items>
         </ChoiceBox>
-        <Text fx:id="selectUserOrRoom" font="$x1" layoutX="50.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" />
-        <TextField fx:id="userOrRoomField" layoutX="275.0" layoutY="117.0" prefWidth="200.0" visible="false" />
-        <Button id="onOKClicked" fx:id="ok" layoutX="496.0" layoutY="117.0" mnemonicParsing="false" onAction="#onOkClicked" text="OK" visible="false" />
+        <HBox layoutX="50.0" layoutY="105.0" prefHeight="100.0" prefWidth="922.0">
+          <children>
+            <Text fx:id="selectUserOrRoom" strokeType="OUTSIDE" strokeWidth="0.0" text="">
+              <font>
+                <Font size="17.0" />
+              </font>
+            </Text>
+            <TextField fx:id="userOrRoomField" prefWidth="200.0" visible="false" />
+            <Button id="onOKClicked" fx:id="ok" mnemonicParsing="false" onAction="#onOkClicked" text="OK" visible="false" />
+          </children>
+        </HBox>
       </children>
     </AnchorPane>
   </children>
