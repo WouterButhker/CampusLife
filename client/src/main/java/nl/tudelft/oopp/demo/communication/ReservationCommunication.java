@@ -99,7 +99,7 @@ public class ReservationCommunication {
      * @return A List of Reservations
      */
     public static List<Reservation> getAllReservationsForRoom(String room) {
-        String url = "/reservations/allRoom?room=" + room;
+        String url = "/reservations/allForRoom?room=" + room;
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
         } catch (Exception e) {
