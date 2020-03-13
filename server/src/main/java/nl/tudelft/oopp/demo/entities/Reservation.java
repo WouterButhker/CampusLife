@@ -21,12 +21,12 @@ public class Reservation {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "users")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;          // user id
 
     @ManyToOne
-    @JoinColumn(name = "room")
+    @JoinColumn(name = "roomCode")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;          // room code
 

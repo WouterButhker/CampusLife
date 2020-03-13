@@ -63,6 +63,9 @@ public class User implements UserDetails {
 
     }
 
+    public Integer getId() {
+        return id;
+    }
 
     /**
      * Returns the authorities granted to the user. Cannot return <code>null</code>.

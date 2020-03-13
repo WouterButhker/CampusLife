@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Reservation;
@@ -81,7 +82,7 @@ public class RoomReservationRoute extends Route {
             @Override
             public void onReserveClicked() {
                 if (fromTime != null) {
-                    int user = 0;
+                    int user = AuthenticationCommunication.myUserId;
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                     String fromString = format.format(fromTime.getTime());
                     String toString = format.format(toTime.getTime());
@@ -91,6 +92,7 @@ public class RoomReservationRoute extends Route {
                     reservations.add(new Reservation(-1, user, room.getCode(), timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
+                    System.out.println(user + " " + room.getCode() + " " + timeslot);
                 }
             }
         });
