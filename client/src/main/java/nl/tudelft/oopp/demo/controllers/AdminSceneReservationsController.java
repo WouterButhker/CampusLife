@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import static nl.tudelft.oopp.demo.communication.ReservationCommunication.deleteReservationFromDatabase;
-import static nl.tudelft.oopp.demo.communication.ReservationCommunication.getAllReservations;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +22,7 @@ import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
+import static nl.tudelft.oopp.demo.communication.ReservationCommunication.*;
 
 
 public class AdminSceneReservationsController {
@@ -79,41 +77,15 @@ public class AdminSceneReservationsController {
         mainBox.getChildren().add(0, new AppBar());
     }
 
-    private List<Reservation> getReservations() {
-        System.out.println("res");
-        String choice = choiceBox.getValue().toString();
-        System.out.println(choice);
-        List<Reservation> reservations = getAllReservations();
-
-        if (choice.equals("Show by user")) {
-            List<Reservation> res = new ArrayList<Reservation>();
-            for (int i = 0; i < reservations.size(); i++) {
-                if (reservations.get(i).getUser() != null
-                        && reservations.get(i).getUser().equals(userOrRoomField.getText())) {
-                    res.add(reservations.get(i));
-                }
-            }
-            return res;
-        } else  if (choice.equals("Show by room")) {
-            List<Reservation> res = new ArrayList<Reservation>();
-            for (int i = 0; i < reservations.size(); i++) {
-                if (reservations.get(i).getRoom() != null
-                        && reservations.get(i).getRoom().equals(userOrRoomField.getText())) {
-                    res.add(reservations.get(i));
-                }
-            }
-            return res;
-        } else {
-            return reservations;
-        }
-    }
-
     private void loadReservations(String choice) {
         List<Reservation> reservations;
-        if (choice.equals("Show all")) {
-            reservations = getAllReservations();
+        if (choice.equals("Show by user")) {
+            reservations = getAllReservationsForUser((Integer.parseInt(userOrRoomField.getText())));
+        } else if (choice.equals("Show by room")) {
+            System.out.println(userOrRoomField.getText());
+            reservations = getAllReservationsForRoom(userOrRoomField.getText());
         } else {
-            reservations = getReservations();
+            reservations = getAllReservations();
         }
 
         reservationsList.getChildren().clear();
@@ -181,7 +153,7 @@ public class AdminSceneReservationsController {
                             extends Number> observableValue, Number num, Number num2) {
                         String choice = (String)choiceBox.getItems().get((Integer) num2);
                         if (choice.equals("Show by user")) {
-                            selectUserOrRoom.setText("Please enter the desired username");
+                            selectUserOrRoom.setText("Please enter the desired userID");
                         } else if (choice.equals("Show by room")) {
                             selectUserOrRoom.setText("Please enter the desired room name");
                         }
