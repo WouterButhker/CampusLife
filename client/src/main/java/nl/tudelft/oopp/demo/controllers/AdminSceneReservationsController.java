@@ -1,21 +1,25 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import static nl.tudelft.oopp.demo.communication.ReservationCommunication.getAllReservations;
 import static nl.tudelft.oopp.demo.communication.ReservationCommunication.deleteReservationFromDatabase;
+import static nl.tudelft.oopp.demo.communication.ReservationCommunication.getAllReservations;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
@@ -39,25 +43,66 @@ public class AdminSceneReservationsController {
     private VBox mainBox;
 
     @FXML
+    private Button ok;
+
+    @FXML
     private AnchorPane mainPane;
 
     @FXML
     private TextField reservationIdField;
 
     @FXML
+    private TextField userOrRoomField;
+
+    @FXML
+    private Text selectUserOrRoom;
+
+    @FXML
     private VBox reservationsList;
+
+    @FXML
+    private ChoiceBox choiceBox;
 
 
     @FXML
-    private void onDeleteClicked(ActionEvent event) {
+    void onOkClicked(ActionEvent event) {
+        selectUserOrRoom.setText("");
+        userOrRoomField.setVisible(false);
+        ok.setVisible(false);
+
+        loadReservations();
     }
 
     private void addAppBar() {
         mainBox.getChildren().add(0, new AppBar());
     }
 
-    private void loadReservations() {
+    private List<Reservation> getReservations() {
+        String choice = choiceBox.getValue().toString();
         List<Reservation> reservations = getAllReservations();
+        if (choice.equals("Show all")) {
+            return reservations;
+        } else if (choice.equals("Show by user")) {
+            List<Reservation> res = new ArrayList<Reservation>();
+            for (int i = 0; i < reservations.size(); i++) {
+                if (reservations.get(i).getUser().equals(userOrRoomField)) {
+                    res.add(reservations.get(i));
+                }
+            }
+            return res;
+        } else {
+            List<Reservation> res = new ArrayList<Reservation>();
+            for (int i = 0; i < reservations.size(); i++) {
+                if (reservations.get(i).getRoom().equals(userOrRoomField)) {
+                    res.add(reservations.get(i));
+                }
+            }
+            return res;
+        }
+    }
+
+    private void loadReservations() {
+        List<Reservation> reservations = getReservations();
 
         reservationsList.getChildren().clear();
         anchorPaneReservations.setPrefHeight(70 * reservations.size());
@@ -112,6 +157,9 @@ public class AdminSceneReservationsController {
                 + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
 
         addAppBar();
+        choiceBox.setItems(FXCollections.observableArrayList(
+                "Show all", "Show by user", "Show by room"
+        ));
         loadReservations();
     }
 
