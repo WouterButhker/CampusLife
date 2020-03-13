@@ -80,10 +80,10 @@ public class AdminSceneReservationsController {
     private void loadReservations(String choice) {
         List<Reservation> reservations;
         if (choice.equals("Show by user")) {
-            reservations = getAllReservationsForUser((Integer.parseInt(userOrRoomField.getText())));
+            //reservations = getAllReservationsForUser((Integer.parseInt(userOrRoomField.getText())));
         } else if (choice.equals("Show by room")) {
             System.out.println(userOrRoomField.getText());
-            reservations = getAllReservationsForRoom(userOrRoomField.getText());
+            //reservations = getAllReservationsForRoom(userOrRoomField.getText());
         } else {
             reservations = getAllReservations();
         }
