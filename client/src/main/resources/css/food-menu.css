@@ -1,5 +1,57 @@
 @import url("palette.css")
 
+.order-button {
+    -fx-background-color: -secondary-color;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.order-button:hover {
+    -fx-background-color: -secondary-color-dark;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.add-button {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/add_icon.png');
+}
+
+.add-button:hover {
+    -fx-background-color: #00000033;
+    -fx-background-image: url('/images/add_icon.png');
+}
+
+.remove-button {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/remove_icon.png');
+}
+
+.remove-button:hover {
+    -fx-background-color: #00000033;
+    -fx-background-image: url('/images/remove_icon.png');
+}
+
+.order-name-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.order-quantity-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.order-box {
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1px;
+}
+
+.order-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-fill: #B0BEC5;
+}
+
 .restaurant-name-text {
     -fx-font-family: -primary-font-name;
     -fx-font-weight: bold;
@@ -25,6 +77,7 @@
     -fx-border-color: #BDBDBD;
     -fx-border-width: 1px;
     -fx-padding: 8px;
+    -fx-background-radius: 6px;
     -fx-border-radius: 6px;
 }
 
