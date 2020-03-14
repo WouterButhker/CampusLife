@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/employee", "/employee/**").hasAnyAuthority("Employee", "Admin")
                 .antMatchers("/**").hasAnyAuthority("Student", "Admin", "Employee")
                 .and().httpBasic()
-                .and().cors().disable()
+                .and().cors().and()
                 .csrf().disable();
     }
 

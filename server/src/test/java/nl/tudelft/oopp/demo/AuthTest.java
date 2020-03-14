@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -19,12 +20,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@Transactional
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration( classes = {
         DemoApplication.class,
-        SecurityConfiguration.class
+        SecurityConfiguration.class,
+        PlatformTransactionManager.class
 })
+@Transactional
+//@PropertySource("classpath:application.properties")
 public class AuthTest {
 
     @Autowired
@@ -40,7 +43,7 @@ public class AuthTest {
                 .build();
     }
 
-    @WithMockUser(authorities = "Admin")
+    //@WithUserDetails(value = "admin", userDetailsServiceBeanName = "CustomUserDetailsService")
     @Test
     public void testLogin() throws Exception {
         mvc.perform(get("/login").contentType(MediaType.APPLICATION_JSON).content("admin"))
