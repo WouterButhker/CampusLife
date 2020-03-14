@@ -17,7 +17,6 @@ public class FoodItemWidget extends HBox {
     private Text foodName;
     private Text priceText;
 
-    private Rectangle emptySpace;
     private ImageView addIcon;
 
     public FoodItemWidget(Food food) {
@@ -28,18 +27,13 @@ public class FoodItemWidget extends HBox {
         foodName = new Text(food.getName());
         foodName.getStyleClass().add("food-name-text");
 
-        priceText = new Text("€" + food.getPrice().toString());
+        priceText = new Text(String.format("€ %.2f", food.getPrice()));
         priceText.getStyleClass().add("food-price-text");
 
         contentContainer = new VBox();
         contentContainer.setAlignment(Pos.CENTER_LEFT);
         contentContainer.getChildren().addAll(foodName, priceText);
         getChildren().add(contentContainer);
-
-        emptySpace = new Rectangle();
-        emptySpace.setFill(Color.TRANSPARENT);
-        emptySpace.setHeight(1);
-        getChildren().add(emptySpace);
 
         Image addBoxImage = new Image("/images/add_box.png");
         addIcon = new ImageView(addBoxImage);
@@ -59,11 +53,8 @@ public class FoodItemWidget extends HBox {
         addIcon.setFitHeight(iconSize);
 
         foodName.setStyle("-fx-font-size: " + newHeight * 0.25);
+        foodName.setWrappingWidth(newWidth * 0.85);
         contentContainer.setSpacing(newHeight * 0.05);
         priceText.setStyle("-fx-font-size: " + newHeight * 0.2);
-
-        double textWidthEstimate = food.getName().length() * newHeight * 0.25 / 1.4;
-        double spaceWidth = newWidth - 8 * 2 - iconSize - textWidthEstimate;
-        emptySpace.setWidth(spaceWidth);
     }
 }
