@@ -3,9 +3,10 @@ package nl.tudelft.oopp.demo.communication;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import nl.tudelft.oopp.demo.entities.Building;
+
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.Building;
 
 public class BuildingCommunication {
 
@@ -133,6 +134,21 @@ public class BuildingCommunication {
      */
     public static List<Building> getAllBuildings() {
         String url = "/buildings/all";
+
+        try {
+            return parseBuildings(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of all the buildings with a bike station from the database.
+     * @return list of buildings with a bike station
+     */
+    public static List<Building> getAllBuildingsWithBikeStation() {
+        String url = "/buildings/bikes";
 
         try {
             return parseBuildings(ServerCommunication.authenticatedRequest(url).getBody());
