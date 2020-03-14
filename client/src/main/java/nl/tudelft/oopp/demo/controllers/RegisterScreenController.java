@@ -18,6 +18,7 @@ import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.client.HttpClientErrorException;
 
 
 public class RegisterScreenController {
@@ -68,9 +69,11 @@ public class RegisterScreenController {
 
         UserDtO user = new UserDtO(username, new BCryptPasswordEncoder().encode(password));
 
-        ResponseEntity<String> response = AuthenticationCommunication.register(user);
-
-        // TODO: create user friendly messages using response
+        try {
+            ResponseEntity<String> response = AuthenticationCommunication.register(user);
+        } catch (HttpClientErrorException e) {
+            System.out.println("Error registering: " + e.getStatusCode());
+        }
 
     }
 

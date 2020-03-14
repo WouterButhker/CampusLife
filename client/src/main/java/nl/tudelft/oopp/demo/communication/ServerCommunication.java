@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.communication;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.client.HttpClientErrorException;
 
 public class ServerCommunication {
 
@@ -9,7 +10,7 @@ public class ServerCommunication {
 
 
     public static ResponseEntity<String> authenticatedRequest(String link)
-            throws AuthenticationException {
+            throws HttpClientErrorException {
         return AuthenticationCommunication.authenticatedRequest(link);
     }
 
