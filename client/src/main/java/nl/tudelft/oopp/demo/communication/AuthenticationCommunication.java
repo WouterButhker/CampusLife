@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-
 import nl.tudelft.oopp.demo.entities.UserDtO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -81,10 +80,6 @@ public class AuthenticationCommunication {
     public static ResponseEntity<String> register(UserDtO user)
             throws HttpClientErrorException, ResourceAccessException {
 
-        String url = SERVER_URL + "/register";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<UserDtO> request = new HttpEntity<>(user, headers);
 
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -93,6 +88,10 @@ public class AuthenticationCommunication {
         template.setMessageConverters(messageConverters);
 
         ResponseEntity<String> out = null;
+        String url = SERVER_URL + "/register";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserDtO> request = new HttpEntity<>(user, headers);
 
         out = template.exchange(url, HttpMethod.POST, request, String.class);
         System.out.println(out);
@@ -118,7 +117,7 @@ public class AuthenticationCommunication {
                     .exchange(SERVER_URL + link, HttpMethod.GET, request, String.class);
         } catch (ResourceAccessException e) {
             // TODO  call error popup
-        } catch ( HttpClientErrorException e) {
+        } catch (HttpClientErrorException e) {
             // TODO call error popup
         }
 
