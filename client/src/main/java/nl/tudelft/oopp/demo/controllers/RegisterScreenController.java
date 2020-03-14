@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -15,6 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.UserDtO;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import org.springframework.boot.jackson.JsonObjectSerializer;
@@ -52,7 +56,7 @@ public class RegisterScreenController {
 
 
     @FXML
-    private void onRegisterClicked(ActionEvent event) {
+    private void onRegisterClicked(ActionEvent event) throws IOException {
         if (usernameField.getText().equals("")
                 || passwordField.getText().equals("")
                 || reEnterPasswordField.getText().equals("")) {
@@ -97,6 +101,9 @@ public class RegisterScreenController {
 
             errorMessage.setText("");
             register(usernameField.getText(), passwordField.getText());
+            RoutingScene scene = (RoutingScene) passwordField.getScene();
+            Route route = new XmlRoute(getClass().getResource("/LoginScreen.fxml"));
+            scene.pushRoute(route);
         }
     }
 
