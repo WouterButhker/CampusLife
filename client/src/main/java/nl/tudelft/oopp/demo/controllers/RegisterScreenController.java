@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -69,30 +68,32 @@ public class RegisterScreenController {
             String pass = passwordField.getText();
             boolean hasUppercase = !(pass.equals(pass.toLowerCase()));
             boolean hasLowercase = !(pass.equals(pass.toUpperCase()));
-            System.out.println(hasLowercase + " "  +hasUppercase);
             boolean hasNumber = pass.matches(".*\\d.*");
-            Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-            Matcher m = p.matcher(pass);
-            boolean hasSpecialCharacter = m.find();
-            if(pass.length()<8) {
+
+            if (pass.length() < 8) {
                 errorMessage.setText("Password must be at least 8 characters long");
                 passwordField.setText("");
                 reEnterPasswordField.setText("");
                 return;
             }
-            if(!(hasLowercase && hasUppercase)) {
+            if (!(hasLowercase && hasUppercase)) {
                 errorMessage.setText("Password must have at least one uppercase and one lowercase");
                 passwordField.setText("");
                 reEnterPasswordField.setText("");
                 return;
             }
-            if(!hasNumber) {
+            if (!hasNumber) {
                 errorMessage.setText("Password must have at least one number");
                 passwordField.setText("");
                 reEnterPasswordField.setText("");
                 return;
             }
-            if(!hasSpecialCharacter) {
+
+            Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(pass);
+            boolean hasSpecialCharacter = m.find();
+
+            if (!hasSpecialCharacter) {
                 errorMessage.setText("Password must have at least one special character");
                 passwordField.setText("");
                 reEnterPasswordField.setText("");
