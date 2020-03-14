@@ -16,6 +16,7 @@ public class MainApplication extends Application {
 
         routingScene.getStylesheets().add("css/text-styles.css");
         routingScene.getStylesheets().add("css/calendar.css");
+        routingScene.getStylesheets().add("css/food-menu.css");
         primaryStage.setScene(routingScene);
         primaryStage.show();
     }
