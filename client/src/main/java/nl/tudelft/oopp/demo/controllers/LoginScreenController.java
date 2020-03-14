@@ -5,8 +5,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
@@ -19,10 +22,7 @@ public class LoginScreenController {
 
 
     @FXML
-    private HBox hBox1;
-
-    @FXML
-    private VBox vBox;
+    private VBox vbox;
 
     @FXML
     private ResourceBundle resources;
@@ -69,20 +69,25 @@ public class LoginScreenController {
 
     @FXML
     void initialize() {
-        assert loginButton != null : "fx:id=\"loginButton\" was not injected: "
-                + "check your FXML file 'LoginScreen.fxml'.";
-        assert passwordField != null : "fx:id=\"passwordField\" was not injected: "
-                + "check your FXML file 'LoginScreen.fxml'.";
-        assert registerLink != null : "fx:id=\"registerLink\" was not injected: "
-                + "check your FXML file 'LoginScreen.fxml'.";
-        assert usernameField != null : "fx:id=\"usernameField\" was not injected: "
-                + "check your FXML file 'LoginScreen.fxml'.";
+        assert loginButton != null : "fx:id=\"loginButton\" "
+                + "was not injected: check your FXML file 'LoginScreen.fxml'.";
+        assert passwordField != null : "fx:id=\"passwordField\" "
+                + "was not injected: check your FXML file 'LoginScreen.fxml'.";
+        assert registerLink != null : "fx:id=\"registerLink\" "
+                + "was not injected: check your FXML file 'LoginScreen.fxml'.";
+        assert usernameField != null : "fx:id=\"usernameField\" "
+                + "was not injected: check your FXML file 'LoginScreen.fxml'.";
+        assert vbox != null : "fx:id=\"vbox\" "
+                + "was not injected: check your FXML file 'LoginScreen.fxml'.";
+        assert welcome != null : "fx:id=\"welcome\" "
+                + "was not injected: check your FXML file 'LoginScreen.fxml'.";
 
         loginButton.setStyle("-fx-font-size: 17");
         passwordField.setStyle("-fx-font-size: 17");
         usernameField.setStyle("-fx-font-size: 17");
-        vBox.setStyle("-fx-background-color: -primary-color");
-        welcome.setStyle("-fx-font-size: 69px; -fx-text-fill: -primary-color-text; -fx-font-weight: bold;");
+        vbox.setStyle("-fx-background-color: -primary-color");
+        welcome.setStyle("-fx-font-size: 69px; -fx-text-fill: "
+                + "-primary-color-text; -fx-font-weight: bold;");
     }
 
 }
