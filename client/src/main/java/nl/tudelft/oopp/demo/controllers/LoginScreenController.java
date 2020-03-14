@@ -14,6 +14,7 @@ import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.views.MainMenuRoute;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 
 
 public class LoginScreenController {
@@ -47,6 +48,8 @@ public class LoginScreenController {
             routingScene.pushRoute(new MainMenuRoute());
         } catch (HttpClientErrorException e) {
             System.out.println("login failed: " + e.getStatusCode());
+        } catch (ResourceAccessException e) {
+            System.out.println("Cant access server");
         }
 
     }

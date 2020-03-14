@@ -17,6 +17,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -79,7 +80,8 @@ public class AuthenticationCommunication {
      * @param user the user to be added to the database
      * @return the server response
      */
-    public static ResponseEntity<String> register(UserDtO user) throws HttpClientErrorException {
+    public static ResponseEntity<String> register(UserDtO user)
+            throws HttpClientErrorException, ResourceAccessException {
 
         String url = SERVER_URL + "/register";
         HttpHeaders headers = new HttpHeaders();
@@ -110,7 +112,7 @@ public class AuthenticationCommunication {
      *                                 or user doesn't have the right permissions
      */
     public static ResponseEntity<String> authenticatedRequest(String link)
-            throws HttpClientErrorException {
+            throws HttpClientErrorException, ResourceAccessException {
         HttpEntity request = new HttpEntity(authenticationHeader);
 
         return new RestTemplate()
