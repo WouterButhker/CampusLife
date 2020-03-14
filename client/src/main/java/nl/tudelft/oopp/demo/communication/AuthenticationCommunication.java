@@ -35,8 +35,6 @@ public class AuthenticationCommunication {
      * @param password the password for the authentication
      */
     public static void login(String username, String password) throws HttpClientErrorException {
-        //TODO: check if credentials are correct
-        // make request to /login to retrieve user role
         authenticationHeader = createHeaders(username, password);
         saveUserId(username);
         saveUserRole(username);
@@ -115,9 +113,16 @@ public class AuthenticationCommunication {
             throws HttpClientErrorException, ResourceAccessException {
         HttpEntity request = new HttpEntity(authenticationHeader);
 
-        return new RestTemplate()
-                .exchange(SERVER_URL + link, HttpMethod.GET, request, String.class);
+        try {
+            return new RestTemplate()
+                    .exchange(SERVER_URL + link, HttpMethod.GET, request, String.class);
+        } catch (ResourceAccessException e) {
+            // TODO  call error popup
+        } catch ( HttpClientErrorException e) {
+            // TODO call error popup
+        }
 
+        return null;
     }
 
     private static HttpHeaders createHeaders(String username, String password) {
