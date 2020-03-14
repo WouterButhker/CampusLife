@@ -39,7 +39,7 @@ public class AuthenticationCommunication {
     }
 
     /**
-     * resets the saved user credentials
+     * resets the saved user credentials.
      */
     public static void logout() {
         authenticationHeader = null;
