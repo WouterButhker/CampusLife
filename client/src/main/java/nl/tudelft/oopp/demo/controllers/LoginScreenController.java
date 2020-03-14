@@ -5,10 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
@@ -44,6 +41,9 @@ public class LoginScreenController {
 
     @FXML
     private TextField usernameField;
+
+    @FXML
+    private Label welcome;
 
 
     @FXML
@@ -82,6 +82,7 @@ public class LoginScreenController {
         passwordField.setStyle("-fx-font-size: 17");
         usernameField.setStyle("-fx-font-size: 17");
         vBox.setStyle("-fx-background-color: -primary-color");
+        welcome.setStyle("-fx-font-size: 69px; -fx-text-fill: -primary-color-text; -fx-font-weight: bold;");
     }
 
 }

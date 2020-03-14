@@ -14,7 +14,7 @@
     </HBox>
     <HBox alignment="TOP_CENTER" prefHeight="167.0" prefWidth="1120.0" style="background-color: blue;&#10;">
       <children>
-        <Label prefHeight="126.951171875" prefWidth="306.0" text="Welcome">
+        <Label fx:id="welcome" prefHeight="126.951171875" prefWidth="306.0" text="Welcome">
           <font>
             <Font name="System Bold" size="69.0" />
           </font>
