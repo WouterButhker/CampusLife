@@ -12,6 +12,7 @@ public class BuildingCommunication {
 
     /**
      * Retrieves all the buildings codes and names from the database and returns an array.
+     * Required permissions: Student
      * @return array of all the buildings, format: "code name"
      */
     public static String[] getBuildingsCodeAndName() {
@@ -30,6 +31,7 @@ public class BuildingCommunication {
 
     /**
      * For adding buildings to the database.
+     * Required permissions: Admin
      * @param buildingCode the number of the building
      * @param name the name of the building
      * @param location the street where the building is situated
@@ -65,6 +67,7 @@ public class BuildingCommunication {
 
     /**
      * Delete a building from the database by passing the building code.
+     * Required permission: Admin
      * @param buildingCode the number of the building
      * @return 1 if the building was deleted
      *         0 if there was no building with that code
@@ -82,6 +85,7 @@ public class BuildingCommunication {
 
     /**
      * Counts all the buildings from the database.
+     * Required permission: Student
      * @return an int with a number of all the buildings
      */
     public static Integer countAllBuildings() {
@@ -129,6 +133,7 @@ public class BuildingCommunication {
 
     /**
      * Returns a list of all the buildings from the database.
+     * Required permission: Student
      * @return list of buildings
      */
     public static List<Building> getAllBuildings() {
