@@ -11,7 +11,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 
@@ -50,6 +52,7 @@ public class AppBar extends StackPane {
         setAlignment(Pos.CENTER_LEFT);
 
         universityTitle = new Text("TUDelft");
+        universityTitle.getStyleClass().add("app-bar-title");
         titleContainer = new HBox();
         titleContainer.getChildren().add(universityTitle);
         titleContainer.setAlignment(Pos.CENTER);
@@ -80,6 +83,14 @@ public class AppBar extends StackPane {
 
         signOutLink = new Hyperlink("Sign Out");
         signOutLink.getStyleClass().add("app-bar-link-style");
+        signOutLink.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RoutingScene routingScene = (RoutingScene) getScene();
+                routingScene.popAll();
+                AuthenticationCommunication.logout();
+            }
+        });
         rightContainer.getChildren().add(signOutLink);
         rightContainer.setPadding(new Insets(0, 20, 0, 0));
         getChildren().add(rightContainer);

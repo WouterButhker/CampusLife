@@ -1,0 +1,26 @@
+@import url("palette.css");
+
+.main-screen-medium-text {
+    -fx-text-fill: -primary-color-text;
+    -fx-font-family: -primary-font-name;
+}
+
+.rec-image-button-label {
+    -fx-fill: -secondary-color-text;
+    -fx-font-family: -primary-font-name;
+}
+
+.app-bar-link-style {
+    -fx-text-fill: -primary-color-text;
+    -fx-font-family: -primary-font-name;
+}
+
+.app-bar-title {
+    -fx-text-fill: -primary-color-text;
+    -fx-font-family: -primary-font-name;
+}
+
+.room-display-text {
+    -fx-font-size: 24px;
+    -fx-font-family: -primary-font-name;
+}

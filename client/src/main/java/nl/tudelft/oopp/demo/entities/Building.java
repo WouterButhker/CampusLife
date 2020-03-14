@@ -10,21 +10,30 @@ public class Building {
     private String location;
     private String openingHours;
     private String image;
+    private Integer bikes;
 
     /**
      * Creates a new Building object.
      * @param code the number of the Building
      * @param name a String with the full name of the Building
      * @param location a String with the street
-     * @param openingHours a String with format hh:mm-hh:mm
+     * @param openingHours a String with format hh:mm-hh:mm for
+     *                     every day of the week separated by a ","
      * @param image a photo of the building
+     * @param bikes the amount of bikes at the building, null if building has no bike station
      */
-    public Building(Integer code, String name, String location, String openingHours, String image) {
+    public Building(Integer code,
+                    String name,
+                    String location,
+                    String openingHours,
+                    String image,
+                    Integer bikes) {
         this.code = code;
         this.name = name;
         this.location = location;
         this.openingHours = openingHours;
         this.image = image;
+        this.bikes = bikes;
     }
 
     public Integer getCode() {
@@ -67,9 +76,17 @@ public class Building {
         this.image = image;
     }
 
+    public Integer getBikes() {
+        return bikes;
+    }
+
+    public void setBikes(Integer bikes) {
+        this.bikes = bikes;
+    }
+
     public String toString() {
         return "{" + code + ", " + name + ", "
-                + location + ", " + openingHours + ", " + "image" + "}";
+                + location + ", " + openingHours + ", " + "image" + "Bikes: " + bikes + "}";
     }
 
     public String getNameAndCode() {
@@ -89,11 +106,12 @@ public class Building {
                 && name.equals(building.name)
                 && location.equals(building.location)
                 && openingHours.equals(building.openingHours)
-                && image.equals(building.image);
+                && image.equals(building.image)
+                && bikes.equals(building.bikes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, name, location, openingHours, image);
+        return Objects.hash(code, name, location, openingHours, image, bikes);
     }
 }

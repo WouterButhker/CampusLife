@@ -46,6 +46,7 @@ public class ReservationWidget extends VBox {
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
 
         roomName = new Text(room.getName());
+        roomName.getStyleClass().add("reservation-date-text");
         getChildren().add(roomName);
         Image image = new Image("https://cdn.mos.cms.futurecdn.net/K5nhgMGSRCzdppKW9bQcMd.jpg");
         roomImage = new ImageView(image);
@@ -59,6 +60,7 @@ public class ReservationWidget extends VBox {
         dateIcon = new ImageView(dateIconImage);
         dateContainer.getChildren().add(dateIcon);
         dateText = new Text("");
+        dateText.getStyleClass().add("reservation-date-text");
         dateContainer.getChildren().add(dateText);
         getChildren().add(dateContainer);
 
@@ -69,6 +71,7 @@ public class ReservationWidget extends VBox {
         timeIcon = new ImageView(timeIconImage);
         timeContainer.getChildren().add(timeIcon);
         timeText = new Text("");
+        dateText.getStyleClass().add("reservation-time-text");
         timeContainer.getChildren().add(timeText);
         getChildren().add(timeContainer);
 

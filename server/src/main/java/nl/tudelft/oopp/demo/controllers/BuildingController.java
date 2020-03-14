@@ -28,7 +28,7 @@ public class BuildingController {
      * @param buildingCode the number of the building
      * @param name the actual (full) name
      * @param location street
-     * @param openingHours format aa:bb-cc:dd
+     * @param openingHours format aa:bb-cc:dd for every day of the week separated by a ","
      * @return Saved
      */
     @GetMapping(path = "/add")
@@ -36,8 +36,9 @@ public class BuildingController {
     String addNewBuilding(@RequestParam Integer buildingCode,
                           @RequestParam String name,
                           @RequestParam String location,
-                          @RequestParam String openingHours) {
-        Building building = new Building(buildingCode, name, location, openingHours);
+                          @RequestParam String openingHours,
+                          @RequestParam Integer bikes) {
+        Building building = new Building(buildingCode, name, location, openingHours, bikes);
         buildingRepository.save(building);
         return "Saved";
     }

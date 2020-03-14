@@ -15,6 +15,7 @@ class BuildingTest {
     private String location;
     private String openingHours;
     private String image;
+    private Integer bikes;
     private Building building;
 
     @BeforeEach
@@ -24,8 +25,8 @@ class BuildingTest {
         location = "CityStreetRoute";
         openingHours = "08:00-22:00";
         image = "https://cdn.bulbagarden.net/upload/3/36/Canalave_Gym_anime.png";
-
-        building = new Building(code, name, location, openingHours, image);
+        bikes = 5;
+        building = new Building(code, name, location, openingHours, image, bikes);
     }
 
     @Test
@@ -89,6 +90,11 @@ class BuildingTest {
     }
 
     @Test
+    void getBikesTest() {
+        assertEquals(bikes, building.getBikes());
+    }
+
+    @Test
     void toStringTest() {
         assertEquals("{" + code + ", " + name + ", " + location
                 + ", " + openingHours + ", " + "image" + "}", building.toString());
@@ -96,7 +102,7 @@ class BuildingTest {
 
     @Test
     void equalsTest() {
-        Building buildingCopy = new Building(code, name, location, openingHours, image);
+        Building buildingCopy = new Building(code, name, location, openingHours, image, bikes);
         assertEquals(building, buildingCopy);
     }
 

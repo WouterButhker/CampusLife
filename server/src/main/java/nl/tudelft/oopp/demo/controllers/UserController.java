@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,16 @@ public class UserController {
     @GetMapping(path = "/all")
     public List<User> getAll() {
         return usersRepository.findAll();
+    }
+
+    @GetMapping(path = "/getId")
+    public Integer getId(String username) {
+        return usersRepository.findIdByUsername(username);
+    }
+
+    @GetMapping(path = "/getRole")
+    public String getRole(String username) {
+        return usersRepository.findRoleByUsername(username);
     }
 
     /*
