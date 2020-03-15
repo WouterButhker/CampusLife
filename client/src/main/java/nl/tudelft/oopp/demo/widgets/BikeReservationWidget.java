@@ -29,7 +29,7 @@ import java.util.List;
 public class BikeReservationWidget extends VBox {
 
     private List<Building> buildingList;
-    private Building current;
+    private List<BikeReservation> bikeReservations;
 
     private Calendar from;
     private Calendar to;
@@ -52,7 +52,7 @@ public class BikeReservationWidget extends VBox {
 
     public BikeReservationWidget() {
         buildingList = BuildingCommunication.getAllBuildingsWithBikeStation();
-
+        bikeReservations = BikeReservationCommunication.getAllReservations();
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
 
@@ -138,17 +138,14 @@ public class BikeReservationWidget extends VBox {
                 @Override
                 public void handle(ActionEvent event) {
                     reserveBike(event);
+                    updateButtons();
                 }
             });
-            if (bikeReserved()) {
-                button.setDisable(true);
-                String disabledButton = "-fx-background-color: gray";
-                button.setStyle(disabledButton);
-            }
             buildingBox.getChildren().addAll(imageView, label, reserveButton);
             hBoxList.add(buildingBox);
             buildingDisplayList.getChildren().add(buildingBox);
         }
+        updateButtons();
     }
 
     private void reserveBike(ActionEvent event) {
@@ -162,12 +159,14 @@ public class BikeReservationWidget extends VBox {
             String fromTime = timeFormat.format(from.getTime());
             String toTime = timeFormat.format(to.getTime());
             String slot = fromTime + "-" + toTime;
-            BikeReservationCommunication.addReservationToTheDatabase(userId, buildingCode, date, slot);
+//            BikeReservationCommunication.createBikeReservation(new BikeReservation(null, userId,
+//                    buildingCode, buildingCode, date, slot));
+            BikeReservationCommunication.addReservationToTheDatabase(userId, buildingCode, buildingCode, date, slot);
+            bikeReservations = BikeReservationCommunication.getAllReservations();
         }
     }
 
     private boolean bikeReserved() {
-        List<BikeReservation> bikeReservations = BikeReservationCommunication.getAllReservations();
         for (int i = 0; i < bikeReservations.size(); i++) {
             if (bikeReservations.get(i).getUser().equals(AuthenticationCommunication.myUserId)) {
                 return true;
@@ -217,8 +216,24 @@ public class BikeReservationWidget extends VBox {
         }
     }
 
-    public void dateSelected(boolean selected){
+    public void dateSelected(boolean selected) {
         dateSelected = selected;
+        updateButtons();
+    }
+
+    private void updateButtons() {
+        for (int i = 0; i < hBoxList.size(); i++) {
+            StackPane stackPane = (StackPane) hBoxList.get(i).getChildren().get(2);
+            Button button = (Button) stackPane.getChildren().get(0);
+            if (bikeReserved() || !dateSelected) {
+                button.setDisable(true);
+                String disabledButton = "-fx-background-color: gray";
+                button.setStyle(disabledButton);
+            } else {
+                button.setDisable(false);
+                button.setStyle(null);
+            }
+        }
     }
 
 }

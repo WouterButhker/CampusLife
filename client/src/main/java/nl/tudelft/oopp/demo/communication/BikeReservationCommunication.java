@@ -1,10 +1,12 @@
 package nl.tudelft.oopp.demo.communication;
 
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.entities.Food;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
@@ -16,24 +18,40 @@ public class BikeReservationCommunication {
     /**
      * Adds a bike reservation to the database via HTTP request.
      * @param userId The id of the User that made the bike reservation
-     * @param building The buildingCode of the building where the bike is reserved
+     * @param pickUpBuilding The id of the building where the bike is picked up
+     * @param dropOffBuilding The id of the building where the bike is dropped off
      * @param date The date of the bike reservation
      * @param slot The timeslot of the bike reservation
      */
     public static void addReservationToTheDatabase(Integer userId,
-                                                   Integer building,
+                                                   Integer pickUpBuilding,
+                                                   Integer dropOffBuilding,
                                                    String date,
                                                    String slot) {
         String url = "/bikeReservations/add?user=" + userId
-                + "&building=" + building + "&date=" + date + "&slot=" + slot;
+                + "&pickUpBuilding=" + pickUpBuilding + "&dropOffBuilding="
+                + dropOffBuilding + "&date=" + date + "&slot=" + slot;
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             System.out.println(response.getBody() + " Bike reservation for user "
-                    + userId + " at building " + building + " on " + date + " at slot " + slot);
+                    + userId + " at building " + pickUpBuilding + " and dropped off at building "
+                    + dropOffBuilding + " on " + date + " at slot " + slot);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static BikeReservation createBikeReservation(BikeReservation bikeReservation) {
+        try {
+            String responseString = ServerCommunication.authenticatedPostRequest(
+                    "/bikeReservations", bikeReservation).getBody();
+            Gson gson = new Gson();
+            return gson.fromJson(responseString, BikeReservation.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private static BikeReservation parseBikeReservation(JsonObject inputReservation) {
@@ -45,14 +63,20 @@ public class BikeReservationCommunication {
             );
         }
         String date = inputReservation.get("date").getAsString();
-        Integer building = null;
-        if (!inputReservation.get("building").isJsonNull()) {
-            building = Integer.parseInt(
-                    inputReservation.getAsJsonObject("building").get("buildingCode").getAsString()
+        Integer pickUpBuilding = null;
+        if (!inputReservation.get("pickUpBuilding").isJsonNull()) {
+            pickUpBuilding = Integer.parseInt(
+                    inputReservation.getAsJsonObject("pickUpBuilding").get("buildingCode").getAsString()
+            );
+        }
+        Integer dropOffBuilding = null;
+        if (!inputReservation.get("dropOffBuilding").isJsonNull()) {
+            dropOffBuilding = Integer.parseInt(
+                    inputReservation.getAsJsonObject("dropOffBuilding").get("buildingCode").getAsString()
             );
         }
         String timeSlot = inputReservation.get("timeSlot").getAsString();
-        return new BikeReservation(id, user, building, date, timeSlot);
+        return new BikeReservation(id, user, pickUpBuilding, dropOffBuilding, date, timeSlot);
     }
 
     private static List<BikeReservation> parseBikeReservations(String inputReservations) {
