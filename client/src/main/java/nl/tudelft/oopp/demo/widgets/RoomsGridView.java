@@ -37,6 +37,23 @@ public class RoomsGridView extends GridPane {
         });
     }
 
+    public void setRooms(List<Room> inputRooms) {
+        this.rooms = inputRooms;
+        this.getChildren().clear();
+
+        addButtons();
+
+        double scalar = 1;
+        sceneProperty().addListener((obs2, oldScene, newScene) -> {
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth() * scalar);
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth.doubleValue() * scalar);
+                });
+            }
+        });
+    }
+
     private final int roomsPerRow = 2;
 
     private void addButtons() {

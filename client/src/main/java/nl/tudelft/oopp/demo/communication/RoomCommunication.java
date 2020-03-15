@@ -14,7 +14,7 @@ public class RoomCommunication {
 
     /**
      * For adding a room to the database.
-     * @param roomCode the code (abreviation) of the room
+     * @param roomCode the code (abbreviation) of the room
      * @param name the actual name of the room
      * @param capacity seat capacity
      * @param hasWhiteboard if the room has a whiteboard is true
@@ -138,6 +138,16 @@ public class RoomCommunication {
         return "-1";
     }
 
+    /**
+     * Method to search for rooms with the filters applied
+     * @param building the roomCode primary key as Integer
+     * @param myRights the rights of the user as Integer
+     * @param hasTV boolean for if the room has a TV
+     * @param hasWhiteboard boolean for if the room has a whiteboard
+     * @param minCap integer for the minimum capacity a room may have
+     * @param maxCap integer for the maximum capacity a room may have
+     * @return
+     */
     public static List<Room> getFilteredRoomFromBuilding(Integer building, Integer myRights,
                                                          Boolean hasTV, Boolean hasWhiteboard,
                                                          Integer minCap, Integer maxCap) {

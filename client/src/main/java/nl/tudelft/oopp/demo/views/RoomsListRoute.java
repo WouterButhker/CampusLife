@@ -144,9 +144,11 @@ public class RoomsListRoute extends Route {
                     }
                 }
 
-                createRootElement(RoomCommunication.getFilteredRoomFromBuilding(building, myRights, hasTVBool,
-                                                                                hasWhiteboardBool, minCapInt, maxCapInt),
-                                                                                buildingCode);
+                List<Room> filteredList = RoomCommunication.getFilteredRoomFromBuilding(building, myRights, hasTVBool,
+                                                            hasWhiteboardBool, minCapInt, maxCapInt);
+
+                roomsGrid.setRooms(filteredList);
+
                 if (errorMessage.getText().equals("")) {
                     errorMessage.setText("Filters applied!");
                 }
