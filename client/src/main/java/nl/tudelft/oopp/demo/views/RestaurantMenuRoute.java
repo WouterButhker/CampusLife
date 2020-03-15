@@ -98,13 +98,15 @@ public class RestaurantMenuRoute extends Route {
         }
 
         rootContainer.sceneProperty().addListener((observable, oldValue, newValue) -> {
-            resizeRoute(newValue.getWidth(), newValue.getHeight());
-            newValue.heightProperty().addListener((observable1, oldValue1, newValue1) -> {
+            if (newValue != null) {
                 resizeRoute(newValue.getWidth(), newValue.getHeight());
-            });
-            newValue.widthProperty().addListener((observable1, oldValue1, newValue1) -> {
-                resizeRoute(newValue.getWidth(), newValue.getHeight());
-            });
+                newValue.heightProperty().addListener((observable1, oldValue1, newValue1) -> {
+                    resizeRoute(newValue.getWidth(), newValue.getHeight());
+                });
+                newValue.widthProperty().addListener((observable1, oldValue1, newValue1) -> {
+                    resizeRoute(newValue.getWidth(), newValue.getHeight());
+                });
+            }
         });
     }
 

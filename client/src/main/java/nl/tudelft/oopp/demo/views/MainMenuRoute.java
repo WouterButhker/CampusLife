@@ -75,14 +75,14 @@ public class MainMenuRoute extends Route {
                             + "& have it delivered to your door!"
             ));
             int id = restaurant.getId();
-            FoodCommunication.createFood(new Food(1, "Broodje Doner", id, 1.55));
-            FoodCommunication.createFood(new Food(2, "Italiano BMT", id, 4.30));
-            FoodCommunication.createFood(new Food(3, "Kapsalon Medium", 1, 5.50));
-            FoodCommunication.createFood(new Food(4, "Spa Rood", id, 3.20));
-            FoodCommunication.createFood(new Food(5, "Pizza 1", id, 3.24));
-            FoodCommunication.createFood(new Food(6, "Pizza 2", id, 3.25));
-            FoodCommunication.createFood(new Food(7, "Pizza 3", id, 3.25));
-            FoodCommunication.createFood(new Food(8, "Pizza 4", id, 3.29));
+            FoodCommunication.createFood(new Food(null, "Broodje Doner", id, 1.55));
+            FoodCommunication.createFood(new Food(null, "Italiano BMT", id, 4.30));
+            FoodCommunication.createFood(new Food(null, "Kapsalon Medium", 1, 5.50));
+            FoodCommunication.createFood(new Food(null, "Spa Rood", id, 3.20));
+            FoodCommunication.createFood(new Food(null, "Pizza 1", id, 3.24));
+            FoodCommunication.createFood(new Food(null, "Pizza 2", id, 3.25));
+            FoodCommunication.createFood(new Food(null, "Pizza 3", id, 3.25));
+            FoodCommunication.createFood(new Food(null, "Pizza 4", id, 3.29));
         }
     }
 
