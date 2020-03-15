@@ -151,7 +151,7 @@ public class RoomCommunication {
     public static List<Room> getFilteredRoomsFromBuilding(Integer building, Integer myRights,
                                                          Boolean hasTV, Boolean hasWhiteboard,
                                                          Integer minCap, Integer maxCap) {
-        String url = "/rooms/filter/getFilteredRooms?myBuilding=" + building
+        String url = "/rooms/filter/getFilteredRoomsFromBuilding?myBuilding=" + building
                 + "&myRights=" + myRights + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
                 + "&minCap=" + minCap + "&maxCap=" + maxCap;
         try {
@@ -174,7 +174,7 @@ public class RoomCommunication {
     public static List<Room> getAllFilteredRooms(Integer myRights, Boolean hasTV,
                                                  Boolean hasWhiteboard, Integer minCap,
                                                  Integer maxCap) {
-        String url = "/rooms/filter/getFilteredRooms?myRights=" + myRights
+        String url = "/rooms/filter/getAllFilteredRooms?myRights=" + myRights
                 + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
                 + "&minCap=" + minCap + "&maxCap=" + maxCap;
         try {

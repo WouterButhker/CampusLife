@@ -146,13 +146,13 @@ public class RoomsListRoute extends Route {
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
                 List<Room> filteredList;
-                if (buildingCode != -1) {
+                if (buildingCode == -1) {
+                    filteredList = RoomCommunication.getAllFilteredRooms(myRights,
+                            hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                } else {
                     Integer building = buildingCode;
                     filteredList = RoomCommunication.getFilteredRoomsFromBuilding(building,
                             myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
-                } else {
-                    filteredList = RoomCommunication.getAllFilteredRooms(myRights,
-                            hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
                 }
 
                 rooms.getChildren().clear();
