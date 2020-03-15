@@ -5,8 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.entities.Food;
 
@@ -19,6 +17,11 @@ public class FoodItemWidget extends HBox {
 
     private ImageView addIcon;
 
+    /**
+     * Creates a new FoodItemWidget.
+     * The FoodItemWidget is added to the menu in RestaurantMenuRoute
+     * @param food the food to be displayed
+     */
     public FoodItemWidget(Food food) {
         this.food = food;
         setAlignment(Pos.CENTER);

@@ -3,9 +3,6 @@ package nl.tudelft.oopp.demo.widgets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.FoodOrderCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
@@ -47,6 +43,12 @@ public class OrderWidget extends StackPane {
     private List<OrderItem> orderItems;
     private List<Food> foods;
 
+    /**
+     * Creates an OrderWidget.
+     * The OrderWidget works like a 'cart' for ordering food.
+     * It displays all food currently on the order
+     * @param foodOrder the foodOrder to display
+     */
     public OrderWidget(FoodOrder foodOrder) {
         this.foodOrder = foodOrder;
         foods = RestaurantCommunication.getAllFood(foodOrder.getRestaurant());
@@ -178,6 +180,9 @@ public class OrderWidget extends StackPane {
         });
     }
 
+    /**
+     * Notifies the OrderWidget that the FoodOrder has changed.
+     */
     public void refresh() {
         updateOrderItems();
 
@@ -303,11 +308,13 @@ public class OrderWidget extends StackPane {
             double buttonSize = newHeight * 0.7;
             addButton.setPrefWidth(buttonSize);
             addButton.setPrefHeight(buttonSize);
-            addButton.setStyle(String.format("-fx-background-size: %fpx %fpx", buttonSize, buttonSize));
+            addButton.setStyle(
+                    String.format("-fx-background-size: %fpx %fpx", buttonSize, buttonSize));
 
             removeButton.setPrefWidth(buttonSize);
             removeButton.setPrefHeight(buttonSize);
-            removeButton.setStyle(String.format("-fx-background-size: %fpx %fpx", buttonSize, buttonSize));
+            removeButton.setStyle(
+                    String.format("-fx-background-size: %fpx %fpx", buttonSize, buttonSize));
         }
 
         public void setQuantity(int quantity) {
@@ -319,6 +326,7 @@ public class OrderWidget extends StackPane {
 
         public interface Listener {
             void onAddClicked(Food food);
+
             void onRemoveClicked(Food food);
         }
     }

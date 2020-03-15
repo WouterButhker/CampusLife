@@ -1,18 +1,12 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.tudelft.oopp.demo.entities.Food;
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.FoodOrder;
 import nl.tudelft.oopp.demo.entities.FoodOrderJunction;
 import nl.tudelft.oopp.demo.repositories.FoodJunctionRepository;
 import nl.tudelft.oopp.demo.repositories.FoodOrderRepository;
-import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/foodOrder")

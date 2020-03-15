@@ -1,8 +1,9 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -10,22 +11,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.FoodOrder;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.FoodItemWidget;
 import nl.tudelft.oopp.demo.widgets.OrderWidget;
-import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RestaurantMenuRoute extends Route {
     private FoodOrder foodOrder;
@@ -45,6 +39,12 @@ public class RestaurantMenuRoute extends Route {
     private List<FoodItemWidget> foodItems;
     private OrderWidget orderWidget;
 
+    /**
+     * Creates a RestaurantMenuRoute.
+     * This is a route which displays the menu of a restaurant so users
+     * can buy food
+     * @param restaurant the restaurant to be displayed
+     */
     public RestaurantMenuRoute(Restaurant restaurant) {
         foodOrder = new FoodOrder(null, restaurant.getId(), -1);
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
@@ -83,13 +83,16 @@ public class RestaurantMenuRoute extends Route {
         foodItems = new ArrayList<>();
         for (Food food : foods) {
             FoodItemWidget foodItemWidget = new FoodItemWidget(food);
-            foodItemWidget.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    foodOrder.addFood(food);
-                    orderWidget.refresh();
-                }
-            });
+            foodItemWidget.addEventHandler(
+                    MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            foodOrder.addFood(food);
+                            orderWidget.refresh();
+                        }
+                    }
+            );
             foodItems.add(foodItemWidget);
             menuContainer.getChildren().add(foodItemWidget);
         }

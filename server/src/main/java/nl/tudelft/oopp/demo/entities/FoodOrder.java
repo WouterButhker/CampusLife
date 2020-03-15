@@ -1,10 +1,8 @@
 package nl.tudelft.oopp.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import javax.persistence.*;
 import java.util.List;
-import java.util.Map;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "food_order")

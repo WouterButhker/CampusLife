@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.entities;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "restaurant")

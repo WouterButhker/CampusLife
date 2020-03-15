@@ -2,23 +2,9 @@ package nl.tudelft.oopp.demo.entities;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
-
-import java.beans.Transient;
 import java.util.*;
 
 public class FoodOrder {
-    public static class GsonExclStrat implements ExclusionStrategy {
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return (f.getDeclaringClass() == FoodOrder.class && f.getName().equals("food"));
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-    }
-
     private Integer id;
     private Integer restaurant;
     private Integer user;
@@ -63,6 +49,10 @@ public class FoodOrder {
         this.user = user;
     }
 
+    /**
+     * Adds a food to the order.
+     * @param food the food to be added
+     */
     public void addFood(Food food) {
         for (List<Integer> pair : foodsList) {
             if (pair.get(0).equals(food.getId())) {
@@ -74,6 +64,10 @@ public class FoodOrder {
         foodsList.add(Arrays.asList(food.getId(), 1));
     }
 
+    /**
+     * Removes a food from the order.
+     * @param food the food to be removed
+     */
     public void removeFood(Food food) {
         for (int i = 0; i < foodsList.size(); i++) {
             List<Integer> pair = foodsList.get(i);
