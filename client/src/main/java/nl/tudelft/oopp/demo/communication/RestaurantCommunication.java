@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 
 import java.lang.reflect.Type;
@@ -23,6 +24,24 @@ public class RestaurantCommunication {
                     "/restaurants").getBody();
             Gson gson = new Gson();
             Type listType = new TypeToken<List<Restaurant>>() {}.getType();
+            return gson.fromJson(responseString, listType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Retrieves all the foods of a restaurant.
+     * @param restaurantId the id of the restaurant
+     * @return List of all Food of restaurant
+     */
+    public static List<Food> getAllFood(int restaurantId) {
+        try {
+            String responseString = ServerCommunication.authenticatedRequest(
+                    String.format("/restaurants/%d/food", restaurantId)).getBody();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Food>>() {}.getType();
             return gson.fromJson(responseString, listType);
         } catch (Exception e) {
             e.printStackTrace();
