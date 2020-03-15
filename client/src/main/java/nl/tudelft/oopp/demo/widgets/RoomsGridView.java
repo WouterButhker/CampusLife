@@ -15,6 +15,8 @@ public class RoomsGridView extends GridPane {
 
     private Listener listener;
 
+    private final double scalar = 1.8;
+
     /**
      * Creates the Grid View of the room list page.
      * @param rooms a list with all the rooms that need to be displayed
@@ -24,8 +26,6 @@ public class RoomsGridView extends GridPane {
 
         roomButtons = new ArrayList<>();
         addButtons();
-
-        double scalar = 1.8;
 
         sceneProperty().addListener((obs2, oldScene, newScene) -> {
             if (newScene != null) {
@@ -43,7 +43,6 @@ public class RoomsGridView extends GridPane {
 
         addButtons();
 
-        double scalar = 1;
         sceneProperty().addListener((obs2, oldScene, newScene) -> {
             if (newScene != null) {
                 resizeDisplay(newScene.getWidth() * scalar);
