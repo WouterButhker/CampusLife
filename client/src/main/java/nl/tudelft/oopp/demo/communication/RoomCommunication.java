@@ -13,6 +13,7 @@ public class RoomCommunication {
 
     /**
      * For adding a room to the database.
+     * Required permission: Admin
      * @param roomCode the code (abreviation) of the room
      * @param name the actual name of the room
      * @param capacity seat capacity
@@ -45,6 +46,7 @@ public class RoomCommunication {
 
     /**
      * Returns a list of all the rooms that are part of the building.
+     * Required permission: Student
      * @param building the number of the building you want to see the rooms from
      * @return a list of rooms from that building
      */
@@ -61,6 +63,7 @@ public class RoomCommunication {
 
     /**
      * Returns a list of all the Room NAMES that are part of the building.
+     * Required permission: Student
      * @param building the number of the building you want to see the Room NAMES from
      * @return a list of NAMES from that building
      */
@@ -109,6 +112,7 @@ public class RoomCommunication {
 
     /**
      * Returns a list of all the Rooms from the database.
+     * Required permission: Student
      * @return list of Rooms
      */
     public static List<Room> getAllRooms() {
@@ -123,6 +127,7 @@ public class RoomCommunication {
 
     /**
      * Deletes a Room from the database.
+     * Required permission: Admin
      * @param roomCode the code for the room that needs to be removed
      * @return
      */

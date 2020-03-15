@@ -1,0 +1,175 @@
+@import url("palette.css")
+
+.order-button {
+    -fx-background-color: -secondary-color;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.order-button:hover {
+    -fx-background-color: -secondary-color-dark;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.add-button {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/add_icon.png');
+}
+
+.add-button:hover {
+    -fx-background-color: #00000033;
+    -fx-background-image: url('/images/add_icon.png');
+}
+
+.remove-button {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/remove_icon.png');
+}
+
+.remove-button:hover {
+    -fx-background-color: #00000033;
+    -fx-background-image: url('/images/remove_icon.png');
+}
+
+.order-name-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.order-quantity-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.order-box {
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1px;
+}
+
+.order-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-fill: #B0BEC5;
+}
+
+.restaurant-name-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.restaurant-description-text {
+    -fx-font-family: -primary-font-name;
+    -fx-fill: #757575;
+}
+
+.food-name-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.food-price-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-fill: -primary-color-dark;
+}
+
+.food-item-box {
+    -fx-border-color: #BDBDBD;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+}
+
+.food-item-box:hover {
+    -fx-background-color: #E0E0E0;
+    -fx-border-color: #BDBDBD;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+    -fx-border-radius: 4px;
+}
+
+.left-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_left.png');
+}
+
+.left-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_left.png');
+}
+
+.right-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_right.png');
+}
+
+.right-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_right.png');
+}
+
+.up-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_up.png');
+}
+
+.up-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_up.png');
+}
+
+.down-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_down.png');
+}
+
+.down-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_down.png');
+}
+
+.available-date-box {
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.unavailable-date-box {
+    -fx-background-color: -secondary-color-light;
+    -fx-background-radius: 8;
+}
+
+.selected-date-box {
+    -fx-background-color: -accent-color;
+    -fx-background-radius: 8;
+}
+
+.hover-glow {
+    -fx-background-color: #00000033;
+    -fx-background-radius: 8;
+    -fx-fill-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.today-date-text {
+    -fx-fill: #FF0000;
+}
+
+.otherday-date-text {
+    -fx-fill: -secondary-color-text;
+}
+
+.available-agenda-block {
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.unavailable-agenda-block {
+    -fx-background-color: -secondary-color-light;
+    -fx-background-radius: 8;
+}
+
+.selected-agenda-block {
+    -fx-background-color: -accent-color;
+    -fx-background-radius: 8;
+}

@@ -8,6 +8,7 @@ import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.ReservationRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,15 @@ public class ReservationController {
         return reservationRepository.findAll();
     }
 
+    @GetMapping(path = "/allForUser")
+    public List<Reservation> getAllForUser(@RequestParam User user) {
+        return reservationRepository.findAllByUser(user);
+    }
+
+    @GetMapping(path = "/allForRoom")
+    public List<Reservation> getAllForRoom(@RequestParam Room room) {
+        return reservationRepository.findAllByRoom(room);
+    }
 
     /**
      * Add a new Reservation to the database.
@@ -52,4 +62,9 @@ public class ReservationController {
         return reservationRepository.getMyReservations(user);
     }
 
+    @Transactional
+    @GetMapping(path = "/delete")
+    void deleteReservation(@RequestParam Integer id) {
+        reservationRepository.deleteById(id);
+    }
 }
