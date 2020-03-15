@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.entities;
 
-import com.google.gson.Gson;
-
 import java.util.Objects;
 
 public class Food {

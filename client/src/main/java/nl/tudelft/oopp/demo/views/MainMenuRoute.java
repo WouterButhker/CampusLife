@@ -14,9 +14,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.FoodCommunication;
+import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Food;
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
@@ -49,7 +53,7 @@ public class MainMenuRoute extends Route {
 
         rootContainer.getChildren().add(new AppBar(true));
 
-        //createTitle();
+        addDummyRestaurantData();
         createButtonsRow();
         createBuildingsTitle();
 
@@ -57,6 +61,29 @@ public class MainMenuRoute extends Route {
 
         BuildingsGridView buildingsGrid = new BuildingsGridView(buildingsList);
         rootContainer.getChildren().add(buildingsGrid);
+    }
+
+    private void addDummyRestaurantData() {
+        List<Restaurant> restaurants = RestaurantCommunication.getRestaurants();
+        if (restaurants.isEmpty()) {
+            Restaurant restaurant = RestaurantCommunication.createRestaurant(new Restaurant(
+                    null,
+                    1,
+                    "Subway",
+                    "Takeaway food from Subway in Delft! "
+                            + "Choose your favourite meal from a wide variety "
+                            + "& have it delivered to your door!"
+            ));
+            int id = restaurant.getId();
+            FoodCommunication.createFood(new Food(1, "Broodje Doner", id, 1.55));
+            FoodCommunication.createFood(new Food(2, "Italiano BMT", id, 4.30));
+            FoodCommunication.createFood(new Food(3, "Kapsalon Medium", 1, 5.50));
+            FoodCommunication.createFood(new Food(4, "Spa Rood", id, 3.20));
+            FoodCommunication.createFood(new Food(5, "Pizza 1", id, 3.24));
+            FoodCommunication.createFood(new Food(6, "Pizza 2", id, 3.25));
+            FoodCommunication.createFood(new Food(7, "Pizza 3", id, 3.25));
+            FoodCommunication.createFood(new Food(8, "Pizza 4", id, 3.29));
+        }
     }
 
     @Override
@@ -92,6 +119,17 @@ public class MainMenuRoute extends Route {
         mainButtons.add(roomsButton);
         Image foodImage = new Image("/images/main-screen-food.jpg");
         RectangularImageButton foodButton = new RectangularImageButton(foodImage, FOOD_STRING);
+        foodButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RectangularImageButton button = (RectangularImageButton) event.getSource();
+                RoutingScene routingScene = (RoutingScene) button.getScene();
+
+                Restaurant restaurant = RestaurantCommunication.getRestaurants().get(0);
+
+                routingScene.pushRoute(new RestaurantMenuRoute(restaurant));
+            }
+        });
         mainButtons.add(foodButton);
         buttonsRow.getChildren().addAll(mainButtons);
 

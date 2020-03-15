@@ -12,10 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.FoodOrder;
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.FoodItemWidget;
 import nl.tudelft.oopp.demo.widgets.OrderWidget;
@@ -26,6 +29,7 @@ import java.util.List;
 
 public class RestaurantMenuRoute extends Route {
     private FoodOrder foodOrder;
+    private Restaurant restaurant;
     private List<Food> foods;
 
     private VBox rootContainer;
@@ -41,17 +45,9 @@ public class RestaurantMenuRoute extends Route {
     private List<FoodItemWidget> foodItems;
     private OrderWidget orderWidget;
 
-    public RestaurantMenuRoute() {
-        foodOrder = new FoodOrder(-1, -1, -1);
-        foods = new ArrayList<>();
-        foods.add(new Food(1, "Broodje Doner", 1, 1.55));
-        foods.add(new Food(2, "Italiano BMT", 1, 4.30));
-        foods.add(new Food(3, "Kapsalon Medium", 1, 5.50));
-        foods.add(new Food(4, "Spa Rood", 1, 3.20));
-        foods.add(new Food(5, "Pizza", 1, 3.20));
-        foods.add(new Food(6, "Pizza", 1, 3.20));
-        foods.add(new Food(7, "Pizza", 1, 3.20));
-        foods.add(new Food(8, "Pizza", 1, 3.20));
+    public RestaurantMenuRoute(Restaurant restaurant) {
+        foodOrder = new FoodOrder(null, restaurant.getId(), -1);
+        foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
         rootContainer.getChildren().add(new AppBar());
@@ -76,12 +72,10 @@ public class RestaurantMenuRoute extends Route {
 
         restaurantTextContainer = new VBox();
         restaurantContainer.getChildren().add(restaurantTextContainer);
-        restaurantTitle = new Text("Subway");
+        restaurantTitle = new Text(restaurant.getName());
         restaurantTitle.getStyleClass().add("restaurant-name-text");
         restaurantTextContainer.getChildren().add(restaurantTitle);
-        restaurantDescription = new Text("Takeaway food from Subway in Delft! "
-                + "Choose your favourite meal from a wide variety "
-                + "& have it delivered to your door!");
+        restaurantDescription = new Text(restaurant.getDescription());
         restaurantDescription.getStyleClass().add("restaurant-description-text");
         restaurantTextContainer.getChildren().add(restaurantDescription);
 
@@ -101,6 +95,7 @@ public class RestaurantMenuRoute extends Route {
         }
 
         rootContainer.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            resizeRoute(newValue.getWidth(), newValue.getHeight());
             newValue.heightProperty().addListener((observable1, oldValue1, newValue1) -> {
                 resizeRoute(newValue.getWidth(), newValue.getHeight());
             });

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +19,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.FoodOrderCommunication;
+import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
+import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.FoodOrder;
 
@@ -39,9 +45,11 @@ public class OrderWidget extends StackPane {
     private Button deliveryButton;
 
     private List<OrderItem> orderItems;
+    private List<Food> foods;
 
     public OrderWidget(FoodOrder foodOrder) {
         this.foodOrder = foodOrder;
+        foods = RestaurantCommunication.getAllFood(foodOrder.getRestaurant());
 
         background = new Rectangle();
         background.setFill(Color.WHITE);
@@ -99,10 +107,23 @@ public class OrderWidget extends StackPane {
 
         takeoutButton = new Button("Order takeout");
         takeoutButton.getStyleClass().add("order-button");
+        takeoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                FoodOrderCommunication.createFoodOrder(foodOrder);
+
+                RoutingScene routingScene = (RoutingScene) takeoutButton.getScene();
+                try {
+                    routingScene.popRoute();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         bottomContainer.getChildren().add(takeoutButton);
         deliveryButton = new Button("Order delivery");
         deliveryButton.getStyleClass().add("order-button");
-        bottomContainer.getChildren().add(deliveryButton);
+        //bottomContainer.getChildren().add(deliveryButton);
 
         prefWidthProperty().addListener((observable, oldValue, newValue) -> {
             resizeWidget(newValue.doubleValue(), getPrefHeight());
@@ -122,11 +143,21 @@ public class OrderWidget extends StackPane {
     }
 
     private void updateOrderItems() {
-        orderItemsSeparator.setVisible(!foodOrder.getFood().isEmpty());
-        bottomContainer.setVisible(!foodOrder.getFood().isEmpty());
+        orderItemsSeparator.setVisible(!foodOrder.getFoodsList().isEmpty());
+        bottomContainer.setVisible(!foodOrder.getFoodsList().isEmpty());
         orderItems.clear();
         ordersContainer.getChildren().clear();
-        foodOrder.getFood().forEach((food, quantity) -> {
+
+
+        foodOrder.getFoodsList().forEach((pair) -> {
+            Food food = null;
+            for (Food food1 : foods) {
+                if (food1.getId().equals(pair.get(0))) {
+                    food = food1;
+                    break;
+                }
+            }
+            int quantity = pair.get(1);
             OrderItem orderItem = new OrderItem(food, quantity, new OrderItem.Listener() {
                 @Override
                 public void onAddClicked(Food food) {
@@ -155,8 +186,17 @@ public class OrderWidget extends StackPane {
 
     private double calculatePrice() {
         AtomicReference<Double> price = new AtomicReference<>((double) 0);
-        foodOrder.getFood().forEach((food, quantity) -> {
-            price.updateAndGet(v -> (v + food.getPrice() * quantity));
+        foodOrder.getFoodsList().forEach((pair) -> {
+            Food food = null;
+            for (Food food1 : foods) {
+                if (food1.getId().equals(pair.get(0))) {
+                    food = food1;
+                    break;
+                }
+            }
+            int quantity = pair.get(1);
+            Food finalFood = food;
+            price.updateAndGet(v -> (v + finalFood.getPrice() * quantity));
         });
         return price.get();
     }
