@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.testfolder;
 
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ public class OtherBuildingTests {
 
     @Test
     public void testCountBuildings() {
-        Integer response = RestaurantCommunication.countAllBuildings();
+        Integer response = BuildingCommunication.countAllBuildings();
         System.out.println("---------------------------");
         System.out.println("Test = testCountBuildings");
         System.out.println(response);
@@ -22,7 +23,7 @@ public class OtherBuildingTests {
 
     @Test
     public void testGetBuildingsCodeAndName() {
-        String[] buildingsCodeAndName = RestaurantCommunication.getBuildingsCodeAndName();
+        String[] buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
         System.out.println("---------------------------");
         System.out.println("Test = testGetBuildingsCodeAndName");
         if (buildingsCodeAndName != null) {

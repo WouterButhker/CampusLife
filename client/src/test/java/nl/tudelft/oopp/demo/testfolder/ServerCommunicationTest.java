@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.testfolder;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ public class ServerCommunicationTest {
 
     @Test
     public void testGetBuildingsCodeAndName() {
-        String[] buildingsCodeAndName = RestaurantCommunication.getBuildingsCodeAndName();
+        String[] buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
         /*
         if (buildingsCodeAndName != null) {
             for (int i = 0; i < buildingsCodeAndName.length; i++)
@@ -35,7 +36,7 @@ public class ServerCommunicationTest {
         String location = "Mekelweg 5";
         String openingHours = "08:00-22:00";
         Integer bikes = 12;
-        RestaurantCommunication.addBuildingToDatabase(buildingCode,
+        BuildingCommunication.addBuildingToDatabase(buildingCode,
                 name, location, openingHours, bikes);
     }
 
