@@ -112,6 +112,14 @@ public class MainMenuRoute extends Route {
         mainButtons = new ArrayList<>();
         Image bikesImage = new Image("/images/main-screen-bike.jpg");
         RectangularImageButton bikesButton = new RectangularImageButton(bikesImage, BIKES_STRING);
+        bikesButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RectangularImageButton button = (RectangularImageButton) event.getSource();
+                RoutingScene routingScene = (RoutingScene) button.getScene();
+                routingScene.pushRoute(new BikesReservationRoute());
+            }
+        });
         mainButtons.add(bikesButton);
         Image roomsImage = new Image("/images/main-screen-rooms.jpg");
         RectangularImageButton roomsButton = new RectangularImageButton(roomsImage, ROOMS_STRING);

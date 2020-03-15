@@ -1,11 +1,11 @@
 package nl.tudelft.oopp.demo.repositories;
 
-import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface BuildingRepository extends JpaRepository<Building, Integer> {
     @Query("SELECT buildingCode, name FROM Building") /// building_code, name FROM building;
@@ -21,6 +21,9 @@ public interface BuildingRepository extends JpaRepository<Building, Integer> {
 
     @Query("SELECT COUNT(buildingCode) FROM Building")
     Integer countAllBuildings();
+
+    @Query("SELECT Building FROM Building b WHERE b.bikes IS NOT NULL")
+    List<Building> findAllBuildingsWithBikeStation();
 
     // @Query("DELETE FROM building where buildingCode = 3;")
     // String removeBuilding()
