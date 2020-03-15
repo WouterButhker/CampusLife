@@ -16,12 +16,12 @@ public class BikeReservationController {
     @Autowired
     private BikeReservationRepository bikeReservationRepository;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<BikeReservation> getAll() {
         return bikeReservationRepository.findAll();
     }
 
-    @GetMapping
+    @GetMapping("/addBike")
     public @ResponseBody String addNewBikeReservation(@RequestParam User user,
                                                       @RequestParam Building building,
                                                       @RequestParam String slot) {

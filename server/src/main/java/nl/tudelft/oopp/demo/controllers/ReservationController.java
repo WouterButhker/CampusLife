@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/reservations")
 public class ReservationController {
@@ -25,12 +27,12 @@ public class ReservationController {
     }
 
     @GetMapping(path = "/allForUser")
-    public List<Reservation> getAllForUser(@RequestParam User user) {
+    public List<RoomReservation> getAllForUser(@RequestParam User user) {
         return reservationRepository.findAllByUser(user);
     }
 
     @GetMapping(path = "/allForRoom")
-    public List<Reservation> getAllForRoom(@RequestParam Room room) {
+    public List<RoomReservation> getAllForRoom(@RequestParam Room room) {
         return reservationRepository.findAllByRoom(room);
     }
 
