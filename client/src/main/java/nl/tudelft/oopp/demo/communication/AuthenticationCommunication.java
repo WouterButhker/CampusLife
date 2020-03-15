@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
+    public static String myUsername;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -34,6 +35,7 @@ public class AuthenticationCommunication {
         //TODO: check if credentials are correct
         // make request to /login to retrieve user role
         authenticationHeader = createHeaders(username, password);
+        myUsername = username;
         saveUserId(username);
         saveUserRole(username);
     }

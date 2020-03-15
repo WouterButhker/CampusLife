@@ -27,6 +27,7 @@ public class AppBar extends StackPane {
     private Text universityTitle;
     private Hyperlink adminScreenLink;
     private Rectangle separator;
+    private Rectangle leftSeparator;
     private Hyperlink signOutLink;
 
     /**
@@ -109,6 +110,11 @@ public class AppBar extends StackPane {
             }
         });
 
+        leftSeparator = new Rectangle();
+        leftSeparator.setFill(Color.LIGHTGRAY);
+        leftSeparator.setWidth(1);
+        leftSeparator.setVisible(true);
+
         profileButton = new Hyperlink("My Profile");
         profileButton.getStyleClass().add("app-bar-link-style");
         profileButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -125,6 +131,7 @@ public class AppBar extends StackPane {
 
         leftContainer = new HBox();
         leftContainer.getChildren().add(backButton);
+        leftContainer.getChildren().add(leftSeparator);
         leftContainer.getChildren().add(profileButton);
         leftContainer.setAlignment(Pos.CENTER_LEFT);
         getChildren().add(leftContainer);
@@ -155,6 +162,7 @@ public class AppBar extends StackPane {
         rightContainer.setPrefHeight(appBarHeight);
         
         separator.setHeight(appBarHeight * 0.7);
+        leftSeparator.setHeight(appBarHeight * 0.7);
 
         double verticalPadding = appBarHeight * 0.1;
         double horizontalPadding = verticalPadding;
