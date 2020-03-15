@@ -20,9 +20,14 @@ public class BikeReservation {
     private User user;          // user id
 
     @ManyToOne
-    @JoinColumn(name = "buildingCode")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Building building;          // building code
+    @JoinColumn(name = "pickUpBuilding")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
+    private Building pickUpBuilding;          // building code
+
+    @ManyToOne
+    @JoinColumn(name = "dropOffBuilding")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
+    private Building dropOffBuilding;
 
     @Column(name = "date")
     private String date;
@@ -37,41 +42,21 @@ public class BikeReservation {
     /**
      * Makes a new BikeReservation object.
      * @param user The user that reserved
-     * @param building The building from which the user reserved a bike
+     * @param pickUpBuilding the building from where the bike is picked up
+     * @param dropOffBuilding the building where the bike is dropped off
      * @param date The date of the reservation
      * @param timeSlot The timeslot of the reservation
      */
     public BikeReservation(User user,
-                       Building building,
+                       Building pickUpBuilding,
+                       Building dropOffBuilding,
                        String date,
                        String timeSlot)  {
         this.user = user;
-        this.building = building;
+        this.pickUpBuilding = pickUpBuilding;
+        this.dropOffBuilding = dropOffBuilding;
         this.timeSlot = timeSlot;
         this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "BikeReservation{" + "id=" + id + ", user=" + user + ", building=" + building
-                + ", date='" + date + '\'' + ", timeSlot='" + timeSlot + '\'' + '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BikeReservation that = (BikeReservation) o;
-        return id.equals(that.id)
-                && user.equals(that.user)
-                && building.equals(that.building)
-                && date.equals(that.date)
-                && timeSlot.equals(that.timeSlot);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, building, date, timeSlot);
     }
 
     public Integer getId() {
@@ -88,6 +73,22 @@ public class BikeReservation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Building getPickUpBuilding() {
+        return pickUpBuilding;
+    }
+
+    public void setPickUpBuilding(Building pickUpBuilding) {
+        this.pickUpBuilding = pickUpBuilding;
+    }
+
+    public Building getDropOffBuilding() {
+        return dropOffBuilding;
+    }
+
+    public void setDropOffBuilding(Building dropOffBuilding) {
+        this.dropOffBuilding = dropOffBuilding;
     }
 
     public String getDate() {

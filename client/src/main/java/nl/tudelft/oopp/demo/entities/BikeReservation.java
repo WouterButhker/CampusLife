@@ -4,22 +4,37 @@ public class BikeReservation {
 
     private Integer id;
     private Integer user;
-    private Integer buildingCode;
+    private Integer pickUpBuildingCode;
+    private Integer dropOffBuildingCode;
+    private String date;
     private String timeSlot;
 
     /**
      * Makes a new BikeReservation object.
      * @param id The number of the bike reservation
      * @param user The id of the user that made the bike reservation
-     * @param buildingCode - The code of the building where the bike is rented from
+     * @param pickUpBuildingCode The id of the building where the bike is picked up
+     * @param dropOffBuildingCode The id of the building where the bike is dropped off
      * @param timeSlot - The timeslot of the bike reservation
      */
     public BikeReservation(Integer id, Integer user,
-                           Integer buildingCode, String timeSlot) {
+                           Integer pickUpBuildingCode, Integer dropOffBuildingCode,
+                           String date, String timeSlot) {
         this.id = id;
         this.user = user;
-        this.buildingCode = buildingCode;
+        this.pickUpBuildingCode = pickUpBuildingCode;
+        this.dropOffBuildingCode = dropOffBuildingCode;
+        this.date = date;
         this.timeSlot = timeSlot;
+    }
+
+    @Override
+    public String toString() {
+        return "BikeReservation{" + "id=" + id + ", user=" + user
+                + ", pickUpBuildingCode=" + pickUpBuildingCode
+                + ", dropOffBuildingCode=" + dropOffBuildingCode
+                + ", date='" + date + '\'' + ", timeSlot='"
+                + timeSlot + '\'' + '}';
     }
 
     public Integer getId() {
@@ -38,12 +53,28 @@ public class BikeReservation {
         this.user = user;
     }
 
-    public Integer getBuildingCode() {
-        return buildingCode;
+    public Integer getPickUpBuildingCode() {
+        return pickUpBuildingCode;
     }
 
-    public void setBuildingCode(Integer buildingCode) {
-        this.buildingCode = buildingCode;
+    public void setPickUpBuildingCode(Integer pickUpBuildingCode) {
+        this.pickUpBuildingCode = pickUpBuildingCode;
+    }
+
+    public Integer getDropOffBuildingCode() {
+        return dropOffBuildingCode;
+    }
+
+    public void setDropOffBuildingCode(Integer dropOffBuildingCode) {
+        this.dropOffBuildingCode = dropOffBuildingCode;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTimeSlot() {
