@@ -30,8 +30,10 @@ public class BikeReservation {
 
     @Override
     public String toString() {
-        return "BikeReservation{" + "id=" + id + ", user=" + user + ", pickUpBuildingCode=" + pickUpBuildingCode
-                + ", dropOffBuildingCode=" + dropOffBuildingCode + ", date='" + date + '\'' + ", timeSlot='"
+        return "BikeReservation{" + "id=" + id + ", user=" + user
+                + ", pickUpBuildingCode=" + pickUpBuildingCode
+                + ", dropOffBuildingCode=" + dropOffBuildingCode
+                + ", date='" + date + '\'' + ", timeSlot='"
                 + timeSlot + '\'' + '}';
     }
 

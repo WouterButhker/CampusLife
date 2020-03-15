@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,12 +23,7 @@ import nl.tudelft.oopp.demo.communication.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
-import org.springframework.security.authentication.AuthenticationTrustResolver;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 public class BikeReservationWidget extends VBox {
 
@@ -35,7 +34,7 @@ public class BikeReservationWidget extends VBox {
     private Calendar to;
 
     private VBox buildingDisplayList;
-    private List<HBox> hBoxList;
+    private List<HBox> boxes;
 
     private ScrollPane scrollPane;
     private AnchorPane buildingDisplay;
@@ -50,6 +49,9 @@ public class BikeReservationWidget extends VBox {
 
     private boolean dateSelected = false;
 
+    /**
+     * Creates a new BikeReservationWidget that is used to reserve bikes.
+     */
     public BikeReservationWidget() {
         buildingList = BuildingCommunication.getAllBuildingsWithBikeStation();
         bikeReservations = BikeReservationCommunication.getAllReservations();
@@ -83,7 +85,7 @@ public class BikeReservationWidget extends VBox {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         buildingDisplayList = new VBox();
-        hBoxList = new ArrayList<HBox>();
+        boxes = new ArrayList<HBox>();
         buildingDisplay.getChildren().add(buildingDisplayList);
         loadBuildings();
         getChildren().add(0, scrollPane);
@@ -100,9 +102,8 @@ public class BikeReservationWidget extends VBox {
     private void loadBuildings() {
         int numBuildings = buildingList.size();
         buildingDisplayList.getChildren().clear();
-        hBoxList.clear();
+        boxes.clear();
         for (int i = 0; i < numBuildings; i++) {
-            Building building = buildingList.get(i);
             HBox buildingBox = new HBox();
             buildingBox.setPrefWidth(scrollPane.getPrefWidth() - 10);
             buildingBox.setPadding(new Insets(5));
@@ -118,8 +119,9 @@ public class BikeReservationWidget extends VBox {
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
             imageView.setPreserveRatio(true);
-
-            Label label = new Label("Building Code : " + building.getCode() + " | " + building.getName()
+            Building building = buildingList.get(i);
+            Label label = new Label("Building Code : " + building.getCode()
+                    + " | " + building.getName()
                     + "\nAmount of bikes : " + building.getBikes());
             //65 for the image width
             //45 for the button width
@@ -142,7 +144,7 @@ public class BikeReservationWidget extends VBox {
                 }
             });
             buildingBox.getChildren().addAll(imageView, label, reserveButton);
-            hBoxList.add(buildingBox);
+            boxes.add(buildingBox);
             buildingDisplayList.getChildren().add(buildingBox);
         }
         updateButtons();
@@ -159,9 +161,11 @@ public class BikeReservationWidget extends VBox {
             String fromTime = timeFormat.format(from.getTime());
             String toTime = timeFormat.format(to.getTime());
             String slot = fromTime + "-" + toTime;
-//            BikeReservationCommunication.createBikeReservation(new BikeReservation(null, userId,
-//                    buildingCode, buildingCode, date, slot));
-            BikeReservationCommunication.addReservationToTheDatabase(userId, buildingCode, buildingCode, date, slot);
+            //            BikeReservationCommunication.createBikeReservation(new
+            //            BikeReservation(null, userId,
+            //                    buildingCode, buildingCode, date, slot));
+            BikeReservationCommunication.addReservationToTheDatabase(userId,
+                    buildingCode, buildingCode, date, slot);
             bikeReservations = BikeReservationCommunication.getAllReservations();
         }
     }
@@ -222,8 +226,8 @@ public class BikeReservationWidget extends VBox {
     }
 
     private void updateButtons() {
-        for (int i = 0; i < hBoxList.size(); i++) {
-            StackPane stackPane = (StackPane) hBoxList.get(i).getChildren().get(2);
+        for (int i = 0; i < boxes.size(); i++) {
+            StackPane stackPane = (StackPane) boxes.get(i).getChildren().get(2);
             Button button = (Button) stackPane.getChildren().get(0);
             if (bikeReserved() || !dateSelected) {
                 button.setDisable(true);

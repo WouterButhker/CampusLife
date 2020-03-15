@@ -1,16 +1,15 @@
 package nl.tudelft.oopp.demo.communication;
 
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Food;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class BikeReservationCommunication {
@@ -42,6 +41,11 @@ public class BikeReservationCommunication {
         }
     }
 
+    /**
+     * Creates a BikeReservation using a POST request but is probably broken at the moment.
+     * @param bikeReservation The BikeReservation object that is being stored
+     * @return The same BikeReservation object (I think?)
+     */
     public static BikeReservation createBikeReservation(BikeReservation bikeReservation) {
         try {
             String responseString = ServerCommunication.authenticatedPostRequest(
@@ -55,7 +59,6 @@ public class BikeReservationCommunication {
     }
 
     private static BikeReservation parseBikeReservation(JsonObject inputReservation) {
-        Integer id = inputReservation.get("id").getAsInt();
         Integer user = null;
         if (!inputReservation.get("user").isJsonNull()) {
             user = Integer.parseInt(
@@ -66,15 +69,18 @@ public class BikeReservationCommunication {
         Integer pickUpBuilding = null;
         if (!inputReservation.get("pickUpBuilding").isJsonNull()) {
             pickUpBuilding = Integer.parseInt(
-                    inputReservation.getAsJsonObject("pickUpBuilding").get("buildingCode").getAsString()
+                    inputReservation.getAsJsonObject("pickUpBuilding")
+                            .get("buildingCode").getAsString()
             );
         }
         Integer dropOffBuilding = null;
         if (!inputReservation.get("dropOffBuilding").isJsonNull()) {
             dropOffBuilding = Integer.parseInt(
-                    inputReservation.getAsJsonObject("dropOffBuilding").get("buildingCode").getAsString()
+                    inputReservation.getAsJsonObject("dropOffBuilding")
+                            .get("buildingCode").getAsString()
             );
         }
+        Integer id = inputReservation.get("id").getAsInt();
         String timeSlot = inputReservation.get("timeSlot").getAsString();
         return new BikeReservation(id, user, pickUpBuilding, dropOffBuilding, date, timeSlot);
     }
