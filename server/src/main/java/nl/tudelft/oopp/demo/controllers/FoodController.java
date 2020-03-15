@@ -24,7 +24,7 @@ public class FoodController {
      * @return Saved
      */
     @PostMapping(consumes = "application/json", produces = "application/json")
-    Food addRestaurant(@RequestBody Food food) {
+    Food addFood(@RequestBody Food food) {
         return foodRepository.save(food);
     }
 
