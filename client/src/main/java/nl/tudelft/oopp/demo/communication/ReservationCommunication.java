@@ -26,8 +26,11 @@ public class ReservationCommunication {
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            /*
             System.out.println(response.getBody() + " reservation for user "
                     + userId + " at room " + room + " at slot " + slot);
+
+             */
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,7 +38,7 @@ public class ReservationCommunication {
 
     private static Reservation parseReservation(JsonObject inputReservation) {
         Integer id = inputReservation.get("id").getAsInt();
-        System.out.println(id);
+        //System.out.println(id);
         Integer user = null;
         if (!inputReservation.get("user").isJsonNull()) {
             user = Integer.parseInt(
@@ -46,9 +49,9 @@ public class ReservationCommunication {
         String room = RoomCommunication.parseRoom(
                 inputReservation.get("room").getAsJsonObject()
         ).getCode();
-        System.out.println(room);
+        //System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
-        System.out.println(timeSlot);
+        //System.out.println(timeSlot);
         return new Reservation(id, user, room, timeSlot);
     }
 
@@ -76,6 +79,10 @@ public class ReservationCommunication {
         return null;
     }
 
+    /**
+     * Get all of the reservations for the current User.
+     * @return A list of the current user's reservations
+     */
     public static List<Reservation> getMyReservations() {
         String url = "/reservations/myReservations?user=" + AuthenticationCommunication.myUserId;
         try {

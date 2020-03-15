@@ -102,7 +102,7 @@ public class BuildingCommunication {
      * @return a Building object.
      */
     public static Building parseBuilding(JsonObject inputBuilding) {
-        System.out.println(inputBuilding);
+        //System.out.println(inputBuilding);
         Integer code = inputBuilding.get("buildingCode").getAsInt();
         String name = inputBuilding.get("name").getAsString();
         String location = inputBuilding.get("location").getAsString();
