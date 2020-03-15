@@ -169,7 +169,7 @@ public class MyProfileRoute extends Route {
                 @Override
                 public void handle(ActionEvent event) {
                     int id = reservations.get(finalI).getId();
-                    //ReservationCommunication(id); // TODO Add DELETE for Backend
+                    ReservationCommunication.deleteReservationFromDatabase(id);
                     if (past.isSelected()) {
                         displayPastEvents();
                     } else if (upcoming.isSelected()) {
