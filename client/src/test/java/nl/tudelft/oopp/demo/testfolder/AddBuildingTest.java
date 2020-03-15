@@ -1,6 +1,6 @@
 package nl.tudelft.oopp.demo.testfolder;
 
-import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import org.junit.jupiter.api.Test;
 
 
@@ -13,7 +13,7 @@ public class AddBuildingTest {
         String location = "Please";
         String openingHours = "08:00-22:00";
         Integer bikes = 42;
-        BuildingCommunication.addBuildingToDatabase(buildingCode,
+        RestaurantCommunication.addBuildingToDatabase(buildingCode,
                 name, location, openingHours, bikes);
     }
 
