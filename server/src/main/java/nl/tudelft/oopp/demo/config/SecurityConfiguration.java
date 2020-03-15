@@ -35,11 +35,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
-                .antMatchers("/admin", "/admin/**").hasAuthority("Admin")
+                .antMatchers("/admin", "/admin/**",
+                        "/buildings/add", "/buildings/delete",
+                        "/rooms/add", "/rooms/delete").hasAuthority("Admin")
                 .antMatchers("/employee", "/employee/**").hasAnyAuthority("Employee", "Admin")
                 .antMatchers("/**").hasAnyAuthority("Student", "Admin", "Employee")
                 .and().httpBasic()
-                .and().cors().disable()
+                .and().cors().and()
                 .csrf().disable();
     }
 

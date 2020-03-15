@@ -35,7 +35,7 @@ public class Building {
      * @param buildingCode the number of the building
      * @param name the actual name of the building
      * @param location the street
-     * @param openingHours format aa:bb-cc:dd
+     * @param openingHours format aa:bb-cc:dd for every day of the week separated by a ","
      * @param bikes the amount of bikes at the building, null if building has no bike station
      */
     public Building(Integer buildingCode,

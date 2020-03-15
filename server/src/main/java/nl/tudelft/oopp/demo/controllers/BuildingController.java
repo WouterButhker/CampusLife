@@ -28,7 +28,7 @@ public class BuildingController {
      * @param buildingCode the number of the building
      * @param name the actual (full) name
      * @param location street
-     * @param openingHours format aa:bb-cc:dd
+     * @param openingHours format aa:bb-cc:dd for every day of the week separated by a ","
      * @return Saved
      */
     @GetMapping(path = "/add")
@@ -74,5 +74,10 @@ public class BuildingController {
     @GetMapping(path = "/count")
     public Integer countBuildings() {
         return buildingRepository.countAllBuildings();
+    }
+
+    @GetMapping(path = "/bikes")
+    public List<Building> getBuildingsWithBikeStation() {
+        return buildingRepository.findAllBuildingsWithBikeStation();
     }
 }

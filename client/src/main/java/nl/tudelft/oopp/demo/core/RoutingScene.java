@@ -46,4 +46,14 @@ public class RoutingScene extends Scene {
         routes.pop();
         setRoot(routes.peek().getRootElement());
     }
+
+    /**
+     * Removes all the routes except the first one.
+     */
+    public void popAll() {
+        while (routes.size() > 1) {
+            routes.pop();
+        }
+        setRoot(routes.peek().getRootElement());
+    }
 }

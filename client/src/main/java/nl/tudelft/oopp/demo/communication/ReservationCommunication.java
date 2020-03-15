@@ -21,13 +21,11 @@ public class ReservationCommunication {
     public static void addReservationToDatabase(Integer userId,
                                              String room,
                                              String slot) {
-        room = room.replace(" ", "%20");
         String url = "/reservations/add?user=" + userId
                 + "&room=" + room + "&slot=" + slot;
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
-            room = room.replace("%20", " ");
             System.out.println(response.getBody() + " reservation for user "
                     + userId + " at room " + room + " at slot " + slot);
         } catch (Exception e) {
@@ -66,6 +64,7 @@ public class ReservationCommunication {
 
     /**
      * Returns a list of all the reservations from the database.
+     * Required permission: Student
      * @return List of Reservations
      */
     public static List<Reservation> getAllReservations() {
@@ -76,6 +75,50 @@ public class ReservationCommunication {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Returns a list of all the reservations a specific user has made.
+     * @param user the User whose reservations you are looking for
+     * @return A List of Reservations
+     */
+    public static List<Reservation> getAllReservationsForUser(Integer user) {
+        String url = "/reservations/allForUser?user=" + user;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of all the reservations that were made for a specific room.
+     * Required permission: Student
+     * @param room the Room whose reservations you are looking for
+     * @return A List of Reservations
+     */
+    public static List<Reservation> getAllReservationsForRoom(String room) {
+        String url = "/reservations/allForRoom?room=" + room;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a reservation with the specified id from the database.
+     * @param id the id of the reservation
+     */
+    public static void deleteReservationFromDatabase(Integer id) {
+        String url = "/reservations/delete?id=" + id;
+        try {
+            ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
