@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.demo;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,13 +19,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration( classes = {
+@ContextConfiguration(classes = {
         DemoApplication.class,
         SecurityConfiguration.class,
         PlatformTransactionManager.class
@@ -35,6 +37,9 @@ public class AuthTest {
 
     MockMvc mvc;
 
+    /**
+     * runs a setup before every test.
+     */
     @BeforeEach()
     public void setup() {
         mvc = MockMvcBuilders

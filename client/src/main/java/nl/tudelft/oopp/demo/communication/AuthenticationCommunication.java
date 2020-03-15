@@ -32,6 +32,7 @@ public class AuthenticationCommunication {
      *
      * @param username the username for the authentication
      * @param password the password for the authentication
+     * @throws HttpClientErrorException when authentication fails
      */
     public static void login(String username, String password) throws HttpClientErrorException {
         authenticationHeader = createHeaders(username, password);
@@ -43,6 +44,7 @@ public class AuthenticationCommunication {
      * Save the Id of the logged in User in a static variable.
      *
      * @param username the username of the current User
+     * @throws HttpClientErrorException when authentication fails
      */
     public static void saveUserId(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
@@ -59,6 +61,7 @@ public class AuthenticationCommunication {
      * Save the Role of the logged in User in a static variable.
      *
      * @param username the username of the current User
+     * @throws HttpClientErrorException when authentication fails
      */
     public static void saveUserRole(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
@@ -76,6 +79,7 @@ public class AuthenticationCommunication {
      *
      * @param user the user to be added to the database
      * @return the server response
+     * @throws HttpClientErrorException when authentication fails
      */
     public static ResponseEntity<String> register(UserDtO user)
             throws HttpClientErrorException, ResourceAccessException {
@@ -105,8 +109,8 @@ public class AuthenticationCommunication {
      *
      * @param link the link to send a request to
      * @return the server response
-     * @throws AuthenticationException gets thrown when the user credentials are not correct
-     *                                 or user doesn't have the right permissions
+     * @throws HttpClientErrorException when authentication fails
+     * @throws ResourceAccessException when the server can't be reached
      */
     public static ResponseEntity<String> authenticatedRequest(String link)
             throws HttpClientErrorException, ResourceAccessException {
