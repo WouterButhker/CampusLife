@@ -80,6 +80,7 @@ public class AuthenticationCommunication {
      * @param user the user to be added to the database
      * @return the server response
      * @throws HttpClientErrorException when authentication fails
+     * @throws ResourceAccessException when the server can't be reached
      */
     public static ResponseEntity<String> register(UserDtO user)
             throws HttpClientErrorException, ResourceAccessException {
