@@ -20,15 +20,16 @@ public class BikeReservationCommunication {
      * @param slot The timeslot of the bike reservation
      */
     public static void addReservationToTheDatabase(Integer userId,
-                                                   String building,
+                                                   Integer building,
+                                                   String date,
                                                    String slot) {
         String url = "/bikeReservations/add?user=" + userId
-                + "&building=" + building + "&slot=" + slot;
+                + "&building=" + building + "&date=" + date + "&slot=" + slot;
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             System.out.println(response.getBody() + " Bike reservation for user "
-                    + userId + " at building " + building + " at slot " + slot);
+                    + userId + " at building " + building + " on " + date + " at slot " + slot);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,4 +73,6 @@ public class BikeReservationCommunication {
         }
         return null;
     }
+
+
 }

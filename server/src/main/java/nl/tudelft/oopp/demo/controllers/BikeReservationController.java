@@ -16,17 +16,16 @@ public class BikeReservationController {
     @Autowired
     private BikeReservationRepository bikeReservationRepository;
 
-    @GetMapping
+    @GetMapping(path = "/all")
     public List<BikeReservation> getAll() {
         return bikeReservationRepository.findAll();
     }
 
-    @GetMapping
+    @PostMapping(path = "/add")
     public @ResponseBody String addNewBikeReservation(@RequestParam User user,
                                                       @RequestParam Building building,
+                                                      @RequestParam String date,
                                                       @RequestParam String slot) {
-        String timeSlot = slot.substring(11, 19) + slot.substring(30);
-        String date = slot.substring(0, 10);
         BikeReservation bikeReservation = new BikeReservation(user, building, date, slot);
         bikeReservationRepository.save(bikeReservation);
         return "Saved";

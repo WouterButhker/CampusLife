@@ -6,10 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.widgets.AgendaWidget;
-import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.CalendarWidget;
-import nl.tudelft.oopp.demo.widgets.ReservationWidget;
+import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.widgets.*;
 
 import java.util.Calendar;
 
@@ -21,6 +19,7 @@ public class BikesReservationRoute extends Route {
 
     private CalendarWidget calendarWidget;
     private AgendaWidget agendaWidget;
+    private BikeReservationWidget bikeReservationWidget;
 
     private Calendar selectedDate = Calendar.getInstance();
     private Calendar fromTime;
@@ -41,7 +40,9 @@ public class BikesReservationRoute extends Route {
         calendarWidget.setListener(new CalendarWidget.Listener() {
             @Override
             public void onDayClicked(Calendar day) {
-
+                agendaWidget.removeSelection();
+                selectedDate = day;
+                bikeReservationWidget.setPeriod(null, null);
             }
         });
 
@@ -54,10 +55,14 @@ public class BikesReservationRoute extends Route {
                 toTime = (Calendar) selectedDate.clone();
                 toTime.set(Calendar.HOUR_OF_DAY, end);
                 toTime.set(Calendar.MINUTE, 0);
+
+                bikeReservationWidget.setPeriod(fromTime, toTime);
             }
         });
 
-        horizontalContainer.getChildren().addAll(calendarWidget, agendaWidget);
+        bikeReservationWidget = new BikeReservationWidget();
+
+        horizontalContainer.getChildren().addAll(calendarWidget, agendaWidget, bikeReservationWidget);
 
         horizontalContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
             if (newScene != null) {
@@ -72,12 +77,13 @@ public class BikesReservationRoute extends Route {
             }
         });
 
+
     }
 
     private void resizeDisplay(double newWidth) {
         calendarWidget.setPrefWidth(newWidth * 0.3);
         agendaWidget.setPrefWidth(newWidth * 0.3);
-//        reservationWidget.setPrefWidth(newWidth * 0.3);
+        bikeReservationWidget.setPrefWidth(newWidth * 0.3);
     }
 
     @Override

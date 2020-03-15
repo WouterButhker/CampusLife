@@ -22,7 +22,7 @@ public interface BuildingRepository extends JpaRepository<Building, Integer> {
     @Query("SELECT COUNT(buildingCode) FROM Building")
     Integer countAllBuildings();
 
-    @Query("SELECT Building FROM Building b WHERE b.bikes IS NOT NULL")
+    @Query("SELECT b FROM Building b WHERE b.bikes IS NOT null")
     List<Building> findAllBuildingsWithBikeStation();
 
     // @Query("DELETE FROM building where buildingCode = 3;")
