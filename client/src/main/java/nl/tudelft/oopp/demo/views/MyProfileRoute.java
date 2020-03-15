@@ -5,14 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -22,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Reservation;
@@ -140,7 +140,8 @@ public class MyProfileRoute extends Route {
         VBox reservationsList = new VBox();
         reservationsList.setSpacing(2);
 
-        for (Reservation reservation : reservations) {
+        for (int i = 0; i < reservations.size(); i++) {
+            Reservation reservation = reservations.get(i);
             HBox currentReservation = new HBox();
             Background background = new Background(
                     new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -161,6 +162,25 @@ public class MyProfileRoute extends Route {
             Text roomText = new Text("Room: " + reservation.getRoom());
             currentReservation.getChildren().add(roomText);
 
+            int finalI = i;
+            Button delete = new Button("X");
+            delete.setPrefSize(30, 30);
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    int id = reservations.get(finalI).getId();
+                    //ReservationCommunication(id); // TODO Add DELETE for Backend
+                    if (past.isSelected()) {
+                        displayPastEvents();
+                    } else if (upcoming.isSelected()) {
+                        displayUpcomingEvents();
+                    }
+                }
+            });
+            StackPane deletePane = new StackPane(delete);
+            deletePane.setAlignment(Pos.CENTER_RIGHT);
+
+            currentReservation.getChildren().add(deletePane);
             reservationsList.getChildren().add(currentReservation);
         }
         scrollPane.setContent(reservationsList);
@@ -197,7 +217,7 @@ public class MyProfileRoute extends Route {
 
         Image profileImage = new Image("/images/myProfile.png");
         RectangularImageButton profilePicture = new RectangularImageButton(profileImage, "");
-        profilePicture.setFitHeight(100);
+        profilePicture.setFitHeight(90);
         horizontalContainer.getChildren().add(profilePicture);
 
         userDetails = new VBox();
