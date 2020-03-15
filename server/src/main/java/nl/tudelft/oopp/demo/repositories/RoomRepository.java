@@ -39,6 +39,15 @@ public interface RoomRepository extends JpaRepository<Room, String> {
             + "r.hasWhiteboard = ?4 AND "
             + "r.capacity >= ?5 AND "
             + "r.capacity <= ?6")
-    List<Room> getFilteredRooms(Building myBuilding, Integer myRights, Boolean hasTV,
+    List<Room> getFilteredRoomsFromBuilding(Building myBuilding, Integer myRights, Boolean hasTV,
+                                Boolean hasWhiteboard, Integer minCap, Integer maxCap);
+
+    @Query("SELECT r FROM Room r WHERE "
+            + "r.rights <= ?1 AND "
+            + "r.hasTV = ?2 AND "
+            + "r.hasWhiteboard = ?3 AND "
+            + "r.capacity >= ?4 AND "
+            + "r.capacity <= ?5")
+    List<Room> getAllFilteredRooms(Integer myRights, Boolean hasTV,
                                 Boolean hasWhiteboard, Integer minCap, Integer maxCap);
 }

@@ -32,7 +32,7 @@ public class RoomsListRoute extends Route {
 
     private ScrollPane scrollPane;
     private VBox rootContainer;
-    private HBox hBox;
+    private HBox horizontalBox;
     private Text universityTitle;
 
     private HBox buildingsTitleContainer;
@@ -56,12 +56,12 @@ public class RoomsListRoute extends Route {
      * Instantiates a RoomsListRoute that displays all rooms.
      */
     public RoomsListRoute() {
-        createRootElement(RoomCommunication.getAllRooms(), 0);
+        createRootElement(RoomCommunication.getAllRooms(), -1);
     }
 
     private void createRootElement(List<Room> roomList, Integer buildingCode) {
         rootContainer = new VBox();
-        hBox = new HBox();
+        horizontalBox = new HBox();
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
 
@@ -102,8 +102,7 @@ public class RoomsListRoute extends Route {
 
         filters.getChildren().addAll(hasWhiteboard, hasTV, capacities, apply, errorMessage);
         filters.setSpacing(5);
-        filters.setMaxHeight(140);
-        hBox.getChildren().add(filters);
+        horizontalBox.getChildren().add(filters);
 
         //container for the rooms
         VBox rooms = new VBox();
@@ -143,13 +142,19 @@ public class RoomsListRoute extends Route {
                     }
                 }
 
-                Integer building = buildingCode;
                 Integer myRights = 2; /////CHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANNNNNNNGEEEEEEEEEEE
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
+                List<Room> filteredList;
+                if (buildingCode != -1) {
+                    Integer building = buildingCode;
+                    filteredList = RoomCommunication.getFilteredRoomsFromBuilding(building,
+                            myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                } else {
+                    filteredList = RoomCommunication.getAllFilteredRooms(myRights,
+                            hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                }
 
-                List<Room> filteredList = RoomCommunication.getFilteredRoomFromBuilding(building,
-                        myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
                 rooms.getChildren().clear();
                 roomsGrid.setRooms(filteredList);
                 rooms.getChildren().add(roomsGrid);
@@ -164,9 +169,9 @@ public class RoomsListRoute extends Route {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-background-color:transparent;");
-        hBox.getChildren().add(scrollPane);
+        horizontalBox.getChildren().add(scrollPane);
 
-        rootContainer.getChildren().add(hBox);
+        rootContainer.getChildren().add(horizontalBox);
     }
 
 

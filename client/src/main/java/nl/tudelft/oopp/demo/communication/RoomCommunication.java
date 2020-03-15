@@ -139,20 +139,43 @@ public class RoomCommunication {
     }
 
     /**
-     * Method to search for rooms with the filters applied.
+     * Method to search for rooms from the giving building with the filters applied.
      * @param building the roomCode primary key as Integer
      * @param myRights the rights of the user as Integer
      * @param hasTV boolean for if the room has a TV
      * @param hasWhiteboard boolean for if the room has a whiteboard
      * @param minCap integer for the minimum capacity a room may have
      * @param maxCap integer for the maximum capacity a room may have
-     * @return
+     * @return List of filtered rooms from given building
      */
-    public static List<Room> getFilteredRoomFromBuilding(Integer building, Integer myRights,
+    public static List<Room> getFilteredRoomsFromBuilding(Integer building, Integer myRights,
                                                          Boolean hasTV, Boolean hasWhiteboard,
                                                          Integer minCap, Integer maxCap) {
         String url = "/rooms/filter/getFilteredRooms?myBuilding=" + building
                 + "&myRights=" + myRights + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
+                + "&minCap=" + minCap + "&maxCap=" + maxCap;
+        try {
+            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Method to get the filtered rooms from all the rooms.
+     * @param myRights the rights of the user as Integer
+     * @param hasTV boolean for if the room has a TV
+     * @param hasWhiteboard boolean for if the room has a whiteboard
+     * @param minCap integer for the minimum capacity a room may have
+     * @param maxCap integer for the maximum capacity a room may have
+     * @return List of rooms of all buildings
+     */
+    public static List<Room> getAllFilteredRooms(Integer myRights, Boolean hasTV,
+                                                 Boolean hasWhiteboard, Integer minCap,
+                                                 Integer maxCap) {
+        String url = "/rooms/filter/getFilteredRooms?myRights=" + myRights
+                + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
                 + "&minCap=" + minCap + "&maxCap=" + maxCap;
         try {
             return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());

@@ -88,14 +88,24 @@ public class RoomController {
         return roomRepository.allRoomsWithWhiteBoard(building);
     }
 
-    @GetMapping(path = "/filter/getFilteredRooms")
-    public List<Room> getFilteredRooms(@RequestParam Building myBuilding,
+    @GetMapping(path = "/filter/getFilteredRoomsFromBuilding")
+    public List<Room> getFilteredRoomsFromBuilding(@RequestParam Building myBuilding,
                                        @RequestParam Integer myRights,
                                        @RequestParam Boolean hasTV,
                                        @RequestParam Boolean hasWhiteboard,
                                        @RequestParam Integer minCap,
                                        @RequestParam Integer maxCap) {
-        return roomRepository.getFilteredRooms(myBuilding, myRights,
+        return roomRepository.getFilteredRoomsFromBuilding(myBuilding, myRights,
+                        hasTV, hasWhiteboard, minCap, maxCap);
+    }
+
+    @GetMapping(path = "/filter/getAllFilteredRooms")
+    public List<Room> getAllFilteredRooms(@RequestParam Integer myRights,
+                                          @RequestParam Boolean hasTV,
+                                          @RequestParam Boolean hasWhiteboard,
+                                          @RequestParam Integer minCap,
+                                          @RequestParam Integer maxCap) {
+        return roomRepository.getAllFilteredRooms(myRights,
                 hasTV, hasWhiteboard, minCap, maxCap);
     }
 }
