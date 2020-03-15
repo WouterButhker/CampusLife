@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -27,12 +29,12 @@ public class AuthenticationCommunication {
     /**
      * uses credentials to create a authenticated header that is saved for future requests.
      * makes a request to /login to retrieve the user role.
+     *
      * @param username the username for the authentication
      * @param password the password for the authentication
+     * @throws HttpClientErrorException when authentication fails
      */
-    public static void login(String username, String password) {
-        //TODO: check if credentials are correct
-        // make request to /login to retrieve user role
+    public static void login(String username, String password) throws HttpClientErrorException {
         authenticationHeader = createHeaders(username, password);
         saveUserId(username);
         saveUserRole(username);
@@ -49,9 +51,11 @@ public class AuthenticationCommunication {
 
     /**
      * Save the Id of the logged in User in a static variable.
+     *
      * @param username the username of the current User
+     * @throws HttpClientErrorException when authentication fails
      */
-    public static void saveUserId(String username) {
+    public static void saveUserId(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getId?username=" + username);
         if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
@@ -64,9 +68,11 @@ public class AuthenticationCommunication {
 
     /**
      * Save the Role of the logged in User in a static variable.
+     *
      * @param username the username of the current User
+     * @throws HttpClientErrorException when authentication fails
      */
-    public static void saveUserRole(String username) {
+    public static void saveUserRole(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getRole?username=" + username);
         if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
@@ -79,15 +85,15 @@ public class AuthenticationCommunication {
 
     /**
      * Makes a post request to the server to create a new user in the database.
+     *
      * @param user the user to be added to the database
      * @return the server response
+     * @throws HttpClientErrorException when authentication fails
+     * @throws ResourceAccessException when the server can't be reached
      */
-    public static ResponseEntity<String> register(UserDtO user) {
+    public static ResponseEntity<String> register(UserDtO user)
+            throws HttpClientErrorException, ResourceAccessException {
 
-        String url = SERVER_URL + "/register";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<UserDtO> request = new HttpEntity<>(user, headers);
 
         List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
@@ -96,31 +102,39 @@ public class AuthenticationCommunication {
         template.setMessageConverters(messageConverters);
 
         ResponseEntity<String> out = null;
-        try {
-            out = template.exchange(url, HttpMethod.POST, request, String.class);
-            System.out.println(out);
-        } catch (Exception e) {
-            System.out.println("ERROR!!! " + e.toString());
-        }
+        String url = SERVER_URL + "/register";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserDtO> request = new HttpEntity<>(user, headers);
+
+        out = template.exchange(url, HttpMethod.POST, request, String.class);
+        System.out.println(out);
+
         return out;
     }
 
     /**
      * makes a GET request with the saved user credentials to the specified link.
+     *
      * @param link the link to send a request to
      * @return the server response
-     * @throws AuthenticationException gets thrown when the user credentials are not correct
-     *                                  or user doesn't have the right permissions
+     * @throws HttpClientErrorException when authentication fails
+     * @throws ResourceAccessException when the server can't be reached
      */
     public static ResponseEntity<String> authenticatedRequest(String link)
-            throws AuthenticationException {
-        // TODO: throw exception when authentication fails
-        ResponseEntity<String> response;
+            throws HttpClientErrorException, ResourceAccessException {
         HttpEntity request = new HttpEntity(authenticationHeader);
 
-        response = new RestTemplate()
-                .exchange(SERVER_URL + link, HttpMethod.GET, request, String.class);
-        return response;
+        try {
+            return new RestTemplate()
+                    .exchange(SERVER_URL + link, HttpMethod.GET, request, String.class);
+        } catch (ResourceAccessException e) {
+            // TODO  call error popup
+        } catch (HttpClientErrorException e) {
+            // TODO call error popup
+        }
+
+        return null;
     }
 
     /**
