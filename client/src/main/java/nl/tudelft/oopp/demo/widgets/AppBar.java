@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 
@@ -87,6 +88,7 @@ public class AppBar extends StackPane {
             public void handle(MouseEvent event) {
                 RoutingScene routingScene = (RoutingScene) getScene();
                 routingScene.popAll();
+                AuthenticationCommunication.logout();
             }
         });
         rightContainer.getChildren().add(signOutLink);

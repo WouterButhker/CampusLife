@@ -41,6 +41,15 @@ public class AuthenticationCommunication {
     }
 
     /**
+     * resets the saved user credentials.
+     */
+    public static void logout() {
+        authenticationHeader = null;
+        myUserId = null;
+        myUserRole = null;
+    }
+
+    /**
      * Save the Id of the logged in User in a static variable.
      *
      * @param username the username of the current User

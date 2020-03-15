@@ -64,6 +64,7 @@ public class ReservationCommunication {
 
     /**
      * Returns a list of all the reservations from the database.
+     * Required permission: Student
      * @return List of Reservations
      */
     public static List<Reservation> getAllReservations() {
@@ -93,6 +94,7 @@ public class ReservationCommunication {
 
     /**
      * Returns a list of all the reservations that were made for a specific room.
+     * Required permission: Student
      * @param room the Room whose reservations you are looking for
      * @return A List of Reservations
      */
