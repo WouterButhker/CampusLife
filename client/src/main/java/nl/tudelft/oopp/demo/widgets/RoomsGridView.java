@@ -37,6 +37,10 @@ public class RoomsGridView extends GridPane {
         });
     }
 
+    /**
+     * Method to update the rooms list for the user.
+     * @param inputRooms the new rooms list that will replace the old list of rooms
+     */
     public void setRooms(List<Room> inputRooms) {
         this.rooms = inputRooms;
         this.getChildren().clear();

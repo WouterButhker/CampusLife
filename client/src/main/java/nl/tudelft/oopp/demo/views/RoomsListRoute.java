@@ -3,13 +3,16 @@ package nl.tudelft.oopp.demo.views;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+//import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -69,7 +72,8 @@ public class RoomsListRoute extends Route {
 
         //making filter boxes
         CheckBox hasWhiteboard = new CheckBox("white board");
-        hasWhiteboard.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        hasWhiteboard.setStyle("-fx-background-color: -secondary-color; "
+                                + "-fx-background-radius: 16;");
         hasWhiteboard.setPadding(new Insets(8, 16, 8, 16));
         hasWhiteboard.setPrefWidth(130);
 
@@ -117,11 +121,6 @@ public class RoomsListRoute extends Route {
         apply.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Integer building = buildingCode;
-                Integer myRights = 2; /////CHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANNNNNNNGEEEEEEEEEEE
-                Boolean hasTVBool = hasTV.isSelected();
-                Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
-
                 if (!errorMessage.getText().equals("")) {
                     errorMessage.setText("");
                 }
@@ -144,8 +143,13 @@ public class RoomsListRoute extends Route {
                     }
                 }
 
-                List<Room> filteredList = RoomCommunication.getFilteredRoomFromBuilding(building, myRights, hasTVBool,
-                                                            hasWhiteboardBool, minCapInt, maxCapInt);
+                Integer building = buildingCode;
+                Integer myRights = 2; /////CHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANNNNNNNGEEEEEEEEEEE
+                Boolean hasTvBool = hasTV.isSelected();
+                Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
+
+                List<Room> filteredList = RoomCommunication.getFilteredRoomFromBuilding(building,
+                        myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
                 rooms.getChildren().clear();
                 roomsGrid.setRooms(filteredList);
                 rooms.getChildren().add(roomsGrid);

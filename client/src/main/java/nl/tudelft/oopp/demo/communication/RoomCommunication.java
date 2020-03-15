@@ -139,7 +139,7 @@ public class RoomCommunication {
     }
 
     /**
-     * Method to search for rooms with the filters applied
+     * Method to search for rooms with the filters applied.
      * @param building the roomCode primary key as Integer
      * @param myRights the rights of the user as Integer
      * @param hasTV boolean for if the room has a TV
