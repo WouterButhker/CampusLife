@@ -17,6 +17,7 @@ public class BikeReservationCommunication {
      * Adds a bike reservation to the database via HTTP request.
      * @param userId The id of the User that made the bike reservation
      * @param building The buildingCode of the building where the bike is reserved
+     * @param date The date of the bike reservation
      * @param slot The timeslot of the bike reservation
      */
     public static void addReservationToTheDatabase(Integer userId,
@@ -43,11 +44,15 @@ public class BikeReservationCommunication {
                     inputReservation.getAsJsonObject("user").get("id").getAsString()
             );
         }
-        Integer building = BuildingCommunication.parseBuilding(
-                inputReservation.get("building").getAsJsonObject()
-        ).getCode();
+        String date = inputReservation.get("date").getAsString();
+        Integer building = null;
+        if (!inputReservation.get("building").isJsonNull()) {
+            building = Integer.parseInt(
+                    inputReservation.getAsJsonObject("building").get("buildingCode").getAsString()
+            );
+        }
         String timeSlot = inputReservation.get("timeSlot").getAsString();
-        return new BikeReservation(id, user, building, timeSlot);
+        return new BikeReservation(id, user, building, date, timeSlot);
     }
 
     private static List<BikeReservation> parseBikeReservations(String inputReservations) {

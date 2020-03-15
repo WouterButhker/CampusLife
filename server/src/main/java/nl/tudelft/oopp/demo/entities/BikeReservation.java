@@ -20,7 +20,7 @@ public class BikeReservation {
     private User user;          // user id
 
     @ManyToOne
-    @JoinColumn(name = "buildingCode")
+    @JoinColumn(name = "building")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Building building;          // building code
 

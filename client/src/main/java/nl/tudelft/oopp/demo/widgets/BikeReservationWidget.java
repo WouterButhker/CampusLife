@@ -17,7 +17,9 @@ import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
+import org.springframework.security.authentication.AuthenticationTrustResolver;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +47,8 @@ public class BikeReservationWidget extends VBox {
     private HBox timeContainer;
     private ImageView timeIcon;
     private Text timeText;
+
+    private boolean dateSelected = false;
 
     public BikeReservationWidget() {
         buildingList = BuildingCommunication.getAllBuildingsWithBikeStation();
@@ -136,6 +140,11 @@ public class BikeReservationWidget extends VBox {
                     reserveBike(event);
                 }
             });
+            if (bikeReserved()) {
+                button.setDisable(true);
+                String disabledButton = "-fx-background-color: gray";
+                button.setStyle(disabledButton);
+            }
             buildingBox.getChildren().addAll(imageView, label, reserveButton);
             hBoxList.add(buildingBox);
             buildingDisplayList.getChildren().add(buildingBox);
@@ -143,20 +152,28 @@ public class BikeReservationWidget extends VBox {
     }
 
     private void reserveBike(ActionEvent event) {
-        Button button = (Button) event.getSource();
-        int buildingCode = Integer.parseInt(button.getId());
-        int userId = AuthenticationCommunication.myUserId;
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        String date = format.format(from.getTime());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        String fromTime = timeFormat.format(from.getTime());
-        String toTime = timeFormat.format(to.getTime());
-        String slot = fromTime + "-" + toTime;
-        BikeReservationCommunication.addReservationToTheDatabase(userId, buildingCode, date, slot);
+        if (dateSelected && !bikeReserved()) {
+            Button button = (Button) event.getSource();
+            int buildingCode = Integer.parseInt(button.getId());
+            int userId = AuthenticationCommunication.myUserId;
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            String date = format.format(from.getTime());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            String fromTime = timeFormat.format(from.getTime());
+            String toTime = timeFormat.format(to.getTime());
+            String slot = fromTime + "-" + toTime;
+            BikeReservationCommunication.addReservationToTheDatabase(userId, buildingCode, date, slot);
+        }
     }
 
-    private void checkAvailabilities() {
-        //also check if user already has a bike reserved >.>
+    private boolean bikeReserved() {
+        List<BikeReservation> bikeReservations = BikeReservationCommunication.getAllReservations();
+        for (int i = 0; i < bikeReservations.size(); i++) {
+            if (bikeReservations.get(i).getUser().equals(AuthenticationCommunication.myUserId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void resizeDisplay(double newWidth) {
@@ -199,4 +216,9 @@ public class BikeReservationWidget extends VBox {
             timeText.setText(String.format("%s - %s", fromTime, toTime));
         }
     }
+
+    public void dateSelected(boolean selected){
+        dateSelected = selected;
+    }
+
 }

@@ -5,6 +5,7 @@ public class BikeReservation {
     private Integer id;
     private Integer user;
     private Integer buildingCode;
+    private String date;
     private String timeSlot;
 
     /**
@@ -15,10 +16,12 @@ public class BikeReservation {
      * @param timeSlot - The timeslot of the bike reservation
      */
     public BikeReservation(Integer id, Integer user,
-                           Integer buildingCode, String timeSlot) {
+                           Integer buildingCode, String date,
+                           String timeSlot) {
         this.id = id;
         this.user = user;
         this.buildingCode = buildingCode;
+        this.date = date;
         this.timeSlot = timeSlot;
     }
 
@@ -44,6 +47,14 @@ public class BikeReservation {
 
     public void setBuildingCode(Integer buildingCode) {
         this.buildingCode = buildingCode;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTimeSlot() {

@@ -57,6 +57,7 @@ public class BikesReservationRoute extends Route {
                 toTime.set(Calendar.MINUTE, 0);
 
                 bikeReservationWidget.setPeriod(fromTime, toTime);
+                bikeReservationWidget.dateSelected(true);
             }
         });
 

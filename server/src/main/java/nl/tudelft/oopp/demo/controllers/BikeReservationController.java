@@ -21,7 +21,7 @@ public class BikeReservationController {
         return bikeReservationRepository.findAll();
     }
 
-    @PostMapping(path = "/add")
+    @GetMapping(path = "/add")
     public @ResponseBody String addNewBikeReservation(@RequestParam User user,
                                                       @RequestParam Building building,
                                                       @RequestParam String date,
