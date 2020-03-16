@@ -1,16 +1,13 @@
 package nl.tudelft.oopp.demo.repositories;
 
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
-<<<<<<< HEAD
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
-    @Query("SELECT name FROM Restaurant")
-        // name FROM restaurant;
+    @Query("SELECT name FROM Restaurant") // name FROM restaurant;
     List<Restaurant> findAllRestaurantsName();
 
     @Modifying
@@ -22,8 +19,4 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query("SELECT COUNT(name) FROM Restaurant")
     Integer countAllRestaurants();
-=======
-
-public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
->>>>>>> fb522ae5880d396bc477bb07e24d74b0f1df07e5
 }

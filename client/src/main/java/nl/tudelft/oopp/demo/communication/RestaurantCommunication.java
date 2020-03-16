@@ -1,11 +1,15 @@
 package nl.tudelft.oopp.demo.communication;
 
-<<<<<<< .merge_file_a00912
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,15 +45,59 @@ public class RestaurantCommunication {
         try {
 
             return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
-=======
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.util.List;
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.Restaurant;
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-public class RestaurantCommunication {
+    /**
+     * Returns a list of all the Restaurants from the database.
+     *
+     * @return list of Restaurants
+     */
+    public static List<Restaurant> getAllRestaurants() {
+        String url = "/restaurants/all";
+        try {
+            return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+     /**
+     * Deletes a Restaurant from the database.
+     *
+     * @param name the name of the restaurant that needs to be removed
+     * @return
+     */
+    public static String deleteRestaurantFromDatabase(String name) {
+        String url = "/restaurants/delete?name=" + name;
+        try {
+
+            return ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "-1";
+    }
+
+    /**
+     * Deletes a restaurant.
+     * @param id the id of the restaurant to delete
+     * @return True if the restaurant was deleted
+     */
+    public static boolean deleteRestaurant(int id) {
+        try {
+            String responseString = ServerCommunication.authenticatedDeleteRequest(
+                    String.format("/restaurants/%d", id)).getBody();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * Retrieves all the restaurants.
      * @return List of all Restaurants
@@ -69,6 +117,7 @@ public class RestaurantCommunication {
 
     /**
      * Retrieves all the foods of a restaurant.
+     *
      * @param restaurantId the id of the restaurant
      * @return List of all Food of restaurant
      */
@@ -79,7 +128,6 @@ public class RestaurantCommunication {
             Gson gson = new Gson();
             Type listType = new TypeToken<List<Food>>() {}.getType();
             return gson.fromJson(responseString, listType);
->>>>>>> .merge_file_a18160
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,7 +135,6 @@ public class RestaurantCommunication {
     }
 
     /**
-<<<<<<< .merge_file_a00912
      * Parses a Restaurant from a JSON object.
      *
      * @param inputRestaurant JSON object with room attributes
@@ -98,7 +145,7 @@ public class RestaurantCommunication {
         Integer buildingCode = BuildingCommunication.parseBuilding(
                 inputRestaurant.get("building").getAsJsonObject()).getCode();
         String openingHours = inputRestaurant.get("openingHours").getAsString();
-        return new Restaurant(name, buildingCode, openingHours);
+        return new Restaurant(id, name, buildingCode, openingHours);
     }
 
     /**
@@ -118,16 +165,8 @@ public class RestaurantCommunication {
     }
 
     /**
-     * Returns a list of all the Restaurants from the database.
-     *
-     * @return list of Restaurants
-     */
-    public static List<Restaurant> getAllRestaurants() {
-        String url = "/restaurants/all";
-        try {
-            return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
-=======
      * Creates a restaurant.
+     *
      * @return The created Restaurant entity
      */
     public static Restaurant createRestaurant(Restaurant restaurant) {
@@ -136,43 +175,9 @@ public class RestaurantCommunication {
                     "/restaurants", restaurant).getBody();
             Gson gson = new Gson();
             return gson.fromJson(responseString, Restaurant.class);
->>>>>>> .merge_file_a18160
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-<<<<<<< .merge_file_a00912
-     * Deletes a Restaurant from the database.
-     *
-     * @param name the name of the restaurant that needs to be removed
-     * @return
-     */
-    public static String deleteRestaurantFromDatabase(String name) {
-        String url = "/restaurants/delete?name=" + name;
-        try {
-
-            return ServerCommunication.authenticatedRequest(url).getBody();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "-1";
-=======
-     * Deletes a restaurant.
-     * @param id the id of the restaurant to delete
-     * @return True if the restaurant was deleted
-     */
-    public static boolean deleteRestaurant(int id) {
-        try {
-            String responseString = ServerCommunication.authenticatedDeleteRequest(
-                    String.format("/restaurants/%d", id)).getBody();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
->>>>>>> .merge_file_a18160
     }
 }

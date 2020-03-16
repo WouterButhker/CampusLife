@@ -74,9 +74,9 @@ public class MainMenuRoute extends Route {
         List<Restaurant> restaurants = RestaurantCommunication.getRestaurants();
         if (restaurants.isEmpty()) {
             Restaurant restaurant = RestaurantCommunication.createRestaurant(new Restaurant(
-                    null,
                     1,
                     "Subway",
+                    1,
                     "Takeaway food from Subway in Delft! "
                             + "Choose your favourite meal from a wide variety "
                             + "& have it delivered to your door!"
@@ -139,14 +139,11 @@ public class MainMenuRoute extends Route {
             public void handle(MouseEvent event) {
                 RectangularImageButton button = (RectangularImageButton) event.getSource();
                 RoutingScene routingScene = (RoutingScene) button.getScene();
-<<<<<<< HEAD
                 routingScene.pushRoute(new RestaurantsListRoute());
-=======
 
                 Restaurant restaurant = RestaurantCommunication.getRestaurants().get(0);
 
                 routingScene.pushRoute(new RestaurantMenuRoute(restaurant));
->>>>>>> fb522ae5880d396bc477bb07e24d74b0f1df07e5
             }
         });
         mainButtons.add(foodButton);

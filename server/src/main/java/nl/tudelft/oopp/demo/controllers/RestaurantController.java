@@ -1,16 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-<<<<<<< HEAD
-import nl.tudelft.oopp.demo.entities.Restaurant;
-import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-=======
-import java.util.List;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
@@ -18,9 +7,11 @@ import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
->>>>>>> fb522ae5880d396bc477bb07e24d74b0f1df07e5
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/restaurants")
 public class RestaurantController {
@@ -28,21 +19,15 @@ public class RestaurantController {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-<<<<<<< HEAD
-    @GetMapping(path = "/all")
-    public List<Restaurant> getAll() {
-=======
     @Autowired
     private FoodRepository foodRepository;
 
     @GetMapping
-    List<Restaurant> getAll() {
->>>>>>> fb522ae5880d396bc477bb07e24d74b0f1df07e5
+    public List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
 
     /**
-<<<<<<< HEAD
      * Adds a new restaurant to the database.
      *
      * @param name         the actual (full) name
@@ -71,7 +56,7 @@ public class RestaurantController {
         return restaurantRepository.countAllRestaurants();
     }
 
-=======
+    /**
      * Returns all food of the restaurant.
      * @param id the id of the restaurant
      * @return a list of all food of the restaurant
@@ -102,5 +87,4 @@ public class RestaurantController {
         restaurantRepository.deleteById(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
->>>>>>> fb522ae5880d396bc477bb07e24d74b0f1df07e5
 }
