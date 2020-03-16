@@ -28,22 +28,34 @@ Check that everybody is present.
 
 # Action points for next week (Scrum board)
  - Add new tasks that came up to the GitLab issues tab.
- - Making Reservations an abstract class -> having RoomReservation and BikeReservation inherit
- - Make error pop-up for when authentication fails
- - Make general pop-up?
- - Throw error when registering when an username is already taken
- - Change GET requests to POST requests (Creating)
- - Change GET requests to PUT requests (Updating)
- - Not being able to overwrite old buildings/room/restaurants
- - Adding + deducting bikes when reserving 
- - Checking whether a building has bikes
- - Deleting BikeReservations
- - Restaurants list
- - Storing images in the database as blobs -> linking to buildings and rooms
- - Building image
- - Adding images from the admin side
- - Friend list? (bonus)
- - Adding buildings/rooms/restaurants as favorites
+ - Making Reservations an abstract class -> having RoomReservation and BikeReservation inherit //Wouter + Ana + Hendy
+ - Make PersonalReservations and inherit from Reservations //Hendy
+ - Make error pop-up for when authentication fails //Wouter + Kriss
+ - Make general pop-up? //Kriss
+ - Throw error when registering when an username is already taken //Wouter + Kriss
+ - Change GET requests to POST requests (Creating) //Ana
+ - Change GET requests to PUT requests (Updating) //Ana + Hendy
+ - Not being able to overwrite old buildings/room/restaurants (automatically after POST requests)
+ - Adding + deducting bikes when reserving //Hendy
+ - Checking whether a building has bikes //Hendy
+ - Deleting BikeReservations //Hendy
+ - Restaurants list //Andra
+ - RestaurantsAdminPage //Andra
+ - FoodAdminPage //Andra
+ - Storing images in the database as blobs -> linking to buildings and rooms //Ana
+ - Adding images from the admin side //Hendy + Andra
+ - Friend list? (bonus) //Postpone
+ - Fix RoomDisplayRoute //Willem
+ - Have opening hours of the agenda widget be the same as the building's //Willem + Hendy
+ - Add button for ordering food //Willem
+ - Adding buildings/rooms/restaurants as favorites //Tsin + help
+ - Reservations only go up to 2 weeks in advance //Willem + Hendy
+ - Update filters //Tsin
+ - Change register screen look //Kriss
+ - TESTSSSSSS //ALL OF US T.T
+ - Polish AdminPage //Hendy
+ - Finish rights //Kriss
+ - Information Literacy Module //Lazy people who haven't done it yet >:\
 
 # Question round
 *If there are any questions, now is the time to ask them.*
