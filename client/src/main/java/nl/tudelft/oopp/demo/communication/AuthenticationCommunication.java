@@ -171,7 +171,26 @@ public class AuthenticationCommunication {
 
         response = new RestTemplate()
                 .exchange(SERVER_URL + link, HttpMethod.POST, request, String.class);
-        System.out.println("Made request to: " + link);
+        System.out.println("Made POST request to: " + link);
+        return response;
+    }
+
+    /**
+     * makes a PUT request with the saved user credentials to the specified link.
+     * @param link the link to send a request to
+     * @return the server response
+     * @throws AuthenticationException gets thrown when the user credentials are not correct
+     *                                  or user doesn't have the right permissions
+     */
+    public static ResponseEntity<String> authenticatedPutRequest(String link, Object body)
+            throws AuthenticationException {
+        // TODO: throw exception when authentication fails
+        ResponseEntity<String> response;
+        HttpEntity request = new HttpEntity(body, authenticationHeader);
+
+        response = new RestTemplate()
+                .exchange(SERVER_URL + link, HttpMethod.PUT, request, String.class);
+        System.out.println("Made PUT request to: " + link);
         return response;
     }
 

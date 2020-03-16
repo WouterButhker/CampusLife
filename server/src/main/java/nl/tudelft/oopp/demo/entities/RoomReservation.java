@@ -1,9 +1,10 @@
 package nl.tudelft.oopp.demo.entities;
 
+import javax.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
+
 
 @Entity
 @Table(name = "reservation")
