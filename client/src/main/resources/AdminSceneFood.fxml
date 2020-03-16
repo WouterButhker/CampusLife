@@ -22,13 +22,13 @@
                     </font>
                 </Text>
                 <TextField fx:id="restaurantNameInput" layoutX="180.0" layoutY="217.0" promptText="Restaurant name"/>
-                <TextField fx:id="restaurantOpeningHoursInput" layoutX="180.0" layoutY="302.0"
-                           promptText="Restaurant opening hours"/>
+                <TextField fx:id="restaurantDescriptionInput" layoutX="180.0" layoutY="302.0"
+                           promptText="Restaurant description"/>
                 <ChoiceBox fx:id="buildingList" layoutX="179.0" layoutY="258.0" prefWidth="150.0"/>
                 <Text layoutX="37.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant name"/>
                 <Text layoutX="37.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building"/>
                 <Text layoutX="37.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Restaurant opening hours"/>
+                      text="Restaurant description"/>
                 <Button fx:id="submit" layoutX="130.0" layoutY="455.0" mnemonicParsing="false"
                         onAction="#submitNewRestaurant" text="Submit"/>
                 <Button layoutX="400.0" layoutY="130.0" mnemonicParsing="false" onAction="#refreshRestaurantsPage"

@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -25,19 +28,18 @@ import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
 public class AdminSceneRestaurantsController implements Initializable {
     @FXML
     private VBox mainBox;
 
     @FXML
+    private TextField restaurantIdInput;
+    
+    @FXML
     private TextField restaurantNameInput;
 
     @FXML
-    private TextField restaurantOpeningHoursInput;
+    private TextField restaurantDescriptionInput;
 
     @FXML
     private ChoiceBox<String> buildingList;
@@ -165,15 +167,17 @@ public class AdminSceneRestaurantsController implements Initializable {
         } else {
             System.out.println("No building selected");
         }
+        
+        int restaurantID = Integer.parseInt(restaurantIdInput.getText().trim());
 
         String restaurantName = restaurantNameInput.getText();
 
-        String restaurantOpeningHours = restaurantOpeningHoursInput.getText();
+        String restaurantDescription = restaurantDescriptionInput.getText();
 
         Text submitStatus = new Text();
 
         if (!restaurantName.equals("") && buildingFound) {
-            RestaurantCommunication.addRestaurantToDatabase(restaurantName, buildingCode, restaurantOpeningHours);
+            RestaurantCommunication.addRestaurantToDatabase(restaurantID, restaurantName, buildingCode, restaurantDescription);
             submitStatus.setText("Room has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
@@ -222,31 +226,42 @@ public class AdminSceneRestaurantsController implements Initializable {
         VBox root = new VBox();
         root.setPrefSize(400, 500);
 
-        Text header = new Text("Modify your room");
+        Text header = new Text("Modify your restaurant");
         header.setFont(Font.font("System", 24));
         HBox headerBox = new HBox(header);
         headerBox.setPadding(new Insets(20, 125, 10, 125));
+
+        Label idText = new Label("Id :");
+        HBox idTextBox = new HBox(idText);
+        idTextBox.setPadding(new Insets(10, 175, 0, 175));
+
+        Pane spacer = new Pane();
+        spacer.setPrefSize(125, 20);
+        TextField id = new TextField(Integer.toString(restaurant.getId()));
+        id.setPrefSize(150, 20);
+        HBox idBox = new HBox(spacer, id);
+        idBox.setPadding(new Insets(10, 0, 0, 0));
 
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
         nameTextBox.setPadding(new Insets(10, 175, 0, 175));
 
-        Pane spacer = new Pane();
-        spacer.setPrefSize(125, 20);
+        Pane spacer1 = new Pane();
+        spacer1.setPrefSize(125, 20);
         TextField name = new TextField(restaurant.getName());
         name.setPrefSize(150, 20);
-        HBox nameBox = new HBox(spacer, name);
+        HBox nameBox = new HBox(spacer1, name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
-        Label openingHoursText = new Label("Opening hours :");
-        HBox openingHoursTextBox = new HBox(openingHoursText);
-        openingHoursTextBox.setPadding(new Insets(10, 175, 0, 175));
+        Label descriptionText = new Label("Opening hours :");
+        HBox descriptionTextBox = new HBox(descriptionText);
+        descriptionTextBox.setPadding(new Insets(10, 175, 0, 175));
 
         Pane spacer2 = new Pane();
         spacer2.setPrefSize(125, 20);
-        TextField openingHours = new TextField(restaurant.getOpeningHours());
-        openingHours.setPrefSize(150, 20);
-        HBox openingHoursBox = new HBox(spacer2, openingHours);
+        TextField description = new TextField(restaurant.getDescription());
+        description.setPrefSize(150, 20);
+        HBox descriptionBox = new HBox(spacer2, description);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
         Button submit = new Button("Submit");
@@ -256,7 +271,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Label status = modifyRestaurant(name.getText(), restaurant.getBuildingCode(), openingHours.getText());
+                Label status = modifyRestaurant(restaurant.getId(), name.getText(), restaurant.getBuildingCode(), description.getText());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -283,9 +298,9 @@ public class AdminSceneRestaurantsController implements Initializable {
         stage.showAndWait();
     }
 
-    private Label modifyRestaurant(String name, int buildingCode, String openingHours) {
+    private Label modifyRestaurant(int id, String name, int buildingCode, String description) {
         if (!name.equals("")) {
-            RestaurantCommunication.addRestaurantToDatabase(name, buildingCode, openingHours);
+            RestaurantCommunication.addRestaurantToDatabase(id, name, buildingCode, description);
         } else {
             return new Label("All fields have to be entered");
         }

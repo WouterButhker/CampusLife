@@ -32,15 +32,16 @@ public class RestaurantController {
      *
      * @param name         the actual (full) name
      * @param buildingCode the number of the building
-     * @param openingHours format aa:bb-cc:dd
+     * @param description format aa:bb-cc:dd
      * @return Saved
      */
     @GetMapping(path = "/add")
     public @ResponseBody
-    String addNewRestaurant(@RequestParam String name,
+    String addNewRestaurant(@RequestParam int id,
+                            @RequestParam String name,
                             @RequestParam Integer buildingCode,
-                            @RequestParam String openingHours) {
-        Restaurant restaurant = new Restaurant(name, buildingCode, openingHours);
+                            @RequestParam String description) {
+        Restaurant restaurant = new Restaurant(id, buildingCode, name, description);
         restaurantRepository.save(restaurant);
         return "Saved";
     }

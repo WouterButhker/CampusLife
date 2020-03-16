@@ -18,14 +18,16 @@ public class RestaurantCommunication {
     /**
      * For adding a restaurant to the database.
      *
+     * @param id the ID of the restaurant
      * @param name         name of  restaurant
      * @param buildingCode the building where it belongs to
-     * @param openingHours
+     * @param description
      */
-    public static void addRestaurantToDatabase(String name,
+    public static void addRestaurantToDatabase(int id,
+                                               String name,
                                                Integer buildingCode,
-                                               String openingHours) {
-        String url = "/restaurants/add?name=" + name + "&buildingCode=" + buildingCode + "&openingHours=" + openingHours;
+                                               String description) {
+        String url = "/restaurants/add?id=" + id + "&name=" + name + "&buildingCode=" + buildingCode + "&description=" + description;
 
         try {
             ServerCommunication.authenticatedRequest(url);
@@ -141,11 +143,12 @@ public class RestaurantCommunication {
      * @return Room object
      */
     public static Restaurant parseRestaurant(JsonObject inputRestaurant) {
+        int id = inputRestaurant.get("id").getAsInt();
         String name = inputRestaurant.get("name").getAsString();
         Integer buildingCode = BuildingCommunication.parseBuilding(
                 inputRestaurant.get("building").getAsJsonObject()).getCode();
-        String openingHours = inputRestaurant.get("openingHours").getAsString();
-        return new Restaurant(id, name, buildingCode, openingHours);
+        String description = inputRestaurant.get("description").getAsString();
+        return new Restaurant(id, name, buildingCode, description);
     }
 
     /**
