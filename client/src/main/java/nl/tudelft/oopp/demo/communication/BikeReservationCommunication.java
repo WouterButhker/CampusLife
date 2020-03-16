@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
 import org.springframework.http.ResponseEntity;
-import nl.tudelft.oopp.demo.entities.Food;
 
 public class BikeReservationCommunication {
 
