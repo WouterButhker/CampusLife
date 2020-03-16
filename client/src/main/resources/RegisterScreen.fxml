@@ -72,7 +72,7 @@
         <Pane id="registerHBox" fx:id="registerButtonRightPadding" prefHeight="200.0" prefWidth="200.0" />
       </children>
     </HBox>
-    <HBox fx:id="bottomPadding" alignment="TOP_CENTER" prefHeight="26.0" prefWidth="600.0">
+    <HBox fx:id="bottomPadding" alignment="TOP_CENTER" prefHeight="57.0" prefWidth="1120.0">
       <children>
         <Text fx:id="errorMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="">
           <font>
@@ -81,5 +81,21 @@
         </Text>
       </children>
     </HBox>
+    <HBox id="createAccountHBox" alignment="TOP_CENTER" prefHeight="57.0" prefWidth="1120.0">
+      <children>
+        <VBox alignment="TOP_CENTER" prefHeight="129.0" prefWidth="302.0">
+          <children>
+            <Label text="Password must be at least 8 characters long">
+              <font>
+                <Font name="System Italic" size="12.0" fx:id="x2" />
+              </font>
+            </Label>
+            <Label font="$x2" text="contain at least one capital and one lowercase" />
+            <Label font="$x2" text="and have at least one number and one special character" />
+          </children>
+        </VBox>
+      </children>
+    </HBox>
+    <HBox id="createAccountHBox" alignment="TOP_CENTER" prefHeight="57.0" prefWidth="1120.0" />
   </children>
 </VBox>

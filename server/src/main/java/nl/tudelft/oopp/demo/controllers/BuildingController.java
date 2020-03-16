@@ -75,4 +75,9 @@ public class BuildingController {
     public Integer countBuildings() {
         return buildingRepository.countAllBuildings();
     }
+
+    @GetMapping(path = "/bikes")
+    public List<Building> getBuildingsWithBikeStation() {
+        return buildingRepository.findAllBuildingsWithBikeStation();
+    }
 }
