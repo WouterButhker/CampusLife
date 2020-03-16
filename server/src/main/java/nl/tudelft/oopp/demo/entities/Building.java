@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Building {
 
     @Id
-    @Column(name = "buildingCode")
+    @Column(name = "buildingCode", unique = true)
     private Integer buildingCode;
 
     @Column(name = "name")

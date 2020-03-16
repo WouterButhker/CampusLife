@@ -22,7 +22,7 @@ class RoomTest {
 
     @BeforeEach
     void doBeforeEach() {
-        AuthenticationCommunication.login("random", "admin");
+        AuthenticationCommunication.login("admin", "admin");
     }
 
     @BeforeEach
@@ -73,7 +73,7 @@ class RoomTest {
     @Test
     void setCapacityTest() {
         room.setCapacity(50);
-        assertEquals(50, room.getCapacity());
+        assertEquals(50, room.getCapacity().intValue());
     }
 
     @Test
@@ -118,7 +118,7 @@ class RoomTest {
     @Test
     void setBuildingCodeTest() {
         room.setBuildingCode(123123);
-        assertEquals(123123, room.getBuildingCode());
+        assertEquals(123123, room.getBuildingCode().intValue());
     }
 
     @Test

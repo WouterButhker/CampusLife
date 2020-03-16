@@ -2,14 +2,13 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(path = "/buildings")
@@ -79,5 +78,22 @@ public class BuildingController {
     @GetMapping(path = "/bikes")
     public List<Building> getBuildingsWithBikeStation() {
         return buildingRepository.findAllBuildingsWithBikeStation();
+    }
+
+    @PostMapping(path = "/save")
+    Building saveBuilding(@RequestBody Building building) {
+        if (buildingRepository.existsBuildingByBuildingCode(building.getBuildingCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Building already exists!");
+        }
+        return buildingRepository.save(building);
+    }
+
+    @PutMapping(path = "/update")
+    Building updateBuilding(@RequestBody Building building) {
+        if (!buildingRepository.existsBuildingByBuildingCode(building.getBuildingCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Building does not exists!");
+        }
+        return buildingRepository.save(building);
+
     }
 }

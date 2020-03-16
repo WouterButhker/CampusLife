@@ -1,9 +1,15 @@
 package nl.tudelft.oopp.demo.communication;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 public class DeleteRoomTest {
+
+    @BeforeEach
+    void doBeforeEach() {
+        AuthenticationCommunication.login("admin", "admin");
+    }
 
     @Test
     public void testDeleteRoom() {

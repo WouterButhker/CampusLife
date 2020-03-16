@@ -1,10 +1,17 @@
 package nl.tudelft.oopp.demo.testfolder;
 
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class DeleteBuildingTest {
+
+    @BeforeEach
+    void doBeforeEach() {
+        AuthenticationCommunication.login("admin", "admin");
+    }
 
     @Test
     public void testDeleteBuilding() {

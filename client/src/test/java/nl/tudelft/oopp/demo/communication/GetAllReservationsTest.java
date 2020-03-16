@@ -2,9 +2,15 @@ package nl.tudelft.oopp.demo.communication;
 
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Reservation;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GetAllReservationsTest {
+
+    @BeforeEach
+    void doBeforeEach() {
+        AuthenticationCommunication.login("admin", "admin");
+    }
 
     @Test
     public void testGetAllReservations() {

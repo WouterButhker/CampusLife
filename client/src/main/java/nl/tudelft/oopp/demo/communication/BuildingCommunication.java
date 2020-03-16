@@ -1,11 +1,12 @@
 package nl.tudelft.oopp.demo.communication;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Restaurant;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 
 public class BuildingCommunication {
@@ -162,4 +163,37 @@ public class BuildingCommunication {
         }
         return null;
     }
+
+    /**
+     * Save a Building to the database via POST request.
+     * @param building the Building entity that you want to save
+     * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
+     */
+    public static String saveBuilding(Building building) {
+        String url = "/buildings/save";
+        try {
+            return ServerCommunication.authenticatedPostRequest(url, building)
+                    .getStatusCode().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
+
+    /**
+     * Update a Building from the database via PUT request.
+     * @param building the Building entity that you want to update
+     * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
+     */
+    public static String updateBuilding(Building building) {
+        String url = "/buildings/update";
+        try {
+            return ServerCommunication.authenticatedPutRequest(url, building)
+                    .getStatusCode().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
+
 }
