@@ -3,39 +3,36 @@ package nl.tudelft.oopp.demo.views;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+//import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import jdk.jfr.Event;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 import nl.tudelft.oopp.demo.widgets.RoomsGridView;
+import org.controlsfx.control.RangeSlider;
 
 public class RoomsListRoute extends Route {
 
     private ScrollPane scrollPane;
     private VBox rootContainer;
-    private AnchorPane ap;
+    private HBox horizontalBox;
     private Text universityTitle;
 
     private HBox buildingsTitleContainer;
@@ -52,72 +49,135 @@ public class RoomsListRoute extends Route {
      * @param buildingCode the number of the building being displayed
      */
     public RoomsListRoute(Integer buildingCode) {
-        createRootElement(RoomCommunication.getAllRoomsFromBuilding(buildingCode));
+        createRootElement(RoomCommunication.getAllRoomsFromBuilding(buildingCode), buildingCode);
     }
 
     /**
      * Instantiates a RoomsListRoute that displays all rooms.
      */
     public RoomsListRoute() {
-        createRootElement(RoomCommunication.getAllRooms());
+        createRootElement(RoomCommunication.getAllRooms(), -1);
     }
 
-    private void createRootElement(List<Room> roomList) {
+    private void createRootElement(List<Room> roomList, Integer buildingCode) {
         rootContainer = new VBox();
-        ap = new AnchorPane();
+        horizontalBox = new HBox();
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
 
-        scrollPane = new ScrollPane(rootContainer);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
         //filter box container
         filters = new VBox();
-        filterTitle = new Text("Filters:");
-        filterTitle.getStyleClass().add("university-main-title");
-        filters.getChildren().add(filterTitle);
+        filters.setPadding(new Insets(5));
         filters.setTranslateX(5);
 
-        //filter checkboxes
-        CheckBox available = new CheckBox();
-        available.setText("Available");
-        CheckBox smallRoom = new CheckBox();
-        smallRoom.setText("Small rooms");
-        CheckBox mediumRoom = new CheckBox();
-        mediumRoom.setText("Medium rooms");
-        CheckBox largeRoom = new CheckBox();
-        largeRoom.setText("Large rooms");
-        filters.getChildren().addAll(available, smallRoom, mediumRoom, largeRoom);
-        filters.setSpacing(6);
-        filters.setPrefHeight(150);
-        filters.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
-                new CornerRadii(0), new BorderWidths(1))));
-        ap.getChildren().add(filters);
+        //making filter boxes
+        CheckBox hasWhiteboard = new CheckBox("white board");
+        hasWhiteboard.setStyle("-fx-background-color: -secondary-color; "
+                                + "-fx-background-radius: 16;");
+        hasWhiteboard.setPadding(new Insets(8, 16, 8, 16));
+        hasWhiteboard.setPrefWidth(130);
+
+        CheckBox hasTV = new CheckBox("TV");
+        hasTV.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        hasTV.setPadding(new Insets(8, 16, 8, 16));
+        hasTV.setPrefWidth(130);
+
+        TextField minCap = new TextField();
+        minCap.setPromptText("Min");
+        minCap.setPrefWidth(50);
+        TextField maxCap = new TextField();
+        maxCap.setPromptText("Max");
+        maxCap.setPrefWidth(50);
+        HBox capacities = new HBox(10, minCap, maxCap);
+        capacities.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        capacities.setPadding(new Insets(4, 16, 4, 16));
+        capacities.setPrefWidth(130);
+
+        Button apply = new Button("Apply filters");
+        apply.setStyle("-fx-background-radius: 16;");
+        apply.setPadding(new Insets(8, 16, 8, 16));
+        apply.setPrefWidth(130);
+
+        Text errorMessage = new Text();
+
+        filters.getChildren().addAll(hasWhiteboard, hasTV, capacities, apply, errorMessage);
+        filters.setSpacing(5);
+        horizontalBox.getChildren().add(filters);
 
         //container for the rooms
         VBox rooms = new VBox();
-        rooms.setTranslateX(140);
-        rooms.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,
-                new CornerRadii(0), new BorderWidths(1))));
-        rooms.setPrefWidth(430);
 
-        RoomsGridView buildingsGrid = new RoomsGridView(roomList);
-        rooms.getChildren().add(buildingsGrid);
-        buildingsGrid.setListener(new RoomsGridView.Listener() {
+        RoomsGridView roomsGrid = new RoomsGridView(roomList);
+        rooms.getChildren().add(roomsGrid);
+        roomsGrid.setListener(new RoomsGridView.Listener() {
             @Override
             public void onRoomClicked(Room room) {
                 RoutingScene routingScene = getRoutingScene();
                 routingScene.pushRoute(new RoomDisplayRoute(room));
             }
         });
-        ap.getChildren().add(rooms);
 
-        rootContainer.getChildren().add(ap);
+        apply.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (!errorMessage.getText().equals("")) {
+                    errorMessage.setText("");
+                }
+
+                Integer minCapInt = 0;
+                if (!minCap.getText().equals("")) {
+                    try {
+                        minCapInt = Integer.parseInt(minCap.getText());
+                    } catch (NumberFormatException e) {
+                        errorMessage.setText("This is not a number!");
+                    }
+                }
+
+                Integer maxCapInt = Integer.MAX_VALUE;
+                if (!maxCap.getText().equals("")) {
+                    try {
+                        maxCapInt = Integer.parseInt(maxCap.getText());
+                    } catch (NumberFormatException e) {
+                        errorMessage.setText("This is not a number!");
+                    }
+                }
+
+                Integer myRights = 2; /////CHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANNNNNNNGEEEEEEEEEEE
+                Boolean hasTvBool = hasTV.isSelected();
+                Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
+                List<Room> filteredList;
+                if (buildingCode == -1) {
+                    filteredList = RoomCommunication.getAllFilteredRooms(myRights,
+                            hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                } else {
+                    Integer building = buildingCode;
+                    filteredList = RoomCommunication.getFilteredRoomsFromBuilding(building,
+                            myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                }
+
+                rooms.getChildren().clear();
+                roomsGrid.setRooms(filteredList);
+                rooms.getChildren().add(roomsGrid);
+                if (errorMessage.getText().equals("")) {
+                    errorMessage.setText("Filters applied!");
+                }
+            }
+        });
+
+
+        scrollPane = new ScrollPane(rooms);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color:transparent;");
+        horizontalBox.getChildren().add(scrollPane);
+
+        rootContainer.getChildren().add(horizontalBox);
     }
+
 
     @Override
     public Parent getRootElement() {
-        return scrollPane;
+        return rootContainer;
     }
 
 

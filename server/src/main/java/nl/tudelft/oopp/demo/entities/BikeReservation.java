@@ -21,12 +21,12 @@ public class BikeReservation {
 
     @ManyToOne
     @JoinColumn(name = "pickUpBuilding")
-    //@OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Building pickUpBuilding;          // building code
 
     @ManyToOne
     @JoinColumn(name = "dropOffBuilding")
-    //@OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Building dropOffBuilding;
 
     @Column(name = "date")
@@ -57,6 +57,35 @@ public class BikeReservation {
         this.dropOffBuilding = dropOffBuilding;
         this.timeSlot = timeSlot;
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "BikeReservation{" + "id=" + id + ", user=" + user + ", pickUpBuilding="
+                + pickUpBuilding + ", dropOffBuilding=" + dropOffBuilding
+                + ", date='" + date + '\'' + ", timeSlot='" + timeSlot + '\'' + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        BikeReservation that = (BikeReservation) o;
+        return id.equals(that.id)
+                && user.equals(that.user)
+                && pickUpBuilding.equals(that.pickUpBuilding)
+                && dropOffBuilding.equals(that.dropOffBuilding)
+                && date.equals(that.date)
+                && timeSlot.equals(that.timeSlot);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, pickUpBuilding, dropOffBuilding, date, timeSlot);
     }
 
     public Integer getId() {

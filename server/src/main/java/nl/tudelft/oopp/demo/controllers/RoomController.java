@@ -64,4 +64,48 @@ public class RoomController {
     public Integer deleteRoom(@RequestParam String roomCode) {
         return roomRepository.deleteRoomWithCode(roomCode);
     }
+
+    @GetMapping(path = "/filter/rights")
+    public List<Room> getAllRoomsWithTV(@RequestParam Building building,
+                                        @RequestParam Integer rights) {
+        return roomRepository.allRoomsWithRights(building, rights);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithCapacity")
+    public List<Room> getAllRoomsWithCapacity(@RequestParam Building building,
+                                              @RequestParam Integer lowerCapacity,
+                                              @RequestParam Integer upperCapacity) {
+        return roomRepository.allRoomsWithCapacity(building, lowerCapacity, upperCapacity);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithTV")
+    public List<Room> getAllRoomsWithTv(@RequestParam Building building) {
+        return roomRepository.allRoomsWithTV(building);
+    }
+
+    @GetMapping(path = "/filter/getRoomsWithWhiteBoard")
+    public List<Room> getAllRoomsWithWhiteBoard(@RequestParam Building building) {
+        return roomRepository.allRoomsWithWhiteBoard(building);
+    }
+
+    @GetMapping(path = "/filter/getFilteredRoomsFromBuilding")
+    public List<Room> getFilteredRoomsFromBuilding(@RequestParam Building myBuilding,
+                                       @RequestParam Integer myRights,
+                                       @RequestParam Boolean hasTV,
+                                       @RequestParam Boolean hasWhiteboard,
+                                       @RequestParam Integer minCap,
+                                       @RequestParam Integer maxCap) {
+        return roomRepository.getFilteredRoomsFromBuilding(myBuilding, myRights,
+                        hasTV, hasWhiteboard, minCap, maxCap);
+    }
+
+    @GetMapping(path = "/filter/getAllFilteredRooms")
+    public List<Room> getAllFilteredRooms(@RequestParam Integer myRights,
+                                          @RequestParam Boolean hasTV,
+                                          @RequestParam Boolean hasWhiteboard,
+                                          @RequestParam Integer minCap,
+                                          @RequestParam Integer maxCap) {
+        return roomRepository.getAllFilteredRooms(myRights,
+                hasTV, hasWhiteboard, minCap, maxCap);
+    }
 }

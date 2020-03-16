@@ -7,10 +7,7 @@ import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
-import nl.tudelft.oopp.demo.entities.Food;
 import org.springframework.http.ResponseEntity;
-
-
 
 public class BikeReservationCommunication {
 

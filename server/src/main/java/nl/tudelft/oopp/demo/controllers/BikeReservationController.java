@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-
 @RestController
 @RequestMapping(path = "/bikeReservations")
 public class BikeReservationController {
@@ -31,7 +29,7 @@ public class BikeReservationController {
      * @param dropOffBuilding The building where the bike is dropped off
      * @param date The date when the bike is reserved
      * @param slot The timeslot when the bike is reserved
-     * @return
+     * @return "Saved"
      */
     @GetMapping(path = "/add")
     public @ResponseBody String addNewBikeReservation(@RequestParam User user,
