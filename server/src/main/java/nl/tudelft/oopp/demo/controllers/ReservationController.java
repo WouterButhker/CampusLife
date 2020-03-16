@@ -57,7 +57,7 @@ public class ReservationController {
     }
 
     @GetMapping("/myReservations")
-    public @ResponseBody List<Reservation> getMyReservations(@RequestParam User user) {
+    public @ResponseBody List<RoomReservation> getMyReservations(@RequestParam User user) {
         return reservationRepository.getMyReservations(user);
     }
 
