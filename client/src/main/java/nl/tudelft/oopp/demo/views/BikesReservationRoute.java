@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.util.Calendar;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -11,7 +12,6 @@ import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.CalendarWidget;
 import nl.tudelft.oopp.demo.widgets.ReservationWidget;
 
-import java.util.Calendar;
 
 public class BikesReservationRoute extends Route {
 
@@ -26,6 +26,9 @@ public class BikesReservationRoute extends Route {
     private Calendar fromTime;
     private Calendar toTime;
 
+    /**
+     * Scene for reserving bikes.
+     */
     public BikesReservationRoute() {
         rootElement = new VBox();
 
@@ -77,7 +80,7 @@ public class BikesReservationRoute extends Route {
     private void resizeDisplay(double newWidth) {
         calendarWidget.setPrefWidth(newWidth * 0.3);
         agendaWidget.setPrefWidth(newWidth * 0.3);
-//        reservationWidget.setPrefWidth(newWidth * 0.3);
+        //reservationWidget.setPrefWidth(newWidth * 0.3);
     }
 
     @Override

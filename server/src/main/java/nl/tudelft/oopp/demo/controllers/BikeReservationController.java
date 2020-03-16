@@ -1,13 +1,12 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.BikeReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bikeReservations")
@@ -21,6 +20,13 @@ public class BikeReservationController {
         return bikeReservationRepository.findAll();
     }
 
+    /**
+     * Add new bike reservation to the database.
+     * @param user the user
+     * @param building the building
+     * @param slot the timeslot
+     * @return "Saved"
+     */
     @GetMapping("/addBike")
     public @ResponseBody String addNewBikeReservation(@RequestParam User user,
                                                       @RequestParam Building building,

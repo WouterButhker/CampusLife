@@ -4,12 +4,10 @@ package nl.tudelft.oopp.demo.communication;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
-import org.springframework.http.ResponseEntity;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import nl.tudelft.oopp.demo.entities.BikeReservation;
+import org.springframework.http.ResponseEntity;
 
 public class BikeReservationCommunication {
 
