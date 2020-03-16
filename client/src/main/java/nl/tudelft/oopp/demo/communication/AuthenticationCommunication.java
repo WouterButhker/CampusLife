@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
+    public static String myUsername;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -36,6 +37,7 @@ public class AuthenticationCommunication {
      */
     public static void login(String username, String password) throws HttpClientErrorException {
         authenticationHeader = createHeaders(username, password);
+        myUsername = username;
         saveUserId(username);
         saveUserRole(username);
     }

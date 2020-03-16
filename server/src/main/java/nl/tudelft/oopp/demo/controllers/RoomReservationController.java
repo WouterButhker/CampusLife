@@ -55,6 +55,11 @@ public class RoomReservationController {
         return "Saved";
     }
 
+    @GetMapping("/myReservations")
+    public @ResponseBody List<RoomReservation> getMyReservations(@RequestParam User user) {
+        return roomReservationRepository.getMyReservations(user);
+    }
+
     @Transactional
     @GetMapping(path = "/delete")
     void deleteReservation(@RequestParam Integer id) {
