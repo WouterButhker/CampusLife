@@ -23,6 +23,9 @@ public class Building {
     @Column(name = "openingHours")
     private String openingHours;
 
+    @Column(name = "bikes")
+    private Integer bikes;
+
     public Building() {
 
     }
@@ -32,16 +35,19 @@ public class Building {
      * @param buildingCode the number of the building
      * @param name the actual name of the building
      * @param location the street
-     * @param openingHours format aa:bb-cc:dd
+     * @param openingHours format aa:bb-cc:dd for every day of the week separated by a ","
+     * @param bikes the amount of bikes at the building, null if building has no bike station
      */
     public Building(Integer buildingCode,
                     String name,
                     String location,
-                    String openingHours) {
+                    String openingHours,
+                    Integer bikes) {
         this.buildingCode = buildingCode;
         this.name = name;
         this.location = location;
         this.openingHours = openingHours;
+        this.bikes = bikes;
     }
 
     public Integer getBuildingCode() {
@@ -76,9 +82,22 @@ public class Building {
         this.openingHours = openingHours;
     }
 
+    public Integer getBikes() {
+        return bikes;
+    }
+
+    public void setBikes(Integer bikes) {
+        this.bikes = bikes;
+    }
+
+    /**
+     * Makes a Building object into a String.
+     * @return String representation of a Building
+     */
     public String toString() {
         return "[\"buildingCode\":\"" + buildingCode + "\",\"name\":\"" + name
-                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours + "\"]";
+                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours
+                + "\",\"bikes\":\"" + bikes + "\"]";
     }
 
     @Override
@@ -93,11 +112,12 @@ public class Building {
         return buildingCode.equals(building.buildingCode)
                 && name.equals(building.name)
                 && location.equals(building.location)
-                && openingHours.equals(building.openingHours);
+                && openingHours.equals(building.openingHours)
+                && bikes.equals(building.bikes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(buildingCode, name, location, openingHours);
+        return Objects.hash(buildingCode, name, location, openingHours, bikes);
     }
 }

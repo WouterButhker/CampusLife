@@ -39,7 +39,7 @@ public class LoginController {
     public void register(@RequestBody User user) {
         Optional<User> u = userRepository.findByUsername(user.getUsername());
         if (u.isEmpty()) {
-            userRepository.save(new User(user));
+            userRepository.save(new User(user.getUsername(), user.getPassword()));
         } else {
             //TODO: send error user already exists
         }

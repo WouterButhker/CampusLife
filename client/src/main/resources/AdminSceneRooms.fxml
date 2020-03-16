@@ -34,7 +34,7 @@
             <Button fx:id="submit" layoutX="130.0" layoutY="455.0" mnemonicParsing="false" onAction="#submitNewRoom" text="Submit" />
             <Button layoutX="373.0" layoutY="130.0" mnemonicParsing="false" onAction="#refreshRoomsPage" text="Refresh" />
             <ChoiceBox fx:id="buildingList2" layoutX="772.0" layoutY="97.0" prefWidth="150.0" />
-            <ScrollPane hbarPolicy="NEVER" layoutX="604.0" layoutY="142.0" prefHeight="432.0" prefWidth="417.0">
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="604.0" layoutY="142.0" prefHeight="432.0" prefWidth="417.0">
               <content>
                 <AnchorPane fx:id="anchorPaneRooms" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
                      <children>
