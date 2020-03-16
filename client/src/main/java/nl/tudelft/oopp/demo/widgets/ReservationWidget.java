@@ -88,6 +88,8 @@ public class ReservationWidget extends VBox {
             resizeDisplay(newWidth.doubleValue());
         });
 
+
+
         updateDisplay();
     }
 

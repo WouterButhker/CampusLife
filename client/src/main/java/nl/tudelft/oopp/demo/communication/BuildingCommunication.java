@@ -3,10 +3,10 @@ package nl.tudelft.oopp.demo.communication;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import nl.tudelft.oopp.demo.entities.Building;
-
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.demo.entities.Building;
+
 
 public class BuildingCommunication {
 
