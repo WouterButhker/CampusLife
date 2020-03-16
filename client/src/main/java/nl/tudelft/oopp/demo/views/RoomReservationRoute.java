@@ -123,7 +123,7 @@ public class RoomReservationRoute extends Route {
         }
         for (Reservation reservation : reservations) {
             System.out.println(reservation);
-            if (reservation.getRoom().equals(room.getCode())) {
+            if (reservation.getRoom() != null && reservation.getRoom().equals(room.getCode())) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                 try {
                     String fromTimeString = reservation.getTimeSlot().substring(0, 16);

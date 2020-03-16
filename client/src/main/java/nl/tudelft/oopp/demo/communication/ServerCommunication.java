@@ -18,9 +18,16 @@ public class ServerCommunication {
         return AuthenticationCommunication.authenticatedPostRequest(link, body);
     }
 
+    public static ResponseEntity<String> authenticatedPutRequest(String link, Object body)
+            throws AuthenticationException {
+        return AuthenticationCommunication.authenticatedPutRequest(link, body);
+    }
+
     public static ResponseEntity<String> authenticatedDeleteRequest(String link)
             throws AuthenticationException {
         return AuthenticationCommunication.authenticatedDeleteRequest(link);
     }
+
+
 
 }
