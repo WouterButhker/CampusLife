@@ -32,6 +32,7 @@ public class MyProfileRoute extends Route {
     private VBox rootElement;
     private VBox userDetails;
     private VBox eventContainer;
+    private VBox newEventBox;
 
     private HBox horizontalContainer;
 
@@ -84,6 +85,11 @@ public class MyProfileRoute extends Route {
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle toggle, Toggle newToggle) {
+
+                if (!upcoming.isSelected() && !past.isSelected() && !newEvent.isSelected()) {
+                    upcoming.setSelected(true);
+                }
+
                 if (past.isSelected()) {
                     displayPastEvents();
                 } else if (newEvent.isSelected()) {
@@ -108,6 +114,7 @@ public class MyProfileRoute extends Route {
     private void cleanBeforeDisplaying() {
         removeObject(rect);
         removeObject(scrollPane);
+        removeObject(newEventBox);
     }
 
     private void sortMyReservationsByDate() {
@@ -159,7 +166,11 @@ public class MyProfileRoute extends Route {
             currentReservation.getChildren().add(timeText);
             currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
 
-            Text roomText = new Text("Room: " + reservation.getRoom());
+            Text roomText = new Text("Type: my reservation");
+            if (reservation.getRoom() != null) {
+                roomText = new Text("Room: " + reservation.getRoom());
+            }
+
             currentReservation.getChildren().add(roomText);
 
             int finalI = i;
@@ -203,10 +214,41 @@ public class MyProfileRoute extends Route {
 
     private void displayNewEvent() {
         cleanBeforeDisplaying();
-        if (!eventContainer.getChildren().contains(rect)) {
-            eventContainer.getChildren().addAll(rect);
-        }
-        rect.setFill((Color) newEvent.getUserData());
+        newEventBox = new VBox();
+        newEventBox.setMaxWidth(eventContainer.getWidth() / 2);
+        newEventBox.setSpacing(3);
+        newEventBox.setPadding(new Insets(0, 16, 16, 0));
+        TextField t1 = new TextField();
+        t1.setPromptText("Type");
+        TextField t2 = new TextField();
+        t2.setPromptText("DD/MM/YYYY");
+        TextField t3 = new TextField();
+        t3.setPromptText("HH:MM");
+        TextField t4 = new TextField();
+        t4.setPromptText("HH:MM");
+        Button submit = new Button("Submit");
+        Text txt1 = new Text("Type");
+        Text txt2 = new Text("Date");
+        Text txt3 = new Text("Start Time");
+        Text txt4 = new Text("End Time");
+        submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String type = "-" + t1.getText();
+                String timeslot = t2.getText() + "," + t3.getText()
+                        + " - " + t2.getText() + "," + t4.getText();
+                if (t1.getText() != null
+                        && t2.getText() != null
+                        && t3.getText() != null
+                        && t4.getText() != null) {
+                    ReservationCommunication.addReservationToDatabase(
+                            AuthenticationCommunication.myUserId, type, timeslot);
+                }
+
+            }
+        });
+        newEventBox.getChildren().addAll(txt1, t1, txt2, t2, txt3, t3, txt4, t4, submit);
+        eventContainer.getChildren().addAll(newEventBox);
     }
 
     private void addUserInformation() {

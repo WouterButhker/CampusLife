@@ -46,9 +46,11 @@ public class ReservationCommunication {
             );
         }
         //System.out.println(user);
-        String room = RoomCommunication.parseRoom(
-                inputReservation.get("room").getAsJsonObject()
-        ).getCode();
+        String room = null;
+        if (!inputReservation.get("room").isJsonNull()) {
+            room = RoomCommunication.parseRoom(
+                    inputReservation.get("room").getAsJsonObject()).getCode();
+        }
         //System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
         //System.out.println(timeSlot);
@@ -93,7 +95,8 @@ public class ReservationCommunication {
         }
         return null;
     }
-        /**
+
+    /**
      * Returns a list of all the reservations a specific user has made.
      * @param user the User whose reservations you are looking for
      * @return A List of Reservations
