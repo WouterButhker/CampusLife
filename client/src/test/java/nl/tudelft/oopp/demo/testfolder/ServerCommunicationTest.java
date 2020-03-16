@@ -1,15 +1,20 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.testfolder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
+import nl.tudelft.oopp.demo.communication.RoomCommunication;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 public class ServerCommunicationTest {
 
-    @Test
-    public void testRandomQuote() {
-        assertNotNull(ServerCommunication.getQuote());
+    @BeforeEach
+    void doBeforeEach() {
+        AuthenticationCommunication.login("random", "admin");
     }
 
     @Test
@@ -30,7 +35,9 @@ public class ServerCommunicationTest {
         String name = "Aula";
         String location = "Mekelweg 5";
         String openingHours = "08:00-22:00";
-        BuildingCommunication.addBuildingToDatabase(buildingCode, name, location, openingHours);
+        Integer bikes = 12;
+        BuildingCommunication.addBuildingToDatabase(buildingCode,
+                name, location, openingHours, bikes);
     }
 
     @Test
@@ -42,7 +49,8 @@ public class ServerCommunicationTest {
         Boolean hasTV = false;
         Integer rights = 1;
         Integer building = 35;
-        RoomCommunication.addRoomToDatabase(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
+        RoomCommunication.addRoomToDatabase(roomCode, name, capacity,
+                hasWhiteboard, hasTV, rights, building);
     }
 
     @Test

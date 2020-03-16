@@ -1,38 +1,33 @@
 package nl.tudelft.oopp.demo.communication;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Stream;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.client.HttpClientErrorException;
 
 public class ServerCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
+    public static final String SERVER_URL = "http://localhost:8080";
 
-    /**
-     * Retrieves a quote from the server.
-     * @return the body of a get request to the server.
-     * @throws Exception if communication with the server fails.
-     */
-    public static String getQuote() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return response.body();
+    public static ResponseEntity<String> authenticatedRequest(String link)
+            throws HttpClientErrorException {
+        return AuthenticationCommunication.authenticatedRequest(link);
     }
+
+    public static ResponseEntity<String> authenticatedPostRequest(String link, Object body)
+            throws AuthenticationException {
+        return AuthenticationCommunication.authenticatedPostRequest(link, body);
+    }
+
+    public static ResponseEntity<String> authenticatedPutRequest(String link, Object body)
+            throws AuthenticationException {
+        return AuthenticationCommunication.authenticatedPutRequest(link, body);
+    }
+
+    public static ResponseEntity<String> authenticatedDeleteRequest(String link)
+            throws AuthenticationException {
+        return AuthenticationCommunication.authenticatedDeleteRequest(link);
+    }
+
+
+
 }

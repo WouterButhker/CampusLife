@@ -143,7 +143,7 @@ public class RoomDisplayRoute extends Route {
             public void handle(MouseEvent event) {
                 Button button = (Button) event.getSource();
                 RoutingScene routingScene = (RoutingScene) button.getScene();
-                routingScene.pushRoute(new RoomReservationRoute(room.getCode()));
+                routingScene.pushRoute(new RoomReservationRoute(room));
             }
         });
         return button;

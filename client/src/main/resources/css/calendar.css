@@ -1,0 +1,106 @@
+@import url("palette.css")
+
+.month-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.day-box-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.date-box-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.reservation-time-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.reservation-date-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.left-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_left.png');
+}
+
+.left-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_left.png');
+}
+
+.right-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_right.png');
+}
+
+.right-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_right.png');
+}
+
+.up-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_up.png');
+}
+
+.up-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_up.png');
+}
+
+.down-arrow {
+    -fx-background-color: #00000000;
+    -fx-graphic: url('/images/arrow_down.png');
+}
+
+.down-arrow:hover {
+    -fx-background-color: #00000033;
+    -fx-graphic: url('/images/arrow_down.png');
+}
+
+.available-date-box {
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.unavailable-date-box {
+    -fx-background-color: -secondary-color-light;
+    -fx-background-radius: 8;
+}
+
+.selected-date-box {
+    -fx-background-color: -accent-color;
+    -fx-background-radius: 8;
+}
+
+.hover-glow {
+    -fx-background-color: #00000033;
+    -fx-background-radius: 8;
+    -fx-fill-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.today-date-text {
+    -fx-fill: #FF0000;
+}
+
+.otherday-date-text {
+    -fx-fill: -secondary-color-text;
+}
+
+.available-agenda-block {
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.unavailable-agenda-block {
+    -fx-background-color: -secondary-color-light;
+    -fx-background-radius: 8;
+}
+
+.selected-agenda-block {
+    -fx-background-color: -accent-color;
+    -fx-background-radius: 8;
+}

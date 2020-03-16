@@ -31,12 +31,6 @@ public class AdminSceneController implements Initializable {
     private VBox mainBox;
 
     @FXML
-    private ChoiceBox<String> bikeBuildings;
-
-    @FXML
-    private Text numberBikes;
-
-    @FXML
     private Button modifyBuildingsEnter;
 
     @FXML
@@ -48,67 +42,17 @@ public class AdminSceneController implements Initializable {
     @FXML
     private Button modifyRightsEnter;
 
+    @FXML
+    private Button modifyReservationsEnter;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadDataBikes();
         addAppBar();
     }
 
     private void addAppBar() {
         mainBox.getChildren().add(0, new AppBar());
-    }
-
-    private void loadDataBikes() {
-        if (bikeBuildings != null) {
-            bikeBuildings.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
-            SingleSelectionModel<String> selectionModel = bikeBuildings.getSelectionModel();
-            selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable,
-                                    String oldValue,
-                                    String newValue) {
-                    updateNumberBikes();
-                }
-            });
-        }
-    }
-
-
-    private int updateNumberBikes() {
-        String building = bikeBuildings.getValue();
-        // Relay to the backend what the building is and
-        // retrieve a number of bikes and store it in int bikes
-        int bikes = 5;
-        numberBikes.setText(Integer.toString(bikes));
-        // return bikes;
-        return bikes;
-    }
-
-    /**
-     * Add a bike to the database.
-     */
-    @FXML
-    private void addBike() {
-        if (bikeBuildings.getValue() != null) {
-            int bikes = updateNumberBikes();
-            bikes++;
-            //send the new bikes to the backend
-            updateNumberBikes();
-        }
-    }
-
-    /**
-     * Remove a bike from the database.
-     */
-    @FXML
-    private void removeBike() {
-        if (bikeBuildings.getValue() != null) {
-            int bikes = updateNumberBikes();
-            bikes--;
-            //send the new bikes to the backend
-            updateNumberBikes();
-        }
     }
 
     @FXML
@@ -136,6 +80,13 @@ public class AdminSceneController implements Initializable {
     private void modifyRightsEnter() throws IOException {
         RoutingScene scene = (RoutingScene) modifyRightsEnter.getScene();
         Route route = new XmlRoute(getClass().getResource("/AdminSceneRights.fxml"));
+        scene.pushRoute(route);
+    }
+
+    @FXML
+    private void modifyReservationsEnter() throws IOException {
+        RoutingScene scene = (RoutingScene) modifyReservationsEnter.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneReservations.fxml"));
         scene.pushRoute(route);
     }
 

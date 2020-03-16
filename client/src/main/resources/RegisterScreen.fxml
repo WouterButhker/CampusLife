@@ -1,25 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.LoginScreenController">
+<VBox fx:id="mainBox" alignment="TOP_CENTER" prefHeight="630.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.RegisterScreenController">
   <children>
-    <Pane layoutX="67.0" layoutY="32.0" prefHeight="342.0" prefWidth="467.0">
+    <HBox id="bottomPadding" fx:id="topPadding" prefHeight="123.0" prefWidth="1120.0" />
+    <HBox fx:id="createAccountHBox" alignment="TOP_CENTER" prefHeight="131.0" prefWidth="1120.0">
       <children>
-        <Label layoutX="151.0" layoutY="21.0" text="Create Account" />
-        <Label layoutX="151.0" layoutY="82.0" text="Username" />
-        <Label layoutX="151.0" layoutY="138.0" text="Password" />
-        <PasswordField fx:id="passwordField" layoutX="151.0" layoutY="158.0" prefWidth="200.0" />
-        <TextField fx:id="usernameField" layoutX="151.0" layoutY="102.0" prefWidth="200.0" />
-        <Button id="loginButton" fx:id="registerButton" layoutX="198.0" layoutY="254.0" mnemonicParsing="false" onAction="#onRegisterClicked" text="Register" />
-        <Label layoutX="151.0" layoutY="192.0" text="Re-enter password" />
-        <PasswordField id="passwordField" fx:id="reEnterPasswordField" layoutX="151.0" layoutY="212.0" prefWidth="200.0" />
-        <Button fx:id="backButton" layoutX="7.0" layoutY="8.0" mnemonicParsing="false" onAction="#onBackClicked" text="&lt;-" />
+        <Pane id="leftPadding" fx:id="createAccountLeftPadding" prefHeight="131.0" prefWidth="180.0" />
+        <Label text="Create Account">
+          <font>
+            <Font name="System Bold" size="25.0" />
+          </font>
+        </Label>
+        <Pane id="rightPadding" fx:id="createAccountRightPadding" prefHeight="200.0" prefWidth="200.0" />
       </children>
-    </Pane>
+    </HBox>
+    <HBox fx:id="usernameHBox" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="600.0">
+      <children>
+        <Pane id="leftPadding" fx:id="usernameLeftPadding" prefHeight="27.0" prefWidth="76.0" />
+        <Label text="Username">
+          <font>
+            <Font size="17.0" fx:id="x1" />
+          </font>
+        </Label>
+        <Pane fx:id="usernameRightPadding" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <HBox fx:id="usernameFieldHBox" alignment="TOP_CENTER" prefHeight="41.999900000002526" prefWidth="600.0">
+      <children>
+        <Pane fx:id="usernameFieldLeftPadding" prefHeight="200.0" prefWidth="200.0" />
+        <TextField fx:id="usernameField" prefWidth="200.0" />
+        <Pane fx:id="usernameFieldRightPadding" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <HBox fx:id="passwordHBox" alignment="TOP_CENTER" prefHeight="26.999900000002526" prefWidth="600.0">
+      <children>
+        <Pane fx:id="passwordLeftPadding" prefHeight="27.0" prefWidth="80.0" />
+        <Label font="$x1" text="Password" />
+        <Pane fx:id="passwordRightPadding" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <HBox id="passwordField" fx:id="passwordFieldHBox" alignment="TOP_CENTER" prefHeight="42.0" prefWidth="600.0">
+      <children>
+        <Pane fx:id="passwordFieldLeftPadding" prefHeight="200.0" prefWidth="200.0" />
+        <PasswordField fx:id="passwordField" prefWidth="200.0" />
+        <Pane fx:id="passwordFieldRightPadding" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <HBox fx:id="reEnterPasswordHbox" alignment="TOP_CENTER" prefHeight="27.0" prefWidth="600.0">
+      <children>
+        <Pane fx:id="reEnterPasswordLeftPadding" prefHeight="27.0" prefWidth="141.0" />
+        <Label font="$x1" text="Re-enter password" />
+        <Pane fx:id="reEnterPasswordRightPadding" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <HBox fx:id="reEnterPasswordFieldHBox" alignment="TOP_CENTER" prefHeight="42.0" prefWidth="600.0">
+      <children>
+        <Pane fx:id="reEnterPasswordFieldLeftPadding" prefHeight="200.0" prefWidth="200.0" />
+        <PasswordField id="passwordField" fx:id="reEnterPasswordField" prefWidth="200.0" />
+        <Pane fx:id="reEnterPasswordFieldRightPadding" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <HBox fx:id="registerButtonHbox" alignment="TOP_CENTER" prefHeight="60.0" prefWidth="1120.0">
+      <children>
+        <Pane fx:id="registerButtonLeftPadding" prefHeight="42.0" prefWidth="76.0" />
+        <Pane id="registerHBox" fx:id="registerButtonRightPadding" prefHeight="200.0" prefWidth="200.0">
+               <children>
+              <Button id="loginButton" fx:id="registerButton" layoutX="-37.0" layoutY="9.0" mnemonicParsing="false" onAction="#onRegisterClicked" prefHeight="30.0" prefWidth="193.0" text="Register" />
+               </children>
+        </Pane>
+      </children>
+    </HBox>
+    <HBox alignment="TOP_CENTER" prefHeight="52.0" prefWidth="1120.0">
+      <children>
+        <Pane prefHeight="200.0" prefWidth="200.0" />
+        <Hyperlink fx:id="registerLink" onAction="#onLoginClicked" text="Already have an account? Click here to login.">
+          <font>
+            <Font size="17.0" />
+          </font>
+        </Hyperlink>
+        <Pane prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </HBox>
+    <HBox fx:id="bottomPadding" alignment="TOP_CENTER" prefHeight="57.0" prefWidth="1120.0">
+      <children>
+        <Text fx:id="errorMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="">
+          <font>
+            <Font name="System Italic" size="17.0" />
+          </font>
+        </Text>
+      </children>
+    </HBox>
+    <HBox id="createAccountHBox" alignment="TOP_CENTER" prefHeight="57.0" prefWidth="1120.0">
+      <children>
+        <VBox alignment="TOP_CENTER" prefHeight="129.0" prefWidth="302.0">
+          <children>
+            <Label text="Password must be at least 8 characters long">
+              <font>
+                <Font name="System Italic" size="12.0" fx:id="x2" />
+              </font>
+            </Label>
+            <Label font="$x2" text="contain at least one capital and one lowercase" />
+            <Label font="$x2" text="and have at least one number and one special character" />
+          </children>
+        </VBox>
+      </children>
+    </HBox>
+    <HBox id="createAccountHBox" alignment="TOP_CENTER" prefHeight="57.0" prefWidth="1120.0" />
   </children>
-</AnchorPane>
+</VBox>

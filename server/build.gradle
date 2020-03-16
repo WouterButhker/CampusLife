@@ -16,6 +16,8 @@ configurations {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-test'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeClasspath('mysql:mysql-connector-java:5.1.16')
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -28,6 +30,7 @@ dependencies {
 	}
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation('junit:junit:4.13')
 }
 
 

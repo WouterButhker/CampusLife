@@ -1,98 +1,142 @@
 package nl.tudelft.oopp.demo.communication;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Reservation;
-
+import nl.tudelft.oopp.demo.entities.Room;
+import org.springframework.http.ResponseEntity;
 
 public class ReservationCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
 
     /**
      * Adds a reservation to the database via HTTP request.
      * @param userId the id of the User that made the Reservation
      * @param room the roomCode of the Room that is reserved
-     * @param timeSlot the time at which the Room is reserved
+     * @param slot the time at which the Room is reserved
      */
     public static void addReservationToDatabase(Integer userId,
                                              String room,
-                                             /// DATE
-                                             String timeSlot) {
-        room = room.replace(" ", "%20");
-        URI myUri = URI.create("http://localhost:8080/reservations/add?user=" + userId
-                + "&room=" + room + "&timeSlot=" + timeSlot);
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+                                             String slot) {
+        String url = "/reservations/add?user=" + userId
+                + "&room=" + room + "&slot=" + slot;
+
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            room = room.replace("%20", " ");
-            System.out.println(response.body() + " reservation for user "
-                    + userId + " at room " + room + " at time " + timeSlot);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            /*
+            System.out.println(response.getBody() + " reservation for user "
+                    + userId + " at room " + room + " at slot " + slot);
+
+             */
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /*
-    public static Reservation parseReservation(String inputReservation) {
-        inputReservation = inputReservation.replace("{", "");
-        inputReservation = inputReservation.replace("}", "");
-        String[] parameters = inputReservation.split(",");
-        for (int i = 0; i < parameters.length; i++) {
-            String[] miniParams = parameters[i].split(":");
-            miniParams[1] = miniParams[1].replace("\"", "");
-            parameters[i] = miniParams[1];
-            if (i == 3)
-            {
-                miniParams[3] = miniParams[3].replace("\"", "");
-                parameters[i] += ":" + miniParams[2] + ":" + miniParams[3];
-            }
-            System.out.println(parameters[i]);
+    private static Reservation parseReservation(JsonObject inputReservation) {
+        Integer id = inputReservation.get("id").getAsInt();
+        //System.out.println(id);
+        Integer user = null;
+        if (!inputReservation.get("user").isJsonNull()) {
+            user = Integer.parseInt(
+                    inputReservation.getAsJsonObject("user").get("id").getAsString()
+            );
         }
-        Integer id = Integer.parseInt(parameters[0]);
-        Integer user = Integer.parseInt(parameters[1]);
-        String room = parameters[2];
-        String timeSlot = parameters[3];
+        //System.out.println(user);
+        String room = null;
+        if (!inputReservation.get("room").isJsonNull()) {
+            room = RoomCommunication.parseRoom(
+                    inputReservation.get("room").getAsJsonObject()).getCode();
+        }
+        //System.out.println(room);
+        String timeSlot = inputReservation.get("timeSlot").getAsString();
+        //System.out.println(timeSlot);
         return new Reservation(id, user, room, timeSlot);
     }
 
     private static List<Reservation> parseReservations(String inputReservations) {
+        JsonParser jsonParser = new JsonParser();
+        JsonArray jsonArray = jsonParser.parse(inputReservations).getAsJsonArray();
         List<Reservation> listOfReservations = new ArrayList<>();
-        inputReservations = inputReservations.replace("[", "");
-        inputReservations = inputReservations.replace("]", "");
-        if (inputReservations.equals("")) {
-            return listOfReservations;
-        }
-        String[] listOfStrings = inputReservations.split("(},)");
-        for (int i = 0; i < listOfStrings.length; i++) {
-            listOfReservations.add(parseReservation()r(listOfStrings[i]));
+        for (int i = 0; i < jsonArray.size(); i++) {
+            listOfReservations.add(parseReservation(jsonArray.get(i).getAsJsonObject()));
         }
         return listOfReservations;
     }
 
+    /**
+     * Returns a list of all the reservations from the database.
+     * Required permission: Student
+     * @return List of Reservations
+     */
     public static List<Reservation> getAllReservations() {
-        URI myUri = URI.create("http://localhost:8080/reservations/all");
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(myUri).build();
-        HttpResponse<String> response = null;
+        String url = "/reservations/all";
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return parseReservations(response.body());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-    */
 
+    /**
+     * Get all of the reservations for the current User.
+     * @return A list of the current user's reservations
+     */
+    public static List<Reservation> getMyReservations() {
+        String url = "/reservations/myReservations?user=" + AuthenticationCommunication.myUserId;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of all the reservations a specific user has made.
+     * @param user the User whose reservations you are looking for
+     * @return A List of Reservations
+     */
+    public static List<Reservation> getAllReservationsForUser(Integer user) {
+        String url = "/reservations/allForUser?user=" + user;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of all the reservations that were made for a specific room.
+     * Required permission: Student
+     * @param room the Room whose reservations you are looking for
+     * @return A List of Reservations
+     */
+    public static List<Reservation> getAllReservationsForRoom(String room) {
+        String url = "/reservations/allForRoom?room=" + room;
+        try {
+            return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Deletes a reservation with the specified id from the database.
+     * @param id the id of the reservation
+     */
+    public static void deleteReservationFromDatabase(Integer id) {
+        String url = "/reservations/delete?id=" + id;
+        try {
+            ServerCommunication.authenticatedRequest(url).getBody();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

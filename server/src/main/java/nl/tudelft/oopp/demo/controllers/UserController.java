@@ -1,13 +1,13 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,11 +22,21 @@ public class UserController {
         return usersRepository.findAll();
     }
 
-    /**
+    @GetMapping(path = "/getId")
+    public Integer getId(@RequestParam String username) {
+        return usersRepository.findIdByUsername(username);
+    }
+
+    @GetMapping(path = "/getRole")
+    public String getRole(@RequestParam String username) {
+        return usersRepository.findRoleByUsername(username);
+    }
+
+    /*
      * Adds a new user to the database.
      * @param username of the current user
      * @return
-     */
+
     @GetMapping(path = "/add")
     public @ResponseBody
     String addNewUser(@RequestParam String username) {
@@ -35,5 +45,6 @@ public class UserController {
         usersRepository.save(user);
         return "Saved";
     }
+     */
 
 }

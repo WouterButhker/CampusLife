@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Archivo&display=swap");
+
 .root {
     -primary-color: #81d4fa;
     -primary-color-light: #b6ffff;
@@ -5,7 +7,10 @@
     -secondary-color: #c5cae9;
     -secondary-color-light: #f8fdff;
     -secondary-color-dark: #9499b7;
+    -accent-color: #ffea00;
 
     -primary-color-text: #000000;
     -secondary-color-text: #000000;
+
+    -primary-font-name: Archivo;
 }

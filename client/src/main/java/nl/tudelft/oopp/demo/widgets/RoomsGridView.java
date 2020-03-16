@@ -15,6 +15,8 @@ public class RoomsGridView extends GridPane {
 
     private Listener listener;
 
+    private final double scalar = 1.8;
+
     /**
      * Creates the Grid View of the room list page.
      * @param rooms a list with all the rooms that need to be displayed
@@ -25,7 +27,25 @@ public class RoomsGridView extends GridPane {
         roomButtons = new ArrayList<>();
         addButtons();
 
-        double scalar = 1.8;
+        sceneProperty().addListener((obs2, oldScene, newScene) -> {
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth() * scalar);
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth.doubleValue() * scalar);
+                });
+            }
+        });
+    }
+
+    /**
+     * Method to update the rooms list for the user.
+     * @param inputRooms the new rooms list that will replace the old list of rooms
+     */
+    public void setRooms(List<Room> inputRooms) {
+        this.rooms = inputRooms;
+        this.getChildren().clear();
+
+        addButtons();
 
         sceneProperty().addListener((obs2, oldScene, newScene) -> {
             if (newScene != null) {
