@@ -1,5 +1,25 @@
 @import url("palette.css")
 
+.month-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.day-box-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.date-box-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.reservation-time-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.reservation-date-text {
+    -fx-font-family: -primary-font-name;
+}
+
 .left-arrow {
     -fx-background-color: #00000000;
     -fx-graphic: url('/images/arrow_left.png');

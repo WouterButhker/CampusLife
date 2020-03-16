@@ -11,9 +11,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
+import nl.tudelft.oopp.demo.views.MyProfileRoute;
 
 public class AppBar extends StackPane {
     private HBox titleContainer;
@@ -21,9 +24,11 @@ public class AppBar extends StackPane {
     private HBox rightContainer;
 
     private Hyperlink backButton;
+    private Hyperlink profileButton;
     private Text universityTitle;
     private Hyperlink adminScreenLink;
     private Rectangle separator;
+    private Rectangle leftSeparator;
     private Hyperlink signOutLink;
 
     /**
@@ -50,6 +55,7 @@ public class AppBar extends StackPane {
         setAlignment(Pos.CENTER_LEFT);
 
         universityTitle = new Text("TUDelft");
+        universityTitle.getStyleClass().add("app-bar-title");
         titleContainer = new HBox();
         titleContainer.getChildren().add(universityTitle);
         titleContainer.setAlignment(Pos.CENTER);
@@ -80,6 +86,14 @@ public class AppBar extends StackPane {
 
         signOutLink = new Hyperlink("Sign Out");
         signOutLink.getStyleClass().add("app-bar-link-style");
+        signOutLink.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RoutingScene routingScene = (RoutingScene) getScene();
+                routingScene.popAll();
+                AuthenticationCommunication.logout();
+            }
+        });
         rightContainer.getChildren().add(signOutLink);
         rightContainer.setPadding(new Insets(0, 20, 0, 0));
         getChildren().add(rightContainer);
@@ -97,8 +111,30 @@ public class AppBar extends StackPane {
                 }
             }
         });
+
+        leftSeparator = new Rectangle();
+        leftSeparator.setFill(Color.LIGHTGRAY);
+        leftSeparator.setWidth(1);
+        leftSeparator.setVisible(true);
+
+        profileButton = new Hyperlink("My Profile");
+        profileButton.getStyleClass().add("app-bar-link-style");
+        profileButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                RoutingScene routingScene = (RoutingScene) getScene();
+                try {
+                    routingScene.pushRoute(new MyProfileRoute());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         leftContainer = new HBox();
         leftContainer.getChildren().add(backButton);
+        leftContainer.getChildren().add(leftSeparator);
+        leftContainer.getChildren().add(profileButton);
         leftContainer.setAlignment(Pos.CENTER_LEFT);
         getChildren().add(leftContainer);
 
@@ -128,6 +164,7 @@ public class AppBar extends StackPane {
         rightContainer.setPrefHeight(appBarHeight);
         
         separator.setHeight(appBarHeight * 0.7);
+        leftSeparator.setHeight(appBarHeight * 0.7);
 
         double verticalPadding = appBarHeight * 0.1;
         double horizontalPadding = verticalPadding;
@@ -143,6 +180,7 @@ public class AppBar extends StackPane {
 
         double linksSize = Math.min(40, appBarHeight * 0.32);
         backButton.setStyle("-fx-font-size:" + linksSize);
+        profileButton.setStyle("-fx-font-size:" + linksSize);
         adminScreenLink.setStyle("-fx-font-size:" + linksSize);
         signOutLink.setStyle("-fx-font-size:" + linksSize);
     }

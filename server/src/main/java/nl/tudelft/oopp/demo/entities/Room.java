@@ -15,7 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Room {
 
     @Id
-    @Column(name = "code")
+    @Column(name = "roomCode")
     private String roomCode;
 
     @Column(name = "name")

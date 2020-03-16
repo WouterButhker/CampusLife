@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public class RoomCommunication {
 
 
     /**
      * For adding a room to the database.
+     * Required permission: Admin
      * @param roomCode the code (abreviation) of the room
      * @param name the actual name of the room
      * @param capacity seat capacity
@@ -45,6 +47,7 @@ public class RoomCommunication {
 
     /**
      * Returns a list of all the rooms that are part of the building.
+     * Required permission: Student
      * @param building the number of the building you want to see the rooms from
      * @return a list of rooms from that building
      */
@@ -61,6 +64,7 @@ public class RoomCommunication {
 
     /**
      * Returns a list of all the Room NAMES that are part of the building.
+     * Required permission: Student
      * @param building the number of the building you want to see the Room NAMES from
      * @return a list of NAMES from that building
      */
@@ -109,6 +113,7 @@ public class RoomCommunication {
 
     /**
      * Returns a list of all the Rooms from the database.
+     * Required permission: Student
      * @return list of Rooms
      */
     public static List<Room> getAllRooms() {
@@ -123,6 +128,7 @@ public class RoomCommunication {
 
     /**
      * Deletes a Room from the database.
+     * Required permission: Admin
      * @param roomCode the code for the room that needs to be removed
      * @return
      */
@@ -135,5 +141,52 @@ public class RoomCommunication {
             e.printStackTrace();
         }
         return "-1";
+    }
+
+    /**
+     * Method to search for rooms from the giving building with the filters applied.
+     * @param building the roomCode primary key as Integer
+     * @param myRights the rights of the user as Integer
+     * @param hasTV boolean for if the room has a TV
+     * @param hasWhiteboard boolean for if the room has a whiteboard
+     * @param minCap integer for the minimum capacity a room may have
+     * @param maxCap integer for the maximum capacity a room may have
+     * @return List of filtered rooms from given building
+     */
+    public static List<Room> getFilteredRoomsFromBuilding(Integer building, Integer myRights,
+                                                         Boolean hasTV, Boolean hasWhiteboard,
+                                                         Integer minCap, Integer maxCap) {
+        String url = "/rooms/filter/getFilteredRoomsFromBuilding?myBuilding=" + building
+                + "&myRights=" + myRights + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
+                + "&minCap=" + minCap + "&maxCap=" + maxCap;
+        try {
+            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Method to get the filtered rooms from all the rooms.
+     * @param myRights the rights of the user as Integer
+     * @param hasTV boolean for if the room has a TV
+     * @param hasWhiteboard boolean for if the room has a whiteboard
+     * @param minCap integer for the minimum capacity a room may have
+     * @param maxCap integer for the maximum capacity a room may have
+     * @return List of rooms of all buildings
+     */
+    public static List<Room> getAllFilteredRooms(Integer myRights, Boolean hasTV,
+                                                 Boolean hasWhiteboard, Integer minCap,
+                                                 Integer maxCap) {
+        String url = "/rooms/filter/getAllFilteredRooms?myRights=" + myRights
+                + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
+                + "&minCap=" + minCap + "&maxCap=" + maxCap;
+        try {
+            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -30,9 +30,9 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <ChoiceBox fx:id="fromChoicebox" layoutX="119.0" layoutY="238.0" prefHeight="19.0" prefWidth="73.0" />
+            <ChoiceBox fx:id="fromChoicebox" layoutX="190.0" layoutY="238.0" prefHeight="19.0" prefWidth="73.0" />
             <ChoiceBox fx:id="toChoicebox" layoutX="274.0" layoutY="238.0" prefHeight="26.0" prefWidth="79.0" />
-            <Text layoutX="140.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From:" />
+            <Text layoutX="212.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From:" />
             <Text layoutX="306.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To:" />
             <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="646.0" layoutY="134.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="482.0" prefWidth="417.0">
               <content>
@@ -48,6 +48,9 @@
             <TextField fx:id="bikeAmountInput" layoutX="231.0" layoutY="279.0" prefHeight="25.0" prefWidth="122.0" promptText="Amount" />
             <Button layoutX="236.0" layoutY="332.0" mnemonicParsing="false" onAction="#refreshBuildingsPage" text="Refresh" />
             <Button fx:id="submitNewBuilding" layoutX="297.0" layoutY="332.0" mnemonicParsing="false" onAction="#submitNewBuilding" text="Submit" />
+            <ChoiceBox fx:id="open" layoutX="109.0" layoutY="237.0" prefHeight="26.0" prefWidth="73.0" />
+            <ChoiceBox fx:id="options" layoutX="372.0" layoutY="239.0" prefHeight="26.0" prefWidth="238.0" />
+            <Text layoutX="480.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Presets" />
          </children>
       </AnchorPane>
    </children>
