@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -8,11 +11,6 @@ import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 
 public class AdminSceneController implements Initializable {
 

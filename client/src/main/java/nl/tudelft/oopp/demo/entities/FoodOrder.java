@@ -1,8 +1,9 @@
 package nl.tudelft.oopp.demo.entities;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class FoodOrder {
     private Integer id;
