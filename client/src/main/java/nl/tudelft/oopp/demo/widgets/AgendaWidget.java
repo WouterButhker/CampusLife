@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class AgendaWidget extends VBox {
-    private static final int NUM_BLOCKS = 5;
+    private int numb = 5;
 
     private Listener listener;
 
@@ -37,14 +37,14 @@ public class AgendaWidget extends VBox {
      * @param listener the listener which listens to the callbacks
      *                 specified in the interface
      */
-    public AgendaWidget(Listener listener) {
+    public AgendaWidget(Listener listener, int numBlocks) {
         this.listener = listener;
-
+        setNumBlocks(numBlocks);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
         setPadding(new Insets(8));
         setSpacing(8);
         setAlignment(Pos.CENTER);
-        for (int i = 0; i < NUM_BLOCKS; i++) {
+        for (int i = 0; i < numb; i++) {
             AgendaBlock agendaBlock = new AgendaBlock(String.format("%d:00", i), true);
             int finalI = i;
             agendaBlock.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -122,7 +122,7 @@ public class AgendaWidget extends VBox {
     }
 
     private void scrollDown() {
-        if (topBlock + NUM_BLOCKS <= to) {
+        if (topBlock + numb <= to) {
             topBlock += 1;
             redrawBlocks();
         }
@@ -136,7 +136,7 @@ public class AgendaWidget extends VBox {
     }
 
     private void redrawBlocks() {
-        for (int i = 0; i < NUM_BLOCKS; i++) {
+        for (int i = 0; i < numb; i++) {
             agendaBlocks.get(i).setTime(String.format("%d:00", topBlock + i));
             if ((topBlock + i) == selectedBlock) {
                 agendaBlocks.get(i).setSelected(true);
@@ -165,7 +165,7 @@ public class AgendaWidget extends VBox {
         double restSize = height * (1 - buttonsScale) - 16;
 
         for (AgendaBlock agendaBlock : agendaBlocks) {
-            agendaBlock.setPrefHeight(restSize / NUM_BLOCKS);
+            agendaBlock.setPrefHeight(restSize / numb);
         }
     }
 
@@ -257,6 +257,10 @@ public class AgendaWidget extends VBox {
         public void setTime(String time) {
             this.time.setText(time);
         }
+    }
+
+    private void setNumBlocks(int newNumBlocks) {
+        numb = newNumBlocks;
     }
 
     public interface Listener {

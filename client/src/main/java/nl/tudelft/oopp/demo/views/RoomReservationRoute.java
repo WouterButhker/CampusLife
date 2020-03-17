@@ -77,7 +77,7 @@ public class RoomReservationRoute extends Route {
                 reservationWidget.setPeriod(fromTime, toTime);
                 reservationWidget.setAvailable(available);
             }
-        });
+        }, 5);
         reservationWidget = new ReservationWidget(room, new ReservationWidget.Listener() {
             @Override
             public void onReserveClicked() {
