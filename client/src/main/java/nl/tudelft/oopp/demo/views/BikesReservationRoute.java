@@ -8,6 +8,8 @@ import java.util.Stack;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -87,9 +89,10 @@ public class BikesReservationRoute extends Route {
         });
     }
 
-    private HBox createReserveButton() {
-        HBox res = new HBox();
-        res.setPadding(new Insets(20, 0, 0, 50));
+    private Node createReserveButton() {
+        VBox res = new VBox();
+        res.setAlignment(Pos.CENTER);
+        res.setPadding(new Insets(20, 0, 0, 0));
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
         StackPane stackPane = new StackPane();
@@ -127,7 +130,7 @@ public class BikesReservationRoute extends Route {
         container.setPadding(new Insets(5, 10, 5, 10));
         stackPane.getChildren().add(container);
         stackPane.getChildren().add(hoverGlow);
-        res.getChildren().add(stackPane);
+        res.getChildren().add(new Group(stackPane));
         return res;
     }
 
