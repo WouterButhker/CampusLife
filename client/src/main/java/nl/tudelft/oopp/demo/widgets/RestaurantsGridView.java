@@ -1,14 +1,13 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.entities.Restaurant;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RestaurantsGridView extends GridPane {
     private List<Restaurant> restaurants;
@@ -49,7 +48,8 @@ public class RestaurantsGridView extends GridPane {
     private void addButtons() {
         for (int i = 0; i < restaurants.size(); i++) {
             Image image = new Image("/images/main-screen-food.jpg");
-            RectangularImageButton button = new RectangularImageButton(image, restaurants.get(i).getName());
+            RectangularImageButton button =
+                    new RectangularImageButton(image, restaurants.get(i).getName());
             int restaurantsPerRow = 5;
             this.add(button, i % restaurantsPerRow, i / restaurantsPerRow, 1, 1);
             restaurantButtons.add(button);
@@ -71,8 +71,7 @@ public class RestaurantsGridView extends GridPane {
     private void resizeDisplay(Number newWidth) {
         double buttonWidth = newWidth.doubleValue() / 6;
         double spacing = (newWidth.doubleValue() - buttonWidth * 5) / 6;
-        for (int i = 0; i < restaurantButtons.size(); i++) {
-            RectangularImageButton button = restaurantButtons.get(i);
+        for (RectangularImageButton button : restaurantButtons) {
             button.setFitWidth(buttonWidth);
         }
         setPadding(new Insets(0, 0, 0, spacing));

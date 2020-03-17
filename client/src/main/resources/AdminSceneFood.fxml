@@ -21,10 +21,12 @@
                         <Font size="24.0"/>
                     </font>
                 </Text>
+                <TextField fx:id="restaurantIdInput" layoutX="130.0" layoutY="173.0" promptText="Room code" />
                 <TextField fx:id="restaurantNameInput" layoutX="180.0" layoutY="217.0" promptText="Restaurant name"/>
                 <TextField fx:id="restaurantDescriptionInput" layoutX="180.0" layoutY="302.0"
                            promptText="Restaurant description"/>
                 <ChoiceBox fx:id="buildingList" layoutX="179.0" layoutY="258.0" prefWidth="150.0"/>
+                <Text layoutX="39.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant id" />
                 <Text layoutX="37.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant name"/>
                 <Text layoutX="37.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building"/>
                 <Text layoutX="37.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0"

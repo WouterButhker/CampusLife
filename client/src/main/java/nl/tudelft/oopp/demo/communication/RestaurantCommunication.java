@@ -5,13 +5,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.Restaurant;
-import org.springframework.web.client.HttpClientErrorException;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.demo.entities.Food;
+import nl.tudelft.oopp.demo.entities.Restaurant;
+import org.springframework.web.client.HttpClientErrorException;
 
 public class RestaurantCommunication {
 
@@ -21,19 +20,40 @@ public class RestaurantCommunication {
      * @param id the ID of the restaurant
      * @param name         name of  restaurant
      * @param buildingCode the building where it belongs to
-     * @param description
+     * @param description the description of the restaurant
      */
     public static void addRestaurantToDatabase(int id,
                                                String name,
                                                Integer buildingCode,
                                                String description) {
-        String url = "/restaurants/add?id=" + id + "&name=" + name + "&buildingCode=" + buildingCode + "&description=" + description;
+        String url = "/restaurants/add?id=" + id
+                + "&name=" + name
+                + "&buildingCode=" + buildingCode
+                + "&description=" + description;
 
         try {
             ServerCommunication.authenticatedRequest(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Retrieves all the restaurants.
+     *
+     * @return List of all Restaurants
+     */
+    public static List<Restaurant> getRestaurants() {
+        try {
+            String responseString = ServerCommunication.authenticatedRequest(
+                    "/restaurants").getBody();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Restaurant>>() {}.getType();
+            return gson.fromJson(responseString, listType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -54,25 +74,12 @@ public class RestaurantCommunication {
     }
 
     /**
-     * Returns a list of all the Restaurants from the database.
-     *
-     * @return list of Restaurants
-     */
-    public static List<Restaurant> getAllRestaurants() {
-        String url = "/restaurants/all";
-        try {
-            return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
-        } catch (HttpClientErrorException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-     /**
      * Deletes a Restaurant from the database.
      *
      * @param name the name of the restaurant that needs to be removed
-     * @return
+     * @return something
      */
+
     public static String deleteRestaurantFromDatabase(String name) {
         String url = "/restaurants/delete?name=" + name;
         try {
@@ -82,39 +89,6 @@ public class RestaurantCommunication {
             e.printStackTrace();
         }
         return "-1";
-    }
-
-    /**
-     * Deletes a restaurant.
-     * @param id the id of the restaurant to delete
-     * @return True if the restaurant was deleted
-     */
-    public static boolean deleteRestaurant(int id) {
-        try {
-            String responseString = ServerCommunication.authenticatedDeleteRequest(
-                    String.format("/restaurants/%d", id)).getBody();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * Retrieves all the restaurants.
-     * @return List of all Restaurants
-     */
-    public static List<Restaurant> getRestaurants() {
-        try {
-            String responseString = ServerCommunication.authenticatedRequest(
-                    "/restaurants").getBody();
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<Restaurant>>() {}.getType();
-            return gson.fromJson(responseString, listType);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**

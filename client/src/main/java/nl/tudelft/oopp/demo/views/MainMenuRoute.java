@@ -141,9 +141,9 @@ public class MainMenuRoute extends Route {
                 RoutingScene routingScene = (RoutingScene) button.getScene();
                 routingScene.pushRoute(new RestaurantsListRoute());
 
-                Restaurant restaurant = RestaurantCommunication.getRestaurants().get(0);
+                //Restaurant restaurant = RestaurantCommunication.getRestaurants().get(0);
 
-                routingScene.pushRoute(new RestaurantMenuRoute(restaurant));
+                //routingScene.pushRoute(new RestaurantMenuRoute(restaurant));
             }
         });
         mainButtons.add(foodButton);

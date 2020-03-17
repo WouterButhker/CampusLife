@@ -89,7 +89,7 @@ public class Restaurant {
         }
         Restaurant restaurant = (Restaurant) o;
         return name.equals(restaurant.name)
-                && buildingCode == restaurant.buildingCode
+                && buildingCode.equals(restaurant.buildingCode)
                 && description.equals(restaurant.description);
     }
 

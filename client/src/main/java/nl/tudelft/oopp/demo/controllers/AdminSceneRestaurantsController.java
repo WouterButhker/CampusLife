@@ -34,7 +34,7 @@ public class AdminSceneRestaurantsController implements Initializable {
 
     @FXML
     private TextField restaurantIdInput;
-    
+
     @FXML
     private TextField restaurantNameInput;
 
@@ -98,7 +98,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         }
         List<Restaurant> restaurants;
         if (buildingCode == -1) {
-            restaurants = RestaurantCommunication.getAllRestaurants();
+            restaurants = RestaurantCommunication.getRestaurants();
         } else {
             restaurants = RestaurantCommunication.getAllRestaurantsFromBuilding(buildingCode);
         }
@@ -167,7 +167,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         } else {
             System.out.println("No building selected");
         }
-        
+
         int restaurantID = Integer.parseInt(restaurantIdInput.getText().trim());
 
         String restaurantName = restaurantNameInput.getText();
