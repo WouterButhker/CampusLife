@@ -117,7 +117,8 @@ public class RestaurantCommunication {
      * @return Restaurant object
      */
     public static Restaurant parseRestaurant(JsonObject inputRestaurant) {
-        int id = inputRestaurant.get("id").getAsInt(); //Exception in thread "JavaFX Application Thread" java.lang.NullPointerException??????
+        int id = inputRestaurant.get("id").getAsInt();
+        //Exception in thread "JavaFX Application Thread" java.lang.NullPointerException??????
         String name = inputRestaurant.get("name").getAsString();
         Integer buildingCode = BuildingCommunication.parseBuilding(
                 inputRestaurant.get("building").getAsJsonObject()).getCode();

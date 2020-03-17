@@ -108,7 +108,8 @@ public class AdminSceneRestaurantsController implements Initializable {
         Text submitStatus = new Text();
 
         if (!restaurantName.equals("") && buildingFound) {
-            RestaurantCommunication.addRestaurantToDatabase(restaurantID, restaurantName, buildingCode, restaurantDescription);
+            RestaurantCommunication.addRestaurantToDatabase(restaurantID,
+                    restaurantName, buildingCode, restaurantDescription);
             submitStatus.setText("Room has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
@@ -195,7 +196,8 @@ public class AdminSceneRestaurantsController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    RestaurantCommunication.deleteRestaurantFromDatabase(restaurants.get(finalI).getName());
+                    RestaurantCommunication.deleteRestaurantFromDatabase(
+                            restaurants.get(finalI).getName());
                     loadRestaurants(buildingList2.getValue());
                 }
             });
@@ -272,7 +274,8 @@ public class AdminSceneRestaurantsController implements Initializable {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Label status = modifyRestaurant(restaurant.getId(), name.getText(), restaurant.getBuildingCode(), description.getText());
+                Label status = modifyRestaurant(restaurant.getId(),
+                        name.getText(), restaurant.getBuildingCode(), description.getText());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
