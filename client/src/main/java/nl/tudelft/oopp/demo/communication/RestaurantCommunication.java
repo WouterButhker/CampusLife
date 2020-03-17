@@ -57,10 +57,10 @@ public class RestaurantCommunication {
     }
 
     /**
-     * Returns a list of all the rooms that are part of the building.
+     * Returns a list of all the restaurants that are part of the building.
      *
      * @param building the number of the building you want to see the rooms from
-     * @return a list of rooms from that building
+     * @return a list of restaurants from that building
      */
     public static List<Restaurant> getAllRestaurantsFromBuilding(Integer building) {
         String url = "/rooms/getRoomsFromBuilding?building=" + building;
@@ -113,8 +113,8 @@ public class RestaurantCommunication {
     /**
      * Parses a Restaurant from a JSON object.
      *
-     * @param inputRestaurant JSON object with room attributes
-     * @return Room object
+     * @param inputRestaurant JSON object with restaurant attributes
+     * @return Restaurant object
      */
     public static Restaurant parseRestaurant(JsonObject inputRestaurant) {
         int id = inputRestaurant.get("id").getAsInt();

@@ -1,12 +1,13 @@
 package nl.tudelft.oopp.demo.entities;
 
-
 import java.util.Objects;
 import javax.persistence.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "restaurant")
@@ -17,8 +18,10 @@ public class Restaurant {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
-    @Column(name = "building")
-    private Integer buildingCode;
+    @ManyToOne
+    @JoinColumn(name = "building")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Building building;
 
     @Column(name = "name")
     private String name;
@@ -33,16 +36,16 @@ public class Restaurant {
     /**
      * Constructor for a restaurant.
      * @param id the id of the restaurant
-     * @param buildingCode the id of the building where it is located
+     * @param building the id of the building where it is located
      * @param name the name
      * @param description a description of the restaurant
      */
     public Restaurant(Integer id,
-                      Integer buildingCode,
+                      Building building,
                       String name,
                       String description) {
         this.id = id;
-        this.buildingCode = buildingCode;
+        this.building = building;
         this.name = name;
         this.description = description;
     }
@@ -55,12 +58,12 @@ public class Restaurant {
         this.id = id;
     }
 
-    public Integer getBuilding() {
-        return buildingCode;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setBuilding(Integer building) {
-        this.buildingCode = building;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     public String getName() {
@@ -89,12 +92,12 @@ public class Restaurant {
         }
         Restaurant restaurant = (Restaurant) o;
         return name.equals(restaurant.name)
-                && buildingCode.equals(restaurant.buildingCode)
+                && building.equals(restaurant.building)
                 && description.equals(restaurant.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, buildingCode, description);
+        return Objects.hash(name, building, description);
     }
 }

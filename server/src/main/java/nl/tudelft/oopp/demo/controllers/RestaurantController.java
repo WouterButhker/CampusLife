@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
@@ -30,7 +32,7 @@ public class RestaurantController {
      * Adds a new restaurant to the database.
      *
      * @param name         the actual (full) name
-     * @param buildingCode the number of the building
+     * @param building the number of the building
      * @param description format aa:bb-cc:dd
      * @return Saved
      */
@@ -38,9 +40,9 @@ public class RestaurantController {
     public @ResponseBody
     String addNewRestaurant(@RequestParam int id,
                             @RequestParam String name,
-                            @RequestParam Integer buildingCode,
+                            @RequestParam Building building,
                             @RequestParam String description) {
-        Restaurant restaurant = new Restaurant(id, buildingCode, name, description);
+        Restaurant restaurant = new Restaurant(id, building, name, description);
         restaurantRepository.save(restaurant);
         return "Saved";
     }
@@ -64,7 +66,7 @@ public class RestaurantController {
     }
 
     @GetMapping(path = "/count")
-    public Integer countBuildings() {
+    public Integer countRestaurants() {
         return restaurantRepository.countAllRestaurants();
     }
 

@@ -88,75 +88,6 @@ public class AdminSceneRestaurantsController implements Initializable {
         }
     }
 
-    private void loadRestaurants(String buildingCodeString) {
-        restaurantsList.getChildren().clear();
-        int buildingCode;
-        if (buildingCodeString.equals("All buildings")) {
-            buildingCode = -1;
-        } else {
-            buildingCode = Integer.parseInt(buildingCodeString.split(" ")[0]);
-        }
-        List<Restaurant> restaurants;
-        if (buildingCode == -1) {
-            restaurants = RestaurantCommunication.getRestaurants();
-        } else {
-            restaurants = RestaurantCommunication.getAllRestaurantsFromBuilding(buildingCode);
-        }
-        int numRestaurants = restaurants.size();
-        int height = numRestaurants * 82;
-        anchorPaneRestaurants.setPrefHeight(height);
-        if (height <= scrollPane.getPrefHeight()) {
-            scrollPane.setPrefWidth(400);
-        } else {
-            scrollPane.setPrefWidth(417);
-        }
-        for (int i = 0; i < numRestaurants; i++) {
-            HBox restaurant = new HBox();
-            restaurant.setMaxWidth(400);
-            Image image = new Image("images/RoomTempIMG.jpg");
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(65);
-            imageView.setFitHeight(60);
-            Label text = new Label("Building Code: " + restaurants.get(i).getBuildingCode()
-                    + "\n" + restaurants.get(i).getName());
-            text.setPrefSize(225, 60);
-            text.setPadding(new Insets(0, 0, 0, 10));
-            Button modify = new Button("modify");
-            int finalI = i;
-            modify.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    createModifyPopup(restaurants.get(finalI));
-                }
-            });
-            modify.setPrefSize(45, 40);
-            modify.setPadding(new Insets(0, 0, 0, 0));
-            StackPane modifyPane = new StackPane(modify);
-            modifyPane.setPadding(new Insets(10, 0, 10, 0));
-            Button delete = new Button("delete");
-            delete.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    RestaurantCommunication.deleteRestaurantFromDatabase(restaurants.get(finalI).getName());
-                    loadRestaurants(buildingList2.getValue());
-                }
-            });
-            delete.setPrefSize(45, 40);
-            delete.setPadding(new Insets(0, 0, 0, 0));
-            StackPane deletePane = new StackPane(delete);
-            deletePane.setPadding(new Insets(10, 0, 10, 0));
-            restaurant.setPadding(new Insets(5, 5, 5, 5));
-            String css = "-fx-border-color: black;\n"
-                    + "-fx-border-insets: 4\n;"
-                    + "-fx-border-style: solid\n;"
-                    + "-fx-border-width: 1;"
-                    + "-fx-border-radius: 10;";
-            restaurant.setStyle(css);
-            restaurant.getChildren().addAll(imageView, text, modifyPane, deletePane);
-            restaurantsList.getChildren().add(restaurant);
-        }
-    }
-
     @FXML
     private void submitNewRestaurant() {
         boolean buildingFound = false;
@@ -212,6 +143,76 @@ public class AdminSceneRestaurantsController implements Initializable {
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
+    }
+
+    private void loadRestaurants(String buildingCodeString) {
+        restaurantsList.getChildren().clear();
+        int buildingCode;
+        if (buildingCodeString.equals("All buildings")) {
+            buildingCode = -1;
+        } else {
+            buildingCode = Integer.parseInt(buildingCodeString.split(" ")[0]);
+        }
+        List<Restaurant> restaurants;
+        if (buildingCode == -1) {
+            restaurants = RestaurantCommunication.getRestaurants();
+        } else {
+            restaurants = RestaurantCommunication.getAllRestaurantsFromBuilding(buildingCode);
+        }
+        int numRestaurants = restaurants.size();
+        int height = numRestaurants * 82;
+        anchorPaneRestaurants.setPrefHeight(height);
+        if (height <= scrollPane.getPrefHeight()) {
+            scrollPane.setPrefWidth(400);
+        } else {
+            scrollPane.setPrefWidth(417);
+        }
+        for (int i = 0; i < numRestaurants; i++) {
+            HBox restaurant = new HBox();
+            restaurant.setMaxWidth(400);
+            Image image = new Image("images/RoomTempIMG.jpg");
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(65);
+            imageView.setFitHeight(60);
+            Label text = new Label("Building Code: " + restaurants.get(i).getBuildingCode()
+                    + " Restaurant ID: " + restaurants.get(i).getId()
+                    + "\n" + restaurants.get(i).getName());
+            text.setPrefSize(225, 60);
+            text.setPadding(new Insets(0, 0, 0, 10));
+            Button modify = new Button("modify");
+            int finalI = i;
+            modify.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    createModifyPopup(restaurants.get(finalI));
+                }
+            });
+            modify.setPrefSize(45, 40);
+            modify.setPadding(new Insets(0, 0, 0, 0));
+            StackPane modifyPane = new StackPane(modify);
+            modifyPane.setPadding(new Insets(10, 0, 10, 0));
+            Button delete = new Button("delete");
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    RestaurantCommunication.deleteRestaurantFromDatabase(restaurants.get(finalI).getName());
+                    loadRestaurants(buildingList2.getValue());
+                }
+            });
+            delete.setPrefSize(45, 40);
+            delete.setPadding(new Insets(0, 0, 0, 0));
+            StackPane deletePane = new StackPane(delete);
+            deletePane.setPadding(new Insets(10, 0, 10, 0));
+            restaurant.setPadding(new Insets(5, 5, 5, 5));
+            String css = "-fx-border-color: black;\n"
+                    + "-fx-border-insets: 4\n;"
+                    + "-fx-border-style: solid\n;"
+                    + "-fx-border-width: 1;"
+                    + "-fx-border-radius: 10;";
+            restaurant.setStyle(css);
+            restaurant.getChildren().addAll(imageView, text, modifyPane, deletePane);
+            restaurantsList.getChildren().add(restaurant);
+        }
     }
 
     @FXML
