@@ -14,31 +14,22 @@ import org.springframework.web.client.HttpClientErrorException;
 
 public class RestaurantCommunication {
 
-    /*
     /**
-     * For adding a restaurant to the database.
+     * Creates a restaurant.
      *
-     * @param id the ID of the restaurant
-     * @param name         name of  restaurant
-     * @param buildingCode the building where it belongs to
-     * @param description the description of the restaurant
-     *
-    public static void addRestaurantToDatabase(int id,
-                                               String name,
-                                               Integer buildingCode,
-                                               String description) {
-        String url = "/restaurants/add?id=" + id
-                + "&name=" + name
-                + "&buildingCode=" + buildingCode
-                + "&description=" + description;
-
+     * @return The created Restaurant entity
+     */
+    public static Restaurant createRestaurant(Restaurant restaurant) {
         try {
-            ServerCommunication.authenticatedRequest(url);
+            String responseString = ServerCommunication.authenticatedPostRequest(
+                    "/restaurants/addRestaurant", restaurant).getBody();
+            Gson gson = new Gson();
+            return gson.fromJson(responseString, Restaurant.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
-     */
 
     /**
      * Retrieves all the restaurants.
@@ -75,12 +66,12 @@ public class RestaurantCommunication {
     /**
      * Deletes a Restaurant from the database.
      *
-     * @param name the name of the restaurant that needs to be removed
+     * @param id the name of the restaurant that needs to be removed
      * @return something
      */
 
-    public static String deleteRestaurantFromDatabase(String name) {
-        String url = "/restaurants/delete?name=" + name;
+    public static String deleteRestaurantFromDatabase(Integer id) {
+        String url = "/restaurants/delete?id=" + id;
         try {
 
             return ServerCommunication.authenticatedRequest(url).getBody();
@@ -141,20 +132,4 @@ public class RestaurantCommunication {
         return listOfRestaurants;
     }
 
-    /**
-     * Creates a restaurant.
-     *
-     * @return The created Restaurant entity
-     */
-    public static Restaurant createRestaurant(Restaurant restaurant) {
-        try {
-            String responseString = ServerCommunication.authenticatedPostRequest(
-                    "/restaurants/addRestaurant", restaurant).getBody();
-            Gson gson = new Gson();
-            return gson.fromJson(responseString, Restaurant.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

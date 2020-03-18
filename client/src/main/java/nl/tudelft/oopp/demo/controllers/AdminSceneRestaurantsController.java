@@ -109,7 +109,9 @@ public class AdminSceneRestaurantsController implements Initializable {
 
         if (!restaurantName.equals("") && buildingFound) {
             RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
-                    restaurantName, buildingCode, restaurantDescription));
+                                                                    restaurantName,
+                                                                    buildingCode,
+                                                                    restaurantDescription));
             submitStatus.setText("Restaurant has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
@@ -197,7 +199,7 @@ public class AdminSceneRestaurantsController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     RestaurantCommunication.deleteRestaurantFromDatabase(
-                            restaurants.get(finalI).getName());
+                            restaurants.get(finalI).getId());
                     loadRestaurants(buildingList2.getValue());
                 }
             });

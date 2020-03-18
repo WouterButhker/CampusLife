@@ -23,34 +23,27 @@ public class RestaurantController {
     @Autowired
     private FoodRepository foodRepository;
 
+    /**
+     * Adds a new restaurant to the database.
+     * @param restaurant the restaurant
+     * @return Saved
+     */
+    @PostMapping(path = "/addRestaurant",
+            consumes = "application/json",
+            produces = "application/json")
+    Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
+        return restaurantRepository.save(restaurant);
+    }
+
     @GetMapping(path = "/all")
     public List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
 
-    /**
-     * Adds a new restaurant to the database.
-     *
-     * @param name         the actual (full) name
-     * @param building the number of the building
-     * @param description format aa:bb-cc:dd
-     * @return Saved
-     */
-    @GetMapping(path = "/add")
-    public @ResponseBody
-    String addNewRestaurant(@RequestParam int id,
-                            @RequestParam String name,
-                            @RequestParam Building building,
-                            @RequestParam String description) {
-        Restaurant restaurant = new Restaurant(id, name, building, description);
-        restaurantRepository.save(restaurant);
-        return "Saved";
-    }
-
     @Transactional
     @GetMapping(path = "/delete")
-    public Integer deleteRestaurant(@RequestParam String name) {
-        return restaurantRepository.deleteRestaurantWithName(name);
+    public Integer deleteRestaurantWithId(@RequestParam Integer id) {
+        return restaurantRepository.deleteRestaurantWithId(id);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -65,11 +58,6 @@ public class RestaurantController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/count")
-    public Integer countRestaurants() {
-        return restaurantRepository.countAllRestaurants();
-    }
-
     /**
      * Returns all food of the restaurant.
      * @param id the id of the restaurant
@@ -78,18 +66,6 @@ public class RestaurantController {
     @GetMapping(value = "/{id}/food")
     List<Food> getAllFood(@PathVariable Integer id) {
         return foodRepository.allFoodOfRestaurant(id);
-    }
-
-    /**
-     * Adds a new restaurant to the database.
-     * @param restaurant the restaurant
-     * @return Saved
-     */
-    @PostMapping(path = "/addRestaurant",
-            consumes = "application/json",
-            produces = "application/json")
-    Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
-        return restaurantRepository.save(restaurant);
     }
 
     @GetMapping(path = "/getAllRestaurantsFromBuilding")

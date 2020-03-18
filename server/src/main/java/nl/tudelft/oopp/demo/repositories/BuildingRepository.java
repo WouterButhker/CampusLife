@@ -27,4 +27,7 @@ public interface BuildingRepository extends JpaRepository<Building, Integer> {
 
     // @Query("DELETE FROM building where buildingCode = 3;")
     // String removeBuilding()
+
+    @Query("SELECT b FROM Building b WHERE b.buildingCode = ?1")
+    List<Building> getBuildingByCode(Integer buildingCode);
 }

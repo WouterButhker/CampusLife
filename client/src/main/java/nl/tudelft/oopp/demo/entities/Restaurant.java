@@ -6,7 +6,7 @@ public class Restaurant {
 
     private int id;
     private String name;
-    private Integer building;
+    private Integer buildingCode;
     private String description;
 
     /**
@@ -14,15 +14,15 @@ public class Restaurant {
      *
      * @param id the ID of the restaurant
      * @param name         String with the name of the Restaurant
-     * @param building the code of the building the Restaurant is in
+     * @param buildingCode the code of the building the Restaurant is in
      * @param description a String with format hh:mm-hh:mm
      */
     public Restaurant(int id, String name,
-                      Integer building,
+                      Integer buildingCode,
                       String description) {
         this.id = id;
         this.name = name;
-        this.building = building;
+        this.buildingCode = buildingCode;
         this.description = description;
     }
 
@@ -43,11 +43,11 @@ public class Restaurant {
     }
 
     public Integer getBuildingCode() {
-        return building;
+        return buildingCode;
     }
 
-    public void setBuildingCode(Integer building) {
-        this.building = building;
+    public void setBuildingCode(Integer buildingCode) {
+        this.buildingCode = buildingCode;
     }
 
     public String getDescription() {
@@ -69,13 +69,13 @@ public class Restaurant {
         Restaurant restaurant = (Restaurant) o;
         return id == restaurant.id
                 && name.equals(restaurant.name)
-                && building.equals(restaurant.building)
+                && buildingCode.equals(restaurant.buildingCode)
                 && description.equals(restaurant.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, building, description);
+        return Objects.hash(name, buildingCode, description);
     }
 
 }
