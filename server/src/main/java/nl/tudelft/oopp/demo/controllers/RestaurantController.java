@@ -85,7 +85,7 @@ public class RestaurantController {
      * @param restaurant the restaurant
      * @return Saved
      */
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/addRestaurant", consumes = "application/json", produces = "application/json")
     Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
     }
