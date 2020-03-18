@@ -7,7 +7,6 @@ public abstract class Reservation {
 
     private int id;
 
-
     private UserDtO user;
 
     private String date;

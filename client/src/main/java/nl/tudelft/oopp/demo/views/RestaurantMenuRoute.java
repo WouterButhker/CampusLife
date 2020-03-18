@@ -46,7 +46,8 @@ public class RestaurantMenuRoute extends Route {
      * @param restaurant the restaurant to be displayed
      */
     public RestaurantMenuRoute(Restaurant restaurant) {
-        foodOrder = new FoodOrder(null, restaurant.getId(), -1);
+        // TODO: Date and time
+        foodOrder = new FoodOrder(null,"","", restaurant.getId());
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
