@@ -11,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -39,8 +38,8 @@ public class BikesReservationRoute extends Route {
     private BikeReservationWidget bikeReservationWidgetDropOff;
 
     private Calendar selectedDate = Calendar.getInstance();
-    private Calendar fromTime;
-    private Calendar toTime;
+
+    private StackPane reserveButton;
 
     private Label text;
 
@@ -62,15 +61,35 @@ public class BikesReservationRoute extends Route {
         calendarWidget.setListener(new CalendarWidget.Listener() {
             @Override
             public void onDayClicked(Calendar day) {
-                bikeReservationWidgetDropOff.setSelectedDate(day);
                 bikeReservationWidgetPickUp.setSelectedDate(day);
+                bikeReservationWidgetPickUp.setAvailabilities();
+                bikeReservationWidgetPickUp.removeSelection();
+                bikeReservationWidgetPickUp.setTimeSelected(null);
+                bikeReservationWidgetDropOff.setSelectedDate(day);
+                bikeReservationWidgetDropOff.setAvailabilities();
+                bikeReservationWidgetDropOff.removeSelection();
+                bikeReservationWidgetDropOff.setTimeSelected(null);
+                toggleButton();
             }
         });
         calendarWidget.getChildren().add(createReserveButton());
 
         bikeReservationWidgetPickUp = new BikeReservationWidget("Pick up building");
-
         bikeReservationWidgetDropOff = new BikeReservationWidget("Drop off building");
+        bikeReservationWidgetPickUp.setListener(new BikeReservationWidget.Listener() {
+            @Override
+            public void changed() {
+                toggleButton();
+            }
+        });
+        bikeReservationWidgetDropOff.setListener(new BikeReservationWidget.Listener() {
+            @Override
+            public void changed() {
+                toggleButton();
+            }
+        });
+        bikeReservationWidgetPickUp.setOtherWidget(bikeReservationWidgetDropOff);
+        bikeReservationWidgetDropOff.setOtherWidget(bikeReservationWidgetPickUp);
 
         horizontalContainer.getChildren().addAll(calendarWidget, bikeReservationWidgetPickUp,
                 bikeReservationWidgetDropOff);
@@ -78,15 +97,20 @@ public class BikesReservationRoute extends Route {
         horizontalContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
             if (newScene != null) {
                 resizeDisplay(newScene.getWidth());
-                //agendaWidget.setPrefHeight(newScene.getHeight() * 0.65);
                 newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
                     resizeDisplay(newWidth.doubleValue());
                 });
-                newScene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-                    //agendaWidget.setPrefHeight(newHeight.doubleValue() * 0.65);
-                });
             }
         });
+        toggleButton();
+    }
+
+    private void toggleButton() {
+        if (allConditionsSelected()) {
+            reserveButton.setDisable(false);
+        } else {
+            reserveButton.setDisable(true);
+        }
     }
 
     private Node createReserveButton() {
@@ -95,7 +119,6 @@ public class BikesReservationRoute extends Route {
         res.setPadding(new Insets(20, 0, 0, 0));
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
-        StackPane stackPane = new StackPane();
         VBox hoverGlow = new VBox();
         Rectangle hoverGlowRectangle = new Rectangle();
         hoverGlow.getChildren().add(hoverGlowRectangle);
@@ -104,33 +127,30 @@ public class BikesReservationRoute extends Route {
         hoverGlow.setVisible(false);
         text = new Label("Reserve");
         container.getChildren().addAll(text);
-        stackPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        reserveButton = new StackPane();
+        reserveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 reserveBike();
-                System.out.println("Clicked!");
-                System.out.println(stackPane.getPrefWidth());
-                System.out.println(calendarWidget.getPrefWidth());
-                System.out.println(text.getPrefWidth());
             }
         });
-        stackPane.getStyleClass().add("available-date-box");
-        stackPane.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        reserveButton.getStyleClass().add("available-date-box");
+        reserveButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 hoverGlow.setVisible(true);
             }
         });
-        stackPane.setOnMouseExited(new EventHandler<MouseEvent>() {
+        reserveButton.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 hoverGlow.setVisible(false);
             }
         });
         container.setPadding(new Insets(5, 10, 5, 10));
-        stackPane.getChildren().add(container);
-        stackPane.getChildren().add(hoverGlow);
-        res.getChildren().add(new Group(stackPane));
+        reserveButton.getChildren().add(container);
+        reserveButton.getChildren().add(hoverGlow);
+        res.getChildren().add(new Group(reserveButton));
         return res;
     }
 
@@ -146,7 +166,7 @@ public class BikesReservationRoute extends Route {
         Building dropOffBuilding = bikeReservationWidgetDropOff.getSelected();
         Calendar pickUpTime = bikeReservationWidgetPickUp.getTimeSelected();
         Calendar dropOffTime = bikeReservationWidgetDropOff.getTimeSelected();
-        if (pickUpBuilding != null && dropOffBuilding != null && pickUpTime != null && dropOffTime != null) {
+        if (allConditionsSelected()) {
             DateFormat dateFormat = new SimpleDateFormat("HH:mm");
             String pickUp = dateFormat.format(pickUpTime.getTime());
             String dropOff = dateFormat.format(dropOffTime.getTime());
@@ -154,11 +174,24 @@ public class BikesReservationRoute extends Route {
                 String slot = pickUp + "-" + dropOff;
                 DateFormat dayFormat = new SimpleDateFormat("dd/MM/yyyy");
                 String date = dayFormat.format(pickUpTime.getTime());
-                BikeReservationCommunication.addReservationToTheDatabase(AuthenticationCommunication.myUserId,
+                BikeReservationCommunication.addReservationToTheDatabase(
+                        AuthenticationCommunication.myUserId,
                         pickUpBuilding.getCode(), dropOffBuilding.getCode(), date, slot);
+                //bikeReservationWidgetPickUp.loadBuildings();
+                //bikeReservationWidgetDropOff.loadBuildings();
+                return;
             }
         }
+        //Error popup
+    }
 
+    private boolean allConditionsSelected() {
+        Building pickUpBuilding = bikeReservationWidgetPickUp.getSelected();
+        Building dropOffBuilding = bikeReservationWidgetDropOff.getSelected();
+        Calendar pickUpTime = bikeReservationWidgetPickUp.getTimeSelected();
+        Calendar dropOffTime = bikeReservationWidgetDropOff.getTimeSelected();
+        return pickUpBuilding != null && dropOffBuilding != null && pickUpTime != null
+                && dropOffTime != null && pickUpBuilding.getBikes() > 0;
     }
 
     @Override

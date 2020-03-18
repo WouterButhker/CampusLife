@@ -106,5 +106,18 @@ public class BikeReservationCommunication {
         return null;
     }
 
+    /**
+     * Deletes the BikeReservation with the given id.
+     * @param id The id of the BikeReservation that has to be deleted
+     */
+    public void deleteBikeReservation(int id) {
+        try {
+            ServerCommunication.authenticatedDeleteRequest(
+                    String.format("/bikeReservations/%d", id));
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Delete failed");
+        }
+    }
 }

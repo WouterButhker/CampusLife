@@ -3,12 +3,9 @@ package nl.tudelft.oopp.demo.widgets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -20,21 +17,20 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Weekdays;
 
 
 public class BikeReservationWidget extends VBox {
 
     private List<Building> buildingList;
-    private List<BikeReservation> relevantBikeReservations;
     private Building selected;
     private int selectedInList;
+    private int selectedInOtherList;
 
     private Label header;
 
@@ -48,13 +44,18 @@ public class BikeReservationWidget extends VBox {
     private Calendar timeSelected;
     private Calendar selectedDate = Calendar.getInstance();
 
+    private BikeReservationWidget otherWidget;
+
+    private Listener listener;
+
     /**
      * Creates a new BikeReservationWidget that is used to reserve bikes.
+     * @param text The header that is being displayed at the top of the widget
      */
     public BikeReservationWidget(String text) {
         setSelectedInList(-1);
+        setSelectedInOtherList(-1);
         buildingList = BuildingCommunication.getAllBuildingsWithBikeStation();
-        loadRelevantBikeReservations();
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
 
@@ -67,6 +68,7 @@ public class BikeReservationWidget extends VBox {
         scrollPane = new ScrollPane(buildingDisplay);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-background-color: transparent");
         buildingDisplayList = new VBox();
         boxes = new ArrayList<>();
         buildingDisplay.getChildren().add(buildingDisplayList);
@@ -79,10 +81,9 @@ public class BikeReservationWidget extends VBox {
                 timeSelected = (Calendar) selectedDate.clone();
                 timeSelected.set(Calendar.HOUR_OF_DAY, begin);
                 timeSelected.set(Calendar.MINUTE, 0);
-                //DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-               // time = dateFormat.format(timeSelected.getTime());
+                listener.changed();
             }
-        }, 3);
+        }, 4);
 
         this.getChildren().add(agendaWidget);
 
@@ -94,13 +95,16 @@ public class BikeReservationWidget extends VBox {
 
     }
 
-    private void loadBuildings() {
+    /**
+     * Method that loads the buildings into the scroll pane of the widget.
+     */
+    public void loadBuildings() {
         int numBuildings = buildingList.size();
         buildingDisplayList.getChildren().clear();
         boxes.clear();
         for (int i = 0; i < numBuildings; i++) {
             HBox buildingBox = new HBox();
-            buildingBox.setPrefWidth(scrollPane.getPrefWidth() + 10);
+            buildingBox.setPrefWidth(scrollPane.getPrefWidth() + 12);
             buildingBox.setPadding(new Insets(5));
             String css = "-fx-border-color: black;\n"
                     + "-fx-border-insets: 4\n;"
@@ -122,14 +126,13 @@ public class BikeReservationWidget extends VBox {
             //-45 for the button width
             //-10 for the padding
             //-20 for the left and right padding of the total HBox
-            //+20 for some weird correction??
-            label.setPrefWidth(scrollPane.getPrefWidth() - 65 - 45 - 10 - 20 + 20);
+            //+22 for some weird correction??
+            label.setPrefWidth(scrollPane.getPrefWidth() - 65 - 45 - 10 - 20 + 22);
             label.setPadding(new Insets(0, 0, 0, 10));
 
             StackPane buttonPane = new StackPane();
             buttonPane.setPrefSize(45, 40);
             buttonPane.setId(String.valueOf(i));
-            //buttonPane.setPadding(new Insets(0, 0, 0, 0));
             VBox hoverGlow = new VBox();
             hoverGlow.setPrefSize(45, 40);
             Rectangle hoverGlowRectangle = new Rectangle();
@@ -145,7 +148,10 @@ public class BikeReservationWidget extends VBox {
                 @Override
                 public void handle(MouseEvent event) {
                     selectBuilding(event);
+                    removeSelection();
+                    setTimeSelected(null);
                     updateButtons();
+                    listener.changed();
                 }
             });
             buttonPane.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -172,36 +178,44 @@ public class BikeReservationWidget extends VBox {
         StackPane stackPane = (StackPane) event.getSource();
         int ithBuilding = Integer.parseInt(stackPane.getId());
         setSelectedInList(ithBuilding);
+        otherWidget.setSelectedInOtherList(getSelectedInList());
+        otherWidget.updateButtons();
         setSelected(buildingList.get(selectedInList));
+        setAvailabilities();
     }
 
-//    private void reserveBike(ActionEvent event) {
-//        if (dateSelected && !bikeReserved()) {
-//            Button button = (Button) event.getSource();
-//            int buildingCode = Integer.parseInt(button.getId());
-//            int userId = AuthenticationCommunication.myUserId;
-//            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-//            String date = format.format(from.getTime());
-//            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-//            String fromTime = timeFormat.format(from.getTime());
-//            String toTime = timeFormat.format(to.getTime());
-//            String slot = fromTime + "-" + toTime;
-//            //            BikeReservationCommunication.createBikeReservation(new
-//            //            BikeReservation(null, userId,
-//            //                    buildingCode, buildingCode, date, slot));
-//            BikeReservationCommunication.addReservationToTheDatabase(userId,
-//                    buildingCode, buildingCode, date, slot);
-//            loadRelevantBikeReservations();
-//        }
-//    }
+    public void setAvailabilities() {
+        agendaWidget.setAvailabilities(computeAvailabilities());
+    }
 
-    private boolean bikeReserved() {
-        for (int i = 0; i < relevantBikeReservations.size(); i++) {
-            if (relevantBikeReservations.get(i).getUser().equals(AuthenticationCommunication.myUserId)) {
-                return true;
+    private boolean[] computeAvailabilities() {
+        if (selected == null) {
+            return new boolean[24];
+        }
+        Building building = selected;
+        int day = selectedDate.get(Calendar.DAY_OF_WEEK);
+        //some modulo shenanigans because weekDays[0] is monday but Calendar doesn't have the same
+        day = day + 5;
+        day = day % 7;
+        Weekdays openingHoursWeek = new Weekdays(building.getOpeningHours());
+        String openingHoursDay = openingHoursWeek.getWeekdays().get(day);
+        //if closed
+        if (openingHoursDay.equals(Weekdays.CLOSED)) {
+            return new boolean[24];
+        }
+        String begin = openingHoursDay.split("-")[0];
+        String end = openingHoursDay.split("-")[1];
+        int beginTime = Integer.parseInt(begin.split(":")[0]);
+        int endTime = Integer.parseInt(end.split(":")[0]);
+        boolean[] res = new boolean[24];
+        for (int i = 0; i < res.length; i++) {
+            if (i >= beginTime && i < endTime) {
+                res [i] = true;
+            } else {
+                res [i] = false;
             }
         }
-        return false;
+        return res;
     }
 
     private void resizeDisplay(double newWidth) {
@@ -214,6 +228,9 @@ public class BikeReservationWidget extends VBox {
         header.setStyle("-fx-font-size:" + newWidth * 0.08);
     }
 
+    public void removeSelection() {
+        agendaWidget.removeSelection();
+    }
 
     private void updateButtons() {
         for (int i = 0; i < boxes.size(); i++) {
@@ -221,25 +238,15 @@ public class BikeReservationWidget extends VBox {
             stackPane.getStyleClass().clear();
             if (i == selectedInList) {
                 stackPane.getStyleClass().add("selected-date-box");
-            } else {
+                stackPane.setDisable(false);
+            } else if (i == selectedInOtherList) {
+                stackPane.getStyleClass().add("unavailable-date-box");
+                stackPane.setDisable(true);
+            } else  {
                 stackPane.getStyleClass().add("available-date-box");
+                stackPane.setDisable(false);
             }
         }
-    }
-
-    private void loadRelevantBikeReservations() {
-        List<BikeReservation> allReservations = BikeReservationCommunication.getAllReservations();
-        List<BikeReservation> res = new ArrayList<>();
-        Date dateObj = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy,HH:mm");
-        String currentDate = dateFormat.format(dateObj);
-        for (int i = 0; i < allReservations.size(); i++) {
-            String date = allReservations.get(i).getDate() + "," + allReservations.get(i).getTimeSlot();
-            if (date.compareTo(currentDate) > 0) {
-                res.add(allReservations.get(i));
-            }
-        }
-        relevantBikeReservations = res;
     }
 
     public Building getSelected() {
@@ -274,4 +281,19 @@ public class BikeReservationWidget extends VBox {
         timeSelected = time;
     }
 
+    public void setOtherWidget(BikeReservationWidget bikeReservationWidget) {
+        otherWidget = bikeReservationWidget;
+    }
+
+    public void setSelectedInOtherList(int selected) {
+        selectedInOtherList = selected;
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    public interface Listener {
+        void changed();
+    }
 }

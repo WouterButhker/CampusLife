@@ -22,7 +22,7 @@ public class BikeReservation {
     @ManyToOne
     @JoinColumn(name = "pickUpBuilding")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Building pickUpBuilding;          // building code
+    private Building pickUpBuilding;
 
     @ManyToOne
     @JoinColumn(name = "dropOffBuilding")

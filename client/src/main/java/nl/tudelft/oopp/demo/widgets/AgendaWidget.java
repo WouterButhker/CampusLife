@@ -143,8 +143,12 @@ public class AgendaWidget extends VBox {
             } else {
                 agendaBlocks.get(i).setSelected(false);
             }
-
             agendaBlocks.get(i).setAvailable(availabilites[(topBlock + i)]);
+            if (!agendaBlocks.get(i).isAvailable) {
+                agendaBlocks.get(i).setDisable(true);
+            } else {
+                agendaBlocks.get(i).setDisable(false);
+            }
         }
     }
 
@@ -241,6 +245,10 @@ public class AgendaWidget extends VBox {
         public void setSelected(boolean isSelected) {
             this.isSelected = isSelected;
             recolor();
+        }
+
+        public boolean isAvailable() {
+            return isAvailable;
         }
 
         private void recolor() {
