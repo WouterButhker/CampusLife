@@ -42,7 +42,7 @@ public class RestaurantController {
                             @RequestParam String name,
                             @RequestParam Building building,
                             @RequestParam String description) {
-        Restaurant restaurant = new Restaurant(id, building, name, description);
+        Restaurant restaurant = new Restaurant(id, name, building, description);
         restaurantRepository.save(restaurant);
         return "Saved";
     }
