@@ -69,7 +69,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         mainBox.getChildren().add(0, new AppBar());
     }
 
-    private void loadBuildings() {
+    private void loadBuildings() throws NullPointerException {
         if (buildingList != null) {
             buildingList.getItems().addAll(BuildingCommunication.getBuildingsCodeAndName());
         }
@@ -108,9 +108,9 @@ public class AdminSceneRestaurantsController implements Initializable {
         Text submitStatus = new Text();
 
         if (!restaurantName.equals("") && buildingFound) {
-            RestaurantCommunication.addRestaurantToDatabase(restaurantID,
-                    restaurantName, buildingCode, restaurantDescription);
-            submitStatus.setText("Room has been successfully added to "
+            RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
+                    restaurantName, buildingCode, restaurantDescription));
+            submitStatus.setText("Restaurant has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
                 refreshRestaurantsPage();
@@ -156,7 +156,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         }
         List<Restaurant> restaurants;
         if (buildingCode == -1) {
-            restaurants = RestaurantCommunication.getRestaurants();
+            restaurants = RestaurantCommunication.getAllRestaurants();
         } else {
             restaurants = RestaurantCommunication.getAllRestaurantsFromBuilding(buildingCode);
         }
@@ -304,7 +304,10 @@ public class AdminSceneRestaurantsController implements Initializable {
 
     private Label modifyRestaurant(int id, String name, int buildingCode, String description) {
         if (!name.equals("")) {
-            RestaurantCommunication.addRestaurantToDatabase(id, name, buildingCode, description);
+            RestaurantCommunication.createRestaurant(new Restaurant(id,
+                                                                    name,
+                                                                    buildingCode,
+                                                                    description));
         } else {
             return new Label("All fields have to be entered");
         }

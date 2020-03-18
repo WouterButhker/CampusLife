@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class RestaurantController {
     @Autowired
     private FoodRepository foodRepository;
 
-    @GetMapping
+    @GetMapping(path = "/all")
     public List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
@@ -85,9 +85,16 @@ public class RestaurantController {
      * @param restaurant the restaurant
      * @return Saved
      */
-    @PostMapping(path = "/addRestaurant", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/addRestaurant",
+            consumes = "application/json",
+            produces = "application/json")
     Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
+    }
+
+    @GetMapping(path = "/getAllRestaurantsFromBuilding")
+    public List<Restaurant> getAllRestaurantsFromBuilding(@RequestParam Building building) {
+        return restaurantRepository.allRestaurantsFromBuilding(building);
     }
 
 }

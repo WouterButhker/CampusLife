@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 public class RestaurantCommunication {
 
+    /*
     /**
      * For adding a restaurant to the database.
      *
@@ -21,7 +22,7 @@ public class RestaurantCommunication {
      * @param name         name of  restaurant
      * @param buildingCode the building where it belongs to
      * @param description the description of the restaurant
-     */
+     *
     public static void addRestaurantToDatabase(int id,
                                                String name,
                                                Integer buildingCode,
@@ -37,19 +38,17 @@ public class RestaurantCommunication {
             e.printStackTrace();
         }
     }
+     */
 
     /**
      * Retrieves all the restaurants.
      *
      * @return List of all Restaurants
      */
-    public static List<Restaurant> getRestaurants() {
+    public static List<Restaurant> getAllRestaurants() {
+        String url = "/restaurants/all";
         try {
-            String responseString = ServerCommunication.authenticatedRequest(
-                    "/restaurants").getBody();
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<Restaurant>>() {}.getType();
-            return gson.fromJson(responseString, listType);
+            return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,11 +58,11 @@ public class RestaurantCommunication {
     /**
      * Returns a list of all the restaurants that are part of the building.
      *
-     * @param building the number of the building you want to see the rooms from
+     * @param building the number of the building you want to see the restaurants from
      * @return a list of restaurants from that building
      */
     public static List<Restaurant> getAllRestaurantsFromBuilding(Integer building) {
-        String url = "/rooms/getRoomsFromBuilding?building=" + building;
+        String url = "/restaurants/getAllRestaurantsFromBuilding?building=" + building;
         try {
 
             return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
@@ -119,9 +118,9 @@ public class RestaurantCommunication {
     public static Restaurant parseRestaurant(JsonObject inputRestaurant) {
         int id = inputRestaurant.get("id").getAsInt();
         //Exception in thread "JavaFX Application Thread" java.lang.NullPointerException??????
-        String name = inputRestaurant.get("name").getAsString();
         Integer buildingCode = BuildingCommunication.parseBuilding(
                 inputRestaurant.get("building").getAsJsonObject()).getCode();
+        String name = inputRestaurant.get("name").getAsString();
         String description = inputRestaurant.get("description").getAsString();
         return new Restaurant(id, name, buildingCode, description);
     }
@@ -150,7 +149,7 @@ public class RestaurantCommunication {
     public static Restaurant createRestaurant(Restaurant restaurant) {
         try {
             String responseString = ServerCommunication.authenticatedPostRequest(
-                    "/restaurants", restaurant).getBody();
+                    "/restaurants/addRestaurant", restaurant).getBody();
             Gson gson = new Gson();
             return gson.fromJson(responseString, Restaurant.class);
         } catch (Exception e) {

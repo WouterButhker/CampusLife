@@ -60,7 +60,7 @@ public class MainMenuRoute extends Route {
 
         rootContainer.getChildren().add(new AppBar(isAdmin));
 
-        addDummyRestaurantData();
+        // addDummyRestaurantData();
         createButtonsRow();
         createBuildingsTitle();
 
@@ -70,6 +70,7 @@ public class MainMenuRoute extends Route {
         rootContainer.getChildren().add(buildingsGrid);
     }
 
+    /*
     private void addDummyRestaurantData() {
         List<Restaurant> restaurants = RestaurantCommunication.getRestaurants();
         if (restaurants.isEmpty()) {
@@ -92,6 +93,7 @@ public class MainMenuRoute extends Route {
             FoodCommunication.createFood(new Food(null, "Pizza 4", id, 3.29));
         }
     }
+     */
 
     @Override
     public Parent getRootElement() {

@@ -33,8 +33,8 @@
                       text="Restaurant description"/>
                 <Button fx:id="submit" layoutX="130.0" layoutY="455.0" mnemonicParsing="false"
                         onAction="#submitNewRestaurant" text="Submit"/>
-                <Button layoutX="400.0" layoutY="130.0" mnemonicParsing="false" onAction="#refreshRestaurantsPage"
-                        text="Refresh"/>
+                <Button layoutX="400.0" layoutY="130.0" mnemonicParsing="false"
+                        onAction="#refreshRestaurantsPage" text="Refresh"/>
                 <ChoiceBox fx:id="buildingList2" layoutX="772.0" layoutY="97.0" prefWidth="150.0"/>
                 <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="604.0" layoutY="142.0" prefHeight="432.0"
                             prefWidth="417.0">

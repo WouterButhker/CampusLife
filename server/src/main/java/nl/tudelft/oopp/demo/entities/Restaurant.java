@@ -18,13 +18,13 @@ public class Restaurant {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
+    @Column(name = "name")
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "building")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Building building;
-
-    @Column(name = "name")
-    private String name;
 
     @Column(name = "description")
     private String description;
@@ -41,12 +41,12 @@ public class Restaurant {
      * @param description a description of the restaurant
      */
     public Restaurant(Integer id,
-                      Building building,
                       String name,
+                      Building building,
                       String description) {
         this.id = id;
-        this.building = building;
         this.name = name;
+        this.building = building;
         this.description = description;
     }
 
