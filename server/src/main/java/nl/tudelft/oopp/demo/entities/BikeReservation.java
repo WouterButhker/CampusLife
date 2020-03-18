@@ -6,34 +6,20 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "bikeReservation")
-public class BikeReservation {
+@Table(name = "bike_reservation")
+public class BikeReservation extends Reservation {
 
-    @Id
-    @GeneratedValue
-    @Column
-    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "users")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;          // user id
-
-    @ManyToOne
-    @JoinColumn(name = "pickUpBuilding")
+    @JoinColumn(name = "pick_up_building")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Building pickUpBuilding;          // building code
 
     @ManyToOne
-    @JoinColumn(name = "dropOffBuilding")
+    @JoinColumn(name = "drop_off_building")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Building dropOffBuilding;
 
-    @Column(name = "date")
-    private String date;
-
-    @Column(name = "timeSlot")
-    private String timeSlot;
 
     public BikeReservation() {
 
@@ -52,56 +38,10 @@ public class BikeReservation {
                        Building dropOffBuilding,
                        String date,
                        String timeSlot)  {
-        this.user = user;
+        super(user, date, timeSlot);
         this.pickUpBuilding = pickUpBuilding;
         this.dropOffBuilding = dropOffBuilding;
-        this.timeSlot = timeSlot;
-        this.date = date;
-    }
 
-    @Override
-    public String toString() {
-        return "BikeReservation{" + "id=" + id + ", user=" + user + ", pickUpBuilding="
-                + pickUpBuilding + ", dropOffBuilding=" + dropOffBuilding
-                + ", date='" + date + '\'' + ", timeSlot='" + timeSlot + '\'' + '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        BikeReservation that = (BikeReservation) o;
-        return id.equals(that.id)
-                && user.equals(that.user)
-                && pickUpBuilding.equals(that.pickUpBuilding)
-                && dropOffBuilding.equals(that.dropOffBuilding)
-                && date.equals(that.date)
-                && timeSlot.equals(that.timeSlot);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, pickUpBuilding, dropOffBuilding, date, timeSlot);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Building getPickUpBuilding() {
@@ -120,20 +60,5 @@ public class BikeReservation {
         this.dropOffBuilding = dropOffBuilding;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTimeSlot() {
-        return timeSlot;
-    }
-
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
-    }
 }
 
