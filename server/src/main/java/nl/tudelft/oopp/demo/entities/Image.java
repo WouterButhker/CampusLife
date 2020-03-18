@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "roomImage")
-public class RoomImage {
+@Table(name = "image")
+public class Image {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -23,13 +23,13 @@ public class RoomImage {
     @Lob
     private byte[] data;
 
-    public RoomImage() {
+    public Image() {
 
     }
 
-    public RoomImage(String fileName,
-                     String fileType,
-                     byte[] data) {
+    public Image(String fileName,
+                 String fileType,
+                 byte[] data) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;

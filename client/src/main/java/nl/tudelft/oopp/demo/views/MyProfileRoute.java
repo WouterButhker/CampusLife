@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Reservation;
@@ -257,7 +258,11 @@ public class MyProfileRoute extends Route {
         horizontalContainer.setPadding(new Insets(16, 16, 16, 16));
         horizontalContainer.setSpacing(10);
 
-        Image profileImage = new Image("/images/myProfile.png");
+
+        Integer rand = Math.abs(new Random().nextInt()) % AuthenticationCommunication.ids.size();
+        System.out.println(rand);
+        String imageId = AuthenticationCommunication.ids.get(rand);
+        Image profileImage = new Image(ImageCommunication.getImageUrlFromId(imageId));
         RectangularImageButton profilePicture = new RectangularImageButton(profileImage, "");
         profilePicture.setFitHeight(90);
         horizontalContainer.getChildren().add(profilePicture);

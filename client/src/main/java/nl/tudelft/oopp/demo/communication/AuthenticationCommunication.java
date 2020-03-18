@@ -24,6 +24,7 @@ public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
     public static String myUsername;
+    public static List<String> ids;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -61,6 +62,7 @@ public class AuthenticationCommunication {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getId?username=" + username);
         if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
+            ids = ImageCommunication.getAllImageIds();
             System.out.println("USER id: " + response.getBody());
             myUserId = Integer.parseInt(response.getBody());
         } else {
