@@ -189,4 +189,30 @@ public class RoomCommunication {
         }
         return null;
     }
+
+    public static List<Room> getFilteredRooms(Integer buildingCode, Integer myRights,
+                                              Boolean hasTV, Boolean hasWhiteboard,
+                                              Integer minCap, Integer maxCap) {
+        StringBuilder url = new StringBuilder("/rooms/getFilteredRooms?search=");
+        if (buildingCode != -1) {
+            url.append("building.buildingCode:" + buildingCode + " AND ");
+        }
+        url.append("rights <" + (myRights + 1) + " AND ");
+        if (hasTV) {
+            url.append("hasTV:" + hasTV + " AND ");
+        }
+        if (hasWhiteboard) {
+            url.append("hasWhiteboard:" + hasWhiteboard + " AND ");
+        }
+        url.append("capacity>" + (minCap-1) + " AND " + "capacity<" + (maxCap));
+        System.out.println(url);
+        String urlString = url.toString();
+
+        try {
+            return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
