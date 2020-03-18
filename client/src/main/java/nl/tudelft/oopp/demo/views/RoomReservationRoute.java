@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.entities.Reservation;
+import nl.tudelft.oopp.demo.entities.RoomReservation;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AgendaWidget;
 import nl.tudelft.oopp.demo.widgets.AppBar;
@@ -31,7 +31,7 @@ public class RoomReservationRoute extends Route {
     private Calendar fromTime;
     private Calendar toTime;
 
-    private List<Reservation> reservations;
+    private List<RoomReservation> reservations;
     private Room room;
 
     /**
@@ -89,7 +89,7 @@ public class RoomReservationRoute extends Route {
                     String timeslot = String.format("%s - %s", fromString, toString);
                     ReservationCommunication
                             .addReservationToDatabase(user, room.getCode(), timeslot);
-                    reservations.add(new Reservation(-1, user, room.getCode(), timeslot));
+                    reservations.add(new RoomReservation(-1, user, room.getCode(), timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
                     System.out.println(user + " " + room.getCode() + " " + timeslot);
@@ -121,7 +121,7 @@ public class RoomReservationRoute extends Route {
         for (int i = 0; i < 24; i++) {
             availabilities[i] = true;
         }
-        for (Reservation reservation : reservations) {
+        for (RoomReservation reservation : reservations) {
             System.out.println(reservation);
             if (reservation.getRoom() != null && reservation.getRoom().equals(room.getCode())) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");

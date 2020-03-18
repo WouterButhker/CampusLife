@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.entities.reservation.food;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -36,9 +37,8 @@ public class FoodOrder extends Reservation {
      * @param restaurant the id of the restaurant where it is sold
      * @param user the user who placed the order
      */
-    public FoodOrder(Integer id,
-                     Integer restaurant,
-                     Integer user) {
+    public FoodOrder(User user, String date, String timeSlot, Integer restaurant) {
+        super(user, date, timeSlot);
         this.restaurant = restaurant;
     }
 
@@ -52,4 +52,6 @@ public class FoodOrder extends Reservation {
     public List<List<Integer>> getFoodsList() {
         return foodsList;
     }
+
+
 }

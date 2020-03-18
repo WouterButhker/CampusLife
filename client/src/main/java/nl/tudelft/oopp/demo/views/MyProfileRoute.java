@@ -9,23 +9,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.entities.Reservation;
-import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.*;
 
 public class MyProfileRoute extends Route {
@@ -41,8 +36,8 @@ public class MyProfileRoute extends Route {
     ToggleButton newEvent;
     private Rectangle rect;
 
-    private List<Reservation> pastReservations;
-    private List<Reservation> futureReservations;
+    private List<RoomReservation> pastReservations;
+    private List<RoomReservation> futureReservations;
 
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy,HH:mm");
     private String currentDate;
@@ -122,8 +117,8 @@ public class MyProfileRoute extends Route {
         futureReservations = new ArrayList<>();
         Date dateObj = new Date();
         currentDate = dateFormat.format(dateObj);
-        List<Reservation> allMyReservations = ReservationCommunication.getMyReservations();
-        for (Reservation reservation : allMyReservations) {
+        List<RoomReservation> allMyReservations = ReservationCommunication.getMyReservations();
+        for (RoomReservation reservation : allMyReservations) {
             String endTime = reservation.getTimeSlot().substring(19);
             if (endTime.compareTo(currentDate) <= 0) {
                 pastReservations.add(reservation);
@@ -142,13 +137,13 @@ public class MyProfileRoute extends Route {
         return separator;
     }
 
-    private void makeListOfReservations(List<Reservation> reservations) {
+    private void makeListOfReservations(List<RoomReservation> reservations) {
         scrollPane = new ScrollPane();
         VBox reservationsList = new VBox();
         reservationsList.setSpacing(2);
 
         for (int i = 0; i < reservations.size(); i++) {
-            Reservation reservation = reservations.get(i);
+            RoomReservation reservation = reservations.get(i);
             HBox currentReservation = new HBox();
             Background background = new Background(
                     new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
