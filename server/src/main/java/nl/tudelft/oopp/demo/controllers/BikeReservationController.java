@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.BikeReservationRepository;

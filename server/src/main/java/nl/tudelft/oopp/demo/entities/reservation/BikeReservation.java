@@ -1,7 +1,9 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.entities.reservation;
 
-import java.util.Objects;
 import javax.persistence.*;
+
+import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -25,6 +27,11 @@ public class BikeReservation extends Reservation {
 
     }
 
+    @Override
+    public String toString() {
+        return null;
+    }
+
     /**
      * Makes a new BikeReservation object.
      * @param user The user that reserved
@@ -34,10 +41,10 @@ public class BikeReservation extends Reservation {
      * @param timeSlot The timeslot of the reservation
      */
     public BikeReservation(User user,
-                       Building pickUpBuilding,
-                       Building dropOffBuilding,
-                       String date,
-                       String timeSlot)  {
+                           Building pickUpBuilding,
+                           Building dropOffBuilding,
+                           String date,
+                           String timeSlot)  {
         super(user, date, timeSlot);
         this.pickUpBuilding = pickUpBuilding;
         this.dropOffBuilding = dropOffBuilding;

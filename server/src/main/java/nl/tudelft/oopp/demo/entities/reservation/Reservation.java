@@ -1,5 +1,6 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.entities.reservation;
 
+import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
@@ -62,12 +63,5 @@ public abstract class Reservation {
         this.timeSlot = timeSlot;
     }
 
-    @Override
-    public String toString() {
-        return "Reservation: " +
-                "id=" + id +
-                ", user=" + user +
-                ", date='" + date + '\'' +
-                ", timeSlot='" + timeSlot + '\'';
-    }
+    public abstract String toString();
 }

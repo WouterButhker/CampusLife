@@ -1,6 +1,9 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.entities.reservation;
 
 import javax.persistence.*;
+
+import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -45,6 +48,6 @@ public class RoomReservation extends Reservation {
 
     @Override
     public String toString() {
-        return super.toString() + ", room=" + room;
+        return null;
     }
 }
