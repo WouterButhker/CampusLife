@@ -46,12 +46,7 @@ public class Restaurant {
                       String description) {
         this.id = id;
         this.name = name;
-        // TODO: for testing only until saving with POST is fixed
-        if (building != null) {
-            this.building = building;
-        } else {
-            this.building = new Building(1, "EWI", "","", 123);
-        }
+        this.building = building;
         this.description = description;
     }
 

@@ -99,7 +99,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             System.out.println("No building selected");
         }
 
-        int restaurantID = Integer.parseInt(restaurantIdInput.getText().trim());
+        int restaurantID = 0;
 
         String restaurantName = restaurantNameInput.getText();
 
