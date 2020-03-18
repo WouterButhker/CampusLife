@@ -1,6 +1,11 @@
 package nl.tudelft.oopp.demo.entities;
 
+import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrderQuantity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "food")
@@ -19,6 +24,10 @@ public class Food {
 
     @Column(name = "price")
     private Double price;
+
+    @OneToMany(mappedBy = "food")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<FoodOrderQuantity> quantities;
 
     public Food() {
 

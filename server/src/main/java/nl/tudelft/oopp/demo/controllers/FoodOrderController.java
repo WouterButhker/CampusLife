@@ -1,21 +1,13 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.util.List;
-import nl.tudelft.oopp.demo.entities.FoodOrder;
-import nl.tudelft.oopp.demo.entities.FoodOrderJunction;
-import nl.tudelft.oopp.demo.repositories.FoodJunctionRepository;
-import nl.tudelft.oopp.demo.repositories.FoodOrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/foodOrder")
 public class FoodOrderController {
 
-    @Autowired
-    private FoodOrderRepository foodOrderRepository;
-    @Autowired
-    private FoodJunctionRepository foodJunctionRepository;
+
 
     /**
      * Adds a new food order to the database.
@@ -31,7 +23,7 @@ public class FoodOrderController {
             int foodId = pairs.get(0);
             int quantity = pairs.get(1);
 
-            FoodOrderJunction junction = new FoodOrderJunction(
+            FoodOrderQuantityKey junction = new FoodOrderQuantityKey(
                     null,
                     createdOrder.getId(),
                     foodId,
