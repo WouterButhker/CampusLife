@@ -5,29 +5,14 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "reservation")
-public class RoomReservation {
+@Table(name = "room_reservation")
+public class RoomReservation extends Reservation {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "users")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;          // user id
-
-    @ManyToOne
-    @JoinColumn(name = "roomCode")
+    @JoinColumn(name = "room_code")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;          // room code
-
-    @Column(name = "date")
-    private String date;
-
-    @Column(name = "timeSlot")
-    private String timeSlot;
 
     public RoomReservation() {
 
@@ -43,28 +28,12 @@ public class RoomReservation {
                            Room room,
                            String date,
                            String timeSlot)  {
-        System.out.println(this.id);
-        this.user = user;
+
+        super(user, date, timeSlot);
         this.room = room;
-        this.timeSlot = timeSlot;
-        this.date = date;
+
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Room getRoom() {
         return room;
@@ -74,38 +43,8 @@ public class RoomReservation {
         this.room = room;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTimeSlot() {
-        return timeSlot;
-    }
-
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
-    }
-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof RoomReservation)) {
-            return false;
-        }
-        RoomReservation that = (RoomReservation) o;
-        return id.equals(that.id)
-                && user.equals(that.user)
-                && room.equals(that.room)
-                && timeSlot.equals(that.timeSlot);
-    }
-
     public String toString() {
-        return "[" + id + ", " + user + ", " + room + ", " + date + ", " + timeSlot + "]";
+        return super.toString() + ", room=" + room;
     }
 }
