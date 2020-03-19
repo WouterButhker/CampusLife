@@ -22,7 +22,7 @@ public class RestaurantCommunication {
     public static Restaurant createRestaurant(Restaurant restaurant) {
         try {
             String responseString = ServerCommunication.authenticatedPostRequest(
-                    "/restaurants/addRestaurant", restaurant).getBody();
+                    "/restaurants", restaurant).getBody();
             Gson gson = new Gson();
             return gson.fromJson(responseString, Restaurant.class);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class RestaurantCommunication {
      * Deletes a Restaurant from the database.
      *
      * @param id the name of the restaurant that needs to be removed
-     * @return something
+     * @return -1 or the
      */
 
     public static String deleteRestaurantFromDatabase(Integer id) {
