@@ -3,46 +3,46 @@ package nl.tudelft.oopp.demo.entities;
 import java.util.Objects;
 
 public class Room {
-    private String code;
+    private String roomCode;
     private String name;
     private Integer capacity;
     private boolean hasWhiteboard;
     private boolean hasTV;
     private Integer rights;
-    private Integer buildingCode;
+    private Building building;
 
     /**
      * Creates a new Room object.
-     * @param code String with the Room code
+     * @param roomCode String with the Room code
      * @param name String with the name of the Room
      * @param capacity the number of available places
      * @param hasWhiteboard true if the Room has a whiteboard
      * @param hasTV true if the Room has a TV
      * @param rights the rights needed to reserve a room
-     * @param buildingCode the number of the building the Room is from
+     * @param building the number of the building the Room is from
      */
-    public Room(String code,
+    public Room(String roomCode,
                 String name,
                 Integer capacity,
                 boolean hasWhiteboard,
                 boolean hasTV,
                 Integer rights,
-                Integer buildingCode) {
-        this.code = code;
+                Building building) {
+        this.roomCode = roomCode;
         this.name = name;
         this.capacity = capacity;
         this.hasWhiteboard = hasWhiteboard;
         this.hasTV = hasTV;
         this.rights = rights;
-        this.buildingCode = buildingCode;
+        this.building = building;
     }
 
-    public String getCode() {
-        return code;
+    public String getRoomCode() {
+        return roomCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setRoomCode(String roomCode) {
+        this.roomCode = roomCode;
     }
 
     public String getName() {
@@ -85,12 +85,12 @@ public class Room {
         this.rights = rights;
     }
 
-    public Integer getBuildingCode() {
-        return buildingCode;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setBuildingCode(Integer buildingCode) {
-        this.buildingCode = buildingCode;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     @Override
@@ -104,15 +104,10 @@ public class Room {
         Room room = (Room) o;
         return hasWhiteboard == room.hasWhiteboard
                 && hasTV == room.hasTV
-                && code.equals(room.code)
+                && roomCode.equals(room.roomCode)
                 && name.equals(room.name)
                 && capacity.equals(room.capacity)
                 && rights.equals(room.rights)
-                && buildingCode.equals(room.buildingCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
+                && building.equals(room.building);
     }
 }

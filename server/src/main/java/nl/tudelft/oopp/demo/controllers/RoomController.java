@@ -6,12 +6,10 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(path = "/rooms")
@@ -108,4 +106,22 @@ public class RoomController {
         return roomRepository.getAllFilteredRooms(myRights,
                 hasTV, hasWhiteboard, minCap, maxCap);
     }
+
+    @PostMapping(path = "/save")
+    Room saveBuilding(@RequestBody Room room) {
+        if (roomRepository.existsRoomByRoomCode(room.getRoomCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Building already exists!");
+        }
+        return roomRepository.save(room);
+    }
+
+    @PutMapping(path = "/update")
+    Room updateBuilding(@RequestBody Room room) {
+        if (!roomRepository.existsRoomByRoomCode(room.getRoomCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Building does not exists!");
+        }
+        return roomRepository.save(room);
+
+    }
+
 }

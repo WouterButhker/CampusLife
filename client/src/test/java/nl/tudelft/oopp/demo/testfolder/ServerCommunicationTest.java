@@ -6,6 +6,8 @@ import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
+import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,26 +20,15 @@ public class ServerCommunicationTest {
     }
 
     @Test
-    public void testGetBuildingsCodeAndName() {
-        String[] buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
-        /*
-        if (buildingsCodeAndName != null) {
-            for (int i = 0; i < buildingsCodeAndName.length; i++)
-                System.out.println(buildingsCodeAndName[i]);
-        }
-        else System.out.println("NULL");
-         */
-    }
-
-    @Test
     public void testAddBuildingToDatabase() {
         Integer buildingCode = 20;
         String name = "Aula";
         String location = "Mekelweg 5";
         String openingHours = "08:00-22:00";
         Integer bikes = 12;
-        BuildingCommunication.addBuildingToDatabase(buildingCode,
+        Building building = new Building(buildingCode,
                 name, location, openingHours, bikes);
+        BuildingCommunication.saveBuilding(building);
     }
 
     @Test
@@ -48,9 +39,9 @@ public class ServerCommunicationTest {
         Boolean hasWhiteboard = true;
         Boolean hasTV = false;
         Integer rights = 1;
-        Integer building = 35;
-        RoomCommunication.addRoomToDatabase(roomCode, name, capacity,
-                hasWhiteboard, hasTV, rights, building);
+        Integer buildingCode = 35;
+        Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
+        RoomCommunication.saveRoom(room);
     }
 
     @Test

@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ class RoomTest {
     private Integer rights;
     private Integer buildingCode;
     private Room room;
+    private Building building;
 
     @BeforeEach
     void doBeforeEach() {
@@ -34,8 +37,10 @@ class RoomTest {
         hasTV = true;
         rights = 2;
         buildingCode = 42;
-
-        room = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
+        String openingHours = "15:00-17:00, 01:00-19:00, 15:00-17:00, "
+                + "15:00-17:00, 15:00-17:00, 15:00-17:00, 15:00-17:00";
+        building = new Building(buildingCode, "building", "asb", openingHours, 12);
+        room = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, building);
     }
 
     @Test
@@ -45,13 +50,13 @@ class RoomTest {
 
     @Test
     void getCodeTest() {
-        assertEquals(code, room.getCode());
+        assertEquals(code, room.getRoomCode());
     }
 
     @Test
     void setCodeTest() {
-        room.setCode("42");
-        assertEquals("42", room.getCode());
+        room.setRoomCode("42");
+        assertEquals("42", room.getRoomCode());
     }
 
     @Test
@@ -112,18 +117,18 @@ class RoomTest {
 
     @Test
     void getBuildingCodeTest() {
-        assertEquals(buildingCode, room.getBuildingCode());
+        assertEquals(buildingCode, room.getBuilding().getCode());
     }
 
     @Test
     void setBuildingCodeTest() {
-        room.setBuildingCode(123123);
-        assertEquals(123123, room.getBuildingCode().intValue());
+        room.getBuilding().setCode(123123);
+        assertEquals(123123, room.getBuilding().getCode().intValue());
     }
 
     @Test
     void equalsTest() {
-        Room copyRoom = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
+        Room copyRoom = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, building);
         assertEquals(room, copyRoom);
     }
 

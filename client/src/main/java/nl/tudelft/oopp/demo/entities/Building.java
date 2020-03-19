@@ -26,13 +26,13 @@ public class Building {
                     String name,
                     String location,
                     String openingHours,
-                    String image,
+                    //String image,
                     Integer bikes) {
         this.buildingCode = buildingCode;
         this.name = name;
         this.location = location;
         this.openingHours = openingHours;
-        this.image = image;
+        //this.image = image;
         this.bikes = bikes;
     }
 
@@ -114,12 +114,7 @@ public class Building {
                 && name.equals(building.name)
                 && location.equals(building.location)
                 && openingHours.equals(building.openingHours)
-                && image.equals(building.image)
+                //&& image.equals(building.image)
                 && bikes.equals(building.bikes);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(buildingCode, name, location, openingHours, image, bikes);
     }
 }

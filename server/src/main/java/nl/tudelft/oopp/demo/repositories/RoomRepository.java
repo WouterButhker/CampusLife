@@ -50,4 +50,6 @@ public interface RoomRepository extends JpaRepository<Room, String> {
             + "r.capacity <= ?5")
     List<Room> getAllFilteredRooms(Integer myRights, Boolean hasTV,
                                 Boolean hasWhiteboard, Integer minCap, Integer maxCap);
+
+    boolean existsRoomByRoomCode(String roomCode);
 }

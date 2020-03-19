@@ -22,4 +22,5 @@ public interface BuildingRepository extends JpaRepository<Building, Integer> {
 
     boolean existsBuildingByBuildingCode(Integer buildingCode);
 
+    Building getBuildingByBuildingCode(Integer buildingCode);
 }

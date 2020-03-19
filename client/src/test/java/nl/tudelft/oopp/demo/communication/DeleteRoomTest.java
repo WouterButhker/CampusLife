@@ -16,7 +16,7 @@ public class DeleteRoomTest {
         String roomCode = "abc";
         System.out.println("---------------------------");
         System.out.println("Test = testDeleteRoom");
-        String response = RoomCommunication.deleteRoomFromDatabase(roomCode);
+        String response = RoomCommunication.deleteRoom(roomCode);
         if (response.equals("1")) {
             System.out.println("Deleted building with code " + roomCode);
         } else if (response.equals("0")) {

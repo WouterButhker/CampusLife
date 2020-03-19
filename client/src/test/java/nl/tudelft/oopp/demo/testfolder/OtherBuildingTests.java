@@ -3,8 +3,11 @@ package nl.tudelft.oopp.demo.testfolder;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
+import nl.tudelft.oopp.demo.entities.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class OtherBuildingTests {
 
@@ -14,21 +17,13 @@ public class OtherBuildingTests {
     }
 
     @Test
-    public void testCountBuildings() {
-        Integer response = BuildingCommunication.countAllBuildings();
-        System.out.println("---------------------------");
-        System.out.println("Test = testCountBuildings");
-        System.out.println(response);
-    }
-
-    @Test
     public void testGetBuildingsCodeAndName() {
-        String[] buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
+        List<String> buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
         System.out.println("---------------------------");
         System.out.println("Test = testGetBuildingsCodeAndName");
         if (buildingsCodeAndName != null) {
-            for (int i = 0; i < buildingsCodeAndName.length; i++) {
-                System.out.println(buildingsCodeAndName[i]);
+            for (String building : buildingsCodeAndName) {
+                System.out.println(building);
             }
         } else {
             System.out.println("NULL");
