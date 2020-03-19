@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -28,6 +31,9 @@ public class Restaurant {
 
     @Column(name = "description")
     private String description;
+
+    @Transient
+    private Integer buildingId;
 
     public Restaurant() {
 
@@ -58,12 +64,24 @@ public class Restaurant {
         this.id = id;
     }
 
+    @JsonIgnore
     public Building getBuilding() {
         return building;
     }
 
+    @JsonIgnore
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    @JsonProperty(value = "building")
+    public Integer getBuildingId() {
+        return buildingId;
+    }
+
+    @JsonProperty(value = "building")
+    public void setBuildingId(Integer buildingId) {
+        this.buildingId = buildingId;
     }
 
     public String getName() {
