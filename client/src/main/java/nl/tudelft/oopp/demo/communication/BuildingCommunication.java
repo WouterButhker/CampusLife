@@ -52,7 +52,7 @@ public class BuildingCommunication {
      * @return list of buildings
      */
     public static List<Building> getAllBuildings() {
-        String url = "/buildings/all";
+        String url = "/buildings";
 
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
@@ -90,7 +90,7 @@ public class BuildingCommunication {
      * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
      */
     public static String saveBuilding(Building building) {
-        String url = "/buildings/save";
+        String url = "/buildings";
         try {
             ResponseEntity<String> response = ServerCommunication
                     .authenticatedPostRequest(url, building);
@@ -109,7 +109,7 @@ public class BuildingCommunication {
      * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
      */
     public static String updateBuilding(Building building) {
-        String url = "/buildings/update";
+        String url = "/buildings";
         try {
             ResponseEntity<String> response = ServerCommunication
                     .authenticatedPutRequest(url, building);
