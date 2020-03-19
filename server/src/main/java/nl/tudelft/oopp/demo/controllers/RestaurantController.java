@@ -36,8 +36,8 @@ public class RestaurantController {
         return restaurantRepository.save(restaurant);
     }
 
-    @GetMapping(path = "/all")
-    public List<Restaurant> getAll() {
+    @GetMapping
+    List<Restaurant> getAll() {
         return restaurantRepository.findAll();
     }
 

@@ -33,13 +33,15 @@ public class RestaurantCommunication {
 
     /**
      * Retrieves all the restaurants.
-     *
      * @return List of all Restaurants
      */
-    public static List<Restaurant> getAllRestaurants() {
-        String url = "/restaurants/all";
+    public static List<Restaurant> getRestaurants() {
         try {
-            return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
+            String responseString = ServerCommunication.authenticatedRequest(
+                    "/restaurants").getBody();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Restaurant>>() {}.getType();
+            return gson.fromJson(responseString, listType);
         } catch (Exception e) {
             e.printStackTrace();
         }

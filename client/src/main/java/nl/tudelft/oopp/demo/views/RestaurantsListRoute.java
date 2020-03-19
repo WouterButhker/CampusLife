@@ -23,7 +23,7 @@ public class RestaurantsListRoute extends Route {
         appBar = new AppBar();
         mainContainer = new VBox();
 
-        List<Restaurant> restaurants = RestaurantCommunication.getAllRestaurants();
+        List<Restaurant> restaurants = RestaurantCommunication.getRestaurants();
 
         restaurantsGridView = new RestaurantsGridView(restaurants);
         scrollPane = new ScrollPane(restaurantsGridView);

@@ -158,7 +158,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         }
         List<Restaurant> restaurants;
         if (buildingCode == -1) {
-            restaurants = RestaurantCommunication.getAllRestaurants();
+            restaurants = RestaurantCommunication.getRestaurants();
         } else {
             restaurants = RestaurantCommunication.getAllRestaurantsFromBuilding(buildingCode);
         }
