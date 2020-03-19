@@ -99,7 +99,7 @@ public class BuildingController {
     }
 
     @GetMapping(path = "/{buildingCode}")
-    Building getBuildingByCode(@PathVariable Integer buildingCode){
+    Building getBuildingByCode(@PathVariable Integer buildingCode) {
         return buildingRepository.getBuildingByBuildingCode(buildingCode);
     }
 

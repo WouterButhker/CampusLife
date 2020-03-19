@@ -1,12 +1,10 @@
 package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.*;
-
+import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import org.springframework.http.HttpStatus;
@@ -15,11 +13,17 @@ import org.springframework.http.ResponseEntity;
 
 public class BuildingCommunication {
 
+    /**
+     * Returns a list of Strings with the codes and names of the Buildings.
+     * @return List of Strings
+     */
     public static List<String> getBuildingsCodeAndName() {
         List<String> response = new ArrayList<>();
         List<Building> buildings = getAllBuildings();
-        for (Building building : buildings) {
-            response.add(building.getCode() + " " + building.getName());
+        if (buildings != null) {
+            for (Building building : buildings) {
+                response.add(building.getCode() + " " + building.getName());
+            }
         }
         return response;
     }
@@ -51,8 +55,11 @@ public class BuildingCommunication {
         String url = "/buildings/all";
 
         try {
-            Type listType = new TypeToken<List<Building>>() {}.getType();
-            return new Gson().fromJson(ServerCommunication.authenticatedRequest(url).getBody(), listType);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Building>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,10 +72,12 @@ public class BuildingCommunication {
      */
     public static List<Building> getAllBuildingsWithBikeStation() {
         String url = "/buildings/bikes";
-
         try {
-            Type listType = new TypeToken<List<Building>>() {}.getType();
-            return new Gson().fromJson(ServerCommunication.authenticatedRequest(url).getBody(), listType);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Building>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,8 +92,11 @@ public class BuildingCommunication {
     public static String saveBuilding(Building building) {
         String url = "/buildings/save";
         try {
-            return ServerCommunication.authenticatedPostRequest(url, building)
-                    .getStatusCode().toString();
+            ResponseEntity<String> response = ServerCommunication
+                    .authenticatedPostRequest(url, building);
+            if (response != null) {
+                return response.getStatusCode().toString();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,18 +111,29 @@ public class BuildingCommunication {
     public static String updateBuilding(Building building) {
         String url = "/buildings/update";
         try {
-            return ServerCommunication.authenticatedPutRequest(url, building)
-                    .getStatusCode().toString();
+            ResponseEntity<String> response = ServerCommunication
+                    .authenticatedPutRequest(url, building);
+            if (response != null) {
+                return response.getStatusCode().toString();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "400 BAD_REQUEST";
     }
 
+    /**
+     * Returns a Building that has the code buildingCode.
+     * @param buildingCode the code of the Building you are looking for
+     * @return Building if found / null if not found.
+     */
     public static Building getBuildingByCode(Integer buildingCode) {
         String url = "/buildings/" + buildingCode;
         try {
-            return new Gson().fromJson(ServerCommunication.authenticatedRequest(url).getBody(), Building.class);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                return new Gson().fromJson(response.getBody(), Building.class);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

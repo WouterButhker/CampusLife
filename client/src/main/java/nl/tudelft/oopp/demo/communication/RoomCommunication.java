@@ -4,14 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class RoomCommunication {
@@ -25,8 +24,11 @@ public class RoomCommunication {
     public static List<Room> getAllRoomsFromBuilding(Integer building) {
         String url = "/rooms/getRoomsFromBuilding?building=" + building;
         try {
-            Type listType = new TypeToken<List<Room>>() {}.getType();
-            return new Gson().fromJson(ServerCommunication.authenticatedRequest(url).getBody(), listType);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Room>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,8 +59,11 @@ public class RoomCommunication {
     public static List<Room> getAllRooms() {
         String url = "/rooms/all";
         try {
-            Type listType = new TypeToken<List<Room>>() {}.getType();
-            return new Gson().fromJson(ServerCommunication.authenticatedRequest(url).getBody(), listType);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Room>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,8 +104,11 @@ public class RoomCommunication {
                 + "&myRights=" + myRights + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
                 + "&minCap=" + minCap + "&maxCap=" + maxCap;
         try {
-            Type listType = new TypeToken<List<Room>>() {}.getType();
-            return new Gson().fromJson(ServerCommunication.authenticatedRequest(url).getBody(), listType);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Room>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -123,8 +131,11 @@ public class RoomCommunication {
                 + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
                 + "&minCap=" + minCap + "&maxCap=" + maxCap;
         try {
-            Type listType = new TypeToken<List<Room>>() {}.getType();
-            return new Gson().fromJson(ServerCommunication.authenticatedRequest(url).getBody(), listType);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Room>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -172,7 +172,8 @@ public class AdminSceneRoomsController implements Initializable {
         Text submitStatus = new Text();
         if (!roomCode.equals("") && !roomName.equals("") && capacityCorrect
                 && buildingFound && rightsFound) {
-            Room room = new Room(roomCode, roomName, capacity, whiteboard, tv, rights, BuildingCommunication.getBuildingByCode(buildingCode));
+            Room room = new Room(roomCode, roomName, capacity, whiteboard,
+                    tv, rights, BuildingCommunication.getBuildingByCode(buildingCode));
             RoomCommunication.saveRoom(room);
             submitStatus.setText("Room has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
@@ -441,7 +442,8 @@ public class AdminSceneRoomsController implements Initializable {
         }
 
         if (!roomCode.equals("") && !roomName.equals("")) {
-            Room room = new Room(roomCode, roomName, capacityInt, whiteboard, tv, rightsNum, BuildingCommunication.getBuildingByCode(buildingCode));
+            Room room = new Room(roomCode, roomName, capacityInt, whiteboard,
+                    tv, rightsNum, BuildingCommunication.getBuildingByCode(buildingCode));
             RoomCommunication.updateRoom(room);
         } else {
             return new Label("All fields have to be entered");

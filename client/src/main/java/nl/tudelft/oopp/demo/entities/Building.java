@@ -19,7 +19,6 @@ public class Building {
      * @param location a String with the street
      * @param openingHours a String with format hh:mm-hh:mm for
      *                     every day of the week separated by a ","
-     * @param image a photo of the building
      * @param bikes the amount of bikes at the building, null if building has no bike station
      */
     public Building(Integer buildingCode,
