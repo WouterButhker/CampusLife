@@ -4,15 +4,15 @@ import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
-public interface RoomRepository extends JpaRepository<Room, String>, JpaSpecificationExecutor<Room> {
+public interface RoomRepository extends JpaRepository<Room, String>,
+        JpaSpecificationExecutor<Room> {
 
     @Query("SELECT r.name From Room r WHERE r.building = ?1")
     List<String> allRoomNamesFromBuilding(Building myBuilding);

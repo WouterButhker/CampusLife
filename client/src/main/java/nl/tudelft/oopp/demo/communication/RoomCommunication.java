@@ -106,7 +106,7 @@ public class RoomCommunication {
         } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
             rights = 2;
         }
-        url.append("?search=rights<" + rights+1);
+        url.append("?search=rights<" + rights + 1);
         String urlString = url.toString();
         try {
             return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
@@ -133,6 +133,16 @@ public class RoomCommunication {
         return "-1";
     }
 
+    /**
+     * Method to create the filtering url to return the rooms with applied filters.
+     * @param buildingCode the code of the building
+     * @param myRights the rights of the user
+     * @param hasTV the boolean for if the room has a tv
+     * @param hasWhiteboard the boolean for if the room has a whiteboard
+     * @param minCap the minimum capacity of a room
+     * @param maxCap the maximum capacity of a room
+     * @return
+     */
     public static List<Room> getFilteredRooms(Integer buildingCode, Integer myRights,
                                               Boolean hasTV, Boolean hasWhiteboard,
                                               Integer minCap, Integer maxCap) {
@@ -147,7 +157,8 @@ public class RoomCommunication {
         if (hasWhiteboard) {
             url.append("hasWhiteboard:" + hasWhiteboard + " AND ");
         }
-        url.append("capacity>" + (minCap-1) + " AND " + "capacity<" + (maxCap));
+        url.append("capacity>" + (minCap - 1) + " AND " + "capacity<" + maxCap
+                + " OR capacity:" + maxCap);
         System.out.println(url);
         String urlString = url.toString();
 
@@ -174,7 +185,7 @@ public class RoomCommunication {
         } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
             rights = 2;
         }
-        url.append(" AND rights<" + rights+1);
+        url.append(" AND rights<" + rights + 1);
         String urlString = url.toString();
         try {
             return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());

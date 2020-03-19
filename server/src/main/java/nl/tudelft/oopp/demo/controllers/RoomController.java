@@ -1,9 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
 
-import java.util.List;
-
 import com.sipios.springsearch.anotation.SearchSpec;
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
