@@ -130,7 +130,7 @@ public class RoomCommunication {
      * Deletes a Room from the database.
      * Required permission: Admin
      * @param roomCode the code for the room that needs to be removed
-     * @return something
+     * @return result code; -1 if exception
      */
     public static String deleteRoomFromDatabase(String roomCode) {
         String url = "/rooms/delete?roomCode=" + roomCode;

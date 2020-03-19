@@ -67,13 +67,12 @@ public class RestaurantCommunication {
      * Deletes a Restaurant from the database.
      *
      * @param id the name of the restaurant that needs to be removed
-     * @return -1 or the
+     * @return result code; -1 if exception
      */
 
     public static String deleteRestaurantFromDatabase(Integer id) {
         String url = "/restaurants/delete?id=" + id;
         try {
-
             return ServerCommunication.authenticatedRequest(url).getBody();
         } catch (Exception e) {
             e.printStackTrace();
