@@ -36,8 +36,13 @@ public class RoomController {
     }
 
     @GetMapping(path = "/all")
-    public List<Room> getAll() {
-        return roomRepository.findAll();
+    public List<Room> getAll(@SearchSpec Specification<Room> specs) {
+        return roomRepository.findAll(Specification.where(specs));
+    }
+
+    @GetMapping(path = "/getAllRoomsFromBuilding")
+    public List<Room> getAllRoomsFromBuilding(@SearchSpec Specification<Room> specs) {
+        return roomRepository.findAll(Specification.where(specs));
     }
 
     /**
@@ -61,12 +66,6 @@ public class RoomController {
         Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
         roomRepository.save(room);
         return "Saved";
-    }
-
-
-    @GetMapping(path = "/getRoomsFromBuilding")
-    public List<Room> getAllRoomsFromBuilding(@RequestParam Building building) {
-        return roomRepository.allRoomsFromBuilding(building);
     }
 
     @GetMapping(path = "/getRoomNamesFromBuilding")

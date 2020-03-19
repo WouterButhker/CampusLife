@@ -14,9 +14,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource
 public interface RoomRepository extends JpaRepository<Room, String>, JpaSpecificationExecutor<Room> {
 
-    @Query("SELECT r From Room r WHERE r.building = ?1")
-    List<Room> allRoomsFromBuilding(Building myBuilding);
-
     @Query("SELECT r.name From Room r WHERE r.building = ?1")
     List<String> allRoomNamesFromBuilding(Building myBuilding);
 

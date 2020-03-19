@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import jdk.jfr.Event;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
@@ -142,7 +143,12 @@ public class RoomsListRoute extends Route {
                     }
                 }
 
-                Integer myRights = 2; /////CHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANNNNNNNGEEEEEEEEEEE
+                Integer myRights = 0;
+                if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
+                    myRights = 2;
+                } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
+                    myRights = 1;
+                }
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
                 List<Room> filteredList = RoomCommunication.getFilteredRooms(buildingCode,

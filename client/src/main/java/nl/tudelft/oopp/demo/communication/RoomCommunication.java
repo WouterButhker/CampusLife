@@ -46,23 +46,6 @@ public class RoomCommunication {
     }
 
     /**
-     * Returns a list of all the rooms that are part of the building.
-     * Required permission: Student
-     * @param building the number of the building you want to see the rooms from
-     * @return a list of rooms from that building
-     */
-    public static List<Room> getAllRoomsFromBuilding(Integer building) {
-        String url = "/rooms/getRoomsFromBuilding?building=" + building;
-        try {
-
-            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * Returns a list of all the Room NAMES that are part of the building.
      * Required permission: Student
      * @param building the number of the building you want to see the Room NAMES from
@@ -71,7 +54,6 @@ public class RoomCommunication {
     public static String getAllRoomNamesFromBuilding(Integer building) {
         String url = "/rooms/getRoomNamesFromBuilding?building=" + building;
         try {
-
             return ServerCommunication.authenticatedRequest(url).getBody();
         } catch (Exception  e) {
             e.printStackTrace();
@@ -117,9 +99,17 @@ public class RoomCommunication {
      * @return list of Rooms
      */
     public static List<Room> getAllRooms() {
-        String url = "/rooms/all";
+        StringBuilder url = new StringBuilder("/rooms/all");
+        Integer rights = 0;
+        if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
+            rights = 1;
+        } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
+            rights = 2;
+        }
+        url.append("?search=rights<" + rights+1);
+        String urlString = url.toString();
         try {
-            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
+            return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,53 +133,6 @@ public class RoomCommunication {
         return "-1";
     }
 
-    /**
-     * Method to search for rooms from the giving building with the filters applied.
-     * @param building the roomCode primary key as Integer
-     * @param myRights the rights of the user as Integer
-     * @param hasTV boolean for if the room has a TV
-     * @param hasWhiteboard boolean for if the room has a whiteboard
-     * @param minCap integer for the minimum capacity a room may have
-     * @param maxCap integer for the maximum capacity a room may have
-     * @return List of filtered rooms from given building
-     */
-    public static List<Room> getFilteredRoomsFromBuilding(Integer building, Integer myRights,
-                                                         Boolean hasTV, Boolean hasWhiteboard,
-                                                         Integer minCap, Integer maxCap) {
-        String url = "/rooms/filter/getFilteredRoomsFromBuilding?myBuilding=" + building
-                + "&myRights=" + myRights + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
-                + "&minCap=" + minCap + "&maxCap=" + maxCap;
-        try {
-            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Method to get the filtered rooms from all the rooms.
-     * @param myRights the rights of the user as Integer
-     * @param hasTV boolean for if the room has a TV
-     * @param hasWhiteboard boolean for if the room has a whiteboard
-     * @param minCap integer for the minimum capacity a room may have
-     * @param maxCap integer for the maximum capacity a room may have
-     * @return List of rooms of all buildings
-     */
-    public static List<Room> getAllFilteredRooms(Integer myRights, Boolean hasTV,
-                                                 Boolean hasWhiteboard, Integer minCap,
-                                                 Integer maxCap) {
-        String url = "/rooms/filter/getAllFilteredRooms?myRights=" + myRights
-                + "&hasTV=" + hasTV + "&hasWhiteboard=" + hasWhiteboard
-                + "&minCap=" + minCap + "&maxCap=" + maxCap;
-        try {
-            return parseRooms(ServerCommunication.authenticatedRequest(url).getBody());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static List<Room> getFilteredRooms(Integer buildingCode, Integer myRights,
                                               Boolean hasTV, Boolean hasWhiteboard,
                                               Integer minCap, Integer maxCap) {
@@ -208,6 +151,31 @@ public class RoomCommunication {
         System.out.println(url);
         String urlString = url.toString();
 
+        try {
+            return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Returns a list of all the rooms that are part of the building.
+     * Required permission: Student
+     * @param building the number of the building you want to see the rooms from
+     * @return a list of rooms from that building
+     */
+    public static List<Room> getAllRoomsFromBuilding(Integer building) {
+        StringBuilder url = new StringBuilder(
+                "/rooms/getAllRoomsFromBuilding?search=building.buildingCode:" + building);
+        Integer rights = 0;
+        if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
+            rights = 1;
+        } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
+            rights = 2;
+        }
+        url.append(" AND rights<" + rights+1);
+        String urlString = url.toString();
         try {
             return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
         } catch (Exception e) {
