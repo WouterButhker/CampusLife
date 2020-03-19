@@ -3,8 +3,10 @@ package nl.tudelft.oopp.demo.entities.reservation.food;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
+import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
@@ -42,11 +44,20 @@ public class FoodOrder extends Reservation {
         this.restaurant = restaurant;
     }
 
+    public FoodOrder(int userId, String date, String timeSlot, int restaurant) {
+        super(new User(userId), date, timeSlot);
+        this.restaurant = restaurant;
+    }
+
+
+    public int getRestaurant() {
+        return this.restaurant;
+    }
 
 
     @Override
     public String toString() {
-        return null;
+        return "Id: " + this.getId() + " user: " + getUser() + " date: " + this.getDate() + " time: " + this.getTimeSlot() + " restaurant: " + this.restaurant;
     }
 
     public List<List<Integer>> getFoodsList() {

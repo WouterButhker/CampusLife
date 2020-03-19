@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.entities;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.*;
 
 public class FoodOrder extends Reservation {
@@ -15,8 +17,8 @@ public class FoodOrder extends Reservation {
      * @param restaurant the restaurant where the order is done
      * @param user       the id of the user that ordered
      */
-    public FoodOrder(UserDtO user, String date, String timeSlot, Integer restaurant) {
-        super(user, date, timeSlot);
+    public FoodOrder(int userId, String date, String timeSlot, Integer restaurant) {
+        super(userId, date, timeSlot);
         this.restaurant = restaurant;
         this.foodsList = new ArrayList<>();
     }

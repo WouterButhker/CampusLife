@@ -7,18 +7,13 @@ public abstract class Reservation {
 
     private int id;
 
-    private UserDtO user;
-
     private String date;
 
     private String timeSlot;
 
-    public Reservation() {
 
-    }
-
-    public Reservation(UserDtO user, String date, String timeSlot) {
-        this.user = user;
+    public Reservation(int userID, String date, String timeSlot) {
+        this.id = userID;
         this.date = date;
         this.timeSlot = timeSlot;
     }
@@ -29,14 +24,6 @@ public abstract class Reservation {
 
     public int getId() {
         return id;
-    }
-
-    public UserDtO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDtO user) {
-        this.user = user;
     }
 
     public String getDate() {

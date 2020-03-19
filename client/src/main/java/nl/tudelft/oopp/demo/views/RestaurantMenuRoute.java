@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Food;
@@ -47,7 +48,8 @@ public class RestaurantMenuRoute extends Route {
      */
     public RestaurantMenuRoute(Restaurant restaurant) {
         // TODO: Date and time
-        foodOrder = new FoodOrder(null,"","", restaurant.getId());
+        // TODO: GET RIGHT USER
+        foodOrder = new FoodOrder(AuthenticationCommunication.myUserId,"Today","ASAP", restaurant.getId());
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
