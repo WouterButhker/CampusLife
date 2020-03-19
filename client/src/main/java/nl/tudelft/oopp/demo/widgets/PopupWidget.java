@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.widgets;
 
-
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
