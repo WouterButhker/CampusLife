@@ -52,13 +52,4 @@ public class ServerCommunicationTest {
         System.out.println(RoomCommunication.getAllRoomsFromBuilding(building));
         System.out.println("---------------------------");
     }
-
-    @Test
-    public void testGetAllRoomNamesFromBuilding() {
-        Integer building = 35;
-        System.out.println("---------------------------");
-        System.out.println("Test = testGetAllRoomNamesFromBuilding");
-        System.out.println(RoomCommunication.getAllRoomNamesFromBuilding(building));
-        System.out.println("---------------------------");
-    }
 }

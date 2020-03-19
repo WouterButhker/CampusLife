@@ -36,28 +36,12 @@ public class RoomCommunication {
     }
 
     /**
-     * Returns a list of all the Room NAMES that are part of the building.
-     * Required permission: Student
-     * @param building the number of the building you want to see the Room NAMES from
-     * @return a list of NAMES from that building
-     */
-    public static String getAllRoomNamesFromBuilding(Integer building) {
-        String url = "/rooms/getRoomNamesFromBuilding?building=" + building;
-        try {
-            return ServerCommunication.authenticatedRequest(url).getBody();
-        } catch (Exception  e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    /**
      * Returns a list of all the Rooms from the database.
      * Required permission: Student
      * @return list of Rooms
      */
     public static List<Room> getAllRooms() {
-        String url = "/rooms/all";
+        String url = "/rooms";
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             if (response != null) {
@@ -77,10 +61,9 @@ public class RoomCommunication {
      * @return
      */
     public static String deleteRoom(String roomCode) {
-        String url = "/rooms/delete?roomCode=" + roomCode;
+        String url = "/rooms/" + roomCode;
         try {
-
-            return ServerCommunication.authenticatedRequest(url).getBody();
+            return ServerCommunication.authenticatedDeleteRequest(url).getBody();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,7 +131,7 @@ public class RoomCommunication {
      * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
      */
     public static String saveRoom(Room room) {
-        String url = "/rooms/save";
+        String url = "/rooms";
         try {
             return ServerCommunication.authenticatedPostRequest(url, room)
                     .getStatusCode().toString();
@@ -164,7 +147,7 @@ public class RoomCommunication {
      * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
      */
     public static String updateRoom(Room room) {
-        String url = "/rooms/update";
+        String url = "/rooms";
         try {
             return ServerCommunication.authenticatedPutRequest(url, room)
                     .getStatusCode().toString();

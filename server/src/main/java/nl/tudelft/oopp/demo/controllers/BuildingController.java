@@ -51,7 +51,7 @@ public class BuildingController {
     }
 
     @DeleteMapping(value = "/{buildingCode}")
-    ResponseEntity<Integer> deleteRestaurant(@PathVariable Integer buildingCode) {
+    ResponseEntity<Integer> deleteBuilding(@PathVariable Integer buildingCode) {
         boolean exists = buildingRepository.existsBuildingByBuildingCode(buildingCode);
         if (!exists) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
