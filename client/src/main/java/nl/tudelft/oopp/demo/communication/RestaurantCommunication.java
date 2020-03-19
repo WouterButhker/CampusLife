@@ -1,12 +1,8 @@
 package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
@@ -57,8 +53,11 @@ public class RestaurantCommunication {
     public static List<Restaurant> getAllRestaurantsFromBuilding(Integer building) {
         String url = "/restaurants/getAllRestaurantsFromBuilding?building=" + building;
         try {
-
-            return parseRestaurants(ServerCommunication.authenticatedRequest(url).getBody());
+            String responseString = ServerCommunication.authenticatedRequest(
+                    url).getBody();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Restaurant>>() {}.getType();
+            return gson.fromJson(responseString, listType);
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
         }
@@ -100,37 +99,4 @@ public class RestaurantCommunication {
         }
         return null;
     }
-
-    /**
-     * Parses a Restaurant from a JSON object.
-     *
-     * @param inputRestaurant JSON object with restaurant attributes
-     * @return Restaurant object
-     */
-    public static Restaurant parseRestaurant(JsonObject inputRestaurant) {
-        int id = inputRestaurant.get("id").getAsInt();
-        //Exception in thread "JavaFX Application Thread" java.lang.NullPointerException??????
-        Integer buildingCode = BuildingCommunication.parseBuilding(
-                inputRestaurant.get("building").getAsJsonObject()).getCode();
-        String name = inputRestaurant.get("name").getAsString();
-        String description = inputRestaurant.get("description").getAsString();
-        return new Restaurant(id, name, buildingCode, description);
-    }
-
-    /**
-     * Parses a List of Restaurants from a string input.
-     *
-     * @param inputRestaurants a JSON string as an array of restaurants.
-     * @return List of Restaurants
-     */
-    private static List<Restaurant> parseRestaurants(String inputRestaurants) {
-        JsonParser jsonParser = new JsonParser();
-        JsonArray jsonArray = jsonParser.parse(inputRestaurants).getAsJsonArray();
-        List<Restaurant> listOfRestaurants = new ArrayList<>();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            listOfRestaurants.add(parseRestaurant(jsonArray.get(i).getAsJsonObject()));
-        }
-        return listOfRestaurants;
-    }
-
 }
