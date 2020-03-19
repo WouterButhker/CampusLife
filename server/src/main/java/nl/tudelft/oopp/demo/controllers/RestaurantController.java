@@ -1,10 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.Restaurant;
-import nl.tudelft.oopp.demo.entities.Room;
+
+import nl.tudelft.oopp.demo.entities.*;
+import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,9 @@ public class RestaurantController {
     @Autowired
     private FoodRepository foodRepository;
 
+    @Autowired
+    private BuildingRepository buildingRepository;
+
     /**
      * Adds a new restaurant to the database.
      * @param restaurant the restaurant
@@ -32,6 +34,8 @@ public class RestaurantController {
             consumes = "application/json",
             produces = "application/json")
     Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
+        Building building = buildingRepository.findById(restaurant.getBuildingId()).get();
+        restaurant.setBuilding(building);
         return restaurantRepository.save(restaurant);
     }
 

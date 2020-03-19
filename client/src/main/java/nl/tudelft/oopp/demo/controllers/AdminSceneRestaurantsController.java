@@ -177,7 +177,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
-            Label text = new Label("Building Code: " + restaurants.get(i).getBuildingCode()
+            Label text = new Label("Building Code: " + restaurants.get(i).getBuilding()
                     + " Restaurant ID: " + restaurants.get(i).getId()
                     + "\n" + restaurants.get(i).getName());
             text.setPrefSize(225, 60);
@@ -277,7 +277,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Label status = modifyRestaurant(restaurant.getId(),
-                        name.getText(), restaurant.getBuildingCode(), description.getText());
+                        name.getText(), restaurant.getBuilding(), description.getText());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
