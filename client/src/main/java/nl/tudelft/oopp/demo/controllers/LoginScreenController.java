@@ -56,6 +56,8 @@ public class LoginScreenController {
             AuthenticationCommunication.login(usernameField.getText(), passwordField.getText());
             RoutingScene routingScene = (RoutingScene) passwordField.getScene();
             routingScene.pushRoute(new MainMenuRoute());
+            passwordField.setText("");
+            usernameField.setText("");
         } catch (HttpClientErrorException e) {
             System.out.println("login failed: " + e.getStatusCode());
         } catch (ResourceAccessException e) {

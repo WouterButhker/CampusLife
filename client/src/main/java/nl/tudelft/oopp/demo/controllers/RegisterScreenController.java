@@ -140,7 +140,6 @@ public class RegisterScreenController {
         passwordField.setStyle("-fx-font-size: 17");
         reEnterPasswordField.setStyle("-fx-font-size: 17");
         usernameField.setStyle("-fx-font-size: 17");
-
         passwordField.setText("");
         reEnterPasswordField.setText("");
         usernameField.setText("");
