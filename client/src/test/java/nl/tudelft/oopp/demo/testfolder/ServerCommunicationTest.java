@@ -6,6 +6,8 @@ import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
+import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,19 +16,7 @@ public class ServerCommunicationTest {
 
     @BeforeEach
     void doBeforeEach() {
-        AuthenticationCommunication.login("random", "admin");
-    }
-
-    @Test
-    public void testGetBuildingsCodeAndName() {
-        String[] buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
-        /*
-        if (buildingsCodeAndName != null) {
-            for (int i = 0; i < buildingsCodeAndName.length; i++)
-                System.out.println(buildingsCodeAndName[i]);
-        }
-        else System.out.println("NULL");
-         */
+        AuthenticationCommunication.login("admin", "admin");
     }
 
     @Test
@@ -36,8 +26,9 @@ public class ServerCommunicationTest {
         String location = "Mekelweg 5";
         String openingHours = "08:00-22:00";
         Integer bikes = 12;
-        BuildingCommunication.addBuildingToDatabase(buildingCode,
+        Building building = new Building(buildingCode,
                 name, location, openingHours, bikes);
+        BuildingCommunication.saveBuilding(building);
     }
 
     @Test
@@ -48,9 +39,9 @@ public class ServerCommunicationTest {
         Boolean hasWhiteboard = true;
         Boolean hasTV = false;
         Integer rights = 1;
-        Integer building = 35;
-        RoomCommunication.addRoomToDatabase(roomCode, name, capacity,
-                hasWhiteboard, hasTV, rights, building);
+        Integer buildingCode = 35;
+        Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
+        RoomCommunication.saveRoom(room);
     }
 
     @Test
@@ -59,15 +50,6 @@ public class ServerCommunicationTest {
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllRoomsFromBuilding");
         System.out.println(RoomCommunication.getAllRoomsFromBuilding(building));
-        System.out.println("---------------------------");
-    }
-
-    @Test
-    public void testGetAllRoomNamesFromBuilding() {
-        Integer building = 35;
-        System.out.println("---------------------------");
-        System.out.println("Test = testGetAllRoomNamesFromBuilding");
-        System.out.println(RoomCommunication.getAllRoomNamesFromBuilding(building));
         System.out.println("---------------------------");
     }
 }

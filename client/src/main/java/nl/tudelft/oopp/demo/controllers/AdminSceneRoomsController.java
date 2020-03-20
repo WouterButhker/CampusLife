@@ -38,6 +38,7 @@ import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
@@ -171,8 +172,9 @@ public class AdminSceneRoomsController implements Initializable {
         Text submitStatus = new Text();
         if (!roomCode.equals("") && !roomName.equals("") && capacityCorrect
                 && buildingFound && rightsFound) {
-            RoomCommunication.addRoomToDatabase(roomCode, roomName,
-                    capacity, whiteboard, tv, rights, buildingCode);
+            Room room = new Room(roomCode, roomName, capacity, whiteboard,
+                    tv, rights, BuildingCommunication.getBuildingByCode(buildingCode));
+            RoomCommunication.saveRoom(room);
             submitStatus.setText("Room has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
@@ -263,8 +265,8 @@ public class AdminSceneRoomsController implements Initializable {
             if (rights == 2) {
                 rightsString = "Admin";
             }
-            Label text = new Label("Building Code: " + rooms.get(i).getBuildingCode()
-                    + " | Room Code: "  + rooms.get(i).getCode() + "\n" + rooms.get(i).getName()
+            Label text = new Label("Building Code: " + rooms.get(i).getBuilding().getCode()
+                    + " | Room Code: "  + rooms.get(i).getRoomCode() + "\n" + rooms.get(i).getName()
                     + " " + rightsString + " capacity: " + rooms.get(i).getCapacity()
                     + "\nWhiteboard: " + rooms.get(i).isHasWhiteboard() + " TV: "
                     + rooms.get(i).isHasTV());
@@ -286,7 +288,7 @@ public class AdminSceneRoomsController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    RoomCommunication.deleteRoomFromDatabase(rooms.get(finalI).getCode());
+                    RoomCommunication.deleteRoom(rooms.get(finalI).getRoomCode());
                     loadRooms(buildingList2.getValue());
                 }
             });
@@ -321,7 +323,7 @@ public class AdminSceneRoomsController implements Initializable {
 
         Pane spacer1 = new Pane();
         spacer1.setPrefSize(125, 20);
-        TextField roomCodeField = new TextField(room.getCode());
+        TextField roomCodeField = new TextField(room.getRoomCode());
         roomCodeField.setPrefSize(150,20);
         roomCodeField.setEditable(false);
         HBox roomCodeFieldBox = new HBox(spacer1, roomCodeField);
@@ -388,9 +390,9 @@ public class AdminSceneRoomsController implements Initializable {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Label status = modifyRoom(room.getCode(), name.getText(), capacity.getText(),
+                Label status = modifyRoom(room.getRoomCode(), name.getText(), capacity.getText(),
                         whiteboard.selectedProperty().get(), tv.selectedProperty().get(),
-                        rights.getValue(), room.getBuildingCode());
+                        rights.getValue(), room.getBuilding().getCode());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -440,8 +442,9 @@ public class AdminSceneRoomsController implements Initializable {
         }
 
         if (!roomCode.equals("") && !roomName.equals("")) {
-            RoomCommunication.addRoomToDatabase(roomCode, roomName, capacityInt,
-                    whiteboard, tv, rightsNum, buildingCode);
+            Room room = new Room(roomCode, roomName, capacityInt, whiteboard,
+                    tv, rightsNum, BuildingCommunication.getBuildingByCode(buildingCode));
+            RoomCommunication.updateRoom(room);
         } else {
             return new Label("All fields have to be entered");
         }

@@ -38,9 +38,13 @@ public class AuthenticationCommunication {
      */
     public static void login(String username, String password) throws HttpClientErrorException {
         authenticationHeader = createHeaders(username, password);
-        myUsername = username;
-        saveUserId(username);
-        saveUserRole(username);
+        if (authenticationHeader != null) {
+            myUsername = username;
+            saveUserId(username);
+            saveUserRole(username);
+        } else {
+            System.out.println("Login failed");
+        }
     }
 
     /**
@@ -61,7 +65,8 @@ public class AuthenticationCommunication {
     public static void saveUserId(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getId?username=" + username);
-        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
+        if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
             ids = ImageCommunication.getAllImageIds();
             System.out.println("USER id: " + response.getBody());
             myUserId = Integer.parseInt(response.getBody());
@@ -79,7 +84,8 @@ public class AuthenticationCommunication {
     public static void saveUserRole(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getRole?username=" + username);
-        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
+        if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
             System.out.println("USER role: " + response.getBody());
             myUserRole = response.getBody();
         } else {

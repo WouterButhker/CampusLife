@@ -6,8 +6,7 @@ public class Reservation {
 
     private Integer id;
     private Integer user;
-    private String room;
-    /// DATE
+    private Room room;
     private String timeSlot;
 
     /**
@@ -17,7 +16,7 @@ public class Reservation {
      * @param room the Room(roomCode) that is reserved
      * @param timeSlot the time at which the Room is reserved
      */
-    public Reservation(Integer id, Integer user, String room, String timeSlot) {
+    public Reservation(Integer id, Integer user, Room room, String timeSlot) {
         this.id = id;
         this.user = user;
         this.room = room;
@@ -40,11 +39,11 @@ public class Reservation {
         this.user = user;
     }
 
-    public String getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(String room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 

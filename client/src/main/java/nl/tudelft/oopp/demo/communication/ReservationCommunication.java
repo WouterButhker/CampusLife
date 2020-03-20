@@ -1,11 +1,14 @@
 package nl.tudelft.oopp.demo.communication;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Reservation;
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.http.ResponseEntity;
 
@@ -46,10 +49,9 @@ public class ReservationCommunication {
             );
         }
         //System.out.println(user);
-        String room = null;
+        Room room = null;
         if (!inputReservation.get("room").isJsonNull()) {
-            room = RoomCommunication.parseRoom(
-                    inputReservation.get("room").getAsJsonObject()).getCode();
+            room = new Gson().fromJson(inputReservation.get("room").toString(), Room.class);
         }
         //System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
