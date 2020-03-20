@@ -109,6 +109,9 @@ public class LoginScreenController {
         welcome.setStyle("-fx-font-size: 69px; -fx-text-fill: "
                 + "-primary-color-text; -fx-font-weight: bold;");
 
+        passwordField.setText("");
+        usernameField.setText("");
+
         Node root = vbox;
         setGlobalEventHandler(root);
 
