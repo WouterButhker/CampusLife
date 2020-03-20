@@ -1,20 +1,16 @@
 package nl.tudelft.oopp.demo.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "image")
-public class Image {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Image {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    private String imageId;
 
     private String fileName;
 
@@ -27,6 +23,12 @@ public class Image {
 
     }
 
+    /**
+     * Make a new Image with the given parameters.
+     * @param fileName the name of the Image file as saved in the computer
+     * @param fileType the type of the file (ex: png)
+     * @param data the actual Image
+     */
     public Image(String fileName,
                  String fileType,
                  byte[] data) {
@@ -35,12 +37,12 @@ public class Image {
         this.data = data;
     }
 
-    public String getId() {
-        return id;
+    public String getImageId() {
+        return imageId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setImageId(String id) {
+        this.imageId = id;
     }
 
     public String getFileName() {

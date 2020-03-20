@@ -15,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User
+//        extends Image
+        implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // same as SQL autoincrement
@@ -42,7 +44,13 @@ public class User implements UserDetails {
      * @param password the users password (bcrypt)
      * @param role the users access level
      */
-    public User(String username, String password, String role) {
+    public User(String fileName,
+                String fileType,
+                byte[] data,
+                String username,
+                String password,
+                String role) {
+//        super(fileName, fileType, data);
         this.username = username;
         this.password = password;
         this.role = role;
@@ -54,6 +62,7 @@ public class User implements UserDetails {
      * @param password the users password (bcrypt)
      */
     public User(String username, String password) {
+//        super(null, null, null); /// Default profile picture
         this.username = username;
         this.password = password;
         this.role = "Student";

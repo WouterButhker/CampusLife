@@ -1,14 +1,18 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(path = "/rest/users")
@@ -32,19 +36,45 @@ public class UserController {
         return usersRepository.findRoleByUsername(username);
     }
 
-    /*
-     * Adds a new user to the database.
-     * @param username of the current user
-     * @return
-
-    @GetMapping(path = "/add")
-    public @ResponseBody
-    String addNewUser(@RequestParam String username) {
-        User user = new User();
-        user.setUsername(username);
-        usersRepository.save(user);
-        return "Saved";
+    @PutMapping("/image")
+    ResponseEntity<User> uploadFile(@RequestBody User user, @RequestParam("file") MultipartFile file) {
+        if (!usersRepository.existsById(user.getId())) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        usersRepository.deleteById(user.getId());
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        //try {
+            // Check if the file's name contains invalid characters
+            if(fileName.contains("..")) {
+                throw new IllegalArgumentException(
+                        "Sorry! Filename contains invalid path sequence " + fileName);
+            }
+//            user.setFileName(fileName);
+//            user.setFileType(file.getContentType());
+//            user.setData(file.getBytes());
+            usersRepository.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        //}
+        /*
+        catch (IOException ex) {
+            throw new IllegalArgumentException(
+                    "Could not store file " + fileName + ". Please try again!", ex);
+        }*/
     }
-     */
+
+    @GetMapping("/getUrl/{userId}")
+    String getUrl(@PathVariable Integer userId) {
+        User user = usersRepository.findUserById(userId);
+        /*
+        if (usersRepository.existsById(userId)) {
+
+            return ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/images/downloadFile/")
+                    .path(user.getImageId())
+                    .toUriString();
+        }
+        */
+        return null;
+    }
 
 }
