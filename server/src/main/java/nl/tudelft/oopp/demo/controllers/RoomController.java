@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-
 import com.sipios.springsearch.anotation.SearchSpec;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
