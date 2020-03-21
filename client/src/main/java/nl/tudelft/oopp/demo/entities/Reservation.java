@@ -1,50 +1,33 @@
 package nl.tudelft.oopp.demo.entities;
 
-import java.util.Objects;
+public abstract class Reservation {
 
-public class Reservation {
+    private int id;
 
-    private Integer id;
-    private Integer user;
-    private Room room;
+    private String date;
+
     private String timeSlot;
 
-    /**
-     * Make a Reservation object.
-     * @param id the number of the reservation
-     * @param user the User(id) that made the reservation
-     * @param room the Room(roomCode) that is reserved
-     * @param timeSlot the time at which the Room is reserved
-     */
-    public Reservation(Integer id, Integer user, Room room, String timeSlot) {
-        this.id = id;
-        this.user = user;
-        this.room = room;
+    public Reservation(int userID, String date, String timeSlot) {
+        this.id = userID;
+        this.date = date;
         this.timeSlot = timeSlot;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getUser() {
-        return user;
+    public int getId() {
+        return id;
     }
 
-    public void setUser(Integer user) {
-        this.user = user;
+    public String getDate() {
+        return date;
     }
 
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTimeSlot() {
@@ -55,23 +38,5 @@ public class Reservation {
         this.timeSlot = timeSlot;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Reservation)) {
-            return false;
-        }
-        Reservation that = (Reservation) o;
-        return id.equals(that.id)
-                && user.equals(that.user)
-                && room.equals(that.room)
-                && timeSlot.equals(that.timeSlot);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, room, timeSlot);
-    }
+    public abstract String toString();
 }

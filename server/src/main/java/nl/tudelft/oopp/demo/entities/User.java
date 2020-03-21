@@ -68,6 +68,10 @@ public class User
         this.role = "Student";
     }
 
+    public User(int id) {
+        this.id = id;
+    }
+
     public User() {
 
     }
