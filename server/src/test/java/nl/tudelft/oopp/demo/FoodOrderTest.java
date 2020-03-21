@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.demo;
 
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrder;
-import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrderQuantity;
+import nl.tudelft.oopp.demo.entities.food.Food;
+import nl.tudelft.oopp.demo.entities.food.FoodOrder;
+import nl.tudelft.oopp.demo.entities.food.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.repositories.FoodOrderQuantityRepository;
 import nl.tudelft.oopp.demo.repositories.FoodOrderRepository;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;

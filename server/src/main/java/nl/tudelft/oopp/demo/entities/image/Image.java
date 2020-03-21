@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.entities.image;
 
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;

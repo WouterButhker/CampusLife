@@ -1,16 +1,14 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrder;
-import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrderQuantity;
+import java.util.List;
+import nl.tudelft.oopp.demo.entities.food.FoodOrder;
+import nl.tudelft.oopp.demo.entities.food.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.repositories.FoodOrderQuantityRepository;
 import nl.tudelft.oopp.demo.repositories.FoodOrderRepository;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/foodOrder")
@@ -36,7 +34,8 @@ public class FoodOrderController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     FoodOrder addFoodOrder(@RequestBody FoodOrder foodOrder) {
         System.out.println(foodOrder);
-        FoodOrder foodOrderFix = new FoodOrder(userRepository.findById(foodOrder.getId()).get(),foodOrder.getDate(), foodOrder.getTimeSlot(),foodOrder.getRestaurant());
+        FoodOrder foodOrderFix = new FoodOrder(userRepository.findById(foodOrder.getId()).get(),
+                foodOrder.getDate(), foodOrder.getTimeSlot(), foodOrder.getRestaurant());
         FoodOrder createdOrder = foodOrderRepository.save(foodOrderFix);
 
         // Create all food junctions

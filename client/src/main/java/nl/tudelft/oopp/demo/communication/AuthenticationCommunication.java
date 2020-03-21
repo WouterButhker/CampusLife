@@ -67,7 +67,7 @@ public class AuthenticationCommunication {
                 "/rest/users/getId?username=" + username);
         if (response != null && response.getBody() != null
                 && response.getStatusCode().toString().equals("200 OK")) {
-            ids = ImageCommunication.getAllImageIds();
+            ///ids = ImageCommunication.getAllImageIds();
             System.out.println("USER id: " + response.getBody());
             myUserId = Integer.parseInt(response.getBody());
         } else {

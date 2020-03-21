@@ -255,10 +255,10 @@ public class MyProfileRoute extends Route {
         horizontalContainer.setSpacing(10);
 
 
-        Integer rand = Math.abs(new Random().nextInt()) % AuthenticationCommunication.ids.size();
-        System.out.println(rand);
-        String imageId = AuthenticationCommunication.ids.get(rand);
-        Image profileImage = new Image(ImageCommunication.getImageUrlFromId(imageId));
+        //Integer rand = Math.abs(new Random().nextInt()) % AuthenticationCommunication.ids.size();
+        //System.out.println(rand);
+        //String imageId = AuthenticationCommunication.ids.get(rand);
+        Image profileImage = new Image("/images/myProfile.png");
         RectangularImageButton profilePicture = new RectangularImageButton(profileImage, "");
         profilePicture.setFitHeight(90);
         horizontalContainer.getChildren().add(profilePicture);

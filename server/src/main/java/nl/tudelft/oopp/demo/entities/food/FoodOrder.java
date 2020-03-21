@@ -1,16 +1,13 @@
-package nl.tudelft.oopp.demo.entities.reservation.food;
+package nl.tudelft.oopp.demo.entities.food;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import nl.tudelft.oopp.demo.entities.User;
-import nl.tudelft.oopp.demo.entities.reservation.Reservation;
-import nl.tudelft.oopp.demo.repositories.UserRepository;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
+import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.Reservation;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "food_order")
@@ -35,7 +32,6 @@ public class FoodOrder extends Reservation {
 
     /**
      * Constructor for a food order.
-     * @param id the id of the order
      * @param restaurant the id of the restaurant where it is sold
      * @param user the user who placed the order
      */
@@ -57,7 +53,9 @@ public class FoodOrder extends Reservation {
 
     @Override
     public String toString() {
-        return "Id: " + this.getId() + " user: " + getUser() + " date: " + this.getDate() + " time: " + this.getTimeSlot() + " restaurant: " + this.restaurant;
+        return "Id: " + this.getId() + " user: " + getUser()
+                + " date: " + this.getDate() + " time: " + this.getTimeSlot()
+                + " restaurant: " + this.restaurant;
     }
 
     public List<List<Integer>> getFoodsList() {

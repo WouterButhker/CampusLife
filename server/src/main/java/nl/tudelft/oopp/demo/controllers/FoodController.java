@@ -1,6 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import nl.tudelft.oopp.demo.entities.Food;
+import nl.tudelft.oopp.demo.entities.food.Food;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
