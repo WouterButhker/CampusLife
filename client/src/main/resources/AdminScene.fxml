@@ -1,92 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
-       <children>
-          <VBox fx:id="mainBox">
-             <children>
-                <VBox prefHeight="275.0" prefWidth="383.0">
-                   <children>
-                      <FlowPane prefHeight="30.0" prefWidth="316.0">
-                         <children>
-                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Buildings">
-                               <font>
-                                  <Font size="16.0" />
-                               </font>
-                            </Text>
-                            <Button fx:id="modifyBuildingsEnter" mnemonicParsing="false" onAction="#modifyBuildingsEnter" text="Modify">
-                               <FlowPane.margin>
-                                  <Insets left="10.0" />
-                               </FlowPane.margin>
-                            </Button>
-                         </children>
-                      </FlowPane>
-                      <FlowPane prefHeight="30.0" prefWidth="292.0">
-                         <children>
-                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rooms">
-                               <FlowPane.margin>
-                                  <Insets />
-                               </FlowPane.margin>
-                               <font>
-                                  <Font size="16.0" />
-                               </font>
-                            </Text>
-                            <Button fx:id="modifyRoomsEnter" mnemonicParsing="false" onAction="#modifyRoomsEnter" text="Modify">
-                               <FlowPane.margin>
-                                  <Insets left="10.0" />
-                               </FlowPane.margin>
-                            </Button>
-                         </children>
-                      </FlowPane>
-                      <FlowPane prefHeight="30.0" prefWidth="312.0">
-                         <children>
-                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Food">
-                               <font>
-                                  <Font size="16.0" />
-                               </font>
-                            </Text>
-                            <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" text="Modify">
-                               <FlowPane.margin>
-                                  <Insets left="10.0" />
-                               </FlowPane.margin>
-                            </Button>
-                         </children>
-                      </FlowPane>
-                       <FlowPane prefHeight="30.0" prefWidth="312.0">
-                         <children>
-                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rights">
-                               <font>
-                                  <Font size="16.0" />
-                               </font>
-                            </Text>
-                            <Button fx:id="modifyRightsEnter" mnemonicParsing="false" onAction="#modifyRightsEnter" text="Modify">
-                               <FlowPane.margin>
-                                  <Insets left="10.0" />
-                               </FlowPane.margin>
-                            </Button>
-                         </children>
-                      </FlowPane>
-                       <FlowPane prefHeight="30.0" prefWidth="312.0">
-                           <children>
-                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Reservations" >
-                                   <font>
-                                       <Font size="16.0" />
-                                   </font>
-                               </Text>
-                               <Button id="modifyReservationsEnter" fx:id="modifyReservationsEnter" mnemonicParsing="false" onAction="#modifyReservationsEnter" text="Modify">
-                                   <FlowPane.margin>
-                                       <Insets left="10.0" />
-                                   </FlowPane.margin>
-                               </Button>
-                           </children>
-                       </FlowPane>
-                   </children>
-                </VBox>
-             </children>
-          </VBox>
-       </children>
+<AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneController">
+  <children>
+    <VBox fx:id="mainBox" layoutX="0.0" layoutY="0.0" prefHeight="630.0" prefWidth="1120.0">
+      <children>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Administrator Page">
+              <font>
+                <Font size="42.0" />
+              </font>
+            </Text>
+          </children>
+        </HBox>
+        <HBox prefHeight="55.86328125" prefWidth="1120.0" />
+        <FlowPane alignment="TOP_CENTER" columnHalignment="LEFT" prefHeight="54.0" prefWidth="1120.0" rowValignment="CENTER">
+          <children>
+            <Label prefWidth="110.0" text="Buildings" />
+            <Button fx:id="modifyBuildingsEnter" mnemonicParsing="false" onAction="#modifyBuildingsEnter" text="Modify">
+              <FlowPane.margin>
+                <Insets left="10.0" />
+              </FlowPane.margin>
+            </Button>
+            <Pane prefHeight="48.0" prefWidth="184.0" />
+          </children>
+        </FlowPane>
+        <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="292.0">
+          <children>
+            <Label prefWidth="110.0" text="Rooms" />
+            <Button fx:id="modifyRoomsEnter" mnemonicParsing="false" onAction="#modifyRoomsEnter" text="Modify">
+              <FlowPane.margin>
+                <Insets left="10.0" />
+              </FlowPane.margin>
+            </Button>
+            <Pane prefHeight="48.0" prefWidth="184.0" />
+          </children>
+        </FlowPane>
+        <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="312.0">
+          <children>
+            <Label prefWidth="110.0" text="Food" />
+            <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" text="Modify">
+              <FlowPane.margin>
+                <Insets left="10.0" />
+              </FlowPane.margin>
+            </Button>
+            <Pane prefHeight="48.0" prefWidth="184.0" />
+          </children>
+        </FlowPane>
+        <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="312.0">
+          <children>
+            <Label prefWidth="110.0" text="Rights" />
+            <Button fx:id="modifyRightsEnter" mnemonicParsing="false" onAction="#modifyRightsEnter" text="Modify">
+              <FlowPane.margin>
+                <Insets left="10.0" />
+              </FlowPane.margin>
+            </Button>
+            <Pane prefHeight="48.0" prefWidth="184.0" />
+          </children>
+        </FlowPane>
+        <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="312.0">
+          <children>
+            <Label prefWidth="110.0" text="Reservations" />
+            <Button fx:id="modifyReservationsEnter" mnemonicParsing="false" onAction="#modifyReservationsEnter" text="Modify">
+              <FlowPane.margin>
+                <Insets left="10.0" />
+              </FlowPane.margin>
+            </Button>
+            <Pane prefHeight="48.0" prefWidth="184.0" />
+          </children>
+        </FlowPane>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+      </children>
+    </VBox>
+  </children>
 </AnchorPane>
