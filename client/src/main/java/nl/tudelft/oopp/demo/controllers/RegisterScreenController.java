@@ -124,10 +124,6 @@ public class RegisterScreenController {
 
     }
 
-    private void addAppBar() {
-        mainBox.getChildren().add(0, new AppBar());
-    }
-
     @FXML
     void initialize() {
         assert passwordField != null : "fx:id=\"passwordField\" "
@@ -139,7 +135,18 @@ public class RegisterScreenController {
         assert usernameField != null : "fx:id=\"usernameField\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
 
-        addAppBar();
+    }
+
+    @FXML
+    void onLoginClicked(ActionEvent event) {
+        RoutingScene routingScene = (RoutingScene) passwordField.getScene();
+        try {
+            URL xmlUrl = getClass().getResource("/LoginScreen.fxml");
+            routingScene.pushRoute(new XmlRoute(xmlUrl));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

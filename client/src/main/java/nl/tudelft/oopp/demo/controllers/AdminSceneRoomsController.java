@@ -255,9 +255,17 @@ public class AdminSceneRoomsController implements Initializable {
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
+            int rights = rooms.get(i).getRights();
+            String rightsString = "Student";
+            if (rights == 1) {
+                rightsString = "Employee";
+            }
+            if (rights == 2) {
+                rightsString = "Admin";
+            }
             Label text = new Label("Building Code: " + rooms.get(i).getBuildingCode()
                     + " | Room Code: "  + rooms.get(i).getCode() + "\n" + rooms.get(i).getName()
-                    + " " + rooms.get(i).getRights() + " capacity: " + rooms.get(i).getCapacity()
+                    + " " + rightsString + " capacity: " + rooms.get(i).getCapacity()
                     + "\nWhiteboard: " + rooms.get(i).isHasWhiteboard() + " TV: "
                     + rooms.get(i).isHasTV());
             text.setPrefSize(225, 60);

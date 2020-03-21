@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="vBox" fx:id="vbox" alignment="TOP_CENTER" prefHeight="630.0" prefWidth="1120.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="nl.tudelft.oopp.demo.controllers.LoginScreenController">
+<VBox id="vBox" fx:id="vbox" alignment="TOP_CENTER" prefHeight="630.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.LoginScreenController">
   <children>
     <HBox id="hBox1" alignment="TOP_CENTER" prefHeight="44.0" prefWidth="1120.0">
       <children>
@@ -45,7 +44,7 @@
     <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
       <children>
         <Pane prefHeight="200.0" prefWidth="200.0" />
-        <Hyperlink fx:id="registerLink" onAction="#onRegisterClicked" text="Dont have an account? click here to register">
+        <Hyperlink fx:id="registerLink" onAction="#onRegisterClicked" text="Dont have an account? Click here to register.">
           <font>
             <Font size="17.0" />
           </font>
