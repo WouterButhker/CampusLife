@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,7 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
-import java.io.File;
 
 public class ImageSelectorWidget extends VBox {
     private HBox chooseFile;
@@ -21,7 +21,7 @@ public class ImageSelectorWidget extends VBox {
     private File image;
 
     /**
-     * Creates a new ImageSelectorWidget
+     * Creates a new ImageSelectorWidget.
      */
     public ImageSelectorWidget() {
         Label selectImage = new Label("Select Image:");
@@ -51,25 +51,31 @@ public class ImageSelectorWidget extends VBox {
         });
     }
 
+    /**
+     * Opens a file navigation that allows the user to select a jpg or png.
+     */
     public void getImage() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
+        fileChooser.getExtensionFilters()
+                .addAll(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
 
             System.out.println("File selected: " + selectedFile.getName());
             this.fileChosen.setText("  " + selectedFile.getName());
-        }
-        else {
+        } else {
             System.out.println("File selection cancelled.");
         }
 
         this.image = selectedFile;
     }
 
+    /**
+     * uploads the selected image.
+     */
     public void upload() {
-        if(this.image != null) {
+        if (this.image != null) {
             System.out.println(this.image.getName());
         } else {
             System.out.println("No file selected");
