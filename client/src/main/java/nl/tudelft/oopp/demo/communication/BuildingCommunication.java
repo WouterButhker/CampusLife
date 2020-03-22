@@ -1,69 +1,30 @@
 package nl.tudelft.oopp.demo.communication;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import nl.tudelft.oopp.demo.entities.Building;
+import org.springframework.http.ResponseEntity;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.Building;
 
 
 public class BuildingCommunication {
 
-
     /**
-     * Retrieves all the buildings codes and names from the database and returns an array.
-     * Required permissions: Student
-     * @return array of all the buildings, format: "code name"
+     * Returns a list of Strings with the codes and names of the Buildings.
+     * @return List of Strings
      */
-    public static String[] getBuildingsCodeAndName() {
-        try {
-            String responseString = ServerCommunication.authenticatedRequest(
-                    "/buildings/code+name").getBody();
-            responseString = responseString.replace("[", "");
-            responseString = responseString.replace("]", "");
-            responseString = responseString.replace("\"", "");
-            return responseString.split(",");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static List<String> getBuildingsCodeAndName() {
+        List<String> response = new ArrayList<>();
+        List<Building> buildings = getAllBuildings();
+        if (buildings != null) {
+            for (Building building : buildings) {
+                response.add(building.getCode() + " " + building.getName());
+            }
         }
-        return null;
-    }
-
-    /**
-     * For adding buildings to the database.
-     * Required permissions: Admin
-     * @param buildingCode the number of the building
-     * @param name the name of the building
-     * @param location the street where the building is situated
-     * @param openingHours time it is open with format hh:mm-hh:mm
-     *                     for every day of the week separated by a ","
-     * @param bikes amount of bikes at the building, null if it has no bike station
-     */
-    public static void addBuildingToDatabase(Integer buildingCode,
-                                             String name,
-                                             String location,
-                                             String openingHours,
-                                             Integer bikes) {
-        /*
-        name = name.replace(" ", "%20");
-        location = location.replace(" ", "%20");
-        openingHours = openingHours.replace(" ", "%20");
-         */
-        String bikesString;
-        if (bikes == null) {
-            bikesString = "#null";
-        } else {
-            bikesString = Integer.toString(bikes);
-        }
-        String url = "/buildings/add?buildingCode=" + buildingCode
-                + "&name=" + name + "&location=" + location + "&openingHours=" + openingHours
-                + "&bikes=" + bikesString;
-        try {
-            ServerCommunication.authenticatedRequest(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return response;
     }
 
     /**
@@ -74,62 +35,14 @@ public class BuildingCommunication {
      *         0 if there was no building with that code
      *         something else otherwise
      */
-    public static String deleteBuildingFromDatabase(Integer buildingCode) {
-        String url = "/buildings/delete?buildingCode=" + buildingCode;
+    public static String deleteBuilding(Integer buildingCode) {
+        String url = "/buildings/" + buildingCode;
         try {
-            return ServerCommunication.authenticatedRequest(url).getBody();
+            return ServerCommunication.authenticatedDeleteRequest(url).getBody();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "-1";
-    }
-
-    /**
-     * Counts all the buildings from the database.
-     * Required permission: Student
-     * @return an int with a number of all the buildings
-     */
-    public static Integer countAllBuildings() {
-        String url = "/buildings/count";
-
-        try {
-            return Integer.parseInt(ServerCommunication.authenticatedRequest(url).getBody());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-
-    /**
-     * This transforms the JSON of a building into a Building object.
-     * @param inputBuilding a JSON with a building
-     * @return a Building object.
-     */
-    public static Building parseBuilding(JsonObject inputBuilding) {
-        //System.out.println(inputBuilding);
-        Integer code = inputBuilding.get("buildingCode").getAsInt();
-        String name = inputBuilding.get("name").getAsString();
-        String location = inputBuilding.get("location").getAsString();
-        String openingHours = inputBuilding.get("openingHours").getAsString();
-        Integer bikes;
-        if (inputBuilding.get("bikes").isJsonNull()) {
-            bikes = null;
-        } else {
-            bikes = inputBuilding.get("bikes").getAsInt();
-        }
-        return new Building(code, name, location, openingHours,
-                "/images/main-screen-default-building.jpg", bikes);
-    }
-
-    private static List<Building> parseBuildings(String inputBuildings) {
-        JsonParser jsonParser = new JsonParser();
-        JsonArray jsonArray = jsonParser.parse(inputBuildings).getAsJsonArray();
-        List<Building> listOfBuildings = new ArrayList<>();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            listOfBuildings.add(parseBuilding(jsonArray.get(i).getAsJsonObject()));
-        }
-        return listOfBuildings;
     }
 
     /**
@@ -138,10 +51,14 @@ public class BuildingCommunication {
      * @return list of buildings
      */
     public static List<Building> getAllBuildings() {
-        String url = "/buildings/all";
+        String url = "/buildings";
 
         try {
-            return parseBuildings(ServerCommunication.authenticatedRequest(url).getBody());
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Building>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,12 +71,72 @@ public class BuildingCommunication {
      */
     public static List<Building> getAllBuildingsWithBikeStation() {
         String url = "/buildings/bikes";
-
         try {
-            return parseBuildings(ServerCommunication.authenticatedRequest(url).getBody());
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                Type listType = new TypeToken<List<Building>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    /**
+     * Save a Building to the database via POST request.
+     * @param building the Building entity that you want to save
+     * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
+     */
+    public static String saveBuilding(Building building) {
+        String url = "/buildings";
+        try {
+            ResponseEntity<String> response = ServerCommunication
+                    .authenticatedPostRequest(url, building);
+            if (response != null) {
+                return response.getStatusCode().toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
+
+    /**
+     * Update a Building from the database via PUT request.
+     * @param building the Building entity that you want to update
+     * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
+     */
+    public static String updateBuilding(Building building) {
+        String url = "/buildings";
+        try {
+            ResponseEntity<String> response = ServerCommunication
+                    .authenticatedPutRequest(url, building);
+            if (response != null) {
+                return response.getStatusCode().toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
+
+    /**
+     * Returns a Building that has the code buildingCode.
+     * @param buildingCode the code of the Building you are looking for
+     * @return Building if found / null if not found.
+     */
+    public static Building getBuildingByCode(Integer buildingCode) {
+        String url = "/buildings/" + buildingCode;
+        try {
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            if (response != null) {
+                return new Gson().fromJson(response.getBody(), Building.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

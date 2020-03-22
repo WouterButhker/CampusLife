@@ -10,12 +10,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RestController
@@ -43,38 +42,9 @@ public class RoomController {
         return roomRepository.findAll(Specification.where(specs));
     }
 
-    /**
-     * Adds a new room in the database.
-     * @param roomCode the abreviation of the room
-     * @param name the actual name of the room
-     * @param capacity how many spaces when empty
-     * @param hasWhiteboard if the room has a whiteboard
-     * @param hasTV if the room has a TV
-     * @param rights (minimum) required to reserve this room
-     * @param building in which the room is
-     */
-    @GetMapping(path = "/add")
-    public @ResponseBody String addNewRoom(@RequestParam String roomCode,
-                                           @RequestParam String name,
-                                           @RequestParam Integer capacity,
-                                           @RequestParam boolean hasWhiteboard,
-                                           @RequestParam boolean hasTV,
-                                           @RequestParam Integer rights,
-                                           @RequestParam Building building) {
-        Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
-        roomRepository.save(room);
-        return "Saved";
-    }
-
     @GetMapping(path = "/getRoomNamesFromBuilding")
     public List<String> getAllRoomNamesFromBuilding(@RequestParam Building building) {
         return roomRepository.allRoomNamesFromBuilding(building);
-    }
-
-    @Transactional
-    @GetMapping(path = "/delete")
-    public Integer deleteRoom(@RequestParam String roomCode) {
-        return roomRepository.deleteRoomWithCode(roomCode);
     }
 
     @GetMapping(path = "/filter/rights")
@@ -120,4 +90,40 @@ public class RoomController {
         return roomRepository.getAllFilteredRooms(myRights,
                 hasTV, hasWhiteboard, minCap, maxCap);
     }
+
+
+    /*
+    REFACTORED STUFF BELOW
+     */
+    @GetMapping
+    public List<Room> getAll() {
+        return roomRepository.findAll();
+    }
+
+    @PostMapping
+    Room saveRoom(@RequestBody Room room) {
+        if (roomRepository.existsRoomByRoomCode(room.getRoomCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room already exists!");
+        }
+        return roomRepository.save(room);
+    }
+
+    @PutMapping
+    Room updateRoom(@RequestBody Room room) {
+        if (!roomRepository.existsRoomByRoomCode(room.getRoomCode())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Room does not exists!");
+        }
+        return roomRepository.save(room);
+    }
+
+    @DeleteMapping(value = "/{roomCode}")
+    ResponseEntity<String> deleteRoom(@PathVariable String roomCode) {
+        boolean exists = roomRepository.existsRoomByRoomCode(roomCode);
+        if (!exists) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        roomRepository.deleteById(roomCode);
+        return new ResponseEntity<>(roomCode, HttpStatus.OK);
+    }
+
 }

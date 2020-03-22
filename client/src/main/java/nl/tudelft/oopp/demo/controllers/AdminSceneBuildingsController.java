@@ -225,8 +225,8 @@ public class AdminSceneBuildingsController implements Initializable {
     private void loadBuildings() {
         if (anchorPaneBuildings != null && buildingsList != null) {
             buildingsList.getChildren().clear();
-            int numBuildings = BuildingCommunication.countAllBuildings();
             List<Building> buildings = BuildingCommunication.getAllBuildings();
+            int numBuildings = buildings.size();
             int height = 82 * numBuildings;
             if (height <= scrollPane.getPrefHeight()) {
                 scrollPane.setPrefWidth(400);
@@ -276,7 +276,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         int code = buildings.get(finalI).getCode();
-                        BuildingCommunication.deleteBuildingFromDatabase(code);
+                        BuildingCommunication.deleteBuilding(code);
                         loadBuildings();
                     }
                 });
@@ -329,8 +329,8 @@ public class AdminSceneBuildingsController implements Initializable {
         }
         if (!location.equals("") && !name.equals("") && codeFound
                && week.getWeekDays().checkCorrectness()) {
-            BuildingCommunication.addBuildingToDatabase(buildingCode,
-                    name, location, openingHours, bikes);
+            Building building = new Building(buildingCode, name, location, openingHours, bikes);
+            BuildingCommunication.saveBuilding(building);
             submitStatus.setText("Building successfully added!");
             try {
                 refreshBuildingsPage();
@@ -609,7 +609,7 @@ public class AdminSceneBuildingsController implements Initializable {
         stage.showAndWait();
     }
 
-    private Label modifyBuilding(String address, String name, int buildingCode,
+    private Label modifyBuilding(String location, String name, int buildingCode,
                                  String openingHours, String bikes, boolean openingHoursCorrect) {
         Label result = null;
         Integer bikesInt = null;
@@ -631,9 +631,9 @@ public class AdminSceneBuildingsController implements Initializable {
             result = new Label("These opening hours don't make sense!");
         }
 
-        if (!address.equals("") && !name.equals("") && openingHoursCorrect) {
-            BuildingCommunication.addBuildingToDatabase(buildingCode,
-                    name, address, openingHours, bikesInt);
+        if (!location.equals("") && !name.equals("") && openingHoursCorrect) {
+            Building building = new Building(buildingCode, name, location, openingHours, bikesInt);
+            BuildingCommunication.updateBuilding(building);
         } else {
             if (result == null) {
                 result = new Label("All the fields have to be entered");
