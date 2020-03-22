@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.views;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,7 +18,14 @@ import nl.tudelft.oopp.demo.communication.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.widgets.*;
+import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.BikeReservationWidget;
+import nl.tudelft.oopp.demo.widgets.CalendarWidget;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 
@@ -130,6 +134,8 @@ public class BikesReservationRoute extends Route {
             @Override
             public void handle(MouseEvent event) {
                 reserveBike();
+                bikeReservationWidgetPickUp.loadBuildings();
+                bikeReservationWidgetDropOff.loadBuildings();
             }
         });
         reserveButton.getStyleClass().add("available-date-box");
@@ -174,14 +180,10 @@ public class BikesReservationRoute extends Route {
             BikeReservation res = new BikeReservation(null, AuthenticationCommunication.myUserId,
                       pickUpBuilding, dropOffBuilding, date, slot);
             BikeReservationCommunication.createBikeReservation(res);
-            //BikeReservationCommunication.addReservationToTheDatabase(
-            //       AuthenticationCommunication.myUserId,
-            //        pickUpBuilding.getCode(), dropOffBuilding.getCode(), date, slot);
-            //bikeReservationWidgetPickUp.loadBuildings();
-            //bikeReservationWidgetDropOff.loadBuildings();
+            PopupWidget.display("Bike Reserved!");
             return;
         }
-        //Error popup
+        PopupWidget.display("An error has occurred while trying to reserve a bike\nPlease try again");
     }
 
     private boolean allConditionsSelected() {
