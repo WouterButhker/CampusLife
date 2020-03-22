@@ -1,11 +1,15 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.util.ArrayList;
+import com.sipios.springsearch.anotation.SearchSpec;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,16 +17,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Controller
 @RestController
 @RequestMapping(path = "/rooms")
 public class RoomController {
-
     @Autowired
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
+
+    public RoomController(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
+    }
+
+    @GetMapping(path = "/getFilteredRooms")
+    public List<Room> getFilteredRooms(@SearchSpec Specification<Room> specs) {
+        return roomRepository.findAll(Specification.where(specs));
+    }
 
     @GetMapping(path = "/all")
-    public List<Room> getAll() {
-        return roomRepository.findAll();
+    public List<Room> getAll(@SearchSpec Specification<Room> specs) {
+        return roomRepository.findAll(Specification.where(specs));
+    }
+
+    @GetMapping(path = "/getAllRoomsFromBuilding")
+    public List<Room> getAllRoomsFromBuilding(@SearchSpec Specification<Room> specs) {
+        return roomRepository.findAll(Specification.where(specs));
     }
 
     /**
@@ -46,12 +64,6 @@ public class RoomController {
         Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
         roomRepository.save(room);
         return "Saved";
-    }
-
-
-    @GetMapping(path = "/getRoomsFromBuilding")
-    public List<Room> getAllRoomsFromBuilding(@RequestParam Building building) {
-        return roomRepository.allRoomsFromBuilding(building);
     }
 
     @GetMapping(path = "/getRoomNamesFromBuilding")
@@ -90,11 +102,11 @@ public class RoomController {
 
     @GetMapping(path = "/filter/getFilteredRoomsFromBuilding")
     public List<Room> getFilteredRoomsFromBuilding(@RequestParam Building myBuilding,
-                                       @RequestParam Integer myRights,
-                                       @RequestParam Boolean hasTV,
-                                       @RequestParam Boolean hasWhiteboard,
-                                       @RequestParam Integer minCap,
-                                       @RequestParam Integer maxCap) {
+                                                   @RequestParam Integer myRights,
+                                                   @RequestParam Boolean hasTV,
+                                                   @RequestParam Boolean hasWhiteboard,
+                                                   @RequestParam Integer minCap,
+                                                   @RequestParam Integer maxCap) {
         return roomRepository.getFilteredRoomsFromBuilding(myBuilding, myRights,
                         hasTV, hasWhiteboard, minCap, maxCap);
     }
