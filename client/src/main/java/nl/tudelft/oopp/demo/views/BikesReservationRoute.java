@@ -3,8 +3,6 @@ package nl.tudelft.oopp.demo.views;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Stack;
-
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -170,17 +168,18 @@ public class BikesReservationRoute extends Route {
             DateFormat dateFormat = new SimpleDateFormat("HH:mm");
             String pickUp = dateFormat.format(pickUpTime.getTime());
             String dropOff = dateFormat.format(dropOffTime.getTime());
-            if (pickUp.compareTo(dropOff) < 0) {
-                String slot = pickUp + "-" + dropOff;
-                DateFormat dayFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String date = dayFormat.format(pickUpTime.getTime());
-                BikeReservationCommunication.addReservationToTheDatabase(
-                        AuthenticationCommunication.myUserId,
-                        pickUpBuilding.getCode(), dropOffBuilding.getCode(), date, slot);
-                //bikeReservationWidgetPickUp.loadBuildings();
-                //bikeReservationWidgetDropOff.loadBuildings();
-                return;
-            }
+            String slot = pickUp + "-" + dropOff;
+            DateFormat dayFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String date = dayFormat.format(pickUpTime.getTime());
+            BikeReservation res = new BikeReservation(null, AuthenticationCommunication.myUserId,
+                      pickUpBuilding, dropOffBuilding, date, slot);
+            BikeReservationCommunication.createBikeReservation(res);
+            //BikeReservationCommunication.addReservationToTheDatabase(
+            //       AuthenticationCommunication.myUserId,
+            //        pickUpBuilding.getCode(), dropOffBuilding.getCode(), date, slot);
+            //bikeReservationWidgetPickUp.loadBuildings();
+            //bikeReservationWidgetDropOff.loadBuildings();
+            return;
         }
         //Error popup
     }
@@ -190,8 +189,14 @@ public class BikesReservationRoute extends Route {
         Building dropOffBuilding = bikeReservationWidgetDropOff.getSelected();
         Calendar pickUpTime = bikeReservationWidgetPickUp.getTimeSelected();
         Calendar dropOffTime = bikeReservationWidgetDropOff.getTimeSelected();
-        return pickUpBuilding != null && dropOffBuilding != null && pickUpTime != null
-                && dropOffTime != null && pickUpBuilding.getBikes() > 0;
+        if (pickUpBuilding != null && dropOffBuilding != null && pickUpTime != null
+                && dropOffTime != null && pickUpBuilding.getBikes() > 0) {
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            String pickUp = dateFormat.format(pickUpTime.getTime());
+            String dropOff = dateFormat.format(dropOffTime.getTime());
+            return pickUp.compareTo(dropOff) < 0;
+        }
+        return false;
     }
 
     @Override

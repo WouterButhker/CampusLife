@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.entities.Building;
 import org.springframework.http.ResponseEntity;
 
 public class BikeReservationCommunication {
@@ -47,6 +48,11 @@ public class BikeReservationCommunication {
         try {
             String responseString = ServerCommunication.authenticatedPostRequest(
                     "/bikeReservations", bikeReservation).getBody();
+//            Building pickUpBuilding = bikeReservation.getPickUpBuilding();
+//            pickUpBuilding.setBikes(pickUpBuilding.getBikes() - 1);
+//            Building dropOffBuilding = bikeReservation.getDropOffBuilding();
+//            dropOffBuilding.setBikes(dropOffBuilding.getBikes() + 1);
+            //PUT requests for updating buildings from other branch
             Gson gson = new Gson();
             return gson.fromJson(responseString, BikeReservation.class);
         } catch (Exception e) {
@@ -63,19 +69,15 @@ public class BikeReservationCommunication {
             );
         }
         String date = inputReservation.get("date").getAsString();
-        Integer pickUpBuilding = null;
+        Building pickUpBuilding = null;
         if (!inputReservation.get("pickUpBuilding").isJsonNull()) {
-            pickUpBuilding = Integer.parseInt(
-                    inputReservation.getAsJsonObject("pickUpBuilding")
-                            .get("buildingCode").getAsString()
-            );
+            pickUpBuilding = BuildingCommunication.parseBuilding(
+                    inputReservation.get("pickUpBuilding").getAsJsonObject());
         }
-        Integer dropOffBuilding = null;
+        Building dropOffBuilding = null;
         if (!inputReservation.get("dropOffBuilding").isJsonNull()) {
-            dropOffBuilding = Integer.parseInt(
-                    inputReservation.getAsJsonObject("dropOffBuilding")
-                            .get("buildingCode").getAsString()
-            );
+            dropOffBuilding = BuildingCommunication.parseBuilding(
+                    inputReservation.get("dropOffBuilding").getAsJsonObject());
         }
         Integer id = inputReservation.get("id").getAsInt();
         String timeSlot = inputReservation.get("timeSlot").getAsString();

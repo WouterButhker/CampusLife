@@ -14,10 +14,8 @@ public class BikeReservation {
     @Column
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "users")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;          // user id
+    @Column(name = "user")
+    private Integer user;
 
     @ManyToOne
     @JoinColumn(name = "pickUpBuilding")
@@ -47,7 +45,7 @@ public class BikeReservation {
      * @param date The date of the reservation
      * @param timeSlot The timeslot of the reservation
      */
-    public BikeReservation(User user,
+    public BikeReservation(Integer user,
                        Building pickUpBuilding,
                        Building dropOffBuilding,
                        String date,
@@ -96,11 +94,11 @@ public class BikeReservation {
         this.id = id;
     }
 
-    public User getUser() {
+    public Integer getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Integer user) {
         this.user = user;
     }
 
