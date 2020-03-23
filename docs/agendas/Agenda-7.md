@@ -17,7 +17,7 @@ Check that everybody is present.
  - Talk about the Observer pattern idea for updating data when some user(admin) makes a request to update data in db.
  
 # Action points for next week (Scrum board)
- - Review the whole thing
+ - Review the whole thing - Andra?
  - Introduction (Problem + Solution + Our approach) - Hendy
  - Product (Functionality) - Wouter + Ana
  - Architecture (Diagram + technologies used) - Willem
@@ -38,6 +38,8 @@ Check that everybody is present.
  - User <- FavouriteRooms -> Room
  - User <- FavouriteRestaurants -> Restaurant
  - User <- FavouriteBuildings -> Building
+ - Filter Restaurants by building - Andra
+ - Display the menu for restaurant - Andra
  - Images in DB - Ana
  - Finish refactoring - Wouter + Ana 
  - Test SQL injection - Wouter
