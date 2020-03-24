@@ -31,7 +31,7 @@ public class RestaurantController {
      */
     @PostMapping(consumes = "application/json", produces = "application/json")
     Restaurant addRestaurant(@RequestBody Restaurant restaurant) {
-        Building building = buildingRepository.findById(restaurant.getBuildingId()).get();
+        Building building = buildingRepository.findById(restaurant.getBuildingCode()).get();
         restaurant.setBuilding(building);
         return restaurantRepository.save(restaurant);
     }
@@ -47,17 +47,13 @@ public class RestaurantController {
         return restaurantRepository.deleteRestaurantWithId(id);
     }
 
-    /*@DeleteMapping(value = "/{id}")
-    ResponseEntity<Integer> deleteRestaurant(@PathVariable Integer id) {
-        boolean exists = restaurantRepository.findById(id).isPresent();
-
-        if (!exists) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        restaurantRepository.deleteById(id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
-    }*/
+    @PutMapping (value = "/{id}", consumes = "application/json", produces = "application/json")
+    public Restaurant updateRestaurant(@PathVariable Integer id,
+                                       @RequestBody Restaurant restaurant) {
+        Building building = buildingRepository.findById(restaurant.getBuildingCode()).get();
+        restaurant.setBuilding(building);
+        return restaurantRepository.save(restaurant);
+    }
 
     /**
      * Returns all food of the restaurant.
@@ -69,9 +65,27 @@ public class RestaurantController {
         return foodRepository.allFoodOfRestaurant(id);
     }
 
+    /**
+     * Returns all the restaurants from a certain building
+     *
+     * @param building the building that the restaurants are from
+     * @return the list of restaurants
+     */
     @GetMapping(path = "/getAllRestaurantsFromBuilding")
     public List<Restaurant> getAllRestaurantsFromBuilding(@RequestParam Building building) {
         return restaurantRepository.allRestaurantsFromBuilding(building);
     }
+
+    /*@DeleteMapping(value = "/{id}")
+    ResponseEntity<Integer> deleteRestaurant(@PathVariable Integer id) {
+        boolean exists = restaurantRepository.findById(id).isPresent();
+
+        if (!exists) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        restaurantRepository.deleteById(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }*/
 
 }

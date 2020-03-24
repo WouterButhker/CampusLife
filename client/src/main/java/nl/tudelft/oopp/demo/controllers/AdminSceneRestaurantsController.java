@@ -177,9 +177,10 @@ public class AdminSceneRestaurantsController implements Initializable {
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
-            Label text = new Label("Building Code: " + restaurants.get(i).getBuilding()
-                    + " Restaurant ID: " + restaurants.get(i).getId()
-                    + "\n" + restaurants.get(i).getName());
+            Label text = new Label("Building Code: " + restaurants.get(i).getBuildingCode()
+                    + "\n" + " Restaurant ID: " + restaurants.get(i).getId()
+                    + "\n" + restaurants.get(i).getName()
+                    + "\n" + restaurants.get(i).getDescription());
             text.setPrefSize(225, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
@@ -236,7 +237,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         HBox headerBox = new HBox(header);
         headerBox.setPadding(new Insets(20, 125, 10, 125));
 
-        Label idText = new Label("Id :");
+        /*Label idText = new Label("Id :");
         HBox idTextBox = new HBox(idText);
         idTextBox.setPadding(new Insets(10, 175, 0, 175));
 
@@ -245,7 +246,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         TextField id = new TextField(Integer.toString(restaurant.getId()));
         id.setPrefSize(150, 20);
         HBox idBox = new HBox(spacer, id);
-        idBox.setPadding(new Insets(10, 0, 0, 0));
+        idBox.setPadding(new Insets(10, 0, 0, 0));*/
 
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
@@ -258,7 +259,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         HBox nameBox = new HBox(spacer1, name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
-        Label descriptionText = new Label("Opening hours :");
+        Label descriptionText = new Label("Description :");
         HBox descriptionTextBox = new HBox(descriptionText);
         descriptionTextBox.setPadding(new Insets(10, 175, 0, 175));
 
@@ -277,7 +278,9 @@ public class AdminSceneRestaurantsController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 Label status = modifyRestaurant(restaurant.getId(),
-                        name.getText(), restaurant.getBuilding(), description.getText());
+                        name.getText(),
+                        restaurant.getBuildingCode(),
+                        description.getText());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -295,7 +298,10 @@ public class AdminSceneRestaurantsController implements Initializable {
             }
         });
 
-        root.getChildren().addAll(headerBox, nameTextBox, nameBox, submitBox);
+        root.getChildren().addAll(headerBox,
+                nameTextBox, nameBox,
+                descriptionTextBox, descriptionBox,
+                submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -305,8 +311,8 @@ public class AdminSceneRestaurantsController implements Initializable {
     }
 
     private Label modifyRestaurant(int id, String name, int buildingCode, String description) {
-        if (!name.equals("")) {
-            RestaurantCommunication.createRestaurant(new Restaurant(id,
+        if (!name.equals("") && !description.equals("")) {
+            RestaurantCommunication.updateRestaurant(new Restaurant(id,
                                                                     name,
                                                                     buildingCode,
                                                                     description));

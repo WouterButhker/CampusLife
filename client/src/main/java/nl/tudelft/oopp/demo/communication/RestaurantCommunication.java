@@ -28,7 +28,26 @@ public class RestaurantCommunication {
     }
 
     /**
+     * Modifies a restaurant using a PUT request.
+     *
+     * @param restaurant the restaurant to be updated
+     * @return the modified Restaurant entity
+     */
+    public static Restaurant updateRestaurant(Restaurant restaurant) {
+        try {
+            String responseString = ServerCommunication.authenticatedPutRequest(
+                    String.format("/restaurants/%d", restaurant.getId()), restaurant).getBody();
+            Gson gson = new Gson();
+            return gson.fromJson(responseString, Restaurant.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Retrieves all the restaurants.
+     *
      * @return List of all Restaurants
      */
     public static List<Restaurant> getRestaurants() {
@@ -36,7 +55,8 @@ public class RestaurantCommunication {
             String responseString = ServerCommunication.authenticatedRequest(
                     "/restaurants").getBody();
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<Restaurant>>() {}.getType();
+            Type listType = new TypeToken<List<Restaurant>>() {
+            }.getType();
             return gson.fromJson(responseString, listType);
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,3 +120,4 @@ public class RestaurantCommunication {
         return null;
     }
 }
+

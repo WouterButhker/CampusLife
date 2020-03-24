@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import javax.persistence.*;
@@ -8,8 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "restaurant")
@@ -32,7 +34,7 @@ public class Restaurant {
     private String description;
 
     @Transient
-    private Integer buildingId;
+    private Integer buildingCode;
 
     public Restaurant() {
 
@@ -52,6 +54,7 @@ public class Restaurant {
         this.id = id;
         this.name = name;
         this.building = building;
+        this.buildingCode = building.getBuildingCode();
         this.description = description;
     }
 
@@ -63,24 +66,30 @@ public class Restaurant {
         this.id = id;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Building getBuilding() {
         return building;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public void setBuilding(Building building) {
         this.building = building;
+        this.buildingCode = building.getBuildingCode();
     }
 
-    @JsonProperty(value = "building")
-    public Integer getBuildingId() {
-        return buildingId;
+    @JsonProperty(value = "buildingCode")
+    public Integer getBuildingCode() {
+        if(buildingCode == null && building != null) {
+            return building.getBuildingCode();
+        }
+        else {
+            return buildingCode;
+        }
     }
 
-    @JsonProperty(value = "building")
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
+    @JsonProperty(value = "buildingCode")
+    public void setBuildingCode(Integer buildingCode) {
+        this.buildingCode = buildingCode;
     }
 
     public String getName() {
