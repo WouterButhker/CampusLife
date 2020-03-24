@@ -273,7 +273,8 @@ public class MyProfileRoute extends Route {
         userDetails.getChildren().add(oneBoldOneRegular(
                 "Role: ", AuthenticationCommunication.myUserRole));
 
-        horizontalContainer.getChildren().add(userDetails);
+        ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget);
         rootElement.getChildren().add(horizontalContainer);
     }
 
