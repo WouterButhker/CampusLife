@@ -11,6 +11,8 @@ import nl.tudelft.oopp.demo.entities.image.UserImage;
 import nl.tudelft.oopp.demo.repositories.UserImageRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -43,46 +45,44 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/image")
-    Image uploadFile(@PathVariable Integer userId, @RequestParam("file") MultipartFile file) throws IOException {
-//        if (!usersRepository.existsById(userId)) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
+    ResponseEntity<UserImage> uploadFile(@PathVariable Integer userId, @RequestParam("file") MultipartFile file) throws IOException {
+        if (!usersRepository.existsById(userId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         User user = usersRepository.findUserById(userId);
-//        if (userImageRepository.existsByUser(user)) {
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        }
+        if (userImageRepository.existsByUser(user)) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         if(fileName.contains("..")) {
             throw new IllegalArgumentException(
                     "Sorry! Filename contains invalid path sequence " + fileName);
         }
         UserImage userImage = new UserImage(fileName, file.getContentType(), file.getBytes(), user);
-        return userImageRepository.save(userImage);
+        userImageRepository.save(userImage);
 
-        //return new ResponseEntity<>(userId, HttpStatus.OK);
+        return new ResponseEntity<>(userImage, HttpStatus.OK);
     }
 
     @GetMapping("/getUrl/{userId}")
     String getUrl(@PathVariable Integer userId) {
         User user = usersRepository.findUserById(userId);
-        if (usersRepository.existsById(userId)) {
+        if (userImageRepository.existsByUser(user)) {
         UserImage userImage = userImageRepository.findByUser(user);
         return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/images/downloadFile/")
+                .path("/rest/users/downloadFile/")
                 .path(userImage.getImageId())
                 .toUriString();
         }
         return null;
     }
 
-    @GetMapping("/file/{fileId}")
-    public HttpEntity<byte[]> getFile(@PathVariable String fileId) {
-        UserImage userImage = userImageRepository.findByImageId(fileId);
-        byte[] image = userImage.getData();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-        headers.setContentLength(image.length);
-        return new HttpEntity<byte[]>(image, headers);
+    @GetMapping("/downloadFile/{imageId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String imageId) {
+        Image image = userImageRepository.findByImageId(imageId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(image.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getFileName() + "\"")
+                .body(new ByteArrayResource(image.getData()));
     }
-
 }

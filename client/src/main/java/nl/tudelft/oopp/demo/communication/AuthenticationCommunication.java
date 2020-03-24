@@ -24,6 +24,7 @@ public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
     public static String myUsername;
+    public static String myImageUrl;
     public static List<String> ids;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
@@ -42,6 +43,7 @@ public class AuthenticationCommunication {
             myUsername = username;
             saveUserId(username);
             saveUserRole(username);
+            saveUserImageUrl(myUserId);
         } else {
             System.out.println("Login failed");
         }
@@ -88,6 +90,20 @@ public class AuthenticationCommunication {
                 && response.getStatusCode().toString().equals("200 OK")) {
             System.out.println("USER role: " + response.getBody());
             myUserRole = response.getBody();
+        } else {
+            System.out.println("Login failed");
+        }
+    }
+
+    private static void saveUserImageUrl(Integer userId) {
+        ResponseEntity<String> response = authenticatedRequest(
+                "rest/users/getUrl/" + userId);
+        if (response != null && response.getBody() == null) {
+            myImageUrl = "/images/myProfile.png";
+        } else if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
+            System.out.println("Image Url: " + response.getBody());
+            myImageUrl = response.getBody();
         } else {
             System.out.println("Login failed");
         }

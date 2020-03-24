@@ -258,7 +258,7 @@ public class MyProfileRoute extends Route {
         //Integer rand = Math.abs(new Random().nextInt()) % AuthenticationCommunication.ids.size();
         //System.out.println(rand);
         //String imageId = AuthenticationCommunication.ids.get(rand);
-        Image profileImage = new Image("/images/myProfile.png");
+        Image profileImage = new Image(AuthenticationCommunication.myImageUrl);
         RectangularImageButton profilePicture = new RectangularImageButton(profileImage, "");
         profilePicture.setFitHeight(90);
         horizontalContainer.getChildren().add(profilePicture);
