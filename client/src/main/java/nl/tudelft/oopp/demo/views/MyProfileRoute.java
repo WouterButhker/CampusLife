@@ -163,7 +163,7 @@ public class MyProfileRoute extends Route {
 
             Text roomText = new Text("Type: my reservation");
             if (reservation.getRoom() != null) {
-                roomText = new Text("Room: " + reservation.getRoom());
+                roomText = new Text("Room: " + reservation.getRoom().getRoomCode());
             }
 
             currentReservation.getChildren().add(roomText);
