@@ -178,7 +178,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
             Label text = new Label("Building Code: " + restaurants.get(i).getBuildingCode()
-                    + "\n" + " Restaurant ID: " + restaurants.get(i).getId()
+                    + "\n" + "Restaurant ID: " + restaurants.get(i).getId()
                     + "\n" + restaurants.get(i).getName()
                     + " - " + restaurants.get(i).getDescription());
             text.setPrefSize(225, 60);
