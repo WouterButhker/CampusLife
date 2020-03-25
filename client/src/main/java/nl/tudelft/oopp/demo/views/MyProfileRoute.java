@@ -19,7 +19,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
-import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
@@ -253,11 +252,17 @@ public class MyProfileRoute extends Route {
         horizontalContainer.setAlignment(Pos.TOP_LEFT);
         horizontalContainer.setPadding(new Insets(16, 16, 16, 16));
         horizontalContainer.setSpacing(10);
-
+        loadHorizontalContainer();
 
         //Integer rand = Math.abs(new Random().nextInt()) % AuthenticationCommunication.ids.size();
         //System.out.println(rand);
         //String imageId = AuthenticationCommunication.ids.get(rand);
+
+
+        rootElement.getChildren().add(horizontalContainer);
+    }
+
+    private void loadHorizontalContainer() {
         Image profileImage = new Image(AuthenticationCommunication.myImageUrl);
         RectangularImageButton profilePicture = new RectangularImageButton(profileImage, "");
         profilePicture.setFitHeight(90);
@@ -274,8 +279,20 @@ public class MyProfileRoute extends Route {
                 "Role: ", AuthenticationCommunication.myUserRole));
 
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+
+        Button save = new Button("Save");
+        save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                AuthenticationCommunication.updateImage(imageSelectorWidget.getImage());
+                horizontalContainer.getChildren().clear();
+                imageSelectorWidget.removeChild(save);
+                loadHorizontalContainer();
+            }
+        });
+        imageSelectorWidget.addChild(save);
         horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget);
-        rootElement.getChildren().add(horizontalContainer);
+        //
     }
 
     private TextFlow oneBoldOneRegular(String boldString, String regularString) {

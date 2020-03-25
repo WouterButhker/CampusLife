@@ -27,14 +27,14 @@ public class BuildingTest {
     @BeforeEach
     void setUpper() {
         // TODO fix to work with images
-        /*
+
         code = 42069;
         name = "The Arena";
         location = "CityStreetRoute";
         openingHours = "08:00-22:00";
         bikes = 5;
         building = new Building(code, name, location, openingHours, bikes);
-         */
+
     }
 
     @Test

@@ -13,6 +13,7 @@ import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.*;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -44,14 +45,15 @@ public class UserController {
         return usersRepository.findRoleByUsername(username);
     }
 
-    @PostMapping("/{userId}/image")
+    @Modifying
+    @PutMapping(value = "/{userId}/image")
     ResponseEntity<UserImage> uploadFile(@PathVariable Integer userId, @RequestParam("file") MultipartFile file) throws IOException {
         if (!usersRepository.existsById(userId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         User user = usersRepository.findUserById(userId);
         if (userImageRepository.existsByUser(user)) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            userImageRepository.deleteByUser(user);
         }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         if(fileName.contains("..")) {

@@ -2,11 +2,20 @@ package nl.tudelft.oopp.demo.communication;
 
 import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+
 import nl.tudelft.oopp.demo.entities.UserDtO;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,7 +27,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
-
 
 public class AuthenticationCommunication {
     public static Integer myUserId;
@@ -228,5 +236,38 @@ public class AuthenticationCommunication {
         headers.add("Authorization", "Basic " + encodedauth);
         return headers;
 
+    }
+
+    public static String updateImage(File image) {
+        String url = "/rest/users/" + myUserId + "/image";
+        try {
+
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPut uploadFile = new HttpPut(SERVER_URL + url);
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.addBinaryBody(
+                    "file",
+                    new FileInputStream(image),
+                    ContentType.MULTIPART_FORM_DATA,
+                    image.getName()
+            );
+
+            org.apache.http.HttpEntity multipart = builder.build();
+            uploadFile.setEntity(multipart);
+            CloseableHttpResponse response = httpClient.execute(uploadFile);
+            org.apache.http.HttpEntity responseEntity = response.getEntity();
+            System.out.println(response.getStatusLine().getStatusCode());
+            httpClient.close();
+            response.close();
+
+
+            saveUserImageUrl(myUserId);
+//            if (response != null) {
+//                return response.getStatusCode().toString();
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
     }
 }
