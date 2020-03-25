@@ -180,7 +180,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             Label text = new Label("Building Code: " + restaurants.get(i).getBuildingCode()
                     + "\n" + " Restaurant ID: " + restaurants.get(i).getId()
                     + "\n" + restaurants.get(i).getName()
-                    + "\n" + restaurants.get(i).getDescription());
+                    + " - " + restaurants.get(i).getDescription());
             text.setPrefSize(225, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
