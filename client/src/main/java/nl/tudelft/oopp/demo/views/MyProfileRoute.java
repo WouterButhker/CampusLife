@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.views;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,11 +15,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
-import nl.tudelft.oopp.demo.widgets.*;
+import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
+import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateBuildingImage;
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateUserImage;
 
 public class MyProfileRoute extends Route {
     private VBox rootElement;
@@ -284,7 +291,7 @@ public class MyProfileRoute extends Route {
         save.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                AuthenticationCommunication.updateImage(imageSelectorWidget.getImage());
+                updateUserImage(imageSelectorWidget.getImage());
                 horizontalContainer.getChildren().clear();
                 imageSelectorWidget.removeChild(save);
                 loadHorizontalContainer();

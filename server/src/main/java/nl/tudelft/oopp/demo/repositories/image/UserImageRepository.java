@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.repositories;
+package nl.tudelft.oopp.demo.repositories.image;
 
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.image.UserImage;

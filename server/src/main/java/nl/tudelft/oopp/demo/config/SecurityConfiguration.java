@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.config;
 
-import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -11,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.sql.DataSource;
 
 
 @EnableJpaRepositories
@@ -34,7 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/images/**",
-                        "/rest/users/image/downloadFile/**").permitAll()
+                        "/rest/users/image/downloadFile/**",
+                        "/buildings/image/downloadFile/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers("/rest/users/image/**")
                     .hasAnyAuthority("Student", "Admin", "Employee")

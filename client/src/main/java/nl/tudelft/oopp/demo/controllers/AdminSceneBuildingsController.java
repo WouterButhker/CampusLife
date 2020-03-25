@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -13,22 +10,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SelectionModel;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -41,6 +27,12 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.WeekWidget;
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.getBuildingImageUrl;
 
 
 public class AdminSceneBuildingsController implements Initializable {
@@ -239,7 +231,7 @@ public class AdminSceneBuildingsController implements Initializable {
             for (int i = 0; i < numBuildings; i++) {
                 HBox building = new HBox();
                 building.setMaxWidth(400);
-                Image image = new Image("images/TuDelftTempIMG.jpg");
+                Image image = new Image(getBuildingImageUrl(buildings.get(i).getCode()));
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(65);
                 imageView.setFitHeight(60);
@@ -320,6 +312,12 @@ public class AdminSceneBuildingsController implements Initializable {
         String openingHours = week.getWeekDays().toString();
         Text submitStatus = new Text();
         Integer bikes = null;
+
+        //ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        /// On button (submit) click {
+        //      updateBuildingImage(buildingCode, imageSelectorWidget.getImage());
+        /// } 
+
         if (hasBikeStationCheck.isSelected()) {
             try {
                 bikes = Integer.parseInt(bikeAmountInput.getText());

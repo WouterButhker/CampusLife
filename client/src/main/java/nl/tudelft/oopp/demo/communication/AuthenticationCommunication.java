@@ -1,26 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
-import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
 import nl.tudelft.oopp.demo.entities.UserDtO;
-import org.apache.http.Header;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.AuthenticationException;
@@ -28,13 +9,20 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+
+import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
+
 public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
     public static String myUsername;
     public static String myImageUrl;
     public static List<String> ids;
-    private static String auth;
+    public static String auth;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -104,7 +92,7 @@ public class AuthenticationCommunication {
         }
     }
 
-    private static void saveUserImageUrl(Integer userId) {
+    public static void saveUserImageUrl(Integer userId) {
         ResponseEntity<String> response = authenticatedRequest(
                 "rest/users/image/getUrl/" + userId);
         if (response != null && response.getBody() == null) {
@@ -237,43 +225,5 @@ public class AuthenticationCommunication {
         headers.add("Authorization", "Basic " + encodedauth);
         return headers;
 
-    }
-
-    /**
-     * Changes the profile picture of the user.
-     * @param image the file that becomes the profile picture
-     * @return
-     */
-    public static String updateImage(File image) {
-        String url = "/rest/users/image/" + myUserId;
-        try {
-            HttpPut uploadFile = new HttpPut(SERVER_URL + url);
-            //org.apache.http.HttpHeaders headers = null;
-            String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
-            uploadFile.setHeader("Authorization", "Basic " + encodedauth);
-            //uploadFile.addHeader((Header) authenticationHeader);
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.addBinaryBody(
-                    "file",
-                    new FileInputStream(image),
-                    ContentType.MULTIPART_FORM_DATA,
-                    image.getName()
-            );
-            org.apache.http.HttpEntity multipart = builder.build();
-            uploadFile.setEntity(multipart);
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(uploadFile);
-            org.apache.http.HttpEntity responseEntity = response.getEntity();
-            System.out.println();
-            httpClient.close();
-            response.close();
-            saveUserImageUrl(myUserId);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                return "200 OK";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "400 BAD_REQUEST";
     }
 }

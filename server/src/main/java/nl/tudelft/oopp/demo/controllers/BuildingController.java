@@ -1,14 +1,22 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.image.BuildingImage;
+import nl.tudelft.oopp.demo.entities.image.UserImage;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
+import nl.tudelft.oopp.demo.repositories.image.BuildingImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -17,6 +25,9 @@ public class BuildingController {
 
     @Autowired
     private BuildingRepository buildingRepository;
+
+    @Autowired
+    private BuildingImageRepository buildingImageRepository;
 
     @GetMapping
     public List<Building> getAll() {
@@ -58,6 +69,39 @@ public class BuildingController {
         }
         buildingRepository.deleteById(buildingCode);
         return new ResponseEntity<>(buildingCode, HttpStatus.OK);
+    }
+
+    @Modifying
+    @PutMapping(value = "/image/{buildingId}")
+    ResponseEntity<BuildingImage> uploadFile(@PathVariable Integer buildingId,
+                                             @RequestParam("file") MultipartFile file)
+            throws IOException {
+        Building building = buildingRepository.findBuildingByBuildingCode(buildingId);
+        if (building == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (buildingImageRepository.existsByBuilding(building)) {
+            buildingImageRepository.deleteByBuilding(building);
+        }
+        String fileName = ImageController.checkFile(file);
+        BuildingImage buildingImage = new BuildingImage(fileName, file.getContentType(), file.getBytes(), building);
+        buildingImageRepository.save(buildingImage);
+        return new ResponseEntity<>(buildingImage, HttpStatus.OK);
+    }
+
+    @GetMapping("/image/getUrl/{buildingId}")
+    String getUrl(@PathVariable Integer buildingId) {
+        Building building = buildingRepository.findBuildingByBuildingCode(buildingId);
+        if (buildingImageRepository.existsByBuilding(building)) {
+            BuildingImage buildingImage = buildingImageRepository.findByBuilding(building);
+            return ImageController.getUrl("/buildings/image/downloadFile/", buildingImage);
+        }
+        return null;
+    }
+
+    @GetMapping("/image/downloadFile/{imageId}")
+    ResponseEntity<Resource> downloadFile(@PathVariable String imageId) {
+        return ImageController.downloadFile(buildingImageRepository.findByImageId(imageId));
     }
 
 }
