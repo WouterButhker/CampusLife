@@ -47,6 +47,13 @@ public class RestaurantController {
         return restaurantRepository.deleteRestaurantWithId(id);
     }
 
+    /**
+     * Updates a restaurant.
+     *
+     * @param id The id of the restaurant to be modified
+     * @param restaurant The restaurant to be modified
+     * @return the updated restaurant
+     */
     @PutMapping (value = "/{id}", consumes = "application/json", produces = "application/json")
     public Restaurant updateRestaurant(@PathVariable Integer id,
                                        @RequestBody Restaurant restaurant) {
@@ -57,6 +64,7 @@ public class RestaurantController {
 
     /**
      * Returns all food of the restaurant.
+     *
      * @param id the id of the restaurant
      * @return a list of all food of the restaurant
      */
@@ -66,7 +74,7 @@ public class RestaurantController {
     }
 
     /**
-     * Returns all the restaurants from a certain building
+     * Returns all the restaurants from a certain building.
      *
      * @param building the building that the restaurants are from
      * @return the list of restaurants

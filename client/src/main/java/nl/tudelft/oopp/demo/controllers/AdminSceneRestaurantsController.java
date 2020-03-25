@@ -267,7 +267,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         spacer2.setPrefSize(125, 20);
         TextField description = new TextField(restaurant.getDescription());
         description.setPrefSize(150, 20);
-        HBox descriptionBox = new HBox(spacer2, description);
+        final HBox descriptionBox = new HBox(spacer2, description);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
         Button submit = new Button("Submit");

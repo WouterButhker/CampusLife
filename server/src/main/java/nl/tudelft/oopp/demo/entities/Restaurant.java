@@ -3,15 +3,8 @@ package nl.tudelft.oopp.demo.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import javax.persistence.*;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "restaurant")
@@ -77,12 +70,16 @@ public class Restaurant {
         this.buildingCode = building.getBuildingCode();
     }
 
+    /**
+     * Getter for the building code.
+     *
+     * @return the building code
+     */
     @JsonProperty(value = "buildingCode")
     public Integer getBuildingCode() {
-        if(buildingCode == null && building != null) {
+        if (buildingCode == null && building != null) {
             return building.getBuildingCode();
-        }
-        else {
+        } else {
             return buildingCode;
         }
     }
