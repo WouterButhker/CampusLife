@@ -88,11 +88,11 @@ public class RoomReservationRoute extends Route {
                     String toString = format.format(toTime.getTime());
                     String timeslot = String.format("%s - %s", fromString, toString);
                     ReservationCommunication
-                            .addReservationToDatabase(user, room.getCode(), timeslot);
-                    reservations.add(new RoomReservation(-1, user, room.getCode(), timeslot));
+                            .addReservationToDatabase(user, room.getRoomCode(), timeslot);
+                    reservations.add(new RoomReservation(-1, user, room.getRoomCode(), timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
-                    System.out.println(user + " " + room.getCode() + " " + timeslot);
+                    System.out.println(user + " " + room.getRoomCode() + " " + timeslot);
                 }
             }
         });
@@ -123,7 +123,7 @@ public class RoomReservationRoute extends Route {
         }
         for (RoomReservation reservation : reservations) {
             System.out.println(reservation);
-            if (reservation.getRoom() != null && reservation.getRoom().equals(room.getCode())) {
+            if (reservation.getRoom() != null && reservation.getRoom().equals(room.getRoomCode())) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                 try {
                     String fromTimeString = reservation.getTimeSlot().substring(0, 16);

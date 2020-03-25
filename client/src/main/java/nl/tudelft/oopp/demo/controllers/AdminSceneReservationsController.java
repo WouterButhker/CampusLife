@@ -101,7 +101,7 @@ public class AdminSceneReservationsController {
             reservation.setMaxWidth(1011);
             Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
                     + "User: " + reservations.get(i).getUser() + " | "
-                    + "Room: " + reservations.get(i).getRoom().getRoomCode() + " | "
+                    + "Room: " + reservations.get(i).getRoom() + " | "
                     + "TimeSlot: " + reservations.get(i).getTimeSlot());
             text.setPrefSize(900, 60);
             text.setStyle("-fx-font: 17 arial;");
