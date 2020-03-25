@@ -316,7 +316,7 @@ public class AdminSceneBuildingsController implements Initializable {
         //ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
         /// On button (submit) click {
         //      updateBuildingImage(buildingCode, imageSelectorWidget.getImage());
-        /// } 
+        /// }
 
         if (hasBikeStationCheck.isSelected()) {
             try {
