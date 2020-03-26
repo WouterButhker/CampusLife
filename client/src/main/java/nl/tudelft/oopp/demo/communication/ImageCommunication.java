@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
@@ -10,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import static nl.tudelft.oopp.demo.communication.AuthenticationCommunication.*;
 import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
@@ -116,19 +121,22 @@ public class ImageCommunication {
         return "400 BAD_REQUEST";
     }
 
-    public static String getRoomImageUrl(String roomCode) {
+    public static List<String> getRoomImageUrl(String roomCode) {
+        List<String> defaultResponse = new ArrayList<>();
+        defaultResponse.add("images/RoomTempIMG.jpg");
         ResponseEntity<String> response = authenticatedRequest(
                 "/rooms/image/getUrl/" + roomCode);
         if (response != null && response.getBody() == null) {
-            return "images/RoomTempIMG.jpg";
+            return defaultResponse;
         } else if (response != null && response.getBody() != null
                 && response.getStatusCode().toString().equals("200 OK")) {
             System.out.println("Image Url: " + response.getBody());
-            return response.getBody();
+            Type listType = new TypeToken<List<String>>() {}.getType();
+            return new Gson().fromJson(response.getBody(), listType);
         } else {
             System.out.println("Login failed");
         }
-        return "images/RoomTempIMG.jpg";
+        return defaultResponse;
     }
 
 }

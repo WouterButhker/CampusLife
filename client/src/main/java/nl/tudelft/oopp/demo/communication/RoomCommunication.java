@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static nl.tudelft.oopp.demo.communication.AuthenticationCommunication.myUserRole;
+
 public class RoomCommunication {
 
 //    /**
@@ -38,10 +40,12 @@ public class RoomCommunication {
     public static List<Room> getAllRooms() {
         StringBuilder url = new StringBuilder("/rooms/all");
         Integer rights = 0;
-        if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
-            rights = 1;
-        } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
-            rights = 2;
+        if (myUserRole != null) {
+            if (myUserRole.equalsIgnoreCase("Employee")) {
+                rights = 1;
+            } else if (myUserRole.equalsIgnoreCase("Admin")) {
+                rights = 2;
+            }
         }
         url.append("?search=rights<" + rights + 1);
         String urlString = url.toString();
@@ -124,9 +128,9 @@ public class RoomCommunication {
         StringBuilder url = new StringBuilder(
                 "/rooms/getAllRoomsFromBuilding?search=building.buildingCode:" + building);
         Integer rights = 0;
-        if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
+        if (myUserRole.equalsIgnoreCase("Employee")) {
             rights = 1;
-        } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
+        } else if (myUserRole.equalsIgnoreCase("Admin")) {
             rights = 2;
         }
         url.append(" AND rights<" + rights + 1);

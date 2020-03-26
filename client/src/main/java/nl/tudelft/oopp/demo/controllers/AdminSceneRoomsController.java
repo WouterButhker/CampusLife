@@ -249,7 +249,7 @@ public class AdminSceneRoomsController implements Initializable {
         for (int i = 0; i < numRooms; i++) {
             HBox room = new HBox();
             room.setMaxWidth(400);
-            Image image = new Image(ImageCommunication.getRoomImageUrl(rooms.get(i).getRoomCode()));
+            Image image = new Image(ImageCommunication.getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);

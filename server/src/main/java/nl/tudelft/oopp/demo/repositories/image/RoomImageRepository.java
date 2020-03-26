@@ -5,8 +5,10 @@ import nl.tudelft.oopp.demo.entities.image.RoomImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface RoomImageRepository extends JpaRepository<RoomImage, Integer> {
-    RoomImage findByRoom(Room room);
+    List<RoomImage> findByRoom(Room room);
 
     boolean existsByRoom(Room room);
 

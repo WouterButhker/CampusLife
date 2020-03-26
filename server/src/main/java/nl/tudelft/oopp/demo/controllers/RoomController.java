@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -180,11 +181,15 @@ public class RoomController {
     }
 
     @GetMapping("/image/getUrl/{roomCode}")
-    String getUrl(@PathVariable String roomCode) {
+    List<String> getUrl(@PathVariable String roomCode) {
         Room room = roomRepository.findRoomByRoomCode(roomCode);
         if (roomImageRepository.existsByRoom(room)) {
-            RoomImage roomImage = roomImageRepository.findByRoom(room);
-            return ImageController.getUrl("/rooms/image/downloadFile/", roomImage);
+            List<RoomImage> roomImages = roomImageRepository.findByRoom(room);
+            List<String> response = new ArrayList<>();
+            for (RoomImage roomImage : roomImages) {
+                response.add(ImageController.getUrl("/rooms/image/downloadFile/", roomImage));
+            }
+            return response;
         }
         return null;
     }

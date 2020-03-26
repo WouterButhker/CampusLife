@@ -63,7 +63,7 @@ public class RoomsGridView extends GridPane {
 
     private void addButtons() {
         for (int i = 0; i < rooms.size(); i++) {
-            Image image = new Image(ImageCommunication.getRoomImageUrl(rooms.get(i).getRoomCode()));
+            Image image = new Image(ImageCommunication.getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
             RectangularImageButton button = new RectangularImageButton(image,
                     rooms.get(i).getName());
             int finalI = i;
