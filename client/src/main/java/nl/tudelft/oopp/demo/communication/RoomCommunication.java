@@ -128,10 +128,12 @@ public class RoomCommunication {
         StringBuilder url = new StringBuilder(
                 "/rooms/getAllRoomsFromBuilding?search=building.buildingCode:" + building);
         Integer rights = 0;
-        if (myUserRole.equalsIgnoreCase("Employee")) {
-            rights = 1;
-        } else if (myUserRole.equalsIgnoreCase("Admin")) {
-            rights = 2;
+        if (myUserRole != null) {
+            if (myUserRole.equalsIgnoreCase("Employee")) {
+                rights = 1;
+            } else if (myUserRole.equalsIgnoreCase("Admin")) {
+                rights = 2;
+            }
         }
         url.append(" AND rights<" + rights + 1);
         String urlString = url.toString();
