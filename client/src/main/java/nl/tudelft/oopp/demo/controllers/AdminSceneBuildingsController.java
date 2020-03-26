@@ -35,6 +35,10 @@ import java.util.ResourceBundle;
 import static nl.tudelft.oopp.demo.communication.ImageCommunication.getBuildingImageUrl;
 
 
+
+
+
+
 public class AdminSceneBuildingsController implements Initializable {
 
     @FXML
@@ -74,7 +78,19 @@ public class AdminSceneBuildingsController implements Initializable {
     private TextField bikeAmountInput;
 
     @FXML
+    private VBox scrollPaneVBox;
+
+    @FXML
+    private VBox settingsBox;
+
+    @FXML
     private ScrollPane scrollPane;
+
+    @FXML
+    private Pane spacerPane;
+
+    @FXML
+    private HBox horizontalContainer;
 
     private WeekWidget week;
 
@@ -99,7 +115,10 @@ public class AdminSceneBuildingsController implements Initializable {
 
     private void addWeekCalendar(Weekdays weekdays) {
         this.week = new WeekWidget(weekdays);
-        mainBox.getChildren().add(1, week);
+        HBox box = new HBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(week);
+        settingsBox.getChildren().add(4, box);
         List<Node> times = week.getTimes().getChildren();
         for (int i = 0; i < times.size(); i++) {
             times.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -221,8 +240,10 @@ public class AdminSceneBuildingsController implements Initializable {
             int numBuildings = buildings.size();
             int height = 82 * numBuildings;
             if (height <= scrollPane.getPrefHeight()) {
+                scrollPaneVBox.setPrefWidth(400);
                 scrollPane.setPrefWidth(400);
             } else {
+                scrollPaneVBox.setPrefWidth(417);
                 scrollPane.setPrefWidth(417);
             }
             anchorPaneBuildings.setPrefHeight(height);
@@ -575,7 +596,7 @@ public class AdminSceneBuildingsController implements Initializable {
                 if (!hasBikeStationCB.isSelected()) {
                     bikes = null;
                 }
-                Label status = modifyBuilding(address.getText(), name.getText(),
+                Node status = modifyBuilding(address.getText(), name.getText(),
                         building.getCode(), week.getWeekDays().toString(),
                         bikes, week.getWeekDays().checkCorrectness());
                 if (status == null) {
@@ -607,9 +628,9 @@ public class AdminSceneBuildingsController implements Initializable {
         stage.showAndWait();
     }
 
-    private Label modifyBuilding(String location, String name, int buildingCode,
+    private Node modifyBuilding(String location, String name, int buildingCode,
                                  String openingHours, String bikes, boolean openingHoursCorrect) {
-        Label result = null;
+        Label message = null;
         Integer bikesInt = null;
         // checking if bikes input is actually valid
         if (bikes == null) {
@@ -618,29 +639,33 @@ public class AdminSceneBuildingsController implements Initializable {
             try {
                 bikesInt = Integer.parseInt(bikes.trim());
                 if (bikesInt < 0) {
-                    result = new Label("The amount of bikes cannot be negative");
+                    message = new Label("The amount of bikes cannot be negative");
                 }
             } catch (NumberFormatException e) {
-                result = new Label("The amount of bikes is not a number");
+                message = new Label("The amount of bikes is not a number");
             }
         }
 
         if (!openingHoursCorrect) {
-            result = new Label("These opening hours don't make sense!");
+            message = new Label("These opening hours don't make sense!");
         }
 
         if (!location.equals("") && !name.equals("") && openingHoursCorrect) {
             Building building = new Building(buildingCode, name, location, openingHours, bikesInt);
             BuildingCommunication.updateBuilding(building);
         } else {
-            if (result == null) {
-                result = new Label("All the fields have to be entered");
+            if (message == null) {
+                message = new Label("All the fields have to be entered");
             }
         }
-        if (result != null) {
-            result.setPadding(new Insets(10, 175, 0,175));
+        HBox res = null;
+        if (message != null) {
+            message.setStyle("-fx-text-fill: red");
+            res = new HBox();
+            res.setAlignment(Pos.CENTER);
+            res.getChildren().add(message);
         }
-        return result;
+        return res;
     }
 
     @FXML

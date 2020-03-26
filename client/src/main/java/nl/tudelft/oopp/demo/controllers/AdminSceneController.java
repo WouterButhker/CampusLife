@@ -3,27 +3,14 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-
 
 public class AdminSceneController implements Initializable {
 
@@ -49,6 +36,12 @@ public class AdminSceneController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addAppBar();
+
+        modifyBuildingsEnter.setStyle("-fx-font-size: 17");
+        modifyRoomsEnter.setStyle("-fx-font-size: 17");
+        modifyFoodEnter.setStyle("-fx-font-size: 17");
+        modifyRightsEnter.setStyle("-fx-font-size: 17");
+        modifyReservationsEnter.setStyle("-fx-font-size: 17");
     }
 
     private void addAppBar() {

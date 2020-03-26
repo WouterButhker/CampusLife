@@ -292,7 +292,6 @@ public class MyProfileRoute extends Route {
             @Override
             public void handle(ActionEvent event) {
                 updateUserImage(imageSelectorWidget.getImage());
-                updateRoomImage("PC%201", imageSelectorWidget.getImage());
                 horizontalContainer.getChildren().clear();
                 imageSelectorWidget.removeChild(save);
                 loadHorizontalContainer();
