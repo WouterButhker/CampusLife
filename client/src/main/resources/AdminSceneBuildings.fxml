@@ -15,9 +15,9 @@
             </Text>
          </children>
       </HBox>
-      <HBox prefHeight="528.0" prefWidth="1115.0">
+      <HBox fx:id="horizontalContainer" prefHeight="528.0">
          <children>
-            <VBox fx:id="settingsBox" prefHeight="528.0" prefWidth="682.0">
+            <VBox fx:id="settingsBox" prefHeight="528.0" prefWidth="700.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="62.0" prefWidth="616.0">
                      <children>
@@ -125,6 +125,7 @@
                   </HBox>
                </children>
             </VBox>
+            <Pane fx:id="spacerPane" prefHeight="528.0" prefWidth="250.0" />
             <VBox fx:id="scrollPaneVBox" prefHeight="482.0" prefWidth="417.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="45.0" prefWidth="418.0">
