@@ -15,16 +15,20 @@ public class PopupWidget {
      */
     public static void display(String message) {
         Stage popupwindow = new Stage();
+        popupwindow.setTitle("Error");
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         Label label1 = new Label(message);
-        Button button1 = new Button("OK");
+        Button button1 = new Button(" OK ");
+
+        label1.setStyle("-fx-font-size: 14");
+        button1.setStyle("-fx-font-size: 14");
 
         button1.setOnAction(e -> popupwindow.close());
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label1, button1);
+        layout.getChildren().addAll(label1, new Label(""), button1);
         layout.setAlignment(Pos.CENTER);
-        Scene scene1 = new Scene(layout, 300, 250);
+        Scene scene1 = new Scene(layout, 370, 190);
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
     }
