@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
-
-import java.io.IOException;
 
 public class MainApplication extends Application {
 
