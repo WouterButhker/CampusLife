@@ -26,7 +26,9 @@ import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -78,10 +80,16 @@ public class AdminSceneRoomsController implements Initializable {
     @FXML
     private VBox roomsList;
 
+    @FXML
+    private VBox settingsBox;
+
+    private ImageSelectorWidget imageSelectorWidget;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadBuildings();
         loadRights();
+        loadImageSelectorWidget();
         addAppBar();
     }
 
@@ -116,6 +124,15 @@ public class AdminSceneRoomsController implements Initializable {
             rights[2] = "Admin";
             rightsList.getItems().addAll(rights);
         }
+    }
+
+    private void loadImageSelectorWidget() {
+        imageSelectorWidget = new ImageSelectorWidget();
+        HBox box = new HBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageSelectorWidget);
+        box.setPadding(new Insets(10));
+        settingsBox.getChildren().add(2, box);
     }
 
     @FXML
@@ -165,10 +182,11 @@ public class AdminSceneRoomsController implements Initializable {
 
         Text submitStatus = new Text();
         if (!roomCode.equals("") && !roomName.equals("") && capacityCorrect
-                && buildingFound && rightsFound) {
+                && buildingFound && rightsFound && imageSelectorWidget.imageSelected()) {
             Room room = new Room(roomCode, roomName, capacity, whiteboard,
                     tv, rights, BuildingCommunication.getBuildingByCode(buildingCode));
             RoomCommunication.saveRoom(room);
+            ImageCommunication.updateRoomImage(roomCode, imageSelectorWidget.getImage());
             submitStatus.setText("Room has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
@@ -190,6 +208,10 @@ public class AdminSceneRoomsController implements Initializable {
 
         if (!rightsFound) {
             submitStatus.setText("Rights have to be set");
+        }
+
+        if (!imageSelectorWidget.imageSelected()) {
+            submitStatus.setText("Image has to be selected");
         }
 
         Button back = new Button("Okay! take me back");
@@ -379,6 +401,12 @@ public class AdminSceneRoomsController implements Initializable {
         HBox tvBox = new HBox(spacer5, tv);
         tvBox.setPadding(new Insets(10, 0, 0,0));
 
+        HBox imageSelectorWidgetBox = new HBox();
+        imageSelectorWidgetBox.setAlignment(Pos.CENTER);
+        ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
+        //imageSelectorWidget.setImage(ImageCommunication.getRoomImageUrl(room.getRoomCode()));
+
         Button submit = new Button("submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
@@ -388,7 +416,7 @@ public class AdminSceneRoomsController implements Initializable {
             public void handle(ActionEvent event) {
                 Node status = modifyRoom(room.getRoomCode(), name.getText(), capacity.getText(),
                         whiteboard.selectedProperty().get(), tv.selectedProperty().get(),
-                        rights.getValue(), room.getBuilding().getCode());
+                        rights.getValue(), room.getBuilding().getCode(), imageSelectorWidget.getImage());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -396,7 +424,7 @@ public class AdminSceneRoomsController implements Initializable {
                     loadRooms(buildingList2.getValue());
                 } else {
                     try {
-                        root.getChildren().remove(11);
+                        root.getChildren().remove(12);
                         root.getChildren().add(status);
                     } catch (IndexOutOfBoundsException e) {
                         root.getChildren().add(status);
@@ -406,8 +434,8 @@ public class AdminSceneRoomsController implements Initializable {
         });
 
         root.getChildren().addAll(headerBox, roomCodeBox, roomCodeFieldBox, nameTextBox,
-                nameBox, capacityTextBox, capacityBox,
-                rightsBox, whiteboardBox, tvBox, submitBox);
+                nameBox, capacityTextBox, capacityBox, rightsBox,
+                whiteboardBox, tvBox, imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -417,7 +445,8 @@ public class AdminSceneRoomsController implements Initializable {
     }
 
     private Node modifyRoom(String roomCode, String roomName, String capacity,
-                             boolean whiteboard, boolean tv, String rights, int buildingCode) {
+                             boolean whiteboard, boolean tv, String rights, int buildingCode,
+                            File image) {
         int rightsNum = 0;
         Label message = null;
         if (rights.equals("Student")) {
@@ -441,6 +470,7 @@ public class AdminSceneRoomsController implements Initializable {
             Room room = new Room(roomCode, roomName, capacityInt, whiteboard,
                     tv, rightsNum, BuildingCommunication.getBuildingByCode(buildingCode));
             RoomCommunication.updateRoom(room);
+            ImageCommunication.updateRoomImage(roomCode, image);
         } else {
             message = new Label("All fields have to be entered");
         }

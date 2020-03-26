@@ -20,14 +20,17 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 import nl.tudelft.oopp.demo.widgets.WeekWidget;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -86,11 +89,7 @@ public class AdminSceneBuildingsController implements Initializable {
     @FXML
     private ScrollPane scrollPane;
 
-    @FXML
-    private Pane spacerPane;
-
-    @FXML
-    private HBox horizontalContainer;
+    private ImageSelectorWidget imageSelectorWidget;
 
     private WeekWidget week;
 
@@ -106,11 +105,21 @@ public class AdminSceneBuildingsController implements Initializable {
         // invisible before the 'has bike station' checkbox is selected.
         loadBuildings();
         addAppBar();
+        addImageSelectorWidget();
         addWeekCalendar(new Weekdays());
     }
 
     private void addAppBar() {
         mainBox.getChildren().add(0, new AppBar());
+    }
+
+    private void addImageSelectorWidget() {
+        Pane spacerPane = new Pane();
+        spacerPane.setPrefWidth(10);
+        imageSelectorWidget = new ImageSelectorWidget();
+        HBox box = new HBox();
+        box.getChildren().addAll(spacerPane, imageSelectorWidget);
+        settingsBox.getChildren().add(7, box);
     }
 
     private void addWeekCalendar(Weekdays weekdays) {
@@ -334,11 +343,6 @@ public class AdminSceneBuildingsController implements Initializable {
         Text submitStatus = new Text();
         Integer bikes = null;
 
-        //ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
-        /// On button (submit) click {
-        //      updateBuildingImage(buildingCode, imageSelectorWidget.getImage());
-        /// }
-
         if (hasBikeStationCheck.isSelected()) {
             try {
                 bikes = Integer.parseInt(bikeAmountInput.getText());
@@ -347,9 +351,11 @@ public class AdminSceneBuildingsController implements Initializable {
             }
         }
         if (!location.equals("") && !name.equals("") && codeFound
-               && week.getWeekDays().checkCorrectness()) {
+               && week.getWeekDays().checkCorrectness()
+               && imageSelectorWidget.imageSelected()) {
             Building building = new Building(buildingCode, name, location, openingHours, bikes);
             BuildingCommunication.saveBuilding(building);
+            ImageCommunication.updateBuildingImage(buildingCode, imageSelectorWidget.getImage());
             submitStatus.setText("Building successfully added!");
             try {
                 refreshBuildingsPage();
@@ -366,6 +372,10 @@ public class AdminSceneBuildingsController implements Initializable {
 
         if (!week.getWeekDays().checkCorrectness()) {
             submitStatus.setText("These opening hours don't make sense");
+        }
+
+        if (!imageSelectorWidget.imageSelected()) {
+            submitStatus.setText("Image has to be selected");
         }
 
         Button back = new Button("Okay! take me back");
@@ -585,6 +595,12 @@ public class AdminSceneBuildingsController implements Initializable {
         HBox bikeStationInput = new HBox(spacer9, hasBikeStationCB, spacer10, bikesAmountInput);
         bikeStationInput.setPadding(new Insets(10, 0, 0, 0));
 
+        HBox imageSelectorWidgetBox = new HBox();
+        imageSelectorWidgetBox.setAlignment(Pos.CENTER);
+        ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
+        //imageSelectorWidget.setImage(ImageCommunication.getBuildingImageUrl(building.getCode()));
+
         Button submit = new Button("submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
@@ -598,7 +614,8 @@ public class AdminSceneBuildingsController implements Initializable {
                 }
                 Node status = modifyBuilding(address.getText(), name.getText(),
                         building.getCode(), week.getWeekDays().toString(),
-                        bikes, week.getWeekDays().checkCorrectness());
+                        bikes, week.getWeekDays().checkCorrectness(),
+                        imageSelectorWidget.getImage());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -606,7 +623,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     loadBuildings();
                 } else {
                     try {
-                        root.getChildren().remove(14);
+                        root.getChildren().remove(15);
                         root.getChildren().add(status);
                     } catch (IndexOutOfBoundsException e) {
                         root.getChildren().add(status);
@@ -615,11 +632,12 @@ public class AdminSceneBuildingsController implements Initializable {
 
             }
         });
+
         HBox bikeStationTextBox = new HBox(spacer8, bikeStationText);
         root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox,
                 nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox,
                 fromToBox, openingHours, calender, bikeStationTextBox, bikeStationInput,
-                submitBox);
+                imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -629,7 +647,8 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     private Node modifyBuilding(String location, String name, int buildingCode,
-                                 String openingHours, String bikes, boolean openingHoursCorrect) {
+                                 String openingHours, String bikes, boolean openingHoursCorrect,
+                                File image) {
         Label message = null;
         Integer bikesInt = null;
         // checking if bikes input is actually valid
@@ -653,6 +672,7 @@ public class AdminSceneBuildingsController implements Initializable {
         if (!location.equals("") && !name.equals("") && openingHoursCorrect) {
             Building building = new Building(buildingCode, name, location, openingHours, bikesInt);
             BuildingCommunication.updateBuilding(building);
+            ImageCommunication.updateBuildingImage(buildingCode, image);
         } else {
             if (message == null) {
                 message = new Label("All the fields have to be entered");

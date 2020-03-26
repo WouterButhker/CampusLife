@@ -69,6 +69,14 @@ public class ImageSelectorWidget extends VBox {
         return this.image;
     }
 
+    public void setImage(File image) {
+        this.image = image;
+    }
+
+    public boolean imageSelected() {
+        return image != null;
+    }
+
     public void addChild(Node node) {
         this.getChildren().add(node);
     }
