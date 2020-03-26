@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,12 +27,6 @@ import nl.tudelft.oopp.demo.widgets.BikeReservationWidget;
 import nl.tudelft.oopp.demo.widgets.CalendarWidget;
 import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-
-
 public class BikesReservationRoute extends Route {
 
     private VBox rootElement;
@@ -38,8 +36,6 @@ public class BikesReservationRoute extends Route {
     private CalendarWidget calendarWidget;
     private BikeReservationWidget bikeReservationWidgetPickUp;
     private BikeReservationWidget bikeReservationWidgetDropOff;
-
-    private Calendar selectedDate = Calendar.getInstance();
 
     private StackPane reserveButton;
 
@@ -67,10 +63,12 @@ public class BikesReservationRoute extends Route {
                 bikeReservationWidgetPickUp.setAvailabilities();
                 bikeReservationWidgetPickUp.removeSelection();
                 bikeReservationWidgetPickUp.setTimeSelected(null);
+                bikeReservationWidgetPickUp.calculateNumBikes();
                 bikeReservationWidgetDropOff.setSelectedDate(day);
                 bikeReservationWidgetDropOff.setAvailabilities();
                 bikeReservationWidgetDropOff.removeSelection();
                 bikeReservationWidgetDropOff.setTimeSelected(null);
+                bikeReservationWidgetDropOff.calculateNumBikes();
                 toggleButton();
             }
         });
@@ -134,8 +132,8 @@ public class BikesReservationRoute extends Route {
             @Override
             public void handle(MouseEvent event) {
                 reserveBike();
-                bikeReservationWidgetPickUp.loadBuildings();
-                bikeReservationWidgetDropOff.loadBuildings();
+                bikeReservationWidgetPickUp.calculateNumBikes();
+                bikeReservationWidgetDropOff.calculateNumBikes();
             }
         });
         reserveButton.getStyleClass().add("available-date-box");
@@ -170,7 +168,11 @@ public class BikesReservationRoute extends Route {
         Building dropOffBuilding = bikeReservationWidgetDropOff.getSelected();
         Calendar pickUpTime = bikeReservationWidgetPickUp.getTimeSelected();
         Calendar dropOffTime = bikeReservationWidgetDropOff.getTimeSelected();
-        if (allConditionsSelected()) {
+        List<HBox> boxes = bikeReservationWidgetPickUp.getBoxes();
+        HBox box = boxes.get(bikeReservationWidgetPickUp.getSelectedInList());
+        Label label = (Label) box.getChildren().get(1);
+        Integer bikes = Integer.parseInt(label.getText().split("bikes : ")[1]);
+        if (allConditionsSelected() && bikes > 0) {
             DateFormat dateFormat = new SimpleDateFormat("HH:mm");
             String pickUp = dateFormat.format(pickUpTime.getTime());
             String dropOff = dateFormat.format(dropOffTime.getTime());
@@ -181,9 +183,9 @@ public class BikesReservationRoute extends Route {
                       pickUpBuilding, dropOffBuilding, date, slot);
             BikeReservationCommunication.createBikeReservation(res);
             PopupWidget.display("Bike Reserved!");
-            return;
+        } else {
+            PopupWidget.display("There are no bikes available at the pickup building");
         }
-        PopupWidget.display("An error has occurred while trying to reserve a bike\nPlease try again");
     }
 
     private boolean allConditionsSelected() {

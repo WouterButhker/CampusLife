@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.demo.communication;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import nl.tudelft.oopp.demo.entities.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PutPostBuildingTest {
 
@@ -30,8 +30,7 @@ public class PutPostBuildingTest {
                 + "15:00-17:00, 15:00-17:00, 15:00-17:00, 15:00-17:00";
         bikes = 5;
         image = "/images/main-screen-default-building.jpg";
-        building = new Building(code, name, location, openingHours, bikes);
-                //image,
+        building = new Building(code, name, location, openingHours, image, bikes);
     }
 
     @Test

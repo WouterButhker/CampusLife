@@ -26,6 +26,7 @@ import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
+
 public class MainMenuRoute extends Route {
     public static final String BIKES_STRING = "Reserve a bike";
     public static final String ROOMS_STRING = "Reserve a room";
@@ -60,7 +61,7 @@ public class MainMenuRoute extends Route {
 
         rootContainer.getChildren().add(new AppBar(isAdmin));
 
-        addDummyRestaurantData();
+        //addDummyRestaurantData();
         createButtonsRow();
         createBuildingsTitle();
 

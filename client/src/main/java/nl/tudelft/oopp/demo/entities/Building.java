@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.entities;
 
-import java.util.Objects;
-import javafx.scene.image.Image;
-
 public class Building {
 
     private Integer buildingCode;
@@ -25,13 +22,13 @@ public class Building {
                     String name,
                     String location,
                     String openingHours,
-                    //String image,
+                    String image,
                     Integer bikes) {
         this.buildingCode = buildingCode;
         this.name = name;
         this.location = location;
         this.openingHours = openingHours;
-        //this.image = image;
+        this.image = image;
         this.bikes = bikes;
     }
 

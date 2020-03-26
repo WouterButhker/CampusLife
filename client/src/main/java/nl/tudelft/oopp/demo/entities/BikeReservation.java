@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.entities;
 
-import java.util.Objects;
-
 public class BikeReservation {
 
     private Integer id;
@@ -17,6 +15,7 @@ public class BikeReservation {
      * @param user The id of the user that made the bike reservation
      * @param pickUpBuilding The building where the bike is picked up
      * @param dropOffBuilding The building where the bike is dropped off
+     * @param date The date of the bike reservation
      * @param timeSlot - The timeslot of the bike reservation
      */
     public BikeReservation(Integer id, Integer user,

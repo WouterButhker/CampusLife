@@ -1,15 +1,12 @@
 package nl.tudelft.oopp.demo.testfolder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class RoomTest {
 
@@ -39,7 +36,7 @@ class RoomTest {
         buildingCode = 42;
         String openingHours = "15:00-17:00, 01:00-19:00, 15:00-17:00, "
                 + "15:00-17:00, 15:00-17:00, 15:00-17:00, 15:00-17:00";
-        building = new Building(buildingCode, "building", "asb", openingHours, 12);
+        building = new Building(buildingCode, "building", "asb", openingHours, "image",12);
         room = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, building);
     }
 

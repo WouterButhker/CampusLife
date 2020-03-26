@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.widgets;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javafx.event.EventHandler;
@@ -31,6 +32,7 @@ public class BikeReservationWidget extends VBox {
     private Building selected;
     private int selectedInList;
     private int selectedInOtherList;
+    private List<BikeReservation> bikeReservations;
 
     private Label header;
 
@@ -56,6 +58,7 @@ public class BikeReservationWidget extends VBox {
         setSelectedInList(-1);
         setSelectedInOtherList(-1);
         buildingList = BuildingCommunication.getAllBuildingsWithBikeStation();
+        bikeReservations = BikeReservationCommunication.getAllRelevantReservations();
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
 
@@ -81,6 +84,7 @@ public class BikeReservationWidget extends VBox {
                 timeSelected = (Calendar) selectedDate.clone();
                 timeSelected.set(Calendar.HOUR_OF_DAY, begin);
                 timeSelected.set(Calendar.MINUTE, 0);
+                calculateNumBikes();
                 listener.changed();
             }
         }, 4);
@@ -90,7 +94,6 @@ public class BikeReservationWidget extends VBox {
 
         prefWidthProperty().addListener((obs, oldWidth, newWidth) -> {
             resizeDisplay(newWidth.doubleValue());
-            loadBuildings();
         });
 
     }
@@ -151,6 +154,7 @@ public class BikeReservationWidget extends VBox {
                     removeSelection();
                     setTimeSelected(null);
                     updateButtons();
+                    calculateNumBikes();
                     listener.changed();
                 }
             });
@@ -225,6 +229,17 @@ public class BikeReservationWidget extends VBox {
         buildingDisplay.setPrefWidth(newWidth * 0.8);
         scrollPane.setPrefWidth(newWidth * 0.8);
 
+        for (HBox box : boxes) {
+            box.setPrefWidth(scrollPane.getPrefWidth() + 12);
+            Label label = (Label) box.getChildren().get(1);
+            //-65 for the image width
+            //-45 for the button width
+            //-10 for the padding
+            //-20 for the left and right padding of the total HBox
+            //+22 for some weird correction??
+            label.setPrefWidth(scrollPane.getPrefWidth() - 65 - 45 - 10 - 20 + 22);
+        }
+
         header.setStyle("-fx-font-size:" + newWidth * 0.08);
     }
 
@@ -245,6 +260,59 @@ public class BikeReservationWidget extends VBox {
             } else  {
                 stackPane.getStyleClass().add("available-date-box");
                 stackPane.setDisable(false);
+            }
+        }
+    }
+
+    /**
+     * Method that calculates the current amount of bikes at all the buildings.
+     */
+    public void calculateNumBikes() {
+        if (timeSelected == null) {
+            for (int i = 0; i < boxes.size(); i++) {
+                Label label = (Label) boxes.get(i).getChildren().get(1);
+                String labelText = label.getText().split("bikes : ")[0];
+                label.setText(labelText + "bikes : " + buildingList.get(i).getBikes());
+            }
+            return;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm");
+        for (int i = 0; i < buildingList.size(); i++) {
+            int bikes = buildingList.get(i).getBikes();
+            Building building = buildingList.get(i);
+            for (int j = 0; j < bikeReservations.size(); j++) {
+                BikeReservation bikeReservation = bikeReservations.get(j);
+                String[] times = bikeReservation.getTimeSlot().split("-");
+                String pickUp = times[0];
+                String dropOff = times[1];
+                Date pickUpDate = null;
+                Date dropOffDate = null;
+                try {
+                    pickUpDate = sdf.parse(bikeReservation.getDate() + "-" + pickUp);
+                    dropOffDate = sdf.parse(bikeReservation.getDate() + "-" + dropOff);
+                    System.out.println("SelectedTime = " + timeSelected.getTime().toString());
+                    System.out.println("Pickup - " + pickUpDate.toString());
+                    System.out.println("Dropoff - " + dropOffDate.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                //the pickup time is before the selected time
+                if (timeSelected.getTime().before(pickUpDate)) {
+                    //we don't do anything
+                }
+                //the bike isn't dropped off yet
+                if (building.equals(bikeReservation.getDropOffBuilding())
+                    && timeSelected.getTime().before(dropOffDate)) {
+                    bikes--;
+                }
+                if (bikes < 0) {
+                    bikes = 0;
+                }
+                Label label = (Label) boxes.get(i).getChildren().get(1);
+                String labelText = label.getText().split("bikes : ")[0];
+                label.setText(labelText + "bikes : " + bikes);
             }
         }
     }
@@ -291,6 +359,10 @@ public class BikeReservationWidget extends VBox {
 
     public void setListener(Listener listener) {
         this.listener = listener;
+    }
+
+    public List<HBox> getBoxes() {
+        return boxes;
     }
 
     public interface Listener {

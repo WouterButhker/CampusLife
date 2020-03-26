@@ -13,22 +13,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SelectionModel;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -41,6 +30,8 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.WeekWidget;
+
+
 
 
 public class AdminSceneBuildingsController implements Initializable {
@@ -329,7 +320,8 @@ public class AdminSceneBuildingsController implements Initializable {
         }
         if (!location.equals("") && !name.equals("") && codeFound
                && week.getWeekDays().checkCorrectness()) {
-            Building building = new Building(buildingCode, name, location, openingHours, bikes);
+            Building building = new Building(buildingCode, name, location, openingHours,
+                    "image", bikes);
             BuildingCommunication.saveBuilding(building);
             submitStatus.setText("Building successfully added!");
             try {
@@ -632,7 +624,8 @@ public class AdminSceneBuildingsController implements Initializable {
         }
 
         if (!location.equals("") && !name.equals("") && openingHoursCorrect) {
-            Building building = new Building(buildingCode, name, location, openingHours, bikesInt);
+            Building building = new Building(buildingCode, name, location, openingHours,
+                    "image", bikesInt);
             BuildingCommunication.updateBuilding(building);
         } else {
             if (result == null) {

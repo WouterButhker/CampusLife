@@ -46,24 +46,28 @@ class BikeReservationTest {
 
     @Test
     void getIdTest() {
-        assertEquals(2, bikeReservation.getId());
+        Integer test = 2;
+        assertEquals(test, bikeReservation.getId());
     }
 
     @Test
     void setIdTest() {
         bikeReservation.setId(3);
-        assertEquals(3, bikeReservation.getId());
+        Integer test = 3;
+        assertEquals(test, bikeReservation.getId());
     }
 
     @Test
     void getUserTest() {
-        assertEquals(5, bikeReservation.getUser());
+        Integer test = 5;
+        assertEquals(test, bikeReservation.getUser());
     }
 
     @Test
     void setUserTest() {
         bikeReservation.setUser(6);
-        assertEquals(6, bikeReservation.getUser());
+        Integer test = 6;
+        assertEquals(test, bikeReservation.getUser());
     }
 
     @Test
