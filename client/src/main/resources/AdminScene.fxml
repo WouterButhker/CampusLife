@@ -18,59 +18,49 @@
       </children>
     </HBox>
     <HBox prefHeight="55.86328125" prefWidth="1120.0" />
-    <FlowPane alignment="TOP_CENTER" columnHalignment="LEFT" prefHeight="54.0" prefWidth="1120.0" rowValignment="CENTER">
+    <FlowPane alignment="TOP_CENTER" columnHalignment="LEFT" prefHeight="69.0" prefWidth="1120.0" rowValignment="CENTER">
       <children>
-        <Label prefWidth="110.0" text="Buildings" />
-        <Button fx:id="modifyBuildingsEnter" mnemonicParsing="false" onAction="#modifyBuildingsEnter" text="Modify">
+        <Button fx:id="modifyBuildingsEnter" mnemonicParsing="false" onAction="#modifyBuildingsEnter" prefHeight="53.0" prefWidth="140.0" text="Buildings">
           <FlowPane.margin>
             <Insets left="10.0" />
           </FlowPane.margin>
         </Button>
-        <Pane prefHeight="48.0" prefWidth="184.0" />
       </children>
     </FlowPane>
-    <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="292.0">
+    <FlowPane alignment="TOP_CENTER" prefHeight="69.0" prefWidth="292.0">
       <children>
-        <Label prefWidth="110.0" text="Rooms" />
-        <Button fx:id="modifyRoomsEnter" mnemonicParsing="false" onAction="#modifyRoomsEnter" text="Modify">
+        <Button fx:id="modifyRoomsEnter" mnemonicParsing="false" onAction="#modifyRoomsEnter" prefHeight="53.0" prefWidth="140.0" text="Rooms">
           <FlowPane.margin>
             <Insets left="10.0" />
           </FlowPane.margin>
         </Button>
-        <Pane prefHeight="48.0" prefWidth="184.0" />
       </children>
     </FlowPane>
-    <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="312.0">
+    <FlowPane alignment="TOP_CENTER" prefHeight="69.0" prefWidth="312.0">
       <children>
-        <Label prefWidth="110.0" text="Food" />
-        <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" text="Modify">
+        <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" prefHeight="53.0" prefWidth="140.0" text="Food">
           <FlowPane.margin>
             <Insets left="10.0" />
           </FlowPane.margin>
         </Button>
-        <Pane prefHeight="48.0" prefWidth="184.0" />
       </children>
     </FlowPane>
-    <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="312.0">
+    <FlowPane alignment="TOP_CENTER" prefHeight="69.0" prefWidth="312.0">
       <children>
-        <Label prefWidth="110.0" text="Rights" />
-        <Button fx:id="modifyRightsEnter" mnemonicParsing="false" onAction="#modifyRightsEnter" text="Modify">
+        <Button fx:id="modifyRightsEnter" mnemonicParsing="false" onAction="#modifyRightsEnter" prefHeight="53.0" prefWidth="140.0" text="Rights">
           <FlowPane.margin>
             <Insets left="10.0" />
           </FlowPane.margin>
         </Button>
-        <Pane prefHeight="48.0" prefWidth="184.0" />
       </children>
     </FlowPane>
-    <FlowPane alignment="TOP_CENTER" prefHeight="54.0" prefWidth="312.0">
+    <FlowPane alignment="TOP_CENTER" prefHeight="69.0" prefWidth="312.0">
       <children>
-        <Label prefWidth="110.0" text="Reservations" />
-        <Button fx:id="modifyReservationsEnter" mnemonicParsing="false" onAction="#modifyReservationsEnter" text="Modify">
+        <Button fx:id="modifyReservationsEnter" mnemonicParsing="false" onAction="#modifyReservationsEnter" prefHeight="53.0" prefWidth="140.0" text="Reservations">
           <FlowPane.margin>
             <Insets left="10.0" />
           </FlowPane.margin>
         </Button>
-        <Pane prefHeight="48.0" prefWidth="184.0" />
       </children>
     </FlowPane>
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
