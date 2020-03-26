@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateBuildingImage;
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateRoomImage;
 import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateUserImage;
 
 public class MyProfileRoute extends Route {
@@ -292,6 +292,7 @@ public class MyProfileRoute extends Route {
             @Override
             public void handle(ActionEvent event) {
                 updateUserImage(imageSelectorWidget.getImage());
+                updateRoomImage("PC%201", imageSelectorWidget.getImage());
                 horizontalContainer.getChildren().clear();
                 imageSelectorWidget.removeChild(save);
                 loadHorizontalContainer();

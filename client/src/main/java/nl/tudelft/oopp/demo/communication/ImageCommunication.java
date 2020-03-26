@@ -89,4 +89,46 @@ public class ImageCommunication {
         }
         return "images/TuDelftTempIMG.jpg";
     }
+
+    public static String updateRoomImage(String roomCode, File image) {
+        String url = "/rooms/image/" + roomCode;
+        try {
+            HttpPut uploadFile = new HttpPut(SERVER_URL + url);
+            String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
+            uploadFile.setHeader("Authorization", "Basic " + encodedauth);
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.addBinaryBody("file", new FileInputStream(image),
+                    ContentType.MULTIPART_FORM_DATA, image.getName());
+            org.apache.http.HttpEntity multipart = builder.build();
+            uploadFile.setEntity(multipart);
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            CloseableHttpResponse response = httpClient.execute(uploadFile);
+            org.apache.http.HttpEntity responseEntity = response.getEntity();
+            System.out.println();
+            httpClient.close();
+            response.close();
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return "200 OK";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
+
+    public static String getRoomImageUrl(String roomCode) {
+        ResponseEntity<String> response = authenticatedRequest(
+                "/rooms/image/getUrl/" + roomCode);
+        if (response != null && response.getBody() == null) {
+            return "images/RoomTempIMG.jpg";
+        } else if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
+            System.out.println("Image Url: " + response.getBody());
+            return response.getBody();
+        } else {
+            System.out.println("Login failed");
+        }
+        return "images/RoomTempIMG.jpg";
+    }
+
 }

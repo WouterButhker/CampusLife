@@ -1,16 +1,21 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.image.RoomImage;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
+import nl.tudelft.oopp.demo.repositories.image.RoomImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/rooms")
@@ -18,6 +23,9 @@ public class RoomController {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private RoomImageRepository roomImageRepository;
 
     @GetMapping(path = "/getRoomsFromBuilding")
     public List<Room> getAllRoomsFromBuilding(@RequestParam Building building) {
@@ -106,6 +114,39 @@ public class RoomController {
         }
         roomRepository.deleteById(roomCode);
         return new ResponseEntity<>(roomCode, HttpStatus.OK);
+    }
+
+    @Modifying
+    @PutMapping(value = "/image/{roomCode}")
+    ResponseEntity<RoomImage> uploadFile(@PathVariable String roomCode,
+                                         @RequestParam("file") MultipartFile file)
+            throws IOException {
+        if (!roomRepository.existsRoomByRoomCode(roomCode)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Room room = roomRepository.findRoomByRoomCode(roomCode);
+        if (roomImageRepository.existsByRoom(room)) {
+            roomImageRepository.deleteByRoom(room);
+        }
+        String fileName = ImageController.checkFile(file);
+        RoomImage roomImage = new RoomImage(fileName, file.getContentType(), file.getBytes(), room);
+        roomImageRepository.save(roomImage);
+        return new ResponseEntity<>(roomImage, HttpStatus.OK);
+    }
+
+    @GetMapping("/image/getUrl/{roomCode}")
+    String getUrl(@PathVariable String roomCode) {
+        Room room = roomRepository.findRoomByRoomCode(roomCode);
+        if (roomImageRepository.existsByRoom(room)) {
+            RoomImage roomImage = roomImageRepository.findByRoom(room);
+            return ImageController.getUrl("/rooms/image/downloadFile/", roomImage);
+        }
+        return null;
+    }
+
+    @GetMapping("/image/downloadFile/{imageId}")
+    ResponseEntity<Resource> downloadFile(@PathVariable String imageId) {
+        return ImageController.downloadFile(roomImageRepository.findByImageId(imageId));
     }
 
 }

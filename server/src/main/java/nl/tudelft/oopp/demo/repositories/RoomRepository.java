@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.demo.repositories;
 
-import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
-import org.apache.coyote.Response;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, String> {
 
@@ -49,4 +48,6 @@ public interface RoomRepository extends JpaRepository<Room, String> {
                                 Boolean hasWhiteboard, Integer minCap, Integer maxCap);
 
     boolean existsRoomByRoomCode(String roomCode);
+
+    Room findRoomByRoomCode(String roomCode);
 }

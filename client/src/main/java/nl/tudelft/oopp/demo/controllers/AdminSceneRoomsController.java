@@ -1,46 +1,34 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
-import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class AdminSceneRoomsController implements Initializable {
@@ -253,7 +241,7 @@ public class AdminSceneRoomsController implements Initializable {
         for (int i = 0; i < numRooms; i++) {
             HBox room = new HBox();
             room.setMaxWidth(400);
-            Image image = new Image("images/RoomTempIMG.jpg");
+            Image image = new Image(ImageCommunication.getRoomImageUrl(rooms.get(i).getRoomCode()));
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);

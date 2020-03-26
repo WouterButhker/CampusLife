@@ -1,13 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.image.BuildingImage;
-import nl.tudelft.oopp.demo.entities.image.UserImage;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.repositories.image.BuildingImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/buildings")
@@ -72,14 +69,15 @@ public class BuildingController {
     }
 
     @Modifying
-    @PutMapping(value = "/image/{buildingId}")
-    ResponseEntity<BuildingImage> uploadFile(@PathVariable Integer buildingId,
+    @PutMapping(value = "/image/{buildingCode}")
+    ResponseEntity<BuildingImage> uploadFile(@PathVariable Integer buildingCode,
                                              @RequestParam("file") MultipartFile file)
             throws IOException {
-        Building building = buildingRepository.findBuildingByBuildingCode(buildingId);
-        if (building == null) {
+        if (!buildingRepository.existsBuildingByBuildingCode(buildingCode)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        Building building = buildingRepository.findBuildingByBuildingCode(buildingCode);
+
         if (buildingImageRepository.existsByBuilding(building)) {
             buildingImageRepository.deleteByBuilding(building);
         }
@@ -89,9 +87,9 @@ public class BuildingController {
         return new ResponseEntity<>(buildingImage, HttpStatus.OK);
     }
 
-    @GetMapping("/image/getUrl/{buildingId}")
-    String getUrl(@PathVariable Integer buildingId) {
-        Building building = buildingRepository.findBuildingByBuildingCode(buildingId);
+    @GetMapping("/image/getUrl/{buildingCode}")
+    String getUrl(@PathVariable Integer buildingCode) {
+        Building building = buildingRepository.findBuildingByBuildingCode(buildingCode);
         if (buildingImageRepository.existsByBuilding(building)) {
             BuildingImage buildingImage = buildingImageRepository.findByBuilding(building);
             return ImageController.getUrl("/buildings/image/downloadFile/", buildingImage);
