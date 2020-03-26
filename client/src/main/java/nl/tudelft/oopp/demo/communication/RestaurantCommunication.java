@@ -119,5 +119,24 @@ public class RestaurantCommunication {
         }
         return null;
     }
+
+    /**
+     * Retrieves all the foods ids and names from the database.
+     *
+     * @return returns an array
+     */
+    public static String[] getRestaurantsIdAndName() {
+        try {
+            String responseString = ServerCommunication.authenticatedRequest(
+                    "/restaurants/id+name").getBody();
+            responseString = responseString.replace("[", "");
+            responseString = responseString.replace("]", "");
+            responseString = responseString.replace("\"", "");
+            return responseString.split(",");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 

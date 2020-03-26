@@ -44,18 +44,32 @@
                       </FlowPane>
                       <FlowPane prefHeight="30.0" prefWidth="312.0">
                          <children>
-                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Food">
+                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant">
                                <font>
                                   <Font size="16.0" />
                                </font>
                             </Text>
-                            <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" text="Modify">
+                            <Button fx:id="modifyRestaurantEnter" mnemonicParsing="false" onAction="#modifyRestaurantEnter" text="Modify">
                                <FlowPane.margin>
                                   <Insets left="10.0" />
                                </FlowPane.margin>
                             </Button>
                          </children>
                       </FlowPane>
+                       <FlowPane prefHeight="30.0" prefWidth="312.0">
+                           <children>
+                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Food">
+                                   <font>
+                                       <Font size="16.0" />
+                                   </font>
+                               </Text>
+                               <Button fx:id="modifyFoodEnter" mnemonicParsing="false" onAction="#modifyFoodEnter" text="Modify">
+                                   <FlowPane.margin>
+                                       <Insets left="10.0" />
+                                   </FlowPane.margin>
+                               </Button>
+                           </children>
+                       </FlowPane>
                        <FlowPane prefHeight="30.0" prefWidth="312.0">
                          <children>
                             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rights">

@@ -84,6 +84,16 @@ public class RestaurantController {
         return restaurantRepository.allRestaurantsFromBuilding(building);
     }
 
+    /**
+     * Retrieves all the foods ids and names from the database.
+     *
+     * @return a list with format "id name"
+     */
+    @GetMapping(path = "/id+name")
+    public List<String> getRestaurantsIdAndName() {
+        return restaurantRepository.getRestaurantsIdAndName();
+    }
+
     /*@DeleteMapping(value = "/{id}")
     ResponseEntity<Integer> deleteRestaurant(@PathVariable Integer id) {
         boolean exists = restaurantRepository.findById(id).isPresent();
