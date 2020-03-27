@@ -1,11 +1,10 @@
 package nl.tudelft.oopp.demo.repositories.image;
 
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.image.RoomImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 public interface RoomImageRepository extends JpaRepository<RoomImage, Integer> {
     List<RoomImage> findByRoom(Room room);

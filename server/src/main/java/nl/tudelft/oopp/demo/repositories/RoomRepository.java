@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.repositories;
 
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,10 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.List;
-
 @RepositoryRestResource
-public interface RoomRepository extends JpaRepository<Room, String>, JpaSpecificationExecutor<Room> {
+public interface RoomRepository extends
+        JpaRepository<Room, String>, JpaSpecificationExecutor<Room> {
 
     @Query("SELECT r From Room r WHERE r.building = ?1")
     List<Room> allRoomsFromBuilding(Building myBuilding);

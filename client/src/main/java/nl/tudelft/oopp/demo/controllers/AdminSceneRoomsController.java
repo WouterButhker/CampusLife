@@ -1,5 +1,10 @@
 package nl.tudelft.oopp.demo.controllers;
 
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -27,13 +32,6 @@ import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
-
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
-
 
 
 public class AdminSceneRoomsController implements Initializable {
@@ -271,7 +269,8 @@ public class AdminSceneRoomsController implements Initializable {
         for (int i = 0; i < numRooms; i++) {
             HBox room = new HBox();
             room.setMaxWidth(400);
-            Image image = new Image(ImageCommunication.getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
+            Image image = new Image(ImageCommunication
+                    .getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
@@ -416,7 +415,8 @@ public class AdminSceneRoomsController implements Initializable {
             public void handle(ActionEvent event) {
                 Node status = modifyRoom(room.getRoomCode(), name.getText(), capacity.getText(),
                         whiteboard.selectedProperty().get(), tv.selectedProperty().get(),
-                        rights.getValue(), room.getBuilding().getCode(), imageSelectorWidget.getImage());
+                        rights.getValue(), room.getBuilding().getCode(),
+                        imageSelectorWidget.getImage());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();

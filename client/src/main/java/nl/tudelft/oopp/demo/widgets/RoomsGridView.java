@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
@@ -7,9 +9,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.entities.Room;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RoomsGridView extends GridPane {
     private List<Room> rooms;
@@ -63,7 +62,8 @@ public class RoomsGridView extends GridPane {
 
     private void addButtons() {
         for (int i = 0; i < rooms.size(); i++) {
-            Image image = new Image(ImageCommunication.getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
+            Image image = new Image(ImageCommunication
+                    .getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
             RectangularImageButton button = new RectangularImageButton(image,
                     rooms.get(i).getName());
             int finalI = i;

@@ -1,7 +1,16 @@
 package nl.tudelft.oopp.demo.communication;
 
+import static nl.tudelft.oopp.demo.communication.AuthenticationCommunication.*;
+import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.File;
+import java.io.FileInputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
@@ -9,16 +18,6 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.ResponseEntity;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-
-import static nl.tudelft.oopp.demo.communication.AuthenticationCommunication.*;
-import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
 
 public class ImageCommunication {
 

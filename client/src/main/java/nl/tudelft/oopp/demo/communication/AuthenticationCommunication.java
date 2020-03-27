@@ -1,5 +1,11 @@
 package nl.tudelft.oopp.demo.communication;
 
+import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
+
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.UserDtO;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -9,12 +15,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
-
-import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
 
 public class AuthenticationCommunication {
     public static Integer myUserId;

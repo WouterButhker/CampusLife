@@ -1,8 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
 import nl.tudelft.oopp.demo.entities.image.Image;
-import nl.tudelft.oopp.demo.repositories.image.UserImageRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
+import nl.tudelft.oopp.demo.repositories.image.UserImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
+
 
 @RestController
 public class ImageController {
