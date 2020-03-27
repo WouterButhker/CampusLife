@@ -38,24 +38,15 @@ public class RoomReservationCommunication {
     }
 
     private static RoomReservation parseReservation(JsonObject inputReservation) {
-        Integer id = inputReservation.get("id").getAsInt();
-        //System.out.println(id);
-        Integer user = null;
-        if (!inputReservation.get("user").isJsonNull()) {
-            user = Integer.parseInt(
-                    inputReservation.getAsJsonObject("user").get("id").getAsString()
-            );
-        }
+        int id = inputReservation.get("id").getAsInt();
+        //System.out.println(inputReservation);
+        int user = inputReservation.get("user").getAsInt();
         //System.out.println(user);
-        Room room = null;
-        if (!inputReservation.get("room").isJsonNull()) {
-            room = new Gson().fromJson(inputReservation.get("room").toString(), Room.class);
-
-        }
+        String room = inputReservation.get("room").getAsString();
         //System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
         //System.out.println(timeSlot);;
-        return new RoomReservation(id, user, room.getRoomCode(), timeSlot);
+        return new RoomReservation(id, user, room, timeSlot);
     }
 
     private static List<RoomReservation> parseReservations(String inputReservations) {
@@ -90,6 +81,7 @@ public class RoomReservationCommunication {
     public static List<RoomReservation> getMyReservations() {
         String url = "/reservations/myReservations?user=" + AuthenticationCommunication.myUserId;
         try {
+            System.out.println(ServerCommunication.authenticatedRequest(url).getBody());
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
         } catch (Exception e) {
             e.printStackTrace();

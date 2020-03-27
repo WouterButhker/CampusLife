@@ -56,12 +56,8 @@ public class BikeReservationCommunication {
     }
 
     private static BikeReservation parseBikeReservation(JsonObject inputReservation) {
-        Integer user = null;
-        if (!inputReservation.get("user").isJsonNull()) {
-            user = Integer.parseInt(
-                    inputReservation.getAsJsonObject("user").get("id").getAsString()
-            );
-        }
+        int user = inputReservation.get("user").getAsInt();
+        //System.out.println(user);
         String date = inputReservation.get("date").getAsString();
         Integer pickUpBuilding = null;
         if (!inputReservation.get("pickUpBuilding").isJsonNull()) {

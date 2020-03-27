@@ -44,7 +44,7 @@ public class RoomReservationController {
      */
     @GetMapping(path = "/add")
     public @ResponseBody String addNewReservation(@RequestParam int user,
-                                                  @RequestParam int room,
+                                                  @RequestParam String room,
                                                   @RequestParam String slot) {
         String timeSlot = slot.substring(11, 19) + slot.substring(30);
         String date = slot.substring(0, 10);
@@ -56,7 +56,7 @@ public class RoomReservationController {
     }
 
     @GetMapping("/myReservations")
-    public @ResponseBody List<RoomReservation> getMyReservations(@RequestParam User user) {
+    public @ResponseBody List<RoomReservation> getMyReservations(@RequestParam int user) {
         return roomReservationRepository.getMyReservations(user);
     }
 

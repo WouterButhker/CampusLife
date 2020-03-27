@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RoomReservationRepository extends JpaRepository<RoomReservation, Integer> {
     @Query("SELECT r FROM RoomReservation r WHERE r.user = ?1")
-    List<RoomReservation> getMyReservations(User user);
+    List<RoomReservation> getMyReservations(int user);
 
     List<RoomReservation> findAllByUser(User user);
     

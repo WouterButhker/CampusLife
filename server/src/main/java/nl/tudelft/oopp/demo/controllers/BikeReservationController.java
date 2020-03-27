@@ -32,7 +32,7 @@ public class BikeReservationController {
      * @return "Saved"
      */
     @GetMapping(path = "/add")
-    public @ResponseBody String addNewBikeReservation(@RequestParam User user,
+    public @ResponseBody String addNewBikeReservation(@RequestParam int user,
                                                       @RequestParam Building pickUpBuilding,
                                                       @RequestParam Building dropOffBuilding,
                                                       @RequestParam String date,

@@ -11,7 +11,7 @@ public class RoomReservation extends Reservation {
 
     @JoinColumn(name = "room_code")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private int room;          // room code
+    private String room;          // room code
 
     public RoomReservation() {
 
@@ -24,7 +24,7 @@ public class RoomReservation extends Reservation {
      * @param timeSlot the time at which the Room is reserved
      */
     public RoomReservation(int user,
-                           int room,
+                           String room,
                            String date,
                            String timeSlot)  {
 
@@ -34,11 +34,11 @@ public class RoomReservation extends Reservation {
     }
 
 
-    public int getRoom() {
+    public String getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
+    public void setRoom(String room) {
         this.room = room;
     }
 
