@@ -39,6 +39,12 @@ public class AdminSceneController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addAppBar();
+
+        modifyBuildingsEnter.setStyle("-fx-font-size: 17");
+        modifyRoomsEnter.setStyle("-fx-font-size: 17");
+        modifyFoodEnter.setStyle("-fx-font-size: 17");
+        modifyRightsEnter.setStyle("-fx-font-size: 17");
+        modifyReservationsEnter.setStyle("-fx-font-size: 17");
     }
 
     private void addAppBar() {

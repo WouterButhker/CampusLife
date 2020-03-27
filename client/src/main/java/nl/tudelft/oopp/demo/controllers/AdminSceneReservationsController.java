@@ -45,9 +45,6 @@ public class AdminSceneReservationsController {
     private Button ok;
 
     @FXML
-    private AnchorPane mainPane;
-
-    @FXML
     private TextField reservationIdField;
 
     @FXML
@@ -138,8 +135,6 @@ public class AdminSceneReservationsController {
         assert deleteReservationButton != null : "fx:id=\"deleteReservationButton\" "
                 + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
         assert mainBox != null : "fx:id=\"mainBox\" was not injected: "
-                + "check your FXML file 'AdminSceneReservations.fxml'.";
-        assert mainPane != null : "fx:id=\"mainPane\" was not injected: "
                 + "check your FXML file 'AdminSceneReservations.fxml'.";
         assert reservationIdField != null : "fx:id=\"reservationIdField\" "
                 + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
