@@ -19,7 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.communication.ReservationCommunication;
+import nl.tudelft.oopp.demo.communication.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
@@ -81,13 +81,13 @@ public class AdminSceneReservationsController {
     private void loadReservations(String choice) {
         List<RoomReservation> reservations = new ArrayList<>();
         if (choice.equals("Show by user")) {
-            reservations = ReservationCommunication
+            reservations = RoomReservationCommunication
                     .getAllReservationsForUser(Integer.parseInt(userOrRoomField.getText()));
         } else if (choice.equals("Show by room")) {
-            reservations = ReservationCommunication
+            reservations = RoomReservationCommunication
                     .getAllReservationsForRoom(userOrRoomField.getText());
         } else {
-            reservations = ReservationCommunication.getAllReservations();
+            reservations = RoomReservationCommunication.getAllReservations();
         }
 
         reservationsList.getChildren().clear();
@@ -110,7 +110,7 @@ public class AdminSceneReservationsController {
                 @Override
                 public void handle(ActionEvent event) {
                     Integer id = finalReservations.get(finalI).getId();
-                    ReservationCommunication.deleteReservationFromDatabase(id);
+                    RoomReservationCommunication.deleteReservationFromDatabase(id);
                     loadReservations(choiceBox.getValue().toString());
                 }
             });

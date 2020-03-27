@@ -14,7 +14,7 @@ public class GetAllReservationsTest {
 
     @Test
     public void testGetAllReservations() {
-        List<RoomReservation> reservationList = ReservationCommunication.getAllReservations();
+        List<RoomReservation> reservationList = RoomReservationCommunication.getAllReservations();
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllRooms");
         if (reservationList != null) {

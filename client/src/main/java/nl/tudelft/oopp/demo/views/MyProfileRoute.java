@@ -18,7 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.ReservationCommunication;
+import nl.tudelft.oopp.demo.communication.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.*;
@@ -117,7 +117,7 @@ public class MyProfileRoute extends Route {
         futureReservations = new ArrayList<>();
         Date dateObj = new Date();
         currentDate = dateFormat.format(dateObj);
-        List<RoomReservation> allMyReservations = ReservationCommunication.getMyReservations();
+        List<RoomReservation> allMyReservations = RoomReservationCommunication.getMyReservations();
         for (RoomReservation reservation : allMyReservations) {
             String endTime = reservation.getTimeSlot().substring(19);
             if (endTime.compareTo(currentDate) <= 0) {
@@ -175,7 +175,7 @@ public class MyProfileRoute extends Route {
                 @Override
                 public void handle(ActionEvent event) {
                     int id = reservations.get(finalI).getId();
-                    ReservationCommunication.deleteReservationFromDatabase(id);
+                    RoomReservationCommunication.deleteReservationFromDatabase(id);
                     if (past.isSelected()) {
                         displayPastEvents();
                     } else if (upcoming.isSelected()) {
@@ -236,7 +236,7 @@ public class MyProfileRoute extends Route {
                         && t2.getText() != null
                         && t3.getText() != null
                         && t4.getText() != null) {
-                    ReservationCommunication.addReservationToDatabase(
+                    RoomReservationCommunication.addReservationToDatabase(
                             AuthenticationCommunication.myUserId, type, timeslot);
                 }
 

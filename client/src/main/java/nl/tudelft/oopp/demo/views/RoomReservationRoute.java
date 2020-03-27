@@ -9,7 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.ReservationCommunication;
+import nl.tudelft.oopp.demo.communication.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
 import nl.tudelft.oopp.demo.entities.Room;
@@ -43,7 +43,7 @@ public class RoomReservationRoute extends Route {
         this.room = room;
         rootElement = new VBox();
 
-        reservations = ReservationCommunication.getAllReservations();
+        reservations = RoomReservationCommunication.getAllReservations();
 
         AppBar appBar = new AppBar();
         rootElement.getChildren().add(appBar);
@@ -87,7 +87,7 @@ public class RoomReservationRoute extends Route {
                     String fromString = format.format(fromTime.getTime());
                     String toString = format.format(toTime.getTime());
                     String timeslot = String.format("%s - %s", fromString, toString);
-                    ReservationCommunication
+                    RoomReservationCommunication
                             .addReservationToDatabase(user, room.getRoomCode(), timeslot);
                     reservations.add(new RoomReservation(-1, user, room.getRoomCode(), timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());

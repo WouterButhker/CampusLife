@@ -13,7 +13,7 @@ import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.http.ResponseEntity;
 
-public class ReservationCommunication {
+public class RoomReservationCommunication {
 
 
     /**
@@ -53,10 +53,11 @@ public class ReservationCommunication {
         Room room = null;
         if (!inputReservation.get("room").isJsonNull()) {
             room = new Gson().fromJson(inputReservation.get("room").toString(), Room.class);
+
         }
         //System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
-        //System.out.println(timeSlot);
+        //System.out.println(timeSlot);;
         return new RoomReservation(id, user, room.getRoomCode(), timeSlot);
     }
 

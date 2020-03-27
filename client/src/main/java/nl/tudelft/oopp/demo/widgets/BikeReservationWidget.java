@@ -171,8 +171,9 @@ public class BikeReservationWidget extends VBox {
     }
 
     private boolean bikeReserved() {
-        for (int i = 0; i < bikeReservations.size(); i++) {
-            if (bikeReservations.get(i).getUser().equals(AuthenticationCommunication.myUserId)) {
+        for (BikeReservation bikeReservation : bikeReservations) {
+            System.out.println(bikeReservation);
+            if (bikeReservation.getUser().equals(AuthenticationCommunication.myUserId)) {
                 return true;
             }
         }
