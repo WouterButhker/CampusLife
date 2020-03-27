@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class RoomReservation {
 
-    private Integer id;
-    private Integer user;
+    private int id;
+    private int user;
     private String room;
     /// DATE
     private String timeSlot;
@@ -17,26 +17,26 @@ public class RoomReservation {
      * @param room the Room(roomCode) that is reserved
      * @param timeSlot the time at which the Room is reserved
      */
-    public RoomReservation(Integer id, Integer user, String room, String timeSlot) {
+    public RoomReservation(int id, int user, String room, String timeSlot) {
         this.id = id;
         this.user = user;
         this.room = room;
         this.timeSlot = timeSlot;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getUser() {
+    public int getUser() {
         return user;
     }
 
-    public void setUser(Integer user) {
+    public void setUser(int user) {
         this.user = user;
     }
 
@@ -65,8 +65,8 @@ public class RoomReservation {
             return false;
         }
         RoomReservation that = (RoomReservation) o;
-        return id.equals(that.id)
-                && user.equals(that.user)
+        return id == that.id
+                && user == that.user
                 && room.equals(that.room)
                 && timeSlot.equals(that.timeSlot);
     }

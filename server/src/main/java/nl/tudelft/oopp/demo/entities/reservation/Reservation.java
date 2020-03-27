@@ -14,10 +14,9 @@ public abstract class Reservation {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne
     @JoinColumn(name = "users")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User user;
+    private int user;
 
     @Column(name = "date")
     private String date;
@@ -29,7 +28,7 @@ public abstract class Reservation {
 
     }
 
-    public Reservation(User user, String date, String timeSlot) {
+    public Reservation(int user, String date, String timeSlot) {
         this.user = user;
         this.date = date;
         this.timeSlot = timeSlot;
@@ -43,11 +42,11 @@ public abstract class Reservation {
         return id;
     }
 
-    public User getUser() {
+    public int getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(int user) {
         this.user = user;
     }
 
