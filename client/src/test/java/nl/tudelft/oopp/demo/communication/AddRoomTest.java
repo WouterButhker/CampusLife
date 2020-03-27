@@ -21,7 +21,8 @@ public class AddRoomTest {
         Boolean hasTV = true;
         Integer rights = 1;
         Integer buildingCode = 1;
-        Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
+        Room room = new Room(roomCode, name, capacity, hasWhiteboard,
+                hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
         RoomCommunication.saveRoom(room);
     }
 
