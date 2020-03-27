@@ -1,9 +1,5 @@
 package nl.tudelft.oopp.demo.entities;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.*;
 
 public class FoodOrder extends Reservation {
@@ -12,10 +8,9 @@ public class FoodOrder extends Reservation {
 
     /**
      * Creates a new FoodOrder object.
-     *
-     * @param id         the id of the order
+     * @param id the id of the order
      * @param restaurant the restaurant where the order is done
-     * @param user       the id of the user that ordered
+     * @param user the id of the user that ordered
      */
     public FoodOrder(int userId, String date, String timeSlot, Integer restaurant) {
         super(userId, date, timeSlot);
@@ -38,10 +33,8 @@ public class FoodOrder extends Reservation {
         return null;
     }
 
-
     /**
      * Adds a food to the order.
-     *
      * @param food the food to be added
      */
     public void addFood(Food food) {
@@ -57,7 +50,6 @@ public class FoodOrder extends Reservation {
 
     /**
      * Removes a food from the order.
-     *
      * @param food the food to be removed
      */
     public void removeFood(Food food) {

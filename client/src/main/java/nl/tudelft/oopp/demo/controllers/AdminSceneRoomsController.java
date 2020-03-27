@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -9,26 +8,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -77,6 +65,9 @@ public class AdminSceneRoomsController implements Initializable {
 
     @FXML
     private AnchorPane anchorPaneRooms;
+
+    @FXML
+    private VBox scrollPaneVBox;
 
     @FXML
     private ScrollPane scrollPane;
@@ -399,7 +390,6 @@ public class AdminSceneRoomsController implements Initializable {
                     stage.close();
                     loadRooms(buildingList2.getValue());
                 } else {
-                    status.setPadding(new Insets(10, 125, 0, 125));
                     try {
                         root.getChildren().remove(11);
                         root.getChildren().add(status);
@@ -421,9 +411,10 @@ public class AdminSceneRoomsController implements Initializable {
         stage.showAndWait();
     }
 
-    private Label modifyRoom(String roomCode, String roomName, String capacity,
+    private Node modifyRoom(String roomCode, String roomName, String capacity,
                              boolean whiteboard, boolean tv, String rights, int buildingCode) {
         int rightsNum = 0;
+        Label message = null;
         if (rights.equals("Student")) {
             rightsNum = 0;
         }
@@ -438,7 +429,7 @@ public class AdminSceneRoomsController implements Initializable {
         try {
             capacityInt = Integer.parseInt(capacity.trim());
         } catch (NumberFormatException e) {
-            return new Label("The capacity is not a number");
+            message = new Label("The capacity is not a number");
         }
 
         if (!roomCode.equals("") && !roomName.equals("")) {
@@ -446,9 +437,15 @@ public class AdminSceneRoomsController implements Initializable {
                     tv, rightsNum, BuildingCommunication.getBuildingByCode(buildingCode));
             RoomCommunication.updateRoom(room);
         } else {
-            return new Label("All fields have to be entered");
+            message = new Label("All fields have to be entered");
         }
-
-        return null;
+        HBox res = null;
+        if (message != null) {
+            message.setStyle("-fx-text-fill: red");
+            res = new HBox();
+            res.setAlignment(Pos.CENTER);
+            res.getChildren().add(message);
+        }
+        return res;
     }
 }

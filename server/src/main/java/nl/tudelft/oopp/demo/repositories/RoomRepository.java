@@ -5,13 +5,15 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.apache.coyote.Response;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-public interface RoomRepository extends JpaRepository<Room, String> {
-
-    @Query("SELECT r From Room r WHERE r.building = ?1")
-    List<Room> allRoomsFromBuilding(Building myBuilding);
+@RepositoryRestResource
+public interface RoomRepository extends JpaRepository<Room, String>,
+        JpaSpecificationExecutor<Room> {
 
     @Query("SELECT r.name From Room r WHERE r.building = ?1")
     List<String> allRoomNamesFromBuilding(Building myBuilding);
@@ -29,15 +31,19 @@ public interface RoomRepository extends JpaRepository<Room, String> {
     List<Room> allRoomsWithCapacity(Building myBuilding, Integer lowerCapacity,
                                     Integer upperCapacity);
 
-    @Query("SELECT r FROM Room r WHERE "
-            + "r.building = ?1 AND "
-            + "r.rights <= ?2 AND "
-            + "r.hasTV = ?3 AND "
-            + "r.hasWhiteboard = ?4 AND "
-            + "r.capacity >= ?5 AND "
-            + "r.capacity <= ?6")
-    List<Room> getFilteredRoomsFromBuilding(Building myBuilding, Integer myRights, Boolean hasTV,
-                                Boolean hasWhiteboard, Integer minCap, Integer maxCap);
+    @Query(value = "SELECT r FROM Room r WHERE "
+            + "r.building = :myBuilding AND "
+            + "r.rights <= :myRights AND "
+            + "(NOT :hasTV OR r.hasTV = :hasTV) AND "
+            + "(NOT :hasWhiteboard OR r.hasWhiteboard = :hasWhiteboard) AND "
+            + "r.capacity >= :minCap AND "
+            + "r.capacity <= :maxCap", nativeQuery = true)
+    List<Room> getFilteredRoomsFromBuilding(@Param("myBuilding") Building myBuilding,
+                                            @Param("myRights") Integer myRights,
+                                            @Param("hasTV") Boolean hasTV,
+                                            @Param("hasWhiteboard") Boolean hasWhiteboard,
+                                            @Param("minCap") Integer minCap,
+                                            @Param("maxCap") Integer maxCap);
 
     @Query("SELECT r FROM Room r WHERE "
             + "r.rights <= ?1 AND "
