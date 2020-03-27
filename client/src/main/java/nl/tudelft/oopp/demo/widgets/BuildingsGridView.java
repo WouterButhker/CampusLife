@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.getBuildingImageUrl;
+
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
@@ -8,11 +12,6 @@ import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.views.RoomsListRoute;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static nl.tudelft.oopp.demo.communication.ImageCommunication.getBuildingImageUrl;
 
 public class BuildingsGridView extends GridPane {
     private List<Building> buildings;

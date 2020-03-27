@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.image.BuildingImage;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
@@ -12,9 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/buildings")
@@ -82,7 +81,8 @@ public class BuildingController {
             buildingImageRepository.deleteByBuilding(building);
         }
         String fileName = ImageController.checkFile(file);
-        BuildingImage buildingImage = new BuildingImage(fileName, file.getContentType(), file.getBytes(), building);
+        BuildingImage buildingImage = new BuildingImage(
+                fileName, file.getContentType(), file.getBytes(), building);
         buildingImageRepository.save(buildingImage);
         return new ResponseEntity<>(buildingImage, HttpStatus.OK);
     }

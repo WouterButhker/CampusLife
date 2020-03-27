@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import com.sipios.springsearch.anotation.SearchSpec;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.image.RoomImage;
@@ -16,10 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RestController
@@ -40,11 +39,6 @@ public class RoomController {
         return roomRepository.findAll(Specification.where(specs));
     }
 
-
-//
-//    @GetMapping(path = "/getRoomsFromBuilding")
-//    public List<Room> getAllRoomsFromBuilding(@RequestParam Building building) {
-//        return roomRepository.allRoomsFromBuilding(building);
     @GetMapping(path = "/all")
     public List<Room> getAll(@SearchSpec Specification<Room> specs) {
         return roomRepository.findAll(Specification.where(specs));
@@ -125,15 +119,6 @@ public class RoomController {
                                           @RequestParam Integer maxCap) {
         return roomRepository.getAllFilteredRooms(myRights,
                 hasTV, hasWhiteboard, minCap, maxCap);
-    }
-
-
-    /*
-    REFACTORED STUFF BELOW
-     */
-    @GetMapping
-    public List<Room> getAll() {
-        return roomRepository.findAll();
     }
 
     @PostMapping

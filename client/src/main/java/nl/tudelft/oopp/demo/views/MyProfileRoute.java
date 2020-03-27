@@ -1,5 +1,12 @@
 package nl.tudelft.oopp.demo.views;
 
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateUserImage;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -22,14 +29,7 @@ import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateRoomImage;
-import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateUserImage;
 
 public class MyProfileRoute extends Route {
     private VBox rootElement;
