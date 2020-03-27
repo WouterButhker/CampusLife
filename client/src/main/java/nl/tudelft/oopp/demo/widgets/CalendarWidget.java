@@ -170,8 +170,6 @@ public class CalendarWidget extends VBox {
     }
 
     private void redrawCalendar() {
-        CalendarWidgetLogic logic = new CalendarWidgetLogic();
-
         calendarGrid.getChildren().clear();
         calendarGrid.getChildren().add(filler);
 
@@ -181,6 +179,7 @@ public class CalendarWidget extends VBox {
         // Configure the date boxes
         calendarGrid.getChildren().addAll(dayBoxes);
         Calendar currentTime = Calendar.getInstance();
+        CalendarWidgetLogic logic = new CalendarWidgetLogic();
         int firstPosition = logic.getDayOfWeek(currentMonth);
         for (int i = 0; i < currentMonth.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
             DateBox dateBox = dateBoxes.get(i);
