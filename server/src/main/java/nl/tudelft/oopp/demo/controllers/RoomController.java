@@ -6,13 +6,10 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -36,6 +33,11 @@ public class RoomController {
     @GetMapping(path = "/all")
     public List<Room> getAll(@SearchSpec Specification<Room> specs) {
         return roomRepository.findAll(Specification.where(specs));
+    }
+
+    @GetMapping
+    public List<Room> getAll() {
+        return roomRepository.findAll();
     }
 
     @GetMapping(path = "/getAllRoomsFromBuilding")
@@ -119,10 +121,7 @@ public class RoomController {
     /*
     REFACTORED STUFF BELOW
      */
-    @GetMapping
-    public List<Room> getAll() {
-        return roomRepository.findAll();
-    }
+
 
     @PostMapping
     Room saveRoom(@RequestBody Room room) {

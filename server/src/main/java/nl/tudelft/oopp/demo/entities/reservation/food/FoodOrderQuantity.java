@@ -1,10 +1,11 @@
 package nl.tudelft.oopp.demo.entities.reservation.food;
 
+import java.util.Objects;
+import javax.persistence.*;
 import nl.tudelft.oopp.demo.entities.Food;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import javax.persistence.*;
-import java.util.Objects;
+
 
 @Entity
 @Table(name = "food_order_quantity")
@@ -31,12 +32,22 @@ public class FoodOrderQuantity {
 
     }
 
+    /**
+     * creates a object to link a food to a foodorder.
+     * @param food the food
+     * @param foodOrder the foodorder
+     */
     public FoodOrderQuantity(Food food, FoodOrder foodOrder) {
         this.food = food;
         this.foodOrder = foodOrder;
         this.id = new FoodOrderQuantityKey(food.getId(), foodOrder.getId());
     }
 
+    /**
+     * creates a object to link a food to a foodorder with a given quantity.
+     * @param food the food
+     * @param foodOrder the foodorder
+     */
     public FoodOrderQuantity(Food food, FoodOrder foodOrder, int quantity) {
         this.food = food;
         this.foodOrder = foodOrder;
@@ -78,8 +89,12 @@ public class FoodOrderQuantity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FoodOrderQuantity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FoodOrderQuantity)) {
+            return false;
+        }
         FoodOrderQuantity that = (FoodOrderQuantity) o;
         return food.equals(that.food)
                 && foodOrder.equals(that.foodOrder);

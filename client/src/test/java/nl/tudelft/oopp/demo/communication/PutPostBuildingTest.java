@@ -31,7 +31,6 @@ public class PutPostBuildingTest {
         bikes = 5;
         image = "/images/main-screen-default-building.jpg";
         building = new Building(code, name, location, openingHours, bikes);
-                //image,
     }
 
     @Test

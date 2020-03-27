@@ -4,13 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
-import nl.tudelft.oopp.demo.entities.Reservation;
-import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.RoomReservation;
 import org.springframework.http.ResponseEntity;
 
 public class RoomReservationCommunication {

@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.entities.reservation.food;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;

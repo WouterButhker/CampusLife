@@ -2,8 +2,8 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.repositories.RoomReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,8 +43,8 @@ public class RoomReservationController {
      * @return
      */
     @GetMapping(path = "/add")
-    public @ResponseBody String addNewReservation(@RequestParam User user,
-                                                  @RequestParam Room room,
+    public @ResponseBody String addNewReservation(@RequestParam int user,
+                                                  @RequestParam int room,
                                                   @RequestParam String slot) {
         String timeSlot = slot.substring(11, 19) + slot.substring(30);
         String date = slot.substring(0, 10);

@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
-import nl.tudelft.oopp.demo.entities.User;
+import javax.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import javax.persistence.*;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -28,6 +28,12 @@ public abstract class Reservation {
 
     }
 
+    /**
+     * parent constructor to create a new reservation.
+     * @param user the user that made the reservation
+     * @param date the date of the reservation
+     * @param timeSlot the time of the reservation
+     */
     public Reservation(int user, String date, String timeSlot) {
         this.user = user;
         this.date = date;

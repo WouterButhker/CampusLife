@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
-import nl.tudelft.oopp.demo.entities.User;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
