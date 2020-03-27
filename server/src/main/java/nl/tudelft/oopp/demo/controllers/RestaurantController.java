@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+
+import kotlin.text.UStringsKt;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
@@ -91,7 +93,14 @@ public class RestaurantController {
      */
     @GetMapping(path = "/id+name")
     public List<String> getRestaurantsIdAndName() {
-        return restaurantRepository.getRestaurantsIdAndName();
+
+        List<String> response = restaurantRepository.getRestaurantsIdAndName();
+        for (int i = 0; i < response.size(); i++) {
+            String current = response.get(i);
+            response.set(i, current.replace(',', ' '));
+        }
+        return response;
+
     }
 
     /*@DeleteMapping(value = "/{id}")
