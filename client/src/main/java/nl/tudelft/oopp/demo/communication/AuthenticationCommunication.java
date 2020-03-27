@@ -1,17 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
-import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
-
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
 import nl.tudelft.oopp.demo.entities.UserDtO;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.AuthenticationException;
@@ -19,11 +9,20 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+
+import static nl.tudelft.oopp.demo.communication.ServerCommunication.SERVER_URL;
 
 public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
     public static String myUsername;
+    public static String myImageUrl;
+    public static List<String> ids;
+    public static String auth;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -41,6 +40,7 @@ public class AuthenticationCommunication {
             myUsername = username;
             saveUserId(username);
             saveUserRole(username);
+            saveUserImageUrl(myUserId);
         } else {
             System.out.println("Login failed");
         }
@@ -66,6 +66,7 @@ public class AuthenticationCommunication {
                 "/rest/users/getId?username=" + username);
         if (response != null && response.getBody() != null
                 && response.getStatusCode().toString().equals("200 OK")) {
+            ///ids = ImageCommunication.getAllImageIds();
             System.out.println("USER id: " + response.getBody());
             myUserId = Integer.parseInt(response.getBody());
         } else {
@@ -86,6 +87,20 @@ public class AuthenticationCommunication {
                 && response.getStatusCode().toString().equals("200 OK")) {
             System.out.println("USER role: " + response.getBody());
             myUserRole = response.getBody();
+        } else {
+            System.out.println("Login failed");
+        }
+    }
+
+    public static void saveUserImageUrl(Integer userId) {
+        ResponseEntity<String> response = authenticatedRequest(
+                "rest/users/image/getUrl/" + userId);
+        if (response != null && response.getBody() == null) {
+            myImageUrl = "/images/myProfile.png";
+        } else if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
+            System.out.println("Image Url: " + response.getBody());
+            myImageUrl = response.getBody();
         } else {
             System.out.println("Login failed");
         }
@@ -203,7 +218,7 @@ public class AuthenticationCommunication {
     }
 
     private static HttpHeaders createHeaders(String username, String password) {
-        String auth = username + ":" + password;
+        auth = username + ":" + password;
 
         String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
         HttpHeaders headers = new HttpHeaders();

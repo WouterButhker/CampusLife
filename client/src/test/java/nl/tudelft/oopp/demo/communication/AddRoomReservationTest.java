@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class AddReservationTest {
+public class AddRoomReservationTest {
 
     @BeforeEach
     void doBeforeEach() {

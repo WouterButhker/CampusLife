@@ -2,22 +2,53 @@ package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
-import java.util.List;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.http.ResponseEntity;
 
+import java.lang.reflect.Type;
+import java.util.List;
+import static nl.tudelft.oopp.demo.communication.AuthenticationCommunication.myUserRole;
+
 public class RoomCommunication {
 
+//    /**
+//     * Returns a list of all the rooms that are part of the building.
+//     * Required permission: Student
+//     * @param building the number of the building you want to see the rooms from
+//     * @return a list of rooms from that building
+//     */
+//    public static List<Room> getAllRoomsFromBuilding(Integer building) {
+//        String url = "/rooms/getRoomsFromBuilding?building=" + building;
+//        try {
+//            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+//            if (response != null) {
+//                Type listType = new TypeToken<List<Room>>() {}.getType();
+//                return new Gson().fromJson(response.getBody(), listType);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
     /**
      * Returns a list of all the Rooms from the database.
      * Required permission: Student
      * @return list of Rooms
      */
     public static List<Room> getAllRooms() {
-        String url = "/rooms";
+        StringBuilder url = new StringBuilder("/rooms/all");
+        Integer rights = 0;
+        if (myUserRole != null) {
+            if (myUserRole.equalsIgnoreCase("Employee")) {
+                rights = 1;
+            } else if (myUserRole.equalsIgnoreCase("Admin")) {
+                rights = 2;
+            }
+        }
+        url.append("?search=rights<" + rights + 1);
+        String urlString = url.toString();
         try {
-            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(urlString);
             if (response != null) {
                 Type listType = new TypeToken<List<Room>>() {}.getType();
                 return new Gson().fromJson(response.getBody(), listType);
@@ -32,7 +63,7 @@ public class RoomCommunication {
      * Deletes a Room from the database.
      * Required permission: Admin
      * @param roomCode the code for the room that needs to be removed
-     * @return
+     * @return result code; -1 if exception
      */
     public static String deleteRoom(String roomCode) {
         String url = "/rooms/" + roomCode;
@@ -95,10 +126,12 @@ public class RoomCommunication {
         StringBuilder url = new StringBuilder(
                 "/rooms/getAllRoomsFromBuilding?search=building.buildingCode:" + building);
         Integer rights = 0;
-        if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
-            rights = 1;
-        } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
-            rights = 2;
+        if (myUserRole != null) {
+            if (myUserRole.equalsIgnoreCase("Employee")) {
+                rights = 1;
+            } else if (myUserRole.equalsIgnoreCase("Admin")) {
+                rights = 2;
+            }
         }
         url.append(" AND rights<" + rights + 1);
         String urlString = url.toString();
