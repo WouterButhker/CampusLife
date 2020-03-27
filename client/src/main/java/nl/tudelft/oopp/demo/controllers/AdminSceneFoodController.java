@@ -265,7 +265,7 @@ public class AdminSceneFoodController implements Initializable {
                     restaurantId,
                     foodPrice));
             submitStatus.setText("Food has been successfully added to "
-                    + restaurantsList1.getValue().split(" ")[1]);
+                    + restaurantsList1.getValue().split(",")[0]);
             try {
                 refreshFoodPage();
             } catch (Exception e) {
