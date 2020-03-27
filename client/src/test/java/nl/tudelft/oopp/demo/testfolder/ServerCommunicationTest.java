@@ -40,7 +40,9 @@ public class ServerCommunicationTest {
         Boolean hasTV = false;
         Integer rights = 1;
         Integer buildingCode = 35;
-        Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
+        Room room = new Room(roomCode, name, capacity,
+                hasWhiteboard, hasTV, rights,
+                BuildingCommunication.getBuildingByCode(buildingCode));
         RoomCommunication.saveRoom(room);
     }
 

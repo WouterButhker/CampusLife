@@ -1,11 +1,10 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.util.Set;
+import javax.persistence.*;
 import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrderQuantity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "food")

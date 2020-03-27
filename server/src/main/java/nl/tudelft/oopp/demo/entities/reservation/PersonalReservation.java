@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
-import nl.tudelft.oopp.demo.entities.User;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -15,7 +13,7 @@ public class PersonalReservation extends Reservation {
 
     }
 
-    public PersonalReservation(User user, String date, String timeSlot, String activity) {
+    public PersonalReservation(int user, String date, String timeSlot, String activity) {
         super(user, date, timeSlot);
         this.activity = activity;
     }

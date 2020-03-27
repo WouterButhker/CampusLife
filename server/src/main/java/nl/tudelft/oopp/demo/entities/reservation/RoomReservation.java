@@ -1,9 +1,6 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
 import javax.persistence.*;
-
-import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,10 +9,9 @@ import org.hibernate.annotations.OnDeleteAction;
 public class RoomReservation extends Reservation {
 
 
-    @ManyToOne
     @JoinColumn(name = "room_code")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Room room;          // room code
+    private String room;          // room code
 
     public RoomReservation() {
 
@@ -27,8 +23,8 @@ public class RoomReservation extends Reservation {
      * @param room the Room that is reserved
      * @param timeSlot the time at which the Room is reserved
      */
-    public RoomReservation(User user,
-                           Room room,
+    public RoomReservation(int user,
+                           String room,
                            String date,
                            String timeSlot)  {
 
@@ -38,11 +34,11 @@ public class RoomReservation extends Reservation {
     }
 
 
-    public Room getRoom() {
+    public String getRoom() {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(String room) {
         this.room = room;
     }
 

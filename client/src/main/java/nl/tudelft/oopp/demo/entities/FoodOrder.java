@@ -3,27 +3,46 @@ package nl.tudelft.oopp.demo.entities;
 import java.util.*;
 
 public class FoodOrder extends Reservation {
-    private Integer restaurant;
+    private int restaurant;
     private List<List<Integer>> foodsList;
+    private int deliveryRoom;
 
     /**
-     * Creates a new FoodOrder object.
-     * @param id the id of the order
-     * @param restaurant the restaurant where the order is done
-     * @param user the id of the user that ordered
+     * Creates a new FoodOrder object for pickup.
+     * @param userId the userID
+     * @param date the date of the foodorder
+     * @param timeSlot the prefered time of delivery/pickup
+     * @param restaurant the restaurant the order was placed at
      */
-    public FoodOrder(int userId, String date, String timeSlot, Integer restaurant) {
+    public FoodOrder(int userId, String date, String timeSlot, int restaurant) {
         super(userId, date, timeSlot);
         this.restaurant = restaurant;
         this.foodsList = new ArrayList<>();
+
+    }
+
+    /**
+     * Creates a new FoodOrder object for delivery.
+     * @param userId the userID
+     * @param date the date of the foodorder
+     * @param timeSlot the prefered time of delivery/pickup
+     * @param restaurant the restaurant the order was placed at
+     * @param deliveryRoom the room to deliver the food to
+     */
+    public FoodOrder(int userId, String date, String timeSlot,
+                     int restaurant, int deliveryRoom) {
+        super(userId, date, timeSlot);
+        this.restaurant = restaurant;
+        this.foodsList = new ArrayList<>();
+        this.deliveryRoom = deliveryRoom;
     }
 
 
-    public Integer getRestaurant() {
+    public int getRestaurant() {
         return restaurant;
     }
 
-    public void setRestaurant(Integer restaurant) {
+    public void setRestaurant(int restaurant) {
         this.restaurant = restaurant;
     }
 

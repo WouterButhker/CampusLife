@@ -2,10 +2,10 @@ package nl.tudelft.oopp.demo.entities;
 
 public class BikeReservation {
 
-    private Integer id;
-    private Integer user;
-    private Integer pickUpBuildingCode;
-    private Integer dropOffBuildingCode;
+    private int id;
+    private int user;
+    private int pickUpBuildingCode;
+    private int dropOffBuildingCode;
     private String date;
     private String timeSlot;
 
@@ -17,8 +17,8 @@ public class BikeReservation {
      * @param dropOffBuildingCode The id of the building where the bike is dropped off
      * @param timeSlot - The timeslot of the bike reservation
      */
-    public BikeReservation(Integer id, Integer user,
-                           Integer pickUpBuildingCode, Integer dropOffBuildingCode,
+    public BikeReservation(int id, int user,
+                           int pickUpBuildingCode, int dropOffBuildingCode,
                            String date, String timeSlot) {
         this.id = id;
         this.user = user;
@@ -37,35 +37,35 @@ public class BikeReservation {
                 + timeSlot + '\'' + '}';
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getUser() {
+    public int getUser() {
         return user;
     }
 
-    public void setUser(Integer user) {
+    public void setUser(int user) {
         this.user = user;
     }
 
-    public Integer getPickUpBuildingCode() {
+    public int getPickUpBuildingCode() {
         return pickUpBuildingCode;
     }
 
-    public void setPickUpBuildingCode(Integer pickUpBuildingCode) {
+    public void setPickUpBuildingCode(int pickUpBuildingCode) {
         this.pickUpBuildingCode = pickUpBuildingCode;
     }
 
-    public Integer getDropOffBuildingCode() {
+    public int getDropOffBuildingCode() {
         return dropOffBuildingCode;
     }
 
-    public void setDropOffBuildingCode(Integer dropOffBuildingCode) {
+    public void setDropOffBuildingCode(int dropOffBuildingCode) {
         this.dropOffBuildingCode = dropOffBuildingCode;
     }
 

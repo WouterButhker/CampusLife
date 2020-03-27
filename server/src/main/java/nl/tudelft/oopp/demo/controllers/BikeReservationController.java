@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.repositories.BikeReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class BikeReservationController {
      * @return "Saved"
      */
     @GetMapping(path = "/add")
-    public @ResponseBody String addNewBikeReservation(@RequestParam User user,
+    public @ResponseBody String addNewBikeReservation(@RequestParam int user,
                                                       @RequestParam Building pickUpBuilding,
                                                       @RequestParam Building dropOffBuilding,
                                                       @RequestParam String date,

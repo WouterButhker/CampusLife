@@ -12,6 +12,12 @@ public abstract class Reservation {
     private String timeSlot;
 
 
+    /**
+     * parent constructor to create a new reservation.
+     * @param userID the user that made the reservation
+     * @param date the date of the reservation
+     * @param timeSlot the time of the reservation
+     */
     public Reservation(int userID, String date, String timeSlot) {
         this.id = userID;
         this.date = date;

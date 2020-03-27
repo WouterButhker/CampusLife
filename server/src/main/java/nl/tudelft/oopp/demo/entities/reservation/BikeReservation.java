@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
 import javax.persistence.*;
-
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
@@ -40,7 +39,7 @@ public class BikeReservation extends Reservation {
      * @param date The date of the reservation
      * @param timeSlot The timeslot of the reservation
      */
-    public BikeReservation(User user,
+    public BikeReservation(int user,
                            Building pickUpBuilding,
                            Building dropOffBuilding,
                            String date,

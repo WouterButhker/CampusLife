@@ -49,7 +49,8 @@ public class RestaurantMenuRoute extends Route {
     public RestaurantMenuRoute(Restaurant restaurant) {
         // TODO: Date and time
         // TODO: GET RIGHT USER
-        foodOrder = new FoodOrder(AuthenticationCommunication.myUserId,"Today","ASAP", restaurant.getId());
+        foodOrder = new FoodOrder(AuthenticationCommunication.myUserId,
+                "Today","ASAP", restaurant.getId());
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
