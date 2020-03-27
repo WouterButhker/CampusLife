@@ -26,4 +26,9 @@ public interface BuildingRepository extends JpaRepository<Building, Integer> {
 
     @Query("SELECT b FROM Building b WHERE b.buildingCode = ?1")
     List<Building> getBuildingByCode(Integer buildingCode);
+
+    boolean existsBuildingByBuildingCode(Integer buildingCode);
+
+    Building getBuildingByBuildingCode(Integer buildingCode);
+
 }

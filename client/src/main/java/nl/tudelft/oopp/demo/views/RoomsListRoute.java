@@ -146,8 +146,16 @@ public class RoomsListRoute extends Route {
                 }
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
-                List<Room> filteredList = RoomCommunication.getFilteredRooms(buildingCode,
+                List<Room> filteredList;
+                if (buildingCode == -1) {
+                    filteredList = RoomCommunication.getAllFilteredRooms(myRights,
+                            hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                } else {
+                    Integer building = buildingCode;
+                    filteredList = RoomCommunication.getFilteredRoomsFromBuilding(building,
                             myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                }
+
                 rooms.getChildren().clear();
                 roomsGrid.setRooms(filteredList);
                 rooms.getChildren().add(roomsGrid);

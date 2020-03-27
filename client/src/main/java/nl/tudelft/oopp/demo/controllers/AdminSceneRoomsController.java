@@ -381,7 +381,7 @@ public class AdminSceneRoomsController implements Initializable {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Label status = modifyRoom(room.getRoomCode(), name.getText(), capacity.getText(),
+                Node status = modifyRoom(room.getRoomCode(), name.getText(), capacity.getText(),
                         whiteboard.selectedProperty().get(), tv.selectedProperty().get(),
                         rights.getValue(), room.getBuilding().getCode());
                 if (status == null) {
