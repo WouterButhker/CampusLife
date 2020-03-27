@@ -36,7 +36,7 @@ class RoomTest {
         buildingCode = 42;
         String openingHours = "15:00-17:00, 01:00-19:00, 15:00-17:00, "
                 + "15:00-17:00, 15:00-17:00, 15:00-17:00, 15:00-17:00";
-        building = new Building(buildingCode, "building", "asb", openingHours, "image",12);
+        building = new Building(buildingCode, "building", "asb", openingHours, 12);
         room = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, building);
     }
 

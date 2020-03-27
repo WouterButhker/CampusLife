@@ -21,10 +21,10 @@ public class ServerCommunicationTest {
         Integer buildingCode = 20;
         String name = "Aula";
         String location = "Mekelweg 5";
-        String openingHours = "08:00-22:00";
+        String openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
         Integer bikes = 12;
         Building building = new Building(buildingCode,
-                name, location, openingHours, "image", bikes);
+                name, location, openingHours, bikes);
         BuildingCommunication.saveBuilding(building);
     }
 
@@ -36,14 +36,14 @@ public class ServerCommunicationTest {
         Boolean hasWhiteboard = true;
         Boolean hasTV = false;
         Integer rights = 1;
-        Integer buildingCode = 35;
+        Integer buildingCode = 20;
         Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
         RoomCommunication.saveRoom(room);
     }
 
     @Test
     public void testGetAllRoomsFromBuilding() {
-        Integer building = 35;
+        Integer building = 20;
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllRoomsFromBuilding");
         System.out.println(RoomCommunication.getAllRoomsFromBuilding(building));

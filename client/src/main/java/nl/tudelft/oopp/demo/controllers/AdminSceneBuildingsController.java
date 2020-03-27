@@ -321,7 +321,7 @@ public class AdminSceneBuildingsController implements Initializable {
         if (!location.equals("") && !name.equals("") && codeFound
                && week.getWeekDays().checkCorrectness()) {
             Building building = new Building(buildingCode, name, location, openingHours,
-                    "image", bikes);
+                     bikes);
             BuildingCommunication.saveBuilding(building);
             submitStatus.setText("Building successfully added!");
             try {
@@ -625,7 +625,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
         if (!location.equals("") && !name.equals("") && openingHoursCorrect) {
             Building building = new Building(buildingCode, name, location, openingHours,
-                    "image", bikesInt);
+                     bikesInt);
             BuildingCommunication.updateBuilding(building);
         } else {
             if (result == null) {

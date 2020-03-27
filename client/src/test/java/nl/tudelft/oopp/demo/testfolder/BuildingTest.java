@@ -27,10 +27,10 @@ class BuildingTest {
         code = 42069;
         name = "The Arena";
         location = "CityStreetRoute";
-        openingHours = "08:00-22:00";
+        openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
         image = "https://cdn.bulbagarden.net/upload/3/36/Canalave_Gym_anime.png";
         bikes = 5;
-        building = new Building(code, name, location, openingHours, "image", bikes); //image,
+        building = new Building(code, name, location, openingHours, bikes); //image,
         building.setImage(image);
     }
 
@@ -108,7 +108,7 @@ class BuildingTest {
 
     @Test
     void equalsTest() {
-        Building buildingCopy = new Building(code, name, location, openingHours, "image", bikes); //image,
+        Building buildingCopy = new Building(code, name, location, openingHours, bikes); //image,
         assertTrue(building.equals(buildingCopy));
     }
 

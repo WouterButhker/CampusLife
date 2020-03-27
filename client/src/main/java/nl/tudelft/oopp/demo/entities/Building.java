@@ -22,13 +22,13 @@ public class Building {
                     String name,
                     String location,
                     String openingHours,
-                    String image,
+                    //String image,
                     Integer bikes) {
         this.buildingCode = buildingCode;
         this.name = name;
         this.location = location;
         this.openingHours = openingHours;
-        this.image = image;
+        //this.image = image;
         this.bikes = bikes;
     }
 
