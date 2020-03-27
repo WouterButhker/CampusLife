@@ -1,8 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-
-import kotlin.text.UStringsKt;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
