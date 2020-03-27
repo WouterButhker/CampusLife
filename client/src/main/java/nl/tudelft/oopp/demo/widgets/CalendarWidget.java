@@ -51,10 +51,7 @@ public class CalendarWidget extends VBox {
         calendarGrid.setHgap(8);
         calendarGrid.setVgap(8);
         currentMonth = Calendar.getInstance();
-        currentMonth.set(Calendar.HOUR_OF_DAY, 0);
-        currentMonth.set(Calendar.MINUTE, 0);
-        currentMonth.set(Calendar.SECOND, 0);
-        currentMonth.set(Calendar.MILLISECOND, 0);
+        (new CalendarWidgetLogic()).removeTime(currentMonth);
         selectedDate = (Calendar) currentMonth.clone();
         selectedDay = currentMonth.get(Calendar.DAY_OF_MONTH);
         currentMonth.set(Calendar.DAY_OF_MONTH, 1);
@@ -173,27 +170,18 @@ public class CalendarWidget extends VBox {
     }
 
     private void redrawCalendar() {
-        calendarGrid.getChildren().clear();
+        CalendarWidgetLogic logic = new CalendarWidgetLogic();
 
+        calendarGrid.getChildren().clear();
         calendarGrid.getChildren().add(filler);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
         monthText.setText(dateFormat.format(currentMonth.getTime()));
 
+        // Configure the date boxes
         calendarGrid.getChildren().addAll(dayBoxes);
-
         Calendar currentTime = Calendar.getInstance();
-        currentTime.set(Calendar.HOUR_OF_DAY, 0);
-        currentTime.set(Calendar.MINUTE, 0);
-        currentTime.set(Calendar.SECOND, 0);
-        currentTime.set(Calendar.MILLISECOND, 0);
-        boolean isCurrentMonth =
-                (currentMonth.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)
-            && (currentMonth.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)));
-        int firstPosition = currentMonth.get(Calendar.DAY_OF_WEEK) - 2;
-        if (firstPosition == -1) {
-            firstPosition = 6;
-        }
+        int firstPosition = logic.getDayOfWeek(currentMonth);
         for (int i = 0; i < currentMonth.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
             DateBox dateBox = dateBoxes.get(i);
 
@@ -201,26 +189,20 @@ public class CalendarWidget extends VBox {
             day.set(Calendar.YEAR, currentMonth.get(Calendar.YEAR));
             day.set(Calendar.MONTH, currentMonth.get(Calendar.MONTH));
             day.set(Calendar.DAY_OF_MONTH, i + 1);
-            day.set(Calendar.HOUR_OF_DAY, 0);
-            day.set(Calendar.MINUTE, 0);
-            day.set(Calendar.SECOND, 0);
-            day.set(Calendar.MILLISECOND, 0);
-            long dayDiff = (day.getTimeInMillis() - currentTime.getTimeInMillis())
-                    / (24 * 60 * 60 * 1000);
 
-            if (day.getTimeInMillis() == selectedDate.getTimeInMillis()) {
+            if (logic.haveSameDate(day, selectedDate)) {
                 dateBox.setSelected(true);
             } else {
                 dateBox.setSelected(false);
             }
 
-            if (0 <= dayDiff && dayDiff < maxDaysInFuture) {
+            if (logic.isDayWithinFuture(day, maxDaysInFuture)) {
                 dateBox.setAvailable(true);
             } else {
                 dateBox.setAvailable(false);
             }
 
-            if (isCurrentMonth && (i + 1) == currentTime.get(Calendar.DAY_OF_MONTH)) {
+            if (logic.haveSameDate(day, currentTime)) {
                 dateBox.setToday(true);
             } else {
                 dateBox.setToday(false);
