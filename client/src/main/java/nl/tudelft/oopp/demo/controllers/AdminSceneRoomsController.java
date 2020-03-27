@@ -31,6 +31,7 @@ import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
+import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
 public class AdminSceneRoomsController implements Initializable {
 
@@ -325,49 +326,48 @@ public class AdminSceneRoomsController implements Initializable {
 
     private void createModifyPopup(Room room) {
         VBox root = new VBox();
-        root.setPrefSize(400, 500);
+        root.setPrefSize(400, 650);
 
         Text header = new Text("Modify your room");
         header.setFont(Font.font("System", 24));
         HBox headerBox = new HBox(header);
-        headerBox.setPadding(new Insets(20, 125,10,125));
+        headerBox.setPadding(new Insets(20, 0,10,0));
+        headerBox.setAlignment(Pos.CENTER);
 
         Label roomCode = new Label("Room Code :");
         HBox roomCodeBox = new HBox(roomCode);
-        roomCodeBox.setPadding(new Insets(20, 175,0,175));
+        roomCodeBox.setPadding(new Insets(20, 0,0,0));
+        roomCodeBox.setAlignment(Pos.CENTER);
 
-        Pane spacer1 = new Pane();
-        spacer1.setPrefSize(125, 20);
         TextField roomCodeField = new TextField(room.getRoomCode());
         roomCodeField.setPrefSize(150,20);
         roomCodeField.setEditable(false);
-        HBox roomCodeFieldBox = new HBox(spacer1, roomCodeField);
+        HBox roomCodeFieldBox = new HBox(roomCodeField);
         roomCodeFieldBox.setPadding(new Insets(10, 0, 0, 0));
+        roomCodeFieldBox.setAlignment(Pos.CENTER);
 
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
-        nameTextBox.setPadding(new Insets(10, 175,0,175));
+        nameTextBox.setPadding(new Insets(10, 0,0,0));
+        nameTextBox.setAlignment(Pos.CENTER);
 
-        Pane spacer2 = new Pane();
-        spacer2.setPrefSize(125, 20);
         TextField name = new TextField(room.getName());
         name.setPrefSize(150, 20);
-        HBox nameBox = new HBox(spacer2, name);
+        HBox nameBox = new HBox(name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
+        nameBox.setAlignment(Pos.CENTER);
 
         Label capacityText = new Label("Capacity :");
         HBox capacityTextBox = new HBox(capacityText);
-        capacityTextBox.setPadding(new Insets(10, 175,0,175));
+        capacityTextBox.setPadding(new Insets(10, 0,0,0));
+        capacityTextBox.setAlignment(Pos.CENTER);
 
-        Pane spacer3 = new Pane();
-        spacer3.setPrefSize(125, 20);
         TextField capacity = new TextField(Integer.toString(room.getCapacity()));
         capacity.setPrefSize(150, 20);
-        HBox capacityBox = new HBox(spacer3, capacity);
+        HBox capacityBox = new HBox(capacity);
         capacityBox.setPadding(new Insets(10, 0, 10, 0));
+        capacityBox.setAlignment(Pos.CENTER);
 
-        Pane spacer6 = new Pane();
-        spacer6.setPrefSize(150, 20);
         ChoiceBox<String> rights = new ChoiceBox<String>();
         rights.setPrefSize(100, 20);
         rights.getItems().addAll("Student", "Employee", "Admin");
@@ -381,33 +381,71 @@ public class AdminSceneRoomsController implements Initializable {
                      break;
             default: rights.setValue("Student");
         }
-        HBox rightsBox = new HBox(spacer6, rights);
+        HBox rightsBox = new HBox(rights);
         rightsBox.setPadding(new Insets(10, 0, 10, 0));
+        rightsBox.setAlignment(Pos.CENTER);
 
-        Pane spacer4 = new Pane();
-        spacer4.setPrefSize(150, 30);
         CheckBox whiteboard = new CheckBox("Whiteboard");
         whiteboard.setSelected(room.isHasWhiteboard());
-        HBox whiteboardBox = new HBox(spacer4, whiteboard);
+        HBox whiteboardBox = new HBox(whiteboard);
         whiteboardBox.setPadding(new Insets(10, 0, 0,0));
+        whiteboardBox.setAlignment(Pos.CENTER);
 
-        Pane spacer5 = new Pane();
-        spacer5.setPrefSize(150, 30);
         CheckBox tv = new CheckBox("TV");
         tv.setSelected(room.isHasTV());
-        HBox tvBox = new HBox(spacer5, tv);
+        HBox tvBox = new HBox(tv);
         tvBox.setPadding(new Insets(10, 0, 0,0));
+        tvBox.setAlignment(Pos.CENTER);
 
         HBox imageSelectorWidgetBox = new HBox();
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
         imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
-        //imageSelectorWidget.setImage(ImageCommunication.getRoomImageUrl(room.getRoomCode()));
+
+        HBox images = new HBox();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(images);
+        HBox imagesBox = new HBox(scrollPane);
+        imagesBox.setPadding(new Insets(10, 0, 10,0));
+        imagesBox.setAlignment(Pos.CENTER);
+        imagesBox.setPrefHeight(110);
+        images.setStyle("-fx-background-color: -primary-color");
+        images.setMinWidth(275);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setMinViewportHeight(112);
+        scrollPane.setPrefViewportHeight(112);
+        scrollPane.setMinViewportWidth(275);
+        scrollPane.setPrefViewportWidth(275);
+        List<String> imageURLs = ImageCommunication.getRoomImageUrl(room.getRoomCode());
+        for (int i = 0; i < imageURLs.size(); i++) {
+            Image image = new Image(imageURLs.get(i));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            Button delete = new Button("X");
+            delete.setPrefSize(20, 20);
+            HBox deleteContainer = new HBox(delete);
+            deleteContainer.setPrefHeight(20);
+            deleteContainer.setAlignment(Pos.TOP_RIGHT);
+            deleteContainer.setPadding(new Insets(5, 5, 0, 0));
+            StackPane container = new StackPane(imageView, deleteContainer);
+            container.setPrefSize(100, 100);
+            container.setPadding(new Insets(5));
+            images.getChildren().add(container);
+        }
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setOnScroll(event -> {
+            if (event.getDeltaX() == 0 && event.getDeltaY() != 0) {
+                scrollPane.setHvalue(scrollPane.getHvalue() - event.getDeltaY() / imagesBox.getWidth());
+            }
+        });
 
         Button submit = new Button("submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
-        submitBox.setPadding(new Insets(10, 150,10, 150));
+        submitBox.setPadding(new Insets(10, 0,10, 0));
+        submitBox.setAlignment(Pos.CENTER);
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -422,7 +460,7 @@ public class AdminSceneRoomsController implements Initializable {
                     loadRooms(buildingList2.getValue());
                 } else {
                     try {
-                        root.getChildren().remove(12);
+                        root.getChildren().remove(13);
                         root.getChildren().add(status);
                     } catch (IndexOutOfBoundsException e) {
                         root.getChildren().add(status);
@@ -433,9 +471,10 @@ public class AdminSceneRoomsController implements Initializable {
 
         root.getChildren().addAll(headerBox, roomCodeBox, roomCodeFieldBox, nameTextBox,
                 nameBox, capacityTextBox, capacityBox, rightsBox,
-                whiteboardBox, tvBox, imageSelectorWidgetBox, submitBox);
+                whiteboardBox, tvBox, imagesBox, imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("css/palette.css");
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(buildingList.getScene().getWindow());
