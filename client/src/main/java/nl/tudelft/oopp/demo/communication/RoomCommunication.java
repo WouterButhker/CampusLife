@@ -22,7 +22,7 @@ public class RoomCommunication {
      * @return a list of rooms from that building
      */
     public static List<Room> getAllRoomsFromBuilding(Integer building) {
-        String url = "/rooms/getRoomsFromBuilding?building=" + building;
+        String url = "/rooms/getAllRoomsFromBuilding?building=" + building;
         try {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             if (response != null) {
