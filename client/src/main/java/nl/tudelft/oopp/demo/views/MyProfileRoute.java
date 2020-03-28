@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.views;
 
-import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateRoomImage;
 import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateUserImage;
 
 import java.text.DateFormat;

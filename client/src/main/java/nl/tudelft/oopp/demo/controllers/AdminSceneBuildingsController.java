@@ -37,6 +37,11 @@ import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 import nl.tudelft.oopp.demo.widgets.WeekWidget;
 
 
+
+
+
+
+
 public class AdminSceneBuildingsController implements Initializable {
 
     @FXML
@@ -403,46 +408,42 @@ public class AdminSceneBuildingsController implements Initializable {
         Text header = new Text("Modify your building");
         header.setFont(Font.font("System", 22));
         HBox headerBox = new HBox(header);
-        headerBox.setPadding(new Insets(20, 200,10,200));
+        headerBox.setPadding(new Insets(20, 0,10,0));
+        headerBox.setAlignment(Pos.CENTER);
 
         Label addressText = new Label("Address :");
-        addressText.setPadding(new Insets(20, 275,0,275));
+        addressText.setPadding(new Insets(20, 0,0,0));
         HBox addressTextBox = new HBox(addressText);
-        addressTextBox.setPadding(new Insets(0));
+        addressTextBox.setAlignment(Pos.CENTER);
 
-        Pane spacer1 = new Pane();
-        spacer1.setPrefSize(225, 20);
         TextField address = new TextField(building.getLocation());
         address.setPrefSize(150,20);
-        HBox addressBox = new HBox(spacer1, address);
+        HBox addressBox = new HBox(address);
         addressBox.setPadding(new Insets(10, 0, 0, 0));
+        addressBox.setAlignment(Pos.CENTER);
 
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
-        nameTextBox.setPadding(new Insets(10, 275,0,275));
+        nameTextBox.setPadding(new Insets(10, 0,0,0));
+        nameTextBox.setAlignment(Pos.CENTER);
 
-        Pane spacer2 = new Pane();
-        spacer2.setPrefSize(225, 20);
         TextField name = new TextField(building.getName());
         name.setPrefSize(150, 20);
-        HBox nameBox = new HBox(spacer2, name);
+        HBox nameBox = new HBox(name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
+        nameBox.setAlignment(Pos.CENTER);
 
         Label buildingCodeText = new Label("Building Code :");
         HBox buildingCodeTextBox = new HBox(buildingCodeText);
-        buildingCodeTextBox.setPadding(new Insets(10, 250,0,250));
+        buildingCodeTextBox.setPadding(new Insets(10, 0, 0, 0));
+        buildingCodeTextBox.setAlignment(Pos.CENTER);
 
-        Pane spacer3 = new Pane();
-        spacer3.setPrefSize(225, 20);
         TextField buildingCode = new TextField(Integer.toString(building.getCode()));
         buildingCode.setEditable(false);
         buildingCode.setPrefSize(150, 20);
-        HBox buildingCodeBox = new HBox(spacer3, buildingCode);
+        HBox buildingCodeBox = new HBox(buildingCode);
         buildingCodeBox.setPadding(new Insets(10, 0, 0, 0));
-
-        Label openingHoursText = new Label("Opening hours :");
-        HBox openingHoursTextBox = new HBox(openingHoursText);
-        openingHoursTextBox.setPadding(new Insets(10, 250,0,250));
+        buildingCodeBox.setAlignment(Pos.CENTER);
 
         Label openClosedText = new Label("Open/Closed");
         openClosedText.setPrefSize(75, 20);
@@ -450,17 +451,14 @@ public class AdminSceneBuildingsController implements Initializable {
         fromText.setPrefSize(75, 20);
         Label toText = new Label("To:");
         toText.setPrefSize(75,20);
-        Pane spacer6 = new Pane();
-        spacer6.setPrefSize(137.5, 20);
         Pane spacer7 = new Pane();
         spacer7.setPrefSize(50, 20);
         Pane spacer12 = new Pane();
         spacer12.setPrefSize(50, 20);
-        HBox fromToBox = new HBox(spacer6, openClosedText, spacer12, fromText, spacer7, toText);
+        HBox fromToBox = new HBox(openClosedText, spacer12, fromText, spacer7, toText);
         fromToBox.setPadding(new Insets(10, 0, 0, 0));
+        fromToBox.setAlignment(Pos.CENTER);
 
-        Pane spacer4 = new Pane();
-        spacer4.setPrefSize(137.5, 20);
         Pane spacer5 = new Pane();
         spacer5.setPrefSize(50, 20);
         Pane spacer11 = new Pane();
@@ -550,23 +548,21 @@ public class AdminSceneBuildingsController implements Initializable {
                 }
             }
         });
-        HBox openingHours = new HBox(spacer4, options, spacer11, from, spacer5, to);
+        HBox openingHours = new HBox(options, spacer11, from, spacer5, to);
         openingHours.setPadding(new Insets(10, 0,10, 0));
+        openingHours.setAlignment(Pos.CENTER);
 
-        HBox calender = new HBox();
-        Pane calenderSpacer = new Pane();
-        calenderSpacer.setPrefSize(20, 140);
-        calender.getChildren().addAll(calenderSpacer, week);
+        HBox calender = new HBox(week);
+        calender.setPadding(new Insets(10, 0, 10, 0));
+        calender.setAlignment(Pos.CENTER);
 
         //HBox for the text saying "Bike station:"
-        Pane spacer8 = new Pane();
-        spacer8.setPrefSize(260, 20);
         Label bikeStationText = new Label("Bike station:");
         bikeStationText.setPrefSize(75, 20);
+        HBox bikeStationTextBox = new HBox(bikeStationText);
+        bikeStationTextBox.setAlignment(Pos.CENTER);
 
         //HBox for the CheckBox and the TextField
-        Pane spacer9 = new Pane();
-        spacer9.setPrefSize(200, 20);
         CheckBox hasBikeStationCB = new CheckBox("has bike station");
         TextField bikesAmountInput = new TextField();
         bikesAmountInput.setPromptText("Amount");
@@ -587,19 +583,21 @@ public class AdminSceneBuildingsController implements Initializable {
                 bikesAmountInput.setVisible(false);
             }
         });
-        HBox bikeStationInput = new HBox(spacer9, hasBikeStationCB, spacer10, bikesAmountInput);
+        HBox bikeStationInput = new HBox(hasBikeStationCB, spacer10, bikesAmountInput);
         bikeStationInput.setPadding(new Insets(10, 0, 0, 0));
+        bikeStationInput.setAlignment(Pos.CENTER);
 
         HBox imageSelectorWidgetBox = new HBox();
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
         imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
-        //imageSelectorWidget.setImage(ImageCommunication.getBuildingImageUrl(building.getCode()));
+        imageSelectorWidgetBox.setPadding(new Insets(10, 10, 0, 0));
 
         Button submit = new Button("submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
-        submitBox.setPadding(new Insets(10, 250,10, 250));
+        submitBox.setPadding(new Insets(10, 0,10, 0));
+        submitBox.setAlignment(Pos.CENTER);
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -618,7 +616,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     loadBuildings();
                 } else {
                     try {
-                        root.getChildren().remove(15);
+                        root.getChildren().remove(14);
                         root.getChildren().add(status);
                     } catch (IndexOutOfBoundsException e) {
                         root.getChildren().add(status);
@@ -628,10 +626,9 @@ public class AdminSceneBuildingsController implements Initializable {
             }
         });
 
-        HBox bikeStationTextBox = new HBox(spacer8, bikeStationText);
         root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox,
-                nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox,
-                fromToBox, openingHours, calender, bikeStationTextBox, bikeStationInput,
+                nameBox, buildingCodeTextBox, buildingCodeBox, fromToBox, openingHours,
+                calender, bikeStationTextBox, bikeStationInput,
                 imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
@@ -668,7 +665,10 @@ public class AdminSceneBuildingsController implements Initializable {
             Building building = new Building(buildingCode, name, location, openingHours,
                      bikesInt);
             BuildingCommunication.updateBuilding(building);
-            ImageCommunication.updateBuildingImage(buildingCode, image);
+            if (image != null) {
+                ImageCommunication.updateBuildingImage(buildingCode, image);
+            }
+
         } else {
             if (message == null) {
                 message = new Label("All the fields have to be entered");

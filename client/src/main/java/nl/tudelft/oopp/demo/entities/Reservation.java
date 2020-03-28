@@ -8,6 +8,13 @@ public abstract class Reservation {
 
     private String timeSlot;
 
+    /// TODO ADD JAVADOC COMMENT PLEASE.
+    /**
+     * ADD JAVADOC COMMENT PLEASE.
+     * @param userID ADD JAVADOC COMMENT PLEASE.
+     * @param date ADD JAVADOC COMMENT PLEASE.
+     * @param timeSlot ADD JAVADOC COMMENT PLEASE.
+     */
     public Reservation(int userID, String date, String timeSlot) {
         this.id = userID;
         this.date = date;

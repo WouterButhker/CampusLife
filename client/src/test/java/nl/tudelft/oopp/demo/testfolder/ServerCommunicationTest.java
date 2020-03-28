@@ -18,7 +18,7 @@ public class ServerCommunicationTest {
 
     @Test
     public void testAddBuildingToDatabase() {
-        Integer buildingCode = 20;
+        Integer buildingCode = 35;
         String name = "Aula";
         String location = "Mekelweg 5";
         String openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
@@ -36,8 +36,9 @@ public class ServerCommunicationTest {
         Boolean hasWhiteboard = true;
         Boolean hasTV = false;
         Integer rights = 1;
-        Integer buildingCode = 20;
-        Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
+        Integer buildingCode = 35;
+        Room room = new Room(roomCode, name, capacity, hasWhiteboard,
+                hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
         RoomCommunication.saveRoom(room);
     }
 

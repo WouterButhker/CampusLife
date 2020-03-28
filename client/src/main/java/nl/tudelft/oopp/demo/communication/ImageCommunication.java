@@ -19,71 +19,73 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.ResponseEntity;
 
+
 public class ImageCommunication {
+
+    private static String updateImage(File image, String url) {
+        try {
+            HttpPut uploadFile = new HttpPut(SERVER_URL + url);
+            String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
+            uploadFile.setHeader("Authorization", "Basic " + encodedauth);
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.addBinaryBody("file", new FileInputStream(image),
+                    ContentType.MULTIPART_FORM_DATA, image.getName());
+            org.apache.http.HttpEntity multipart = builder.build();
+            uploadFile.setEntity(multipart);
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            CloseableHttpResponse response = httpClient.execute(uploadFile);
+            org.apache.http.HttpEntity responseEntity = response.getEntity();
+            httpClient.close();
+            response.close();
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return "200 OK";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
 
     /**
      * Changes the profile picture of the user.
      * @param image the file that becomes the profile picture
-     * @return
+     * @return "200 OK" / "400 BAD_REQUEST"
      */
     public static String updateUserImage(File image) {
         String url = "/rest/users/image/" + myUserId;
-        try {
-            HttpPut uploadFile = new HttpPut(SERVER_URL + url);
-            String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
-            uploadFile.setHeader("Authorization", "Basic " + encodedauth);
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.addBinaryBody("file", new FileInputStream(image),
-                    ContentType.MULTIPART_FORM_DATA, image.getName());
-            org.apache.http.HttpEntity multipart = builder.build();
-            uploadFile.setEntity(multipart);
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(uploadFile);
-            org.apache.http.HttpEntity responseEntity = response.getEntity();
-            System.out.println();
-            httpClient.close();
-            response.close();
+        String response = updateImage(image, url);
+        if (response.equals("200 OK")) {
             saveUserImageUrl(myUserId);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                return "200 OK";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return "400 BAD_REQUEST";
+        return response;
     }
 
+    /**
+     * Updates the image of a Building.
+     * @param buildingId the number of the Building
+     * @param image the new image
+     * @return "200 OK" / "400 BAD_REQUEST"
+     */
     public static String updateBuildingImage(Integer buildingId, File image) {
         String url = "/buildings/image/" + buildingId;
-        try {
-            HttpPut uploadFile = new HttpPut(SERVER_URL + url);
-            String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
-            uploadFile.setHeader("Authorization", "Basic " + encodedauth);
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.addBinaryBody("file", new FileInputStream(image),
-                    ContentType.MULTIPART_FORM_DATA, image.getName());
-            org.apache.http.HttpEntity multipart = builder.build();
-            uploadFile.setEntity(multipart);
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(uploadFile);
-            org.apache.http.HttpEntity responseEntity = response.getEntity();
-            System.out.println();
-            httpClient.close();
-            response.close();
-            if (response.getStatusLine().getStatusCode() == 200) {
-                return "200 OK";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "400 BAD_REQUEST";
+        return updateImage(image, url);
     }
 
-    public static String getBuildingImageUrl(Integer buildingCode) {
-        ResponseEntity<String> response = authenticatedRequest(
-                "/buildings/image/getUrl/" + buildingCode);
+    /**
+     * Updates the image of a Room.
+     * @param roomCode the code of the Room
+     * @param image the new image
+     * @return "200 OK" / "400 BAD_REQUEST"
+     */
+    public static String updateRoomImage(String roomCode, File image) {
+        String url = "/rooms/image/" + roomCode;
+        return updateImage(image, url);
+    }
+
+    private static String getImageUrl(String url, String defaultImage) {
+        ResponseEntity<String> response = authenticatedRequest(url);
         if (response != null && response.getBody() == null) {
-            return "images/TuDelftTempIMG.jpg";
+            return defaultImage;
         } else if (response != null && response.getBody() != null
                 && response.getStatusCode().toString().equals("200 OK")) {
             System.out.println("Image Url: " + response.getBody());
@@ -91,40 +93,23 @@ public class ImageCommunication {
         } else {
             System.out.println("Login failed");
         }
-        return "images/TuDelftTempIMG.jpg";
+        return defaultImage;
     }
 
-    public static String updateRoomImage(String roomCode, File image) {
-        String url = "/rooms/image/" + roomCode;
-        try {
-            HttpPut uploadFile = new HttpPut(SERVER_URL + url);
-            String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
-            uploadFile.setHeader("Authorization", "Basic " + encodedauth);
-            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-            builder.addBinaryBody("file", new FileInputStream(image),
-                    ContentType.MULTIPART_FORM_DATA, image.getName());
-            org.apache.http.HttpEntity multipart = builder.build();
-            uploadFile.setEntity(multipart);
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            CloseableHttpResponse response = httpClient.execute(uploadFile);
-            org.apache.http.HttpEntity responseEntity = response.getEntity();
-            System.out.println();
-            httpClient.close();
-            response.close();
-            if (response.getStatusLine().getStatusCode() == 200) {
-                return "200 OK";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "400 BAD_REQUEST";
+    /**
+     * Gets the Url of the image from the database or a default image.
+     * @param buildingCode the number of the building
+     * @return url of an image
+     */
+    public static String getBuildingImageUrl(Integer buildingCode) {
+        return getImageUrl("/buildings/image/getUrl/" + buildingCode,
+                "images/TuDelftTempIMG.jpg");
     }
 
-    public static List<String> getRoomImageUrl(String roomCode) {
+    private static List<String> getImagesUrl(String url, String defaultImage) {
         List<String> defaultResponse = new ArrayList<>();
-        defaultResponse.add("images/RoomTempIMG.jpg");
-        ResponseEntity<String> response = authenticatedRequest(
-                "/rooms/image/getUrl/" + roomCode);
+        defaultResponse.add(defaultImage);
+        ResponseEntity<String> response = authenticatedRequest(url);
         if (response != null && response.getBody() == null) {
             return defaultResponse;
         } else if (response != null && response.getBody() != null
@@ -138,4 +123,12 @@ public class ImageCommunication {
         return defaultResponse;
     }
 
+    /**
+     * Get a list of images for a Room (with the main image on index 0).
+     * @param roomCode the code of the room
+     * @return list of strings which are urls to the images
+     */
+    public static List<String> getRoomImageUrl(String roomCode) {
+        return getImagesUrl("/rooms/image/getUrl/" + roomCode, "images/RoomTempIMG.jpg");
+    }
 }

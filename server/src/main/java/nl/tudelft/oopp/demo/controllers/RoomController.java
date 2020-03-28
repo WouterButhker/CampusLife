@@ -127,11 +127,6 @@ public class RoomController {
                 hasTV, hasWhiteboard, minCap, maxCap);
     }
 
-
-    /*
-    REFACTORED STUFF BELOW
-     */
-
     @PostMapping
     Room saveRoom(@RequestBody Room room) {
         if (roomRepository.existsRoomByRoomCode(room.getRoomCode())) {

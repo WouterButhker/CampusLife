@@ -15,7 +15,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-
 public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
@@ -92,6 +91,10 @@ public class AuthenticationCommunication {
         }
     }
 
+    /**
+     * Saves the image URL of the profile photo of the user in a static variable.
+     * @param userId the id of the user that logged in
+     */
     public static void saveUserImageUrl(Integer userId) {
         ResponseEntity<String> response = authenticatedRequest(
                 "rest/users/image/getUrl/" + userId);

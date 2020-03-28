@@ -28,13 +28,16 @@ public class FoodOrderTest {
         FoodOrder foodOrder = new FoodOrder(99, "fix this", "fix this",1); /// TODO fix
         Food apple = new Food(1, 99, "apple", 1.5);
         Food cheesecake = new Food(2, 99, "cheesecake", 10.0);
-        FoodOrderQuantity appleOrder = new FoodOrderQuantity(apple, foodOrder, 2);
-        FoodOrderQuantity cheesecakeOrder = new FoodOrderQuantity(cheesecake, foodOrder, 1);
 
         foodRepository.save(apple);
         foodRepository.save(cheesecake);
         foodOrderRepository.save(foodOrder);
+
+        FoodOrderQuantity appleOrder = new FoodOrderQuantity(apple, foodOrder, 2);
         foodOrderQuantityRepository.save(appleOrder);
+
+        FoodOrderQuantity cheesecakeOrder = new FoodOrderQuantity(cheesecake, foodOrder, 1);
+
         foodOrderQuantityRepository.save(cheesecakeOrder);
 
         /// TODO fix

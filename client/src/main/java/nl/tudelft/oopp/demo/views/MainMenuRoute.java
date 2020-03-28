@@ -61,7 +61,8 @@ public class MainMenuRoute extends Route {
 
         rootContainer.getChildren().add(new AppBar(isAdmin));
 
-        //addDummyRestaurantData();
+
+        // addDummyRestaurantData();
 
         createButtonsRow();
         createBuildingsTitle();

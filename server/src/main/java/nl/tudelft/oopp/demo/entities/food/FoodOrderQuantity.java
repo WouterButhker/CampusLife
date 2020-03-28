@@ -30,12 +30,25 @@ public class FoodOrderQuantity {
 
     }
 
+
+    /// TODO ADD JAVADOC
+    /**
+     * Comment.
+     * @param food This
+     * @param foodOrder Please
+     */
     public FoodOrderQuantity(Food food, FoodOrder foodOrder) {
         this.food = food;
         this.foodOrder = foodOrder;
         this.id = new FoodOrderQuantityKey(food.getId(), foodOrder.getId());
     }
 
+    /// TODO ADD JAVADOC
+    /**
+     * Comment.
+     * @param food This
+     * @param foodOrder Please
+     */
     public FoodOrderQuantity(Food food, FoodOrder foodOrder, int quantity) {
         this.food = food;
         this.foodOrder = foodOrder;
@@ -77,8 +90,12 @@ public class FoodOrderQuantity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FoodOrderQuantity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FoodOrderQuantity)) {
+            return false;
+        }
         FoodOrderQuantity that = (FoodOrderQuantity) o;
         return food.equals(that.food)
                 && foodOrder.equals(that.foodOrder);

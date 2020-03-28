@@ -9,27 +9,8 @@ import java.util.List;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.http.ResponseEntity;
 
-public class RoomCommunication {
 
-    //    /**
-    //     * Returns a list of all the rooms that are part of the building.
-    //     * Required permission: Student
-    //     * @param building the number of the building you want to see the rooms from
-    //     * @return a list of rooms from that building
-    //     */
-    //    public static List<Room> getAllRoomsFromBuilding(Integer building) {
-    //        String url = "/rooms/getRoomsFromBuilding?building=" + building;
-    //        try {
-    //            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
-    //            if (response != null) {
-    //                Type listType = new TypeToken<List<Room>>() {}.getType();
-    //                return new Gson().fromJson(response.getBody(), listType);
-    //            }
-    //        } catch (Exception e) {
-    //            e.printStackTrace();
-    //        }
-    //        return null;
-    //   }
+public class RoomCommunication {
 
     /**
      * Returns a list of all the Rooms from the database.

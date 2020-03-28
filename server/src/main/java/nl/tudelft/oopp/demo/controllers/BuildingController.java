@@ -82,8 +82,8 @@ public class BuildingController {
             buildingImageRepository.deleteByBuilding(building);
         }
         String fileName = ImageController.checkFile(file);
-        BuildingImage buildingImage = new BuildingImage(fileName, file.getContentType(),
-                file.getBytes(), building);
+        BuildingImage buildingImage = new BuildingImage(
+                fileName, file.getContentType(), file.getBytes(), building);
         buildingImageRepository.save(buildingImage);
         return new ResponseEntity<>(buildingImage, HttpStatus.OK);
     }

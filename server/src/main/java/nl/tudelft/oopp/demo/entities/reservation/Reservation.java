@@ -29,6 +29,13 @@ public abstract class Reservation {
 
     }
 
+    /// TODO ADD JAVADOC COMMENT PLEASE.
+    /**
+     * ADD JAVADOC COMMENT PLEASE.
+     * @param user ADD JAVADOC COMMENT PLEASE.
+     * @param date ADD JAVADOC COMMENT PLEASE.
+     * @param timeSlot ADD JAVADOC COMMENT PLEASE.
+     */
     public Reservation(User user, String date, String timeSlot) {
         this.user = user;
         this.date = date;
