@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -26,7 +27,6 @@ import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
 public class AdminSceneFoodController implements Initializable {
@@ -87,6 +87,7 @@ public class AdminSceneFoodController implements Initializable {
     }
 
     private void loadFoods(String restaurantIdString) {
+        DecimalFormat df2 = new DecimalFormat("#.##");
         foodsList.getChildren().clear();
         int restaurantId;
         if (restaurantIdString.equals("Choose restaurant")) {
@@ -115,7 +116,7 @@ public class AdminSceneFoodController implements Initializable {
                 Label text = new Label("Restaurant id: " + foods.get(i).getRestaurant()
                         + "\n" + "Food ID: " + foods.get(i).getId()
                         + "\n" + foods.get(i).getName()
-                        + " - " + foods.get(i).getPrice());
+                        + " - " + String.format("€ %.2f", foods.get(i).getPrice()));
                 text.setPrefSize(225, 60);
                 text.setPadding(new Insets(0, 0, 0, 10));
                 Button modify = new Button("modify");
@@ -255,28 +256,32 @@ public class AdminSceneFoodController implements Initializable {
 
         String foodName = foodNameInput.getText();
 
-        double foodPrice = Double.parseDouble(foodPriceInput.getText());
-
         Text submitStatus = new Text();
 
-        if (!foodName.equals("") && restaurantFound) {
-            FoodCommunication.createFood(new Food(foodID,
-                    foodName,
-                    restaurantId,
-                    foodPrice));
-            submitStatus.setText("Food has been successfully added to "
-                    + restaurantsList1.getValue().split(",")[0]);
-            try {
-                refreshFoodPage();
-            } catch (Exception e) {
-                System.out.println("Refresh failed");
-            }
-        } else {
-            submitStatus.setText("All fields have to be entered");
-        }
+        try {
+            Double foodPrice = Double.parseDouble(foodPriceInput.getText());
 
-        if (!restaurantFound) {
-            submitStatus.setText("Please select a restaurants");
+            if (!foodName.equals("") && restaurantFound) {
+                FoodCommunication.createFood(new Food(foodID,
+                        foodName,
+                        restaurantId,
+                        foodPrice));
+                submitStatus.setText("Food has been successfully added to "
+                        + restaurantsList1.getValue().split(",")[0]);
+                try {
+                    refreshFoodPage();
+                } catch (Exception e) {
+                    System.out.println("Refresh failed");
+                }
+            } else {
+                submitStatus.setText("All fields have to be entered");
+            }
+
+            if (!restaurantFound) {
+                submitStatus.setText("Please select a restaurants");
+            }
+        } catch (NumberFormatException nfe) {
+            submitStatus.setText("Price must be a number");
         }
 
         Button back = new Button("Okay! take me back");
