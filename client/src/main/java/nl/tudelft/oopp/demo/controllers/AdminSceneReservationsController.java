@@ -97,7 +97,7 @@ public class AdminSceneReservationsController {
             HBox reservation = new HBox();
             reservation.setMaxWidth(1011);
             Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
-                    + "User: " + reservations.get(i).getUser() + " | "
+                    + "User: " + reservations.get(i).getId() + " | "
                     + "Room: " + reservations.get(i).getRoom() + " | "
                     + "TimeSlot: " + reservations.get(i).getTimeSlot());
             text.setPrefSize(900, 60);

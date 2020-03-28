@@ -89,7 +89,7 @@ public class RoomReservationRoute extends Route {
                     String timeslot = String.format("%s - %s", fromString, toString);
                     RoomReservationCommunication
                             .addReservationToDatabase(user, room.getRoomCode(), timeslot);
-                    reservations.add(new RoomReservation(-1, user, room.getRoomCode(), timeslot));
+                    reservations.add(new RoomReservation(user, room.getRoomCode(), timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
                     System.out.println(user + " " + room.getRoomCode() + " " + timeslot);

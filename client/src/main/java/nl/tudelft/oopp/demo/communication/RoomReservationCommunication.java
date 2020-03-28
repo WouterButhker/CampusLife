@@ -46,7 +46,7 @@ public class RoomReservationCommunication {
         //System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
         //System.out.println(timeSlot);;
-        return new RoomReservation(id, user, room, timeSlot);
+        return new RoomReservation(user, room, timeSlot);
     }
 
     private static List<RoomReservation> parseReservations(String inputReservations) {
