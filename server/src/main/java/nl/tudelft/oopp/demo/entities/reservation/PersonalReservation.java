@@ -30,6 +30,8 @@ public class PersonalReservation extends Reservation {
 
     @Override
     public String toString() {
-        return null;
+        return "personal reservation{" + super.toString()
+                + ", activity: " + this.activity
+                + "}";
     }
 }
