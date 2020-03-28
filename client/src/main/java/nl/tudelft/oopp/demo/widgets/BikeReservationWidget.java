@@ -31,7 +31,6 @@ public class BikeReservationWidget extends VBox {
     private List<Building> buildingList;
     private Building selected;
     private int selectedInList;
-    private int selectedInOtherList;
     private List<BikeReservation> bikeReservations;
 
     private Label header;
@@ -46,8 +45,6 @@ public class BikeReservationWidget extends VBox {
     private Calendar timeSelected;
     private Calendar selectedDate = Calendar.getInstance();
 
-    private BikeReservationWidget otherWidget;
-
     private Listener listener;
 
     /**
@@ -56,7 +53,6 @@ public class BikeReservationWidget extends VBox {
      */
     public BikeReservationWidget(String text) {
         setSelectedInList(-1);
-        setSelectedInOtherList(-1);
         buildingList = BuildingCommunication.getAllBuildingsWithBikeStation();
         bikeReservations = BikeReservationCommunication.getAllRelevantReservations();
         setAlignment(Pos.CENTER);
@@ -182,8 +178,6 @@ public class BikeReservationWidget extends VBox {
         StackPane stackPane = (StackPane) event.getSource();
         int ithBuilding = Integer.parseInt(stackPane.getId());
         setSelectedInList(ithBuilding);
-        otherWidget.setSelectedInOtherList(getSelectedInList());
-        otherWidget.updateButtons();
         setSelected(buildingList.get(selectedInList));
         setAvailabilities();
     }
@@ -254,10 +248,7 @@ public class BikeReservationWidget extends VBox {
             if (i == selectedInList) {
                 stackPane.getStyleClass().add("selected-date-box");
                 stackPane.setDisable(false);
-            } else if (i == selectedInOtherList) {
-                stackPane.getStyleClass().add("unavailable-date-box");
-                stackPane.setDisable(true);
-            } else  {
+            } else {
                 stackPane.getStyleClass().add("available-date-box");
                 stackPane.setDisable(false);
             }
@@ -344,14 +335,6 @@ public class BikeReservationWidget extends VBox {
 
     public void setTimeSelected(Calendar time) {
         timeSelected = time;
-    }
-
-    public void setOtherWidget(BikeReservationWidget bikeReservationWidget) {
-        otherWidget = bikeReservationWidget;
-    }
-
-    public void setSelectedInOtherList(int selected) {
-        selectedInOtherList = selected;
     }
 
     public void setListener(Listener listener) {

@@ -88,8 +88,6 @@ public class BikesReservationRoute extends Route {
                 toggleButton();
             }
         });
-        bikeReservationWidgetPickUp.setOtherWidget(bikeReservationWidgetDropOff);
-        bikeReservationWidgetDropOff.setOtherWidget(bikeReservationWidgetPickUp);
 
         horizontalContainer.getChildren().addAll(calendarWidget, bikeReservationWidgetPickUp,
                 bikeReservationWidgetDropOff);
@@ -182,9 +180,9 @@ public class BikesReservationRoute extends Route {
             BikeReservation res = new BikeReservation(null, AuthenticationCommunication.myUserId,
                       pickUpBuilding, dropOffBuilding, date, slot);
             BikeReservationCommunication.createBikeReservation(res);
-            PopupWidget.display("Bike Reserved!");
+            PopupWidget.display("Bike Reserved!", "Bike reserved");
         } else {
-            PopupWidget.display("There are no bikes available at the pickup building");
+            PopupWidget.display("There are no bikes available at the pickup building", "An error has occurred");
         }
     }
 
