@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
@@ -15,9 +16,9 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "food_order")
 public class FoodOrder extends Reservation {
 
-
-    @Column(name = "restaurant")
-    private int restaurant;
+    @ManyToOne
+    @JoinColumn(name = "restaurant")
+    private Restaurant restaurant;
 
     @OneToMany(mappedBy = "foodOrder")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -43,7 +44,7 @@ public class FoodOrder extends Reservation {
      * @param timeSlot the prefered time of delivery/pickup
      * @param restaurant the restaurant the order was placed at
      */
-    public FoodOrder(User user, String date, String timeSlot, Integer restaurant) {
+    public FoodOrder(User user, String date, String timeSlot, Restaurant restaurant) {
         super(user, date, timeSlot);
         this.restaurant = restaurant;
     }
@@ -57,14 +58,25 @@ public class FoodOrder extends Reservation {
      * @param room the room to deliver the food to
      */
     public FoodOrder(User user, String date, String timeSlot,
-                     Integer restaurant, Room room) {
+                     Restaurant restaurant, Room room) {
         super(user, date, timeSlot);
         this.restaurant = restaurant;
         this.room = room;
     }
 
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 
-    public int getRestaurant() {
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Restaurant getRestaurant() {
         return this.restaurant;
     }
 
