@@ -8,6 +8,7 @@ public class PersonalReservation extends Reservation {
     private String timeSlot;
     private Integer user;
     private String activity;
+
     /**
      * Make a PersonalReservation object.
      *
@@ -16,7 +17,8 @@ public class PersonalReservation extends Reservation {
      * @param timeSlot the time at which the reservation is made
      * @param activity the activity of the reservation
      */
-    public PersonalReservation(Integer id, Integer user, String activity, String date, String timeSlot) {
+    public PersonalReservation(Integer id, Integer user,
+                               String activity, String date, String timeSlot) {
         super(id, user, date, timeSlot);
 
         this.user = user;
@@ -56,9 +58,13 @@ public class PersonalReservation extends Reservation {
     }
 
 
-    public String getActivity() { return activity; }
+    public String getActivity() {
+        return activity;
+    }
 
-    public void setActivity(String activity) {this.activity = activity; }
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -69,7 +75,7 @@ public class PersonalReservation extends Reservation {
             return false;
         }
         PersonalReservation that = (PersonalReservation) o;
-        return id==that.id
+        return id.equals(that.id)
                 && user.equals(that.user)
                 && activity.equals(that.activity)
                 && timeSlot.equals(that.timeSlot);
