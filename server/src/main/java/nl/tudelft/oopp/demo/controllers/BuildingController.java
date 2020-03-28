@@ -55,7 +55,7 @@ public class BuildingController {
 
     @GetMapping(path = "/{buildingCode}")
     Building getBuildingByCode(@PathVariable Integer buildingCode) {
-        return buildingRepository.getBuildingByBuildingCode(buildingCode);
+        return buildingRepository.findBuildingByBuildingCode(buildingCode);
     }
 
     @DeleteMapping(value = "/{buildingCode}")

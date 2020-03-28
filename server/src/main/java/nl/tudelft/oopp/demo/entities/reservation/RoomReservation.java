@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
+import java.util.Objects;
 import javax.persistence.*;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.Objects;
 
 @Entity
 @Table(name = "room_reservation")
