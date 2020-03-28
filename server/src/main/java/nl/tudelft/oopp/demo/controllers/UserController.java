@@ -5,10 +5,9 @@ import java.util.Optional;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/rest/users")
@@ -30,6 +29,21 @@ public class UserController {
     @GetMapping(path = "/getRole")
     public String getRole(@RequestParam String username) {
         return usersRepository.findRoleByUsername(username);
+    }
+
+    @PutMapping
+    public User changeRole(@RequestBody User user) {
+        return usersRepository.save(user);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    ResponseEntity<Integer> deleteUser(@PathVariable Integer id) {
+        ResponseEntity<Integer> res = new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
+        if (usersRepository.findById(id).isPresent()) {
+            usersRepository.deleteById(id);
+            res = new ResponseEntity<>(id, HttpStatus.OK);
+        }
+        return res;
     }
 
     /*

@@ -10,18 +10,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
-import nl.tudelft.oopp.demo.entities.UserDtO;
-import nl.tudelft.oopp.demo.widgets.AppBar;
-import org.springframework.boot.jackson.JsonObjectSerializer;
-import org.springframework.boot.json.JsonParser;
+import nl.tudelft.oopp.demo.entities.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.HttpClientErrorException;
@@ -112,7 +107,7 @@ public class RegisterScreenController {
 
     private static void register(String username, String password) {
 
-        UserDtO user = new UserDtO(username, new BCryptPasswordEncoder().encode(password));
+        User user = new User(username, new BCryptPasswordEncoder().encode(password));
 
         try {
             ResponseEntity<String> response = AuthenticationCommunication.register(user);
