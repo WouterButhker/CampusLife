@@ -5,14 +5,33 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
+import nl.tudelft.oopp.demo.repositories.BuildingRepository;
+import nl.tudelft.oopp.demo.repositories.RoomRepository;
+import nl.tudelft.oopp.demo.repositories.RoomReservationRepository;
+import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class RoomReservationTest {
+
+    @Autowired
+    RoomReservationRepository roomReservationRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    BuildingRepository buildingRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
 
     private User user;
     private Building building;
@@ -72,5 +91,19 @@ public class RoomReservationTest {
                 "21/03/2020",
                 "17/03/2020,22:00 - 17/03/2020,23:00");
         assertNotEquals(reservation1, reservation);
+    }
+
+    @Test
+    void testAddToDatabase() {
+        userRepository.save(user);
+        userRepository.flush();
+        buildingRepository.save(building);
+        buildingRepository.flush();
+        roomRepository.save(room);
+        roomRepository.flush();
+        roomReservationRepository.save(reservation);
+        roomRepository.flush();
+        assert roomReservationRepository.count() == 1;
+        assert roomReservationRepository.findOne(Example.of(reservation)).isPresent();
     }
 }

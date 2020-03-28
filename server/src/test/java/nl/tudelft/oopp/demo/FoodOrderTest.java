@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.demo;
 
+import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Food;
+import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrder;
 import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.repositories.FoodOrderQuantityRepository;
@@ -29,7 +32,10 @@ public class FoodOrderTest {
         foodRepository.save(apple);
         foodRepository.save(cheesecake);
 
-        FoodOrder foodOrder = new FoodOrder(1, " today", "ASAP", 20);
+        User user = new User("user","pass", "Student");
+        Building building = new Building(88, "Pulse", "Campus", "11:00-19:00",null);
+        Restaurant restaurant = new Restaurant(1, "tosti", building,"Nice food");
+        FoodOrder foodOrder = new FoodOrder(user, " today", "ASAP", restaurant);
         foodOrderRepository.save(foodOrder);
 
         FoodOrderQuantity appleOrder = new FoodOrderQuantity(apple, foodOrder, 2);
