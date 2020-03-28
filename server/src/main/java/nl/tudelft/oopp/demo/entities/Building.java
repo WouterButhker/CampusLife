@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Building {
 
     @Id
-    @Column(name = "buildingCode", unique = true)
+    @Column(name = "building_code", unique = true)
     private Integer buildingCode;
 
     @Column(name = "name")
@@ -20,7 +20,7 @@ public class Building {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "openingHours")
+    @Column(name = "opening_hours")
     private String openingHours;
 
     @Column(name = "bikes")
@@ -110,9 +110,12 @@ public class Building {
      * @return String representation of a Building
      */
     public String toString() {
-        return "[\"buildingCode\":\"" + buildingCode + "\",\"name\":\"" + name
-                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours
-                + "\",\"bikes\":\"" + bikes + "\"]";
+        return "building{buildingcode: " + this.buildingCode
+                + ", name: " + this.name
+                + ", location: " + this.location
+                + ", opening hours: " + this.openingHours
+                + ", bikes: " + this.bikes
+                + "}";
     }
 
     @Override

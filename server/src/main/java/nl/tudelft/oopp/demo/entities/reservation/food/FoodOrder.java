@@ -39,7 +39,7 @@ public class FoodOrder extends Reservation {
 
     /**
      * Creates a new FoodOrder object for pickup.
-     * @param userId the userID
+     * @param user the userID
      * @param date the date of the foodorder
      * @param timeSlot the prefered time of delivery/pickup
      * @param restaurant the restaurant the order was placed at
@@ -83,9 +83,10 @@ public class FoodOrder extends Reservation {
 
     @Override
     public String toString() {
-        return "Id: " + this.getId() + " user: " + getUser()
-                + " date: " + this.getDate() + " time: "
-                + this.getTimeSlot() + " restaurant: " + this.restaurant;
+        return "food order{" + super.toString()
+                + ", restaurant: " + this.restaurant
+                + ", delivery room: " + this.room
+                + "}";
     }
 
     public List<List<Integer>> getFoodsList() {

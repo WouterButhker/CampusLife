@@ -26,10 +26,6 @@ public class BikeReservation extends Reservation {
 
     }
 
-    @Override
-    public String toString() {
-        return null;
-    }
 
     /**
      * Makes a new BikeReservation object.
@@ -64,6 +60,14 @@ public class BikeReservation extends Reservation {
 
     public void setDropOffBuilding(Building dropOffBuilding) {
         this.dropOffBuilding = dropOffBuilding;
+    }
+
+    @Override
+    public String toString() {
+        return "bike reservation{" + super.toString()
+                + ", pickup building: " + this.pickUpBuilding
+                + ", dropoff building: " + this.dropOffBuilding
+                + "}";
     }
 
 }

@@ -47,6 +47,8 @@ public class RoomReservation extends Reservation {
 
     @Override
     public String toString() {
-        return null;
+        return "Roomreservation{" + super.toString()
+                + ", room: " + this.room
+                + "}";
     }
 }

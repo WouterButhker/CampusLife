@@ -75,5 +75,10 @@ public abstract class Reservation {
         this.timeSlot = timeSlot;
     }
 
-    public abstract String toString();
+    @Override
+    public String toString() {
+        return "user: " + this.user
+                + ", date: " + this.date
+                + ", timeslot: " + this.timeSlot;
+    }
 }
