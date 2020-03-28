@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 public class BuildingTest {
+
     @Autowired
     private BuildingRepository buildingRepository;
 
@@ -96,9 +97,9 @@ public class BuildingTest {
 
     @Test
     void toStringTest() {
-        assertEquals("[\"buildingCode\":\"" + code + "\",\"name\":\"" + name + "\",\"location\":\""
-                + location + "\",\"openingHours\":\"" + openingHours
-                + "\",\"bikes\":\"" + bikes + "\"]", building.toString());
+        String res = "building{buildingcode: 42069, name: The Arena, location: "
+                + "CityStreetRoute, opening hours: 08:00-22:00, bikes: 5}";
+        assertEquals(building.toString(), res);
     }
 
     @Test
