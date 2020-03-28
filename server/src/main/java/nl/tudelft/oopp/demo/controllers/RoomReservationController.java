@@ -30,8 +30,9 @@ public class RoomReservationController {
     }
 
     @GetMapping(path = "/allForUser")
-    public List<RoomReservation> getAllForUser(@RequestParam User user) {
-        return roomReservationRepository.findAllByUser(user);
+    public List<RoomReservation> getAllForUser(@RequestParam Integer user) {
+        User actualUser = userRepository.findUserById(user);
+        return roomReservationRepository.findAllByUser(actualUser);
     }
 
     @GetMapping(path = "/allForRoom")
@@ -48,7 +49,7 @@ public class RoomReservationController {
      */
     @GetMapping(path = "/add")
     public @ResponseBody String addNewReservation(@RequestParam Integer user,
-                                                  @RequestParam String room,
+                                                  @RequestParam Room room,
                                                   @RequestParam String slot) {
         String timeSlot = slot.substring(11, 19) + slot.substring(30);
         String date = slot.substring(0, 10);
@@ -62,7 +63,8 @@ public class RoomReservationController {
 
     @GetMapping("/myReservations")
     public @ResponseBody List<RoomReservation> getMyReservations(@RequestParam int user) {
-        return roomReservationRepository.getMyReservations(user);
+        User actualUser = userRepository.findUserById(user);
+        return roomReservationRepository.findAllByUser(actualUser);
     }
 
     @Transactional

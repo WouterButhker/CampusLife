@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class RoomReservation extends Reservation {
 
-    private String room;
+    private Room room;
 
     /**
      * Make a Reservation object.
@@ -12,16 +12,16 @@ public class RoomReservation extends Reservation {
      * @param room the Room(roomCode) that is reserved
      * @param timeSlot the time at which the Room is reserved
      */
-    public RoomReservation(int user, String room, String timeSlot) {
+    public RoomReservation(int user, Room room, String timeSlot) {
         super(user, timeSlot.substring(0, 10), timeSlot);
         this.room = room;
     }
 
-    public String getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(String room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import org.hibernate.annotations.OnDelete;
@@ -22,9 +23,10 @@ public class FoodOrder extends Reservation {
     @OnDelete(action = OnDeleteAction.CASCADE)
     Set<FoodOrderQuantity> quantities;
 
+    @ManyToOne
     @JoinColumn(name = "room_code")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private int room;        // room code
+    private Room room;        // room code
 
     @JsonInclude
     @Transient
@@ -55,7 +57,7 @@ public class FoodOrder extends Reservation {
      * @param room the room to deliver the food to
      */
     public FoodOrder(User user, String date, String timeSlot,
-                     Integer restaurant, int room) {
+                     Integer restaurant, Room room) {
         super(user, date, timeSlot);
         this.restaurant = restaurant;
         this.room = room;

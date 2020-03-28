@@ -89,7 +89,7 @@ public class RoomReservationRoute extends Route {
                     String timeslot = String.format("%s - %s", fromString, toString);
                     RoomReservationCommunication
                             .addReservationToDatabase(user, room.getRoomCode(), timeslot);
-                    reservations.add(new RoomReservation(user, room.getRoomCode(), timeslot));
+                    reservations.add(new RoomReservation(user, room, timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
                     System.out.println(user + " " + room.getRoomCode() + " " + timeslot);
@@ -123,7 +123,7 @@ public class RoomReservationRoute extends Route {
         }
         for (RoomReservation reservation : reservations) {
             System.out.println(reservation);
-            if (reservation.getRoom() != null && reservation.getRoom().equals(room.getRoomCode())) {
+            if (reservation.getRoom() != null && reservation.getRoom().getRoomCode().equals(room.getRoomCode())) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                 try {
                     String fromTimeString = reservation.getTimeSlot().substring(0, 16);

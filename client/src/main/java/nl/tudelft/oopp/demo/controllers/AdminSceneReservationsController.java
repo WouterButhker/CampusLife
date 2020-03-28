@@ -99,7 +99,7 @@ public class AdminSceneReservationsController {
 
             Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
                     + "User: " + reservations.get(i).getId() + " | "
-                    + "Room: " + reservations.get(i).getRoom() + " | "
+                    + "Room: " + reservations.get(i).getRoom().getRoomCode()+ " | "
                     + "TimeSlot: " + reservations.get(i).getTimeSlot());
             text.setPrefSize(900, 60);
             text.setStyle("-fx-font: 17 arial;");
