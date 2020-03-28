@@ -1,97 +1,16 @@
 package nl.tudelft.oopp.demo.communication;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import java.util.ArrayList;
+import static nl.tudelft.oopp.demo.communication.AuthenticationCommunication.myUserRole;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+
 
 public class RoomCommunication {
-
-
-    /**
-     * For adding a room to the database.
-     * Required permission: Admin
-     * @param roomCode the code (abreviation) of the room
-     * @param name the actual name of the room
-     * @param capacity seat capacity
-     * @param hasWhiteboard if the room has a whiteboard is true
-     * @param hasTV if the room has a TV is true
-     * @param rights the rights required to reserve this room
-     * @param building the building where it belongs to
-     */
-    public static void addRoomToDatabase(String roomCode,
-                                         String name,
-                                         Integer capacity,
-                                         Boolean hasWhiteboard,
-                                         Boolean hasTV,
-                                         Integer rights,
-                                         Integer building) {
-        /*
-        roomCode = roomCode.replace(" ", "%20");
-        name = name.replace(" ", "%20");
-         */
-        String url = "/rooms/add?roomCode=" + roomCode
-                + "&name=" + name + "&capacity=" + capacity + "&hasWhiteboard=" + hasWhiteboard
-                + "&hasTV=" + hasTV + "&rights=" + rights + "&building=" + building;
-
-        try {
-            ServerCommunication.authenticatedRequest(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Returns a list of all the Room NAMES that are part of the building.
-     * Required permission: Student
-     * @param building the number of the building you want to see the Room NAMES from
-     * @return a list of NAMES from that building
-     */
-    public static String getAllRoomNamesFromBuilding(Integer building) {
-        String url = "/rooms/getRoomNamesFromBuilding?building=" + building;
-        try {
-            return ServerCommunication.authenticatedRequest(url).getBody();
-        } catch (Exception  e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    /**
-     * Parses a Room from a JSON object.
-     * @param inputRoom JSON object with room attributes
-     * @return Room object
-     */
-    public static Room parseRoom(JsonObject inputRoom) {
-        String code = inputRoom.get("roomCode").getAsString();
-        String name = inputRoom.get("name").getAsString();
-        Integer capacity = inputRoom.get("capacity").getAsInt();
-        boolean hasWhiteboard = inputRoom.get("hasWhiteboard").getAsBoolean();
-        boolean hasTV = inputRoom.get("hasTV").getAsBoolean();
-        Integer rights = inputRoom.get("rights").getAsInt();
-        Integer buildingCode = BuildingCommunication.parseBuilding(
-                inputRoom.get("building").getAsJsonObject()).getCode();
-        return new Room(code, name, capacity, hasWhiteboard, hasTV, rights, buildingCode);
-    }
-
-    /**
-     * Parses a List of Rooms from a string input.
-     * @param inputRooms a JSON string as an array of rooms.
-     * @return List of Rooms
-     */
-    private static List<Room> parseRooms(String inputRooms) {
-        JsonParser jsonParser = new JsonParser();
-        JsonArray jsonArray = jsonParser.parse(inputRooms).getAsJsonArray();
-        List<Room> listOfRooms = new ArrayList<>();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            listOfRooms.add(parseRoom(jsonArray.get(i).getAsJsonObject()));
-        }
-        return listOfRooms;
-    }
 
     /**
      * Returns a list of all the Rooms from the database.
@@ -101,15 +20,21 @@ public class RoomCommunication {
     public static List<Room> getAllRooms() {
         StringBuilder url = new StringBuilder("/rooms/all");
         Integer rights = 0;
-        if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
-            rights = 1;
-        } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
-            rights = 2;
+        if (myUserRole != null) {
+            if (myUserRole.equalsIgnoreCase("Employee")) {
+                rights = 1;
+            } else if (myUserRole.equalsIgnoreCase("Admin")) {
+                rights = 2;
+            }
         }
         url.append("?search=rights<" + rights + 1);
         String urlString = url.toString();
         try {
-            return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(urlString);
+            if (response != null) {
+                Type listType = new TypeToken<List<Room>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,11 +47,10 @@ public class RoomCommunication {
      * @param roomCode the code for the room that needs to be removed
      * @return result code; -1 if exception
      */
-    public static String deleteRoomFromDatabase(String roomCode) {
-        String url = "/rooms/delete?roomCode=" + roomCode;
+    public static String deleteRoom(String roomCode) {
+        String url = "/rooms/" + roomCode;
         try {
-
-            return ServerCommunication.authenticatedRequest(url).getBody();
+            return ServerCommunication.authenticatedDeleteRequest(url).getBody();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,7 +87,11 @@ public class RoomCommunication {
         String urlString = url.toString();
 
         try {
-            return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(urlString);
+            if (response != null) {
+                Type listType = new TypeToken<List<Room>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -180,18 +108,58 @@ public class RoomCommunication {
         StringBuilder url = new StringBuilder(
                 "/rooms/getAllRoomsFromBuilding?search=building.buildingCode:" + building);
         Integer rights = 0;
-        if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Employee")) {
-            rights = 1;
-        } else if (AuthenticationCommunication.myUserRole.equalsIgnoreCase("Admin")) {
-            rights = 2;
+        if (myUserRole != null) {
+            if (myUserRole.equalsIgnoreCase("Employee")) {
+                rights = 1;
+            } else if (myUserRole.equalsIgnoreCase("Admin")) {
+                rights = 2;
+            }
         }
         url.append(" AND rights<" + rights + 1);
         String urlString = url.toString();
         try {
-            return parseRooms(ServerCommunication.authenticatedRequest(urlString).getBody());
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(urlString);
+            if (response != null) {
+                Type listType = new TypeToken<List<Room>>() {}.getType();
+                return new Gson().fromJson(response.getBody(), listType);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    /**
+     * Save a Room to the database via POST request.
+     * @param room the Room entity that you want to save
+     * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
+     */
+    public static String saveRoom(Room room) {
+        String url = "/rooms";
+        try {
+            return ServerCommunication.authenticatedPostRequest(url, room)
+                    .getStatusCode().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
+
+    /**
+     * Update a Room from the database via PUT request.
+     * @param room the Building entity that you want to update
+     * @return 200 OK if it's fine or 400 BAD_REQUEST if it's not fine
+     */
+    public static String updateRoom(Room room) {
+        String url = "/rooms";
+        try {
+            return ServerCommunication.authenticatedPutRequest(url, room)
+                    .getStatusCode().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "400 BAD_REQUEST";
+    }
+
+
 }

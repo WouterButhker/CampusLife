@@ -1,16 +1,18 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.getBuildingImageUrl;
+
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.views.RoomsListRoute;
+
 
 public class BuildingsGridView extends GridPane {
     private List<Building> buildings;
@@ -48,7 +50,7 @@ public class BuildingsGridView extends GridPane {
 
     private void addButtons() {
         for (int i = 0; i < buildings.size(); i++) {
-            Image image = new Image("/images/main-screen-default-building.jpg");
+            Image image = new Image(getBuildingImageUrl(buildings.get(i).getCode()));
             RectangularImageButton button = new RectangularImageButton(image,
                                             buildings.get(i).getNameAndCode());
             int buildingsPerRow = 5;

@@ -3,36 +3,21 @@ package nl.tudelft.oopp.demo.entities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-public class FoodOrder {
-    private Integer id;
+public class FoodOrder extends Reservation {
     private Integer restaurant;
-    private Integer user;
     private List<List<Integer>> foodsList;
 
     /**
      * Creates a new FoodOrder object.
-     * @param id the id of the order
      * @param restaurant the restaurant where the order is done
-     * @param user the id of the user that ordered
      */
-    public FoodOrder(Integer id,
-                     Integer restaurant,
-                     Integer user) {
-        this.id = id;
+    public FoodOrder(int userId, String date, String timeSlot, Integer restaurant) {
+        super(userId, date, timeSlot);
         this.restaurant = restaurant;
-        this.user = user;
         this.foodsList = new ArrayList<>();
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getRestaurant() {
         return restaurant;
@@ -42,16 +27,16 @@ public class FoodOrder {
         this.restaurant = restaurant;
     }
 
-    public Integer getUser() {
-        return user;
+
+    @Override
+    public String toString() {
+        return null;
     }
 
-    public void setUser(Integer user) {
-        this.user = user;
-    }
 
     /**
      * Adds a food to the order.
+     *
      * @param food the food to be added
      */
     public void addFood(Food food) {
@@ -67,6 +52,7 @@ public class FoodOrder {
 
     /**
      * Removes a food from the order.
+     *
      * @param food the food to be removed
      */
     public void removeFood(Food food) {
@@ -88,20 +74,4 @@ public class FoodOrder {
         return foodsList;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof FoodOrder)) {
-            return false;
-        }
-        FoodOrder food = (FoodOrder) o;
-        return getId().equals(((FoodOrder) o).getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, restaurant, user);
-    }
 }

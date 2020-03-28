@@ -5,21 +5,19 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
-public interface RoomRepository extends JpaRepository<Room, String>,
-        JpaSpecificationExecutor<Room> {
+public interface RoomRepository extends
+        JpaRepository<Room, String>, JpaSpecificationExecutor<Room> {
+
+    @Query("SELECT r From Room r WHERE r.building = ?1")
+    List<Room> allRoomsFromBuilding(Building myBuilding);
 
     @Query("SELECT r.name From Room r WHERE r.building = ?1")
     List<String> allRoomNamesFromBuilding(Building myBuilding);
-
-    @Modifying
-    @Query("DELETE FROM Room r WHERE r.roomCode = ?1")
-    Integer deleteRoomWithCode(String myRoom);
 
     @Query("SELECT r from Room r WHERE r.hasTV = true AND r.building = ?1")
     List<Room> allRoomsWithTV(Building myBuilding);
@@ -56,4 +54,8 @@ public interface RoomRepository extends JpaRepository<Room, String>,
             + "r.capacity <= ?5")
     List<Room> getAllFilteredRooms(Integer myRights, Boolean hasTV,
                                 Boolean hasWhiteboard, Integer minCap, Integer maxCap);
+
+    boolean existsRoomByRoomCode(String roomCode);
+
+    Room findRoomByRoomCode(String roomCode);
 }
