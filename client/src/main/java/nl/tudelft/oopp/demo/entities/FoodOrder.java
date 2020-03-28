@@ -17,7 +17,7 @@ public class FoodOrder extends Reservation {
      * @param restaurant the restaurant the order was placed at
      */
     public FoodOrder(int userId, String date, String timeSlot, int restaurant) {
-        super(userId, date, timeSlot);
+        super(null, userId, date, timeSlot);
         this.restaurant = restaurant;
         this.foodsList = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class FoodOrder extends Reservation {
      */
     public FoodOrder(int userId, String date, String timeSlot,
                      int restaurant, int deliveryRoom) {
-        super(userId, date, timeSlot);
+        super(null, userId, date, timeSlot);
         this.restaurant = restaurant;
         this.foodsList = new ArrayList<>();
         this.deliveryRoom = deliveryRoom;

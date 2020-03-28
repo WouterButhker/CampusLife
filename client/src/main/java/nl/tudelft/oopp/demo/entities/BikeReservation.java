@@ -1,13 +1,9 @@
 package nl.tudelft.oopp.demo.entities;
 
-public class BikeReservation {
+public class BikeReservation extends Reservation {
 
-    private Integer id;
-    private Integer user;
     private Building pickUpBuilding;
     private Building dropOffBuilding;
-    private String date;
-    private String timeSlot;
 
     /**
      * Makes a new BikeReservation object.
@@ -21,37 +17,19 @@ public class BikeReservation {
     public BikeReservation(Integer id, Integer user,
                            Building pickUpBuilding, Building dropOffBuilding,
                            String date, String timeSlot) {
-        this.id = id;
-        this.user = user;
+        super(id, user, date, timeSlot);
         this.pickUpBuilding = pickUpBuilding;
         this.dropOffBuilding = dropOffBuilding;
-        this.date = date;
-        this.timeSlot = timeSlot;
+
     }
 
     @Override
     public String toString() {
-        return "BikeReservation{" + "id=" + id + ", user=" + user
+        return "BikeReservation{" + "id=" + id + ", user=" + userId
                 + ", pickUpBuildingCode=" + pickUpBuilding.getCode()
                 + ", dropOffBuildingCode=" + dropOffBuilding.getCode()
                 + ", date='" + date + '\'' + ", timeSlot='"
                 + timeSlot + '\'' + '}';
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUser() {
-        return user;
-    }
-
-    public void setUser(int user) {
-        this.user = user;
     }
 
     public Building getPickUpBuilding() {
@@ -70,22 +48,6 @@ public class BikeReservation {
         this.dropOffBuilding = dropOffBuilding;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTimeSlot() {
-        return timeSlot;
-    }
-
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -96,7 +58,7 @@ public class BikeReservation {
         }
         BikeReservation that = (BikeReservation) o;
         return id.equals(that.id)
-                && user.equals(that.user)
+                && userId.equals(that.userId)
                 && pickUpBuilding.equals(that.pickUpBuilding)
                 && dropOffBuilding.equals(that.dropOffBuilding)
                 && date.equals(that.date)

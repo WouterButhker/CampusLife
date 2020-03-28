@@ -12,7 +12,7 @@ public class RoomReservation extends Reservation {
      * @param timeSlot the time at which the Room is reserved
      */
     public RoomReservation(int user, Room room, String timeSlot) {
-        super(user, timeSlot.substring(0, 10), timeSlot);
+        super(null, user, timeSlot.substring(0, 10), timeSlot);
         this.room = room;
     }
 

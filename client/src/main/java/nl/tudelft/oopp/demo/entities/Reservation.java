@@ -2,11 +2,13 @@ package nl.tudelft.oopp.demo.entities;
 
 public abstract class Reservation {
 
-    private Integer id;
+    protected Integer id;
 
-    private String date;
+    protected Integer userId; //Change to User object
 
-    private String timeSlot;
+    protected String date;
+
+    protected String timeSlot;
 
     /**
      * parent constructor to create a new reservation.
@@ -14,18 +16,27 @@ public abstract class Reservation {
      * @param date the date of the reservation
      * @param timeSlot the time of the reservation
      */
-    public Reservation(int userID, String date, String timeSlot) {
-        this.id = userID;
+    public Reservation(Integer id, int userID, String date, String timeSlot) {
+        this.id = id;
+        this.userId = userID;
         this.date = date;
         this.timeSlot = timeSlot;
     }
 
-    public void setId(int id) {
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getDate() {
