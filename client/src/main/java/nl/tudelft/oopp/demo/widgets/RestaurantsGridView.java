@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.Room;
 
 public class RestaurantsGridView extends GridPane {
     private List<Restaurant> restaurants;
@@ -45,26 +46,24 @@ public class RestaurantsGridView extends GridPane {
         this.listener = listener;
     }
 
+    private final int restaurantsPerRow = 3;
+
     private void addButtons() {
         for (int i = 0; i < restaurants.size(); i++) {
             Image image = new Image("/images/main-screen-food.jpg");
             RectangularImageButton button =
                     new RectangularImageButton(image, restaurants.get(i).getName());
-            int restaurantsPerRow = 5;
-            this.add(button, i % restaurantsPerRow, i / restaurantsPerRow, 1, 1);
-            restaurantButtons.add(button);
-
             int finalI = i;
-
-
             button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if (listener != null) {
-                        listener.onRestaurantClicked(finalI);
+                        listener.onRestaurantClicked(restaurants.get(finalI));
                     }
                 }
             });
+            add(button, i % restaurantsPerRow, i / restaurantsPerRow, 1, 1);
+            restaurantButtons.add(button);
         }
     }
 
@@ -80,6 +79,6 @@ public class RestaurantsGridView extends GridPane {
     }
 
     public interface Listener {
-        void onRestaurantClicked(int buildingId);
+        void onRestaurantClicked(Restaurant restaurant);
     }
 }

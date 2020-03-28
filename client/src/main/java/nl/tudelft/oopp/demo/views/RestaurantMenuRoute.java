@@ -69,7 +69,7 @@ public class RestaurantMenuRoute extends Route {
         restaurantContainer = new HBox();
         menuContainer.getChildren().add(restaurantContainer);
 
-        Image restaurantImage = new Image("https://therockbury.com/wp-content/uploads/2014/03/subway-logo.jpg");
+        Image restaurantImage = new Image("/images/main-screen-food.jpg");
         restaurantPicture = new ImageView(restaurantImage);
         restaurantPicture.setPreserveRatio(true);
         restaurantContainer.getChildren().add(restaurantPicture);
