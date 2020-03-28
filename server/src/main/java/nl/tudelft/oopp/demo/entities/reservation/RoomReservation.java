@@ -7,6 +7,8 @@ import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "room_reservation")
 public class RoomReservation extends Reservation {
@@ -43,6 +45,26 @@ public class RoomReservation extends Reservation {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RoomReservation)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        RoomReservation that = (RoomReservation) o;
+        return Objects.equals(room, that.room);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), room);
     }
 
     @Override

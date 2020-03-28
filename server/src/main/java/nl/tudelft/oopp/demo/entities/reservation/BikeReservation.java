@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
+import java.util.Objects;
 import javax.persistence.*;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
@@ -60,6 +61,27 @@ public class BikeReservation extends Reservation {
 
     public void setDropOffBuilding(Building dropOffBuilding) {
         this.dropOffBuilding = dropOffBuilding;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BikeReservation)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        BikeReservation that = (BikeReservation) o;
+        return Objects.equals(pickUpBuilding, that.pickUpBuilding)
+                && Objects.equals(dropOffBuilding, that.dropOffBuilding);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), pickUpBuilding, dropOffBuilding);
     }
 
     @Override

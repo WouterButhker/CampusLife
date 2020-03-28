@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.entities.reservation.food;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -80,6 +81,28 @@ public class FoodOrder extends Reservation {
         return this.restaurant;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FoodOrder)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        FoodOrder foodOrder = (FoodOrder) o;
+        return Objects.equals(restaurant, foodOrder.restaurant)
+                && Objects.equals(quantities, foodOrder.quantities)
+                && Objects.equals(room, foodOrder.room)
+                && Objects.equals(foodsList, foodOrder.foodsList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), restaurant, quantities, room, foodsList);
+    }
 
     @Override
     public String toString() {

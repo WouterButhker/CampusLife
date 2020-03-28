@@ -6,6 +6,8 @@ import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Objects;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -43,6 +45,8 @@ public abstract class Reservation {
         this.timeSlot = timeSlot;
     }
 
+
+
     public void setId(int id) {
         this.id = id;
     }
@@ -73,6 +77,22 @@ public abstract class Reservation {
 
     public void setTimeSlot(String timeSlot) {
         this.timeSlot = timeSlot;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reservation)) return false;
+        Reservation that = (Reservation) o;
+        return id == that.id &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(timeSlot, that.timeSlot);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, date, timeSlot);
     }
 
     @Override
