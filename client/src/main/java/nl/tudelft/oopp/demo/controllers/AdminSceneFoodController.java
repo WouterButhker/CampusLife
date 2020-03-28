@@ -72,7 +72,7 @@ public class AdminSceneFoodController implements Initializable {
             restaurantsList1.getItems().addAll(RestaurantCommunication.getRestaurantsIdAndName());
         }
         if (restaurantsList2 != null) {
-            restaurantsList2.getItems().add("Choose restaurant");
+            restaurantsList2.getItems().add("All restaurants");
             restaurantsList2.getItems().addAll(RestaurantCommunication.getRestaurantsIdAndName());
             SingleSelectionModel<String> selectionModel = restaurantsList2.getSelectionModel();
             selectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -82,7 +82,7 @@ public class AdminSceneFoodController implements Initializable {
                     loadFoods(newValue);
                 }
             });
-            restaurantsList2.setValue("Choose restaurant");
+            restaurantsList2.setValue("All restaurants");
         }
     }
 
@@ -90,7 +90,7 @@ public class AdminSceneFoodController implements Initializable {
         DecimalFormat df2 = new DecimalFormat("#.##");
         foodsList.getChildren().clear();
         int restaurantId;
-        if (restaurantIdString.equals("Choose restaurant")) {
+        if (restaurantIdString.equals("All restaurants")) {
             restaurantId = -1;
         } else {
             restaurantId = Integer.parseInt(restaurantIdString.split(" ")[0]);
