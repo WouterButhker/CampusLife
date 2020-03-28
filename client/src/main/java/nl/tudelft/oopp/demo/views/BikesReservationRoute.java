@@ -182,7 +182,8 @@ public class BikesReservationRoute extends Route {
             BikeReservationCommunication.createBikeReservation(res);
             PopupWidget.display("Bike Reserved!", "Bike reserved");
         } else {
-            PopupWidget.display("There are no bikes available at the pickup building", "An error has occurred");
+            PopupWidget.display("There are no bikes available at the pickup building",
+                    "An error has occurred");
         }
     }
 
