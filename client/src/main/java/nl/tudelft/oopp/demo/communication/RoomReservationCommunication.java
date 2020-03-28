@@ -4,8 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +26,7 @@ public class RoomReservationCommunication {
     public static void addReservationToDatabase(Integer userId,
                                              String room,
                                              String slot) {
-        String url = "/reservations/add?user=" + userId
+        String url = "/roomReservations/add?user=" + userId
                 + "&room=" + room + "&slot=" + slot;
 
         try {
@@ -37,26 +41,13 @@ public class RoomReservationCommunication {
         }
     }
 
-    private static RoomReservation parseReservation(JsonObject inputReservation) {
-        int id = inputReservation.get("id").getAsInt();
-        //System.out.println(inputReservation);
-        int user = inputReservation.get("user").getAsInt();
-        //System.out.println(user);
-        String room = inputReservation.get("room").getAsString();
-        //System.out.println(room);
-        String timeSlot = inputReservation.get("timeSlot").getAsString();
-        //System.out.println(timeSlot);;
-        return new RoomReservation(user, room, timeSlot);
+    private static RoomReservation parseReservation(String inputReservation) {
+        return new Gson().fromJson(inputReservation, RoomReservation.class);
     }
 
     private static List<RoomReservation> parseReservations(String inputReservations) {
-        JsonParser jsonParser = new JsonParser();
-        JsonArray jsonArray = jsonParser.parse(inputReservations).getAsJsonArray();
-        List<RoomReservation> listOfReservations = new ArrayList<>();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            listOfReservations.add(parseReservation(jsonArray.get(i).getAsJsonObject()));
-        }
-        return listOfReservations;
+        Type listType = new TypeToken<List<RoomReservation>>() {}.getType();
+        return new Gson().fromJson(inputReservations, listType);
     }
 
     /**
@@ -65,7 +56,7 @@ public class RoomReservationCommunication {
      * @return List of Reservations
      */
     public static List<RoomReservation> getAllReservations() {
-        String url = "/reservations/all";
+        String url = "/roomReservations/all";
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
         } catch (Exception e) {
@@ -79,7 +70,7 @@ public class RoomReservationCommunication {
      * @return A list of the current user's reservations
      */
     public static List<RoomReservation> getMyReservations() {
-        String url = "/reservations/myReservations?user=" + AuthenticationCommunication.myUserId;
+        String url = "/roomReservations/myReservations?user=" + AuthenticationCommunication.myUserId;
         try {
             System.out.println(ServerCommunication.authenticatedRequest(url).getBody());
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
@@ -95,7 +86,7 @@ public class RoomReservationCommunication {
      * @return A List of Reservations
      */
     public static List<RoomReservation> getAllReservationsForUser(Integer user) {
-        String url = "/reservations/allForUser?user=" + user;
+        String url = "/roomReservations/allForUser?user=" + user;
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
         } catch (Exception e) {
@@ -111,7 +102,7 @@ public class RoomReservationCommunication {
      * @return A List of Reservations
      */
     public static List<RoomReservation> getAllReservationsForRoom(String room) {
-        String url = "/reservations/allForRoom?room=" + room;
+        String url = "/roomReservations/allForRoom?room=" + room;
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
         } catch (Exception e) {
@@ -125,7 +116,7 @@ public class RoomReservationCommunication {
      * @param id the id of the reservation
      */
     public static void deleteReservationFromDatabase(Integer id) {
-        String url = "/reservations/delete?id=" + id;
+        String url = "/roomReservations/delete?id=" + id;
         try {
             ServerCommunication.authenticatedRequest(url).getBody();
         } catch (Exception e) {

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
+    User findUserById(Integer userId);
+
     Optional<User> findByUsername(String username);
 
     @Query("SELECT u.id FROM User u WHERE u.username = ?1")
