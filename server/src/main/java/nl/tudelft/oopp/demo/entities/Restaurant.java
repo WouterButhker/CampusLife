@@ -105,6 +105,11 @@ public class Restaurant {
         this.description = description;
     }
 
+    public String toString() {
+        return "{" + id + ", " + name + ", "
+                + buildingCode + ", " + description + "}";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
