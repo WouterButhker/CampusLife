@@ -17,7 +17,7 @@ public class PersonalReservation extends Reservation {
      * @param activity the activity of the reservation
      */
     public PersonalReservation(Integer id, Integer user, String activity, String date, String timeSlot) {
-        super(id, date, timeSlot);
+        super(id, user, date, timeSlot);
 
         this.user = user;
         this.activity = activity;
