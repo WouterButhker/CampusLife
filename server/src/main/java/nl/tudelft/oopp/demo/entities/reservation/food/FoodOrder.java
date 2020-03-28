@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
+
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -39,22 +41,22 @@ public class FoodOrder extends Reservation {
      * @param timeSlot the prefered time of delivery/pickup
      * @param restaurant the restaurant the order was placed at
      */
-    public FoodOrder(int userId, String date, String timeSlot, Integer restaurant) {
-        super(userId, date, timeSlot);
+    public FoodOrder(User user, String date, String timeSlot, Integer restaurant) {
+        super(user, date, timeSlot);
         this.restaurant = restaurant;
     }
 
     /**
      * Creates a new FoodOrder object for delivery.
-     * @param userId the userID
+     * @param user the userID
      * @param date the date of the foodorder
      * @param timeSlot the prefered time of delivery/pickup
      * @param restaurant the restaurant the order was placed at
      * @param room the room to deliver the food to
      */
-    public FoodOrder(int userId, String date, String timeSlot,
+    public FoodOrder(User user, String date, String timeSlot,
                      Integer restaurant, int room) {
-        super(userId, date, timeSlot);
+        super(user, date, timeSlot);
         this.restaurant = restaurant;
         this.room = room;
     }
