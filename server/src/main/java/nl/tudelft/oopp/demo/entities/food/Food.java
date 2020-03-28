@@ -1,8 +1,8 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.entities.food;
 
 import java.util.Set;
 import javax.persistence.*;
-import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrderQuantity;
+import nl.tudelft.oopp.demo.entities.food.FoodOrderQuantity;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 

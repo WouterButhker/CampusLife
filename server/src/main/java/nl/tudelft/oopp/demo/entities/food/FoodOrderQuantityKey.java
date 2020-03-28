@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.entities.reservation.food;
+package nl.tudelft.oopp.demo.entities.food;
 
 import java.io.Serializable;
 import java.util.Objects;

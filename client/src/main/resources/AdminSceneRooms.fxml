@@ -20,7 +20,7 @@
             <HBox prefHeight="532.0" prefWidth="1120.0">
                <children>
                   <Pane prefHeight="200.0" prefWidth="100.0" />
-                  <VBox prefHeight="48.0" prefWidth="544.0">
+                  <VBox fx:id="settingsBox" prefHeight="48.0" prefWidth="544.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>

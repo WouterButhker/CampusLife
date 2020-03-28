@@ -77,7 +77,7 @@ public class RoomReservationRoute extends Route {
                 reservationWidget.setPeriod(fromTime, toTime);
                 reservationWidget.setAvailable(available);
             }
-        });
+        }, 5);
         reservationWidget = new ReservationWidget(room, new ReservationWidget.Listener() {
             @Override
             public void onReserveClicked() {
@@ -123,7 +123,8 @@ public class RoomReservationRoute extends Route {
         }
         for (RoomReservation reservation : reservations) {
             System.out.println(reservation);
-            if (reservation.getRoom() != null && reservation.getRoom().getRoomCode().equals(room.getRoomCode())) {
+            if (reservation.getRoom() != null
+                    && reservation.getRoom().getRoomCode().equals(room.getRoomCode())) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                 try {
                     String fromTimeString = reservation.getTimeSlot().substring(0, 16);

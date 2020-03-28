@@ -24,6 +24,9 @@ public class AdminSceneController implements Initializable {
     private Button modifyRoomsEnter;
 
     @FXML
+    private Button modifyRestaurantEnter;
+
+    @FXML
     private Button modifyFoodEnter;
 
     @FXML
@@ -39,6 +42,7 @@ public class AdminSceneController implements Initializable {
 
         modifyBuildingsEnter.setStyle("-fx-font-size: 17");
         modifyRoomsEnter.setStyle("-fx-font-size: 17");
+        modifyRestaurantEnter.setStyle("-fx-font-size: 17");
         modifyFoodEnter.setStyle("-fx-font-size: 17");
         modifyRightsEnter.setStyle("-fx-font-size: 17");
         modifyReservationsEnter.setStyle("-fx-font-size: 17");
@@ -59,6 +63,13 @@ public class AdminSceneController implements Initializable {
     private void modifyRoomsEnter() throws IOException {
         RoutingScene scene = (RoutingScene) modifyRoomsEnter.getScene();
         Route route = new XmlRoute(getClass().getResource("/AdminSceneRooms.fxml"));
+        scene.pushRoute(route);
+    }
+
+    @FXML
+    private void modifyRestaurantEnter() throws IOException {
+        RoutingScene scene = (RoutingScene) modifyRestaurantEnter.getScene();
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneRestaurants.fxml"));
         scene.pushRoute(route);
     }
 

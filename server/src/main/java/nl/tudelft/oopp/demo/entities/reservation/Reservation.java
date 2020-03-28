@@ -1,13 +1,10 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
+import java.util.Objects;
 import javax.persistence.*;
-
 import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.Objects;
-
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -81,13 +78,17 @@ public abstract class Reservation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Reservation)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Reservation)) {
+            return false;
+        }
         Reservation that = (Reservation) o;
-        return id == that.id &&
-                Objects.equals(user, that.user) &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(timeSlot, that.timeSlot);
+        return id == that.id
+                && Objects.equals(user, that.user)
+                && Objects.equals(date, that.date)
+                && Objects.equals(timeSlot, that.timeSlot);
     }
 
     @Override

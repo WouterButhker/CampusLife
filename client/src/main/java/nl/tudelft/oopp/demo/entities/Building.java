@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.entities;
 
-import java.util.Objects;
-import javafx.scene.image.Image;
-
 public class Building {
 
     private Integer buildingCode;

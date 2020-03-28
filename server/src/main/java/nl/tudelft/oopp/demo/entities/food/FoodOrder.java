@@ -1,11 +1,10 @@
-package nl.tudelft.oopp.demo.entities.reservation.food;
+package nl.tudelft.oopp.demo.entities.food;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
-
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
@@ -36,18 +35,6 @@ public class FoodOrder extends Reservation {
 
     public FoodOrder() {
 
-    }
-
-    /**
-     * Creates a new FoodOrder object for pickup.
-     * @param user the userID
-     * @param date the date of the foodorder
-     * @param timeSlot the prefered time of delivery/pickup
-     * @param restaurant the restaurant the order was placed at
-     */
-    public FoodOrder(User user, String date, String timeSlot, Restaurant restaurant) {
-        super(user, date, timeSlot);
-        this.restaurant = restaurant;
     }
 
     /**

@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
+import static nl.tudelft.oopp.demo.communication.AuthenticationCommunication.myUserRole;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -41,9 +43,19 @@ public class RoomCommunication {
      * @return list of Rooms
      */
     public static List<Room> getAllRooms() {
-        String url = "/rooms";
+        StringBuilder url = new StringBuilder("/rooms/all");
+        Integer rights = 0;
+        if (myUserRole != null) {
+            if (myUserRole.equalsIgnoreCase("Employee")) {
+                rights = 1;
+            } else if (myUserRole.equalsIgnoreCase("Admin")) {
+                rights = 2;
+            }
+        }
+        url.append("?search=rights<" + rights + 1);
+        String urlString = url.toString();
         try {
-            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
+            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(urlString);
             if (response != null) {
                 Type listType = new TypeToken<List<Room>>() {}.getType();
                 return new Gson().fromJson(response.getBody(), listType);

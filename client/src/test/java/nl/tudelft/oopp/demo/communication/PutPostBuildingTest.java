@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.demo.communication;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import nl.tudelft.oopp.demo.entities.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PutPostBuildingTest {
 

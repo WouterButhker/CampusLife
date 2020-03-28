@@ -1,16 +1,12 @@
 package nl.tudelft.oopp.demo.entities;
 
-
-
-
 public abstract class Reservation {
 
-    private int id;
+    private Integer id;
 
     private String date;
 
     private String timeSlot;
-
 
     /**
      * parent constructor to create a new reservation.
@@ -28,7 +24,7 @@ public abstract class Reservation {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

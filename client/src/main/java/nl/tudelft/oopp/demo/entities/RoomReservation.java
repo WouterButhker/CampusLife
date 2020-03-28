@@ -1,9 +1,8 @@
 package nl.tudelft.oopp.demo.entities;
 
-import java.util.Objects;
-
 public class RoomReservation extends Reservation {
 
+    private Integer user;
     private Room room;
 
     /**
@@ -15,6 +14,14 @@ public class RoomReservation extends Reservation {
     public RoomReservation(int user, Room room, String timeSlot) {
         super(user, timeSlot.substring(0, 10), timeSlot);
         this.room = room;
+    }
+
+    public Integer getUser() {
+        return user;
+    }
+
+    public void setUser(Integer user) {
+        this.user = user;
     }
 
     public Room getRoom() {

@@ -42,7 +42,9 @@ public class User implements UserDetails {
      * @param password the users password (bcrypt)
      * @param role the users access level
      */
-    public User(String username, String password, String role) {
+    public User(String username,
+                String password,
+                String role) {
         this.username = username;
         this.password = password;
         this.role = role;

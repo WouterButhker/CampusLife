@@ -1,10 +1,9 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
-import nl.tudelft.oopp.demo.entities.User;
-
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.util.Objects;
+import nl.tudelft.oopp.demo.entities.User;
 
 @Entity
 public class PersonalReservation extends Reservation {

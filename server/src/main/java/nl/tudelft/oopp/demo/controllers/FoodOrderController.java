@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrder;
-import nl.tudelft.oopp.demo.entities.reservation.food.FoodOrderQuantity;
+import nl.tudelft.oopp.demo.entities.food.FoodOrder;
+import nl.tudelft.oopp.demo.entities.food.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.repositories.FoodOrderQuantityRepository;
 import nl.tudelft.oopp.demo.repositories.FoodOrderRepository;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
@@ -35,6 +35,10 @@ public class FoodOrderController {
     FoodOrder addFoodOrder(@RequestBody FoodOrder foodOrder) {
         System.out.println(foodOrder);
         FoodOrder createdOrder = foodOrderRepository.save(foodOrder);
+
+        //FoodOrder foodOrderFix = new FoodOrder(userRepository.findById(foodOrder.getId()).get(),
+        //     foodOrder.getDate(), foodOrder.getTimeSlot(), foodOrder.getRestaurant());
+        //FoodOrder createdOrder = foodOrderRepository.save(foodOrderFix);
 
         // Create all food junctions
         for (List<Integer> pairs : foodOrder.getFoodsList()) {

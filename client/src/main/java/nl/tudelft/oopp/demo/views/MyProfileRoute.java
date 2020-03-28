@@ -1,8 +1,12 @@
 package nl.tudelft.oopp.demo.views;
 
+import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateUserImage;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -21,7 +25,9 @@ import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
-import nl.tudelft.oopp.demo.widgets.*;
+import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
+import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
 public class MyProfileRoute extends Route {
     private VBox rootElement;
@@ -251,8 +257,18 @@ public class MyProfileRoute extends Route {
         horizontalContainer.setAlignment(Pos.TOP_LEFT);
         horizontalContainer.setPadding(new Insets(16, 16, 16, 16));
         horizontalContainer.setSpacing(10);
+        loadHorizontalContainer();
 
-        Image profileImage = new Image("/images/myProfile.png");
+        //Integer rand = Math.abs(new Random().nextInt()) % AuthenticationCommunication.ids.size();
+        //System.out.println(rand);
+        //String imageId = AuthenticationCommunication.ids.get(rand);
+
+
+        rootElement.getChildren().add(horizontalContainer);
+    }
+
+    private void loadHorizontalContainer() {
+        Image profileImage = new Image(AuthenticationCommunication.myImageUrl);
         RectangularImageButton profilePicture = new RectangularImageButton(profileImage, "");
         profilePicture.setFitHeight(90);
         horizontalContainer.getChildren().add(profilePicture);
@@ -267,8 +283,21 @@ public class MyProfileRoute extends Route {
         userDetails.getChildren().add(oneBoldOneRegular(
                 "Role: ", AuthenticationCommunication.myUserRole));
 
-        horizontalContainer.getChildren().add(userDetails);
-        rootElement.getChildren().add(horizontalContainer);
+        ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+
+        Button save = new Button("Save");
+        save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                updateUserImage(imageSelectorWidget.getImage());
+                horizontalContainer.getChildren().clear();
+                imageSelectorWidget.removeChild(save);
+                loadHorizontalContainer();
+            }
+        });
+        imageSelectorWidget.addChild(save);
+        horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget);
+        //
     }
 
     private TextFlow oneBoldOneRegular(String boldString, String regularString) {
