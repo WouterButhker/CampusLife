@@ -291,9 +291,6 @@ public class BikeReservationWidget extends VBox {
                 try {
                     pickUpDate = sdf.parse(bikeReservation.getDate() + "-" + pickUp);
                     dropOffDate = sdf.parse(bikeReservation.getDate() + "-" + dropOff);
-                    System.out.println("SelectedTime = " + timeSelected.getTime().toString());
-                    System.out.println("Pickup - " + pickUpDate.toString());
-                    System.out.println("Dropoff - " + dropOffDate.toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

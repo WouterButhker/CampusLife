@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.repositories.BikeReservationRepository;
+import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,21 @@ public class BikeReservationController {
     @Autowired
     private BikeReservationRepository bikeReservationRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping(path = "/all")
     public List<BikeReservation> getAll() {
         return bikeReservationRepository.findAll();
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping
     BikeReservation addNewBikeReservation(@RequestBody BikeReservation bikeReservation) {
-        return bikeReservationRepository.save(bikeReservation);
+        User user = userRepository.findUserById(bikeReservation.getUser().getId());
+        BikeReservation res = new BikeReservation(user, bikeReservation.getPickUpBuilding(),
+                bikeReservation.getDropOffBuilding(), bikeReservation.getDate(),
+                bikeReservation.getTimeSlot());
+        return bikeReservationRepository.save(res);
     }
 
     @PutMapping
