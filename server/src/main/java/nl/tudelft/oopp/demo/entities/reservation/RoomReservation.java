@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
 import javax.persistence.*;
+
+import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -23,7 +25,7 @@ public class RoomReservation extends Reservation {
      * @param room the Room that is reserved
      * @param timeSlot the time at which the Room is reserved
      */
-    public RoomReservation(int user,
+    public RoomReservation(User user,
                            String room,
                            String date,
                            String timeSlot)  {

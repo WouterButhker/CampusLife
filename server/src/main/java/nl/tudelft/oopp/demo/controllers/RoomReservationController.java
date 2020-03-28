@@ -43,7 +43,7 @@ public class RoomReservationController {
      * @return
      */
     @GetMapping(path = "/add")
-    public @ResponseBody String addNewReservation(@RequestParam int user,
+    public @ResponseBody String addNewReservation(@RequestParam User user,
                                                   @RequestParam String room,
                                                   @RequestParam String slot) {
         String timeSlot = slot.substring(11, 19) + slot.substring(30);

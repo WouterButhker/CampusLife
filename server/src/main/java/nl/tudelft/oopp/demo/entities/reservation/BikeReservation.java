@@ -39,7 +39,7 @@ public class BikeReservation extends Reservation {
      * @param date The date of the reservation
      * @param timeSlot The timeslot of the reservation
      */
-    public BikeReservation(int user,
+    public BikeReservation(User user,
                            Building pickUpBuilding,
                            Building dropOffBuilding,
                            String date,
