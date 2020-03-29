@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import static nl.tudelft.oopp.demo.communication.ImageCommunication.getBuildingImageUrl;
-
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -16,25 +13,35 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionModel;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
-import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 import nl.tudelft.oopp.demo.widgets.WeekWidget;
+
 
 public class AdminSceneBuildingsController implements Initializable {
 
@@ -75,15 +82,7 @@ public class AdminSceneBuildingsController implements Initializable {
     private TextField bikeAmountInput;
 
     @FXML
-    private VBox scrollPaneVBox;
-
-    @FXML
-    private VBox settingsBox;
-
-    @FXML
     private ScrollPane scrollPane;
-
-    private ImageSelectorWidget imageSelectorWidget;
 
     private WeekWidget week;
 
@@ -99,7 +98,6 @@ public class AdminSceneBuildingsController implements Initializable {
         // invisible before the 'has bike station' checkbox is selected.
         loadBuildings();
         addAppBar();
-        addImageSelectorWidget();
         addWeekCalendar(new Weekdays());
     }
 
@@ -107,21 +105,9 @@ public class AdminSceneBuildingsController implements Initializable {
         mainBox.getChildren().add(0, new AppBar());
     }
 
-    private void addImageSelectorWidget() {
-        Pane spacerPane = new Pane();
-        spacerPane.setPrefWidth(10);
-        imageSelectorWidget = new ImageSelectorWidget();
-        HBox box = new HBox();
-        box.getChildren().addAll(spacerPane, imageSelectorWidget);
-        settingsBox.getChildren().add(7, box);
-    }
-
     private void addWeekCalendar(Weekdays weekdays) {
         this.week = new WeekWidget(weekdays);
-        HBox box = new HBox();
-        box.setAlignment(Pos.CENTER);
-        box.getChildren().add(week);
-        settingsBox.getChildren().add(4, box);
+        mainBox.getChildren().add(1, week);
         List<Node> times = week.getTimes().getChildren();
         for (int i = 0; i < times.size(); i++) {
             times.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -151,7 +137,7 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     private void loadOpenClosed(ChoiceBox<String> open) {
-        String[] options = {"Open", Weekdays.CLOSED};
+        String[] options = {"Open", Weekdays.getClosed()};
         open.getItems().addAll(options);
         SingleSelectionModel<String> singleSelectionModel = open.getSelectionModel();
         singleSelectionModel.selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -209,8 +195,8 @@ public class AdminSceneBuildingsController implements Initializable {
 
     private void updateCurrent() {
         //if the building should be closed on that day
-        if (open.getValue().equals(Weekdays.CLOSED)) {
-            week.dayChanged(week.getCurrent(), Weekdays.CLOSED);
+        if (open.getValue().equals(Weekdays.getClosed())) {
+            week.dayChanged(week.getCurrent(), Weekdays.getClosed());
             return;
         }
 
@@ -239,14 +225,12 @@ public class AdminSceneBuildingsController implements Initializable {
     private void loadBuildings() {
         if (anchorPaneBuildings != null && buildingsList != null) {
             buildingsList.getChildren().clear();
+            int numBuildings = BuildingCommunication.countAllBuildings();
             List<Building> buildings = BuildingCommunication.getAllBuildings();
-            int numBuildings = buildings.size();
             int height = 82 * numBuildings;
             if (height <= scrollPane.getPrefHeight()) {
-                scrollPaneVBox.setPrefWidth(400);
                 scrollPane.setPrefWidth(400);
             } else {
-                scrollPaneVBox.setPrefWidth(417);
                 scrollPane.setPrefWidth(417);
             }
             anchorPaneBuildings.setPrefHeight(height);
@@ -255,7 +239,7 @@ public class AdminSceneBuildingsController implements Initializable {
             for (int i = 0; i < numBuildings; i++) {
                 HBox building = new HBox();
                 building.setMaxWidth(400);
-                Image image = new Image(getBuildingImageUrl(buildings.get(i).getCode()));
+                Image image = new Image("images/TuDelftTempIMG.jpg");
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(65);
                 imageView.setFitHeight(60);
@@ -292,7 +276,7 @@ public class AdminSceneBuildingsController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         int code = buildings.get(finalI).getCode();
-                        BuildingCommunication.deleteBuilding(code);
+                        BuildingCommunication.deleteBuildingFromDatabase(code);
                         loadBuildings();
                     }
                 });
@@ -336,7 +320,6 @@ public class AdminSceneBuildingsController implements Initializable {
         String openingHours = week.getWeekDays().toString();
         Text submitStatus = new Text();
         Integer bikes = null;
-
         if (hasBikeStationCheck.isSelected()) {
             try {
                 bikes = Integer.parseInt(bikeAmountInput.getText());
@@ -345,11 +328,9 @@ public class AdminSceneBuildingsController implements Initializable {
             }
         }
         if (!location.equals("") && !name.equals("") && codeFound
-               && week.getWeekDays().checkCorrectness()
-               && imageSelectorWidget.imageSelected()) {
-            Building building = new Building(buildingCode, name, location, openingHours, bikes);
-            BuildingCommunication.saveBuilding(building);
-            ImageCommunication.updateBuildingImage(buildingCode, imageSelectorWidget.getImage());
+               && week.getWeekDays().checkCorrectness()) {
+            BuildingCommunication.addBuildingToDatabase(buildingCode,
+                    name, location, openingHours, bikes);
             submitStatus.setText("Building successfully added!");
             try {
                 refreshBuildingsPage();
@@ -366,10 +347,6 @@ public class AdminSceneBuildingsController implements Initializable {
 
         if (!week.getWeekDays().checkCorrectness()) {
             submitStatus.setText("These opening hours don't make sense");
-        }
-
-        if (!imageSelectorWidget.imageSelected()) {
-            submitStatus.setText("Image has to be selected");
         }
 
         Button back = new Button("Okay! take me back");
@@ -402,42 +379,46 @@ public class AdminSceneBuildingsController implements Initializable {
         Text header = new Text("Modify your building");
         header.setFont(Font.font("System", 22));
         HBox headerBox = new HBox(header);
-        headerBox.setPadding(new Insets(20, 0,10,0));
-        headerBox.setAlignment(Pos.CENTER);
+        headerBox.setPadding(new Insets(20, 200,10,200));
 
         Label addressText = new Label("Address :");
-        addressText.setPadding(new Insets(20, 0,0,0));
+        addressText.setPadding(new Insets(20, 275,0,275));
         HBox addressTextBox = new HBox(addressText);
-        addressTextBox.setAlignment(Pos.CENTER);
+        addressTextBox.setPadding(new Insets(0));
 
+        Pane spacer1 = new Pane();
+        spacer1.setPrefSize(225, 20);
         TextField address = new TextField(building.getLocation());
         address.setPrefSize(150,20);
-        HBox addressBox = new HBox(address);
+        HBox addressBox = new HBox(spacer1, address);
         addressBox.setPadding(new Insets(10, 0, 0, 0));
-        addressBox.setAlignment(Pos.CENTER);
 
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
-        nameTextBox.setPadding(new Insets(10, 0,0,0));
-        nameTextBox.setAlignment(Pos.CENTER);
+        nameTextBox.setPadding(new Insets(10, 275,0,275));
 
+        Pane spacer2 = new Pane();
+        spacer2.setPrefSize(225, 20);
         TextField name = new TextField(building.getName());
         name.setPrefSize(150, 20);
-        HBox nameBox = new HBox(name);
+        HBox nameBox = new HBox(spacer2, name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
-        nameBox.setAlignment(Pos.CENTER);
 
         Label buildingCodeText = new Label("Building Code :");
         HBox buildingCodeTextBox = new HBox(buildingCodeText);
-        buildingCodeTextBox.setPadding(new Insets(10, 0, 0, 0));
-        buildingCodeTextBox.setAlignment(Pos.CENTER);
+        buildingCodeTextBox.setPadding(new Insets(10, 250,0,250));
 
+        Pane spacer3 = new Pane();
+        spacer3.setPrefSize(225, 20);
         TextField buildingCode = new TextField(Integer.toString(building.getCode()));
         buildingCode.setEditable(false);
         buildingCode.setPrefSize(150, 20);
-        HBox buildingCodeBox = new HBox(buildingCode);
+        HBox buildingCodeBox = new HBox(spacer3, buildingCode);
         buildingCodeBox.setPadding(new Insets(10, 0, 0, 0));
-        buildingCodeBox.setAlignment(Pos.CENTER);
+
+        Label openingHoursText = new Label("Opening hours :");
+        HBox openingHoursTextBox = new HBox(openingHoursText);
+        openingHoursTextBox.setPadding(new Insets(10, 250,0,250));
 
         Label openClosedText = new Label("Open/Closed");
         openClosedText.setPrefSize(75, 20);
@@ -445,21 +426,24 @@ public class AdminSceneBuildingsController implements Initializable {
         fromText.setPrefSize(75, 20);
         Label toText = new Label("To:");
         toText.setPrefSize(75,20);
+        Pane spacer6 = new Pane();
+        spacer6.setPrefSize(137.5, 20);
         Pane spacer7 = new Pane();
         spacer7.setPrefSize(50, 20);
         Pane spacer12 = new Pane();
         spacer12.setPrefSize(50, 20);
-        HBox fromToBox = new HBox(openClosedText, spacer12, fromText, spacer7, toText);
+        HBox fromToBox = new HBox(spacer6, openClosedText, spacer12, fromText, spacer7, toText);
         fromToBox.setPadding(new Insets(10, 0, 0, 0));
-        fromToBox.setAlignment(Pos.CENTER);
 
+        Pane spacer4 = new Pane();
+        spacer4.setPrefSize(137.5, 20);
         Pane spacer5 = new Pane();
         spacer5.setPrefSize(50, 20);
         Pane spacer11 = new Pane();
         spacer11.setPrefSize(50, 20);
         ChoiceBox<String> options = new ChoiceBox<>();
         options.setPrefSize(75, 20);
-        options.getItems().addAll("Open", Weekdays.CLOSED);
+        options.getItems().addAll("Open", Weekdays.getClosed());
         options.setValue("Open");
         ChoiceBox<String> from = new ChoiceBox<>();
         from.setPrefSize(75, 20);
@@ -478,8 +462,8 @@ public class AdminSceneBuildingsController implements Initializable {
                     week.setCurrent(current);
                     week.redraw();
 
-                    if (options.getValue().equals(Weekdays.CLOSED)) {
-                        week.dayChanged(week.getCurrent(), Weekdays.CLOSED);
+                    if (options.getValue().equals(Weekdays.getClosed())) {
+                        week.dayChanged(week.getCurrent(), Weekdays.getClosed());
                         return;
                     }
 
@@ -499,8 +483,8 @@ public class AdminSceneBuildingsController implements Initializable {
         EventHandler<ActionEvent> fromToEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (options.getValue().equals(Weekdays.CLOSED)) {
-                    week.dayChanged(week.getCurrent(), Weekdays.CLOSED);
+                if (options.getValue().equals(Weekdays.getClosed())) {
+                    week.dayChanged(week.getCurrent(), Weekdays.getClosed());
                     return;
                 }
 
@@ -524,12 +508,12 @@ public class AdminSceneBuildingsController implements Initializable {
             public void handle(ActionEvent event) {
                 ChoiceBox<String> source = (ChoiceBox<String>) event.getSource();
                 String status = source.getValue();
-                if (status.equals(Weekdays.CLOSED)) {
+                if (status.equals(Weekdays.getClosed())) {
                     fromText.setVisible(false);
                     toText.setVisible(false);
                     from.setVisible(false);
                     to.setVisible(false);
-                    week.dayChanged(week.getCurrent(), Weekdays.CLOSED);
+                    week.dayChanged(week.getCurrent(), Weekdays.getClosed());
                 }
                 if (status.equals("Open")) {
                     fromText.setVisible(true);
@@ -542,21 +526,23 @@ public class AdminSceneBuildingsController implements Initializable {
                 }
             }
         });
-        HBox openingHours = new HBox(options, spacer11, from, spacer5, to);
+        HBox openingHours = new HBox(spacer4, options, spacer11, from, spacer5, to);
         openingHours.setPadding(new Insets(10, 0,10, 0));
-        openingHours.setAlignment(Pos.CENTER);
 
-        HBox calender = new HBox(week);
-        calender.setPadding(new Insets(10, 0, 10, 0));
-        calender.setAlignment(Pos.CENTER);
+        HBox calender = new HBox();
+        Pane calenderSpacer = new Pane();
+        calenderSpacer.setPrefSize(20, 140);
+        calender.getChildren().addAll(calenderSpacer, week);
 
         //HBox for the text saying "Bike station:"
+        Pane spacer8 = new Pane();
+        spacer8.setPrefSize(260, 20);
         Label bikeStationText = new Label("Bike station:");
         bikeStationText.setPrefSize(75, 20);
-        HBox bikeStationTextBox = new HBox(bikeStationText);
-        bikeStationTextBox.setAlignment(Pos.CENTER);
 
         //HBox for the CheckBox and the TextField
+        Pane spacer9 = new Pane();
+        spacer9.setPrefSize(200, 20);
         CheckBox hasBikeStationCB = new CheckBox("has bike station");
         TextField bikesAmountInput = new TextField();
         bikesAmountInput.setPromptText("Amount");
@@ -577,21 +563,13 @@ public class AdminSceneBuildingsController implements Initializable {
                 bikesAmountInput.setVisible(false);
             }
         });
-        HBox bikeStationInput = new HBox(hasBikeStationCB, spacer10, bikesAmountInput);
+        HBox bikeStationInput = new HBox(spacer9, hasBikeStationCB, spacer10, bikesAmountInput);
         bikeStationInput.setPadding(new Insets(10, 0, 0, 0));
-        bikeStationInput.setAlignment(Pos.CENTER);
-
-        HBox imageSelectorWidgetBox = new HBox();
-        imageSelectorWidgetBox.setAlignment(Pos.CENTER);
-        ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
-        imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
-        imageSelectorWidgetBox.setPadding(new Insets(10, 10, 0, 0));
 
         Button submit = new Button("submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
-        submitBox.setPadding(new Insets(10, 0,10, 0));
-        submitBox.setAlignment(Pos.CENTER);
+        submitBox.setPadding(new Insets(10, 250,10, 250));
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -599,10 +577,9 @@ public class AdminSceneBuildingsController implements Initializable {
                 if (!hasBikeStationCB.isSelected()) {
                     bikes = null;
                 }
-                Node status = modifyBuilding(address.getText(), name.getText(),
+                Label status = modifyBuilding(address.getText(), name.getText(),
                         building.getCode(), week.getWeekDays().toString(),
-                        bikes, week.getWeekDays().checkCorrectness(),
-                        imageSelectorWidget.getImage());
+                        bikes, week.getWeekDays().checkCorrectness());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -619,11 +596,11 @@ public class AdminSceneBuildingsController implements Initializable {
 
             }
         });
-
+        HBox bikeStationTextBox = new HBox(spacer8, bikeStationText);
         root.getChildren().addAll(headerBox, addressTextBox, addressBox, nameTextBox,
-                nameBox, buildingCodeTextBox, buildingCodeBox, fromToBox, openingHours,
-                calender, bikeStationTextBox, bikeStationInput,
-                imageSelectorWidgetBox, submitBox);
+                nameBox, buildingCodeTextBox, buildingCodeBox, openingHoursTextBox,
+                fromToBox, openingHours, calender, bikeStationTextBox, bikeStationInput,
+                submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -632,10 +609,9 @@ public class AdminSceneBuildingsController implements Initializable {
         stage.showAndWait();
     }
 
-    private Node modifyBuilding(String location, String name, int buildingCode,
-                                 String openingHours, String bikes, boolean openingHoursCorrect,
-                                File image) {
-        Label message = null;
+    private Label modifyBuilding(String address, String name, int buildingCode,
+                                 String openingHours, String bikes, boolean openingHoursCorrect) {
+        Label result = null;
         Integer bikesInt = null;
         // checking if bikes input is actually valid
         if (bikes == null) {
@@ -644,38 +620,29 @@ public class AdminSceneBuildingsController implements Initializable {
             try {
                 bikesInt = Integer.parseInt(bikes.trim());
                 if (bikesInt < 0) {
-                    message = new Label("The amount of bikes cannot be negative");
+                    result = new Label("The amount of bikes cannot be negative");
                 }
             } catch (NumberFormatException e) {
-                message = new Label("The amount of bikes is not a number");
+                result = new Label("The amount of bikes is not a number");
             }
         }
 
         if (!openingHoursCorrect) {
-            message = new Label("These opening hours don't make sense!");
+            result = new Label("These opening hours don't make sense!");
         }
 
-        if (!location.equals("") && !name.equals("") && openingHoursCorrect) {
-            Building building = new Building(buildingCode, name, location, openingHours,
-                     bikesInt);
-            BuildingCommunication.updateBuilding(building);
-            if (image != null) {
-                ImageCommunication.updateBuildingImage(buildingCode, image);
-            }
-
+        if (!address.equals("") && !name.equals("") && openingHoursCorrect) {
+            BuildingCommunication.addBuildingToDatabase(buildingCode,
+                    name, address, openingHours, bikesInt);
         } else {
-            if (message == null) {
-                message = new Label("All the fields have to be entered");
+            if (result == null) {
+                result = new Label("All the fields have to be entered");
             }
         }
-        HBox res = null;
-        if (message != null) {
-            message.setStyle("-fx-text-fill: red");
-            res = new HBox();
-            res.setAlignment(Pos.CENTER);
-            res.getChildren().add(message);
+        if (result != null) {
+            result.setPadding(new Insets(10, 175, 0,175));
         }
-        return res;
+        return result;
     }
 
     @FXML

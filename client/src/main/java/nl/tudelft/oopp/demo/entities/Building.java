@@ -1,8 +1,11 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.util.Objects;
+import javafx.scene.image.Image;
+
 public class Building {
 
-    private Integer buildingCode;
+    private Integer code;
     private String name;
     private String location;
     private String openingHours;
@@ -11,41 +14,34 @@ public class Building {
 
     /**
      * Creates a new Building object.
-     * @param buildingCode the number of the Building
+     * @param code the number of the Building
      * @param name a String with the full name of the Building
      * @param location a String with the street
      * @param openingHours a String with format hh:mm-hh:mm for
      *                     every day of the week separated by a ","
+     * @param image a photo of the building
      * @param bikes the amount of bikes at the building, null if building has no bike station
      */
-    public Building(Integer buildingCode,
+    public Building(Integer code,
                     String name,
                     String location,
                     String openingHours,
-                    //String image,
+                    String image,
                     Integer bikes) {
-        this.buildingCode = buildingCode;
+        this.code = code;
         this.name = name;
         this.location = location;
         this.openingHours = openingHours;
-        //this.image = image;
+        this.image = image;
         this.bikes = bikes;
     }
 
     public Integer getCode() {
-        return buildingCode;
+        return code;
     }
 
-    public void setCode(Integer buildingCode) {
-        this.buildingCode = buildingCode;
-    }
-
-    public Integer getBuildingCode() {
-        return buildingCode;
-    }
-
-    public void setBuildingCode(Integer buildingCode) {
-        this.buildingCode = buildingCode;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -89,12 +85,12 @@ public class Building {
     }
 
     public String toString() {
-        return "{" + buildingCode + ", " + name + ", "
-                + location + ", " + openingHours + ", " + "image" + ", " + bikes + "}";
+        return "{" + code + ", " + name + ", "
+                + location + ", " + openingHours + ", " + "image" + "Bikes: " + bikes + "}";
     }
 
     public String getNameAndCode() {
-        return this.buildingCode + " " + this.name;
+        return this.code + " " + this.name;
     }
 
     @Override
@@ -106,11 +102,16 @@ public class Building {
             return false;
         }
         Building building = (Building) o;
-        return buildingCode.equals(building.buildingCode)
+        return code.equals(building.code)
                 && name.equals(building.name)
                 && location.equals(building.location)
                 && openingHours.equals(building.openingHours)
-                //&& image.equals(building.image)
+                && image.equals(building.image)
                 && bikes.equals(building.bikes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, name, location, openingHours, image, bikes);
     }
 }

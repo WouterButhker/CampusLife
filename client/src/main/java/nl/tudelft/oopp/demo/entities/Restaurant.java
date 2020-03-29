@@ -5,24 +5,24 @@ import java.util.Objects;
 public class Restaurant {
 
     private Integer id;
+    private Integer building;
     private String name;
-    private Integer buildingCode;
     private String description;
 
     /**
      * Creates a new Restaurant object.
-     *
-     * @param id the ID of the restaurant
-     * @param name         String with the name of the Restaurant
-     * @param buildingCode the code of the building the Restaurant is in
-     * @param description a String containing the description of the restaurant
+     * @param id the id of the restaurant
+     * @param building the building id where the restaurant is located
+     * @param name then name of the restaurant
+     * @param description then description of the restaurant
      */
-    public Restaurant(Integer id, String name,
-                      Integer buildingCode,
+    public Restaurant(Integer id,
+                      Integer building,
+                      String name,
                       String description) {
         this.id = id;
+        this.building = building;
         this.name = name;
-        this.buildingCode = buildingCode;
         this.description = description;
     }
 
@@ -30,8 +30,16 @@ public class Restaurant {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Integer building) {
+        this.building = building;
     }
 
     public String getName() {
@@ -42,14 +50,6 @@ public class Restaurant {
         this.name = name;
     }
 
-    public Integer getBuildingCode() {
-        return buildingCode;
-    }
-
-    public void setBuildingCode(Integer buildingCode) {
-        this.buildingCode = buildingCode;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -57,30 +57,4 @@ public class Restaurant {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String toString() {
-        return "{" + id + ", " + name + ", "
-                + buildingCode + ", " + description + "}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Restaurant)) {
-            return false;
-        }
-        Restaurant restaurant = (Restaurant) o;
-        return id == restaurant.id
-                && name.equals(restaurant.name)
-                && buildingCode.equals(restaurant.buildingCode)
-                && description.equals(restaurant.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, buildingCode, description);
-    }
-
 }

@@ -1,8 +1,9 @@
 package nl.tudelft.oopp.demo.testfolder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,21 +19,14 @@ class BuildingTest {
     private Building building;
 
     @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
-
-    @BeforeEach
     void setUpper() {
         code = 42069;
         name = "The Arena";
         location = "CityStreetRoute";
-        openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, "
-                + "08:00-22:00, 08:00-22:00, 08:00-22:00";
+        openingHours = "08:00-22:00";
         image = "https://cdn.bulbagarden.net/upload/3/36/Canalave_Gym_anime.png";
         bikes = 5;
-        building = new Building(code, name, location, openingHours, bikes); //image,
-        building.setImage(image);
+        building = new Building(code, name, location, openingHours, image, bikes);
     }
 
     @Test
@@ -47,9 +41,8 @@ class BuildingTest {
 
     @Test
     void setCodeTest() {
-        int num = 1337;
-        building.setCode(num);
-        assertEquals(num, building.getCode().intValue());
+        building.setCode(1337);
+        assertEquals(1337, building.getCode());
     }
 
     @Test
@@ -104,13 +97,13 @@ class BuildingTest {
     @Test
     void toStringTest() {
         assertEquals("{" + code + ", " + name + ", " + location
-                + ", " + openingHours + ", " + "image" + ", " + bikes + "}", building.toString());
+                + ", " + openingHours + ", " + "image" + "}", building.toString());
     }
 
     @Test
     void equalsTest() {
-        Building buildingCopy = new Building(code, name, location, openingHours, bikes); //image,
-        assertTrue(building.equals(buildingCopy));
+        Building buildingCopy = new Building(code, name, location, openingHours, image, bikes);
+        assertEquals(building, buildingCopy);
     }
 
     @Test

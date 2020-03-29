@@ -6,171 +6,44 @@
 
 <VBox fx:id="mainBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneRoomsController">
    <children>
-      <VBox prefHeight="608.0" prefWidth="1120.0">
+      <AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1120.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rooms Page">
-                     <font>
-                        <Font size="42.0" />
-                     </font>
-                  </Text>
-               </children>
-            </HBox>
-            <HBox prefHeight="532.0" prefWidth="1120.0">
-               <children>
-                  <Pane prefHeight="200.0" prefWidth="100.0" />
-                  <VBox fx:id="settingsBox" prefHeight="48.0" prefWidth="544.0">
+            <Text layoutX="340.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the rooms page">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <Text layoutX="130.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adding a new room">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <TextField fx:id="roomCodeInput" layoutX="130.0" layoutY="173.0" promptText="Room code" />
+            <TextField fx:id="roomNameInput" layoutX="130.0" layoutY="217.0" promptText="Room name" />
+            <TextField fx:id="capacityInput" layoutX="130.0" layoutY="258.0" promptText="Capacity" />
+            <CheckBox fx:id="tvBox" layoutX="131.0" layoutY="407.0" mnemonicParsing="false" text="TV" />
+            <CheckBox fx:id="whiteboardBox" layoutX="131.0" layoutY="373.0" mnemonicParsing="false" text="Whiteboard" />
+            <ChoiceBox fx:id="rightsList" layoutX="129.0" layoutY="338.0" prefWidth="150.0" />
+            <ChoiceBox fx:id="buildingList" layoutX="129.0" layoutY="302.0" prefWidth="150.0" />
+            <Text layoutX="39.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room code" />
+            <Text layoutX="37.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room name" />
+            <Text layoutX="46.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Capacity" />
+            <Text layoutX="47.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building" />
+            <Text layoutX="27.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Who can use it?" />
+            <Text layoutX="45.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Facilities:" />
+            <Button fx:id="submit" layoutX="130.0" layoutY="455.0" mnemonicParsing="false" onAction="#submitNewRoom" text="Submit" />
+            <Button layoutX="373.0" layoutY="130.0" mnemonicParsing="false" onAction="#refreshRoomsPage" text="Refresh" />
+            <ChoiceBox fx:id="buildingList2" layoutX="772.0" layoutY="97.0" prefWidth="150.0" />
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="604.0" layoutY="142.0" prefHeight="432.0" prefWidth="417.0">
+              <content>
+                <AnchorPane fx:id="anchorPaneRooms" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Adding a new room">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="372.0" prefWidth="544.0">
-                           <children>
-                              <VBox prefHeight="163.0" prefWidth="188.0">
-                                 <children>
-                                    <HBox alignment="CENTER" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Room code">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Room name">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Text>
-                                       </children></HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="60.0" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacity">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Text>
-                                       </children></HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="156.0" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Building">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="151.0" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Who can use it?">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="156.0" prefHeight="30.0" prefWidth="0.0">
-                                       <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Facilities:">
-                                             <font>
-                                                <Font size="16.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <VBox prefHeight="434.0" prefWidth="275.0">
-                                 <children>
-                                    <HBox alignment="CENTER" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <TextField fx:id="roomCodeInput" prefWidth="200.0" promptText="Room code" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <TextField fx:id="roomNameInput" prefWidth="200.0" promptText="Room name" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="65.0" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <TextField fx:id="capacityInput" prefWidth="200.0" promptText="Capacity" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="109.0" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <ChoiceBox fx:id="buildingList" prefWidth="150.0" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER" layoutX="10.0" layoutY="208.0" prefHeight="55.0" prefWidth="0.0">
-                                       <children>
-                                          <ChoiceBox fx:id="rightsList" prefWidth="150.0" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="215.0" prefHeight="40.0" prefWidth="0.0">
-                                       <children>
-                                          <CheckBox fx:id="tvBox" mnemonicParsing="false" text="TV" />
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="221.0" prefHeight="40.0" prefWidth="0.0">
-                                       <children>
-                                          <CheckBox fx:id="whiteboardBox" mnemonicParsing="false" text="Whiteboard" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="200.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#refreshRoomsPage" text="Refresh">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font></Button>
-                              <Pane prefHeight="0.0" prefWidth="15.0" />
-                              <Button fx:id="submit" mnemonicParsing="false" onAction="#submitNewRoom" text="Submit">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font></Button>
-                           </children></HBox>
+                        <VBox fx:id="roomsList" />
                      </children>
-                  </VBox>
-                  <Pane prefHeight="200.0" prefWidth="250.0" />
-                  <VBox fx:id="scrollPaneVBox" prefHeight="432.0" prefWidth="418.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="45.0" prefWidth="0.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a building to view rooms from">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Text>
-                              <Pane prefHeight="0.0" prefWidth="15.0" />
-                              <ChoiceBox fx:id="buildingList2" prefWidth="150.0" />
-                           </children>
-                        </HBox>
-                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="432.0" prefWidth="417.0">
-                          <content>
-                            <AnchorPane fx:id="anchorPaneRooms" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
-                                 <children>
-                                    <VBox fx:id="roomsList" />
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </ScrollPane>
-                     </children></VBox>
-               </children>
-            </HBox>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
          </children>
-      </VBox>
+      </AnchorPane>
    </children>
 </VBox>

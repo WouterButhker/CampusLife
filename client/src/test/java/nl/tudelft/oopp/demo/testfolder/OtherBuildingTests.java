@@ -1,10 +1,8 @@
 package nl.tudelft.oopp.demo.testfolder;
 
-import java.util.List;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
-import nl.tudelft.oopp.demo.entities.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,17 +10,25 @@ public class OtherBuildingTests {
 
     @BeforeEach
     void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
+        AuthenticationCommunication.login("random", "admin");
+    }
+
+    @Test
+    public void testCountBuildings() {
+        Integer response = BuildingCommunication.countAllBuildings();
+        System.out.println("---------------------------");
+        System.out.println("Test = testCountBuildings");
+        System.out.println(response);
     }
 
     @Test
     public void testGetBuildingsCodeAndName() {
-        List<String> buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
+        String[] buildingsCodeAndName = BuildingCommunication.getBuildingsCodeAndName();
         System.out.println("---------------------------");
         System.out.println("Test = testGetBuildingsCodeAndName");
         if (buildingsCodeAndName != null) {
-            for (String building : buildingsCodeAndName) {
-                System.out.println(building);
+            for (int i = 0; i < buildingsCodeAndName.length; i++) {
+                System.out.println(buildingsCodeAndName[i]);
             }
         } else {
             System.out.println("NULL");

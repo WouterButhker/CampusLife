@@ -2,7 +2,6 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,8 +56,6 @@ public class LoginScreenController {
             AuthenticationCommunication.login(usernameField.getText(), passwordField.getText());
             RoutingScene routingScene = (RoutingScene) passwordField.getScene();
             routingScene.pushRoute(new MainMenuRoute());
-            passwordField.setText("");
-            usernameField.setText("");
         } catch (HttpClientErrorException e) {
             System.out.println("login failed: " + e.getStatusCode());
         } catch (ResourceAccessException e) {
@@ -111,9 +108,6 @@ public class LoginScreenController {
         vbox.setStyle("-fx-background-color: -primary-color");
         welcome.setStyle("-fx-font-size: 69px; -fx-text-fill: "
                 + "-primary-color-text; -fx-font-weight: bold;");
-
-        passwordField.setText("");
-        usernameField.setText("");
 
         Node root = vbox;
         setGlobalEventHandler(root);

@@ -12,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Food;
@@ -47,10 +46,7 @@ public class RestaurantMenuRoute extends Route {
      * @param restaurant the restaurant to be displayed
      */
     public RestaurantMenuRoute(Restaurant restaurant) {
-        // TODO: Date and time
-        // TODO: GET RIGHT USER
-        foodOrder = new FoodOrder(AuthenticationCommunication.myUserId,"Today",
-                "ASAP", restaurant.getId());
+        foodOrder = new FoodOrder(null, restaurant.getId(), -1);
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
@@ -69,7 +65,7 @@ public class RestaurantMenuRoute extends Route {
         restaurantContainer = new HBox();
         menuContainer.getChildren().add(restaurantContainer);
 
-        Image restaurantImage = new Image("/images/main-screen-food.jpg");
+        Image restaurantImage = new Image("https://therockbury.com/wp-content/uploads/2014/03/subway-logo.jpg");
         restaurantPicture = new ImageView(restaurantImage);
         restaurantPicture.setPreserveRatio(true);
         restaurantContainer.getChildren().add(restaurantPicture);

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.UserDtO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,13 +19,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+
 public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
     public static String myUsername;
-    public static String myImageUrl;
-    public static List<String> ids;
-    public static String auth;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -39,14 +37,9 @@ public class AuthenticationCommunication {
      */
     public static void login(String username, String password) throws HttpClientErrorException {
         authenticationHeader = createHeaders(username, password);
-        if (authenticationHeader != null) {
-            myUsername = username;
-            saveUserId(username);
-            saveUserRole(username);
-            saveUserImageUrl(myUserId);
-        } else {
-            System.out.println("Login failed");
-        }
+        myUsername = username;
+        saveUserId(username);
+        saveUserRole(username);
     }
 
     /**
@@ -67,9 +60,7 @@ public class AuthenticationCommunication {
     public static void saveUserId(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getId?username=" + username);
-        if (response != null && response.getBody() != null
-                && response.getStatusCode().toString().equals("200 OK")) {
-            ///ids = ImageCommunication.getAllImageIds();
+        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
             System.out.println("USER id: " + response.getBody());
             myUserId = Integer.parseInt(response.getBody());
         } else {
@@ -86,28 +77,9 @@ public class AuthenticationCommunication {
     public static void saveUserRole(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getRole?username=" + username);
-        if (response != null && response.getBody() != null
-                && response.getStatusCode().toString().equals("200 OK")) {
+        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
             System.out.println("USER role: " + response.getBody());
             myUserRole = response.getBody();
-        } else {
-            System.out.println("Login failed");
-        }
-    }
-
-    /**
-     * Saves the image URL of the profile photo of the user in a static variable.
-     * @param userId the id of the user that logged in
-     */
-    public static void saveUserImageUrl(Integer userId) {
-        ResponseEntity<String> response = authenticatedRequest(
-                "rest/users/image/getUrl/" + userId);
-        if (response != null && response.getBody() == null) {
-            myImageUrl = "/images/myProfile.png";
-        } else if (response != null && response.getBody() != null
-                && response.getStatusCode().toString().equals("200 OK")) {
-            System.out.println("Image Url: " + response.getBody());
-            myImageUrl = response.getBody();
         } else {
             System.out.println("Login failed");
         }
@@ -121,7 +93,7 @@ public class AuthenticationCommunication {
      * @throws HttpClientErrorException when authentication fails
      * @throws ResourceAccessException when the server can't be reached
      */
-    public static ResponseEntity<String> register(User user)
+    public static ResponseEntity<String> register(UserDtO user)
             throws HttpClientErrorException, ResourceAccessException {
 
 
@@ -135,7 +107,7 @@ public class AuthenticationCommunication {
         String url = SERVER_URL + "/register";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<User> request = new HttpEntity<>(user, headers);
+        HttpEntity<UserDtO> request = new HttpEntity<>(user, headers);
 
         out = template.exchange(url, HttpMethod.POST, request, String.class);
         System.out.println(out);
@@ -225,7 +197,7 @@ public class AuthenticationCommunication {
     }
 
     private static HttpHeaders createHeaders(String username, String password) {
-        auth = username + ":" + password;
+        String auth = username + ":" + password;
 
         String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
         HttpHeaders headers = new HttpHeaders();

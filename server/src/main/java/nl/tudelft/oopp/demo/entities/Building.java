@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Building {
 
     @Id
-    @Column(name = "buildingCode", unique = true)
+    @Column(name = "buildingCode")
     private Integer buildingCode;
 
     @Column(name = "name")
@@ -49,21 +49,6 @@ public class Building {
         this.openingHours = openingHours;
         this.bikes = bikes;
     }
-
-    /*
-    public Building(Integer buidlingCode) {
-        BuildingRepository buildingRepository = null;
-        List<Building> buildingList = buildingRepository.getBuildingByCode(buildingCode);
-        if(buildingList.size() > 0) {
-            Building b = buildingList.get(0);
-            this.buildingCode = b.buildingCode;
-            this.name = b.name;
-            this.location = b.location;
-            this.openingHours = b.openingHours;
-            this.bikes = b.bikes;
-        }
-        this.buildingCode = buidlingCode;
-    }*/
 
     public Integer getBuildingCode() {
         return buildingCode;
