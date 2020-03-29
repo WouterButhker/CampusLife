@@ -103,4 +103,6 @@ public class BuildingController {
         return ImageController.downloadFile(buildingImageRepository.findByImageId(imageId));
     }
 
+
+
 }

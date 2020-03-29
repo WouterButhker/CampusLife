@@ -423,6 +423,14 @@ public class AdminSceneRoomsController implements Initializable {
             deleteContainer.setPrefHeight(20);
             deleteContainer.setAlignment(Pos.TOP_RIGHT);
             deleteContainer.setPadding(new Insets(5, 5, 0, 0));
+            int finalI = i;
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    ImageCommunication.deleteRoomImage(imageUrls.get(finalI));
+                    /// TODO reload this popup
+                }
+            });
             StackPane container = new StackPane(imageView, deleteContainer);
             container.setPrefSize(100, 100);
             container.setPadding(new Insets(5));

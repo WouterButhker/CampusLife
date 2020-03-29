@@ -18,6 +18,8 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 public class ImageCommunication {
@@ -131,4 +133,20 @@ public class ImageCommunication {
     public static List<String> getRoomImageUrl(String roomCode) {
         return getImagesUrl("/rooms/image/getUrl/" + roomCode, "images/RoomTempIMG.jpg");
     }
+
+    private static String deleteImageByUrl(String imageUrl, String defaultPath, String deleteUrl) {
+        String imageId = imageUrl.substring(defaultPath.length());
+        System.out.println("id:" + imageId);
+        System.out.println("delete: "+ (deleteUrl + imageId));
+        return ServerCommunication.authenticatedDeleteRequest(deleteUrl + imageId).getBody();
+    }
+
+    public static String deleteRoomImage(String imageUrl) {
+        if (!imageUrl.equals("images/RoomTempIMG.jpg"))
+            return deleteImageByUrl(imageUrl,
+                    SERVER_URL + "/rooms/image/downloadFile/",
+                     "/rooms/image/");
+        return "400 BAD_REQUEST";
+    }
+
 }
