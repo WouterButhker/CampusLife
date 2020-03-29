@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
@@ -36,14 +38,27 @@ public class GalleryWidget extends StackPane {
         buttonContainer.setAlignment(Pos.CENTER);
         leftButton = new Button();
         leftButton.getStyleClass().add("left-arrow-white");
+        leftButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                prevImage();
+            }
+        });
         buttonContainer.getChildren().add(leftButton);
 
         rightButton = new Button();
         rightButton.getStyleClass().add("right-arrow-white");
+        rightButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                nextImage();
+            }
+        });
         buttonContainer.getChildren().add(rightButton);
         getChildren().add(buttonContainer);
 
         refreshImage();
+        updateButtonVisibility();
 
         prefWidthProperty().addListener((obs, oldWidth, newWidth) -> {
             resizeWidget(getPrefWidth(), getPrefHeight());
@@ -98,12 +113,18 @@ public class GalleryWidget extends StackPane {
         }
     }
 
+    private void updateButtonVisibility() {
+        leftButton.setVisible(currentImage - 1 >= 0);
+        rightButton.setVisible(currentImage + 1 < images.size());
+    }
+
     private void nextImage() {
         currentImage += 1;
         if (currentImage >= images.size()) {
             currentImage = images.size() - 1;
         }
 
+        updateButtonVisibility();
         refreshImage();
     }
 
@@ -113,6 +134,7 @@ public class GalleryWidget extends StackPane {
             currentImage = 0;
         }
 
+        updateButtonVisibility();
         refreshImage();
     }
 }
