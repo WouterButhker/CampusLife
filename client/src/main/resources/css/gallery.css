@@ -1,5 +1,25 @@
 @import url("palette.css")
 
+.gallery-text {
+    -fx-font-family: -primary-font-name;
+}
+
+.reserve-button {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+    -fx-padding: 16;
+}
+
+.reserve-button:hover {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-background-color: -secondary-color-dark;
+    -fx-background-radius: 8;
+    -fx-padding: 16;
+}
+
 .left-arrow-white {
     -fx-background-color: #00000000;
     -fx-background-image: url('/images/arrow_left_white.png');

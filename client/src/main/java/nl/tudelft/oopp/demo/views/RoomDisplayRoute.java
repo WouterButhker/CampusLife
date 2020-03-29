@@ -3,27 +3,46 @@ package nl.tudelft.oopp.demo.views;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.GalleryWidget;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoomDisplayRoute extends Route {
     private Room room;
 
     private VBox rootContainer;
-    private VBox topLeftQuadrant;
-    private VBox topRightQuadrant;
-    private VBox botLeftQuadrant;
+    private HBox contentContainer;
+    private VBox leftContainer;
+    private GalleryWidget galleryWidget;
+
+    private Text title;
+    private Rectangle titlePadding;
+    private TextWithIcon capacityText;
+    private TextWithIcon whiteboardText;
+    private TextWithIcon tvText;
+    private TextWithIcon buildingText;
+
+    private Rectangle buttonPadding;
+    private Button reserveButton;
 
     /**
      * Instantiates the room display route for the room passed as parameter.
@@ -37,108 +56,64 @@ public class RoomDisplayRoute extends Route {
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
 
-        GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(16, 16, 16, 16));
-        rootContainer.getChildren().add(gridPane);
-        topLeftQuadrant = new VBox();
-        topLeftQuadrant.setAlignment(Pos.TOP_LEFT);
-        topLeftQuadrant.setFillWidth(false);
-        gridPane.getChildren().add(topLeftQuadrant);
-        GridPane.setConstraints(topLeftQuadrant, 0, 0, 1, 1);
-        topRightQuadrant = new VBox();
-        topRightQuadrant.setAlignment(Pos.TOP_RIGHT);
-        topRightQuadrant.setFillWidth(false);
-        gridPane.getChildren().add(topRightQuadrant);
-        GridPane.setConstraints(topRightQuadrant, 1, 0, 1, 1);
-        botLeftQuadrant = new VBox();
-        botLeftQuadrant.setAlignment(Pos.TOP_CENTER);
-        botLeftQuadrant.setFillWidth(true);
-        gridPane.getChildren().add(botLeftQuadrant);
-        GridPane.setConstraints(botLeftQuadrant, 0, 1, 1, 1);
+        contentContainer = new HBox();
+        rootContainer.getChildren().add(contentContainer);
 
-        topLeftQuadrant.getChildren().add(createDescriptionTextBox());
-        topRightQuadrant.getChildren().add(createLocatedAtBox());
-        botLeftQuadrant.getChildren().add(createReserveButton());
+        leftContainer = new VBox();
+        leftContainer.setSpacing(16);
+        leftContainer.setAlignment(Pos.CENTER);
+        leftContainer.setPadding(new Insets(32));
+        contentContainer.getChildren().add(leftContainer);
 
-        rootContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            if (newScene != null) {
-                resizeDisplay(newScene.getWidth());
-                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                    resizeDisplay(newWidth.doubleValue());
-                });
-            }
-        });
-    }
+        galleryWidget = new GalleryWidget(getRoomImages());
+        contentContainer.getChildren().add(galleryWidget);
 
-    private void resizeDisplay(double newWidth) {
-        topLeftQuadrant.setPrefWidth(newWidth * 0.5 - 16);
-        topRightQuadrant.setPrefWidth(newWidth * 0.5 - 16);
-        botLeftQuadrant.setPrefWidth(newWidth * 0.5 - 16);
-    }
+        // Add title
+        title = new Text(String.format("%s (%s)", room.getName(), room.getRoomCode()));
+        title.getStyleClass().add("gallery-text");
+        leftContainer.getChildren().add(title);
+        titlePadding = new Rectangle();
+        titlePadding.setHeight(24);
+        leftContainer.getChildren().add(titlePadding);
 
-    @Override
-    public Parent getRootElement() {
-        return rootContainer;
-    }
+        // Add info texts
+        Image capacityImage = new Image("/images/capacity_icon.png");
+        String capacityString  = String.format("Up to %d people", room.getCapacity());
+        capacityText = new TextWithIcon(capacityImage, capacityString);
+        leftContainer.getChildren().add(capacityText);
 
-    private Node createDescriptionTextBox() {
-        Text roomTitle = new Text(String.format("%s (%s)", room.getName(), room.getRoomCode()));
-        roomTitle.getStyleClass().add("room-display-title");
-
+        Image whiteboardImage = new Image("/images/whiteboard_icon.png");
         String whiteboardString;
         if (room.isHasWhiteboard()) {
-            whiteboardString = "- Does have a whiteboard";
+            whiteboardString = "Does have a whiteboard";
         } else {
-            whiteboardString = "- Does not have a whiteboard";
+            whiteboardString = "Does not have a whiteboard";
         }
-        Text whiteBoardText = new Text(whiteboardString);
-        whiteBoardText.getStyleClass().add("room-display-text");
+        whiteboardText = new TextWithIcon(whiteboardImage, whiteboardString);
+        leftContainer.getChildren().add(whiteboardText);
 
+        Image tvImage = new Image("/images/tv_icon.png");
         String tvString;
         if (room.isHasTV()) {
-            tvString = "- Does have a TV";
+            tvString = "Does have a TV";
         } else {
-            tvString = "- Does not have a TV";
+            tvString = "Does not have a TV";
         }
-        Text tvText = new Text(tvString);
-        tvText.getStyleClass().add("room-display-text");
-        Text capacityText = new Text(String.format("- Up to %d people", room.getCapacity()));
-        capacityText.getStyleClass().add("room-display-text");
+        tvText = new TextWithIcon(tvImage, tvString);
+        leftContainer.getChildren().add(tvText);
 
-        VBox rootContainer = new VBox();
-        rootContainer.setPadding(new Insets(16, 16, 16, 16));
+        Image buildingIcon = new Image("/images/building_icon.png");
+        String buildingString  = room.getBuilding().getName();
+        buildingText = new TextWithIcon(buildingIcon, buildingString);
+        leftContainer.getChildren().add(buildingText);
 
-        VBox infoContainer = new VBox();
-        infoContainer.setPadding(new Insets(16, 16, 0, 16));
-        infoContainer.getChildren().add(whiteBoardText);
-        infoContainer.getChildren().add(tvText);
-        infoContainer.getChildren().add(capacityText);
-        rootContainer.getChildren().add(roomTitle);
-        rootContainer.getChildren().add(infoContainer);
-        rootContainer.setStyle("-fx-background-color: -secondary-color-dark");
-
-        return rootContainer;
-    }
-
-    private Node createLocatedAtBox() {
-        VBox rootContainer = new VBox();
-        Text locatedAtText = new Text("Located at:");
-        locatedAtText.getStyleClass().add("room-display-text");
-
-        Image image = new Image("/images/main-screen-default-building.jpg");
-        RectangularImageButton button = new RectangularImageButton(image, "Drebbelweg");
-        button.setFitWidth(200);
-
-        rootContainer.setPadding(new Insets(8, 8, 8, 8));
-        rootContainer.setSpacing(8);
-        rootContainer.getChildren().addAll(locatedAtText, button);
-        rootContainer.setStyle("-fx-background-color: -secondary-color-dark");
-        return rootContainer;
-    }
-
-    private Node createReserveButton() {
-        Button button = new Button("Reserve room");
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        // Create reserve button
+        buttonPadding = new Rectangle();
+        buttonPadding.setHeight(24);
+        leftContainer.getChildren().add(buttonPadding);
+        reserveButton = new Button("Reserve room");
+        reserveButton.getStyleClass().add("reserve-button");
+        reserveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 Button button = (Button) event.getSource();
@@ -146,6 +121,86 @@ public class RoomDisplayRoute extends Route {
                 routingScene.pushRoute(new RoomReservationRoute(room));
             }
         });
-        return button;
+        leftContainer.getChildren().add(reserveButton);
+
+        rootContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
+                });
+                newScene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+                    resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
+                });
+            }
+        });
+    }
+
+    private void resizeDisplay(double newWidth, double newHeight) {
+        leftContainer.setPrefWidth(newWidth * 0.5);
+        title.setStyle("-fx-font-size: " + newHeight * 0.075);
+        title.setWrappingWidth(newWidth * 0.5 - 64);
+        double infoTextHeight = newHeight * 0.045;
+        capacityText.setPrefWidth(newWidth * 0.5 - 64);
+        capacityText.setPrefHeight(infoTextHeight);
+        whiteboardText.setPrefWidth(newWidth * 0.5 - 64);
+        whiteboardText.setPrefHeight(infoTextHeight);
+        tvText.setPrefWidth(newWidth * 0.5 - 64);
+        tvText.setPrefHeight(infoTextHeight);
+        buildingText.setPrefWidth(newWidth * 0.5 - 64);
+        buildingText.setPrefHeight(infoTextHeight);
+
+        reserveButton.setStyle("-fx-font-size: " + newHeight * 0.025);
+
+        galleryWidget.setPrefWidth(newWidth * 0.5);
+        galleryWidget.setPrefHeight(newHeight);
+    }
+
+    private List<Image> getRoomImages() {
+        List<String> imageUrls = ImageCommunication.getRoomImageUrl(room.getRoomCode());
+
+        List<Image> roomImages = new ArrayList<>();
+        for (String url : imageUrls) {
+            roomImages.add(new Image(url));
+        }
+        return roomImages;
+    }
+
+    @Override
+    public Parent getRootElement() {
+        return rootContainer;
+    }
+
+    private static class TextWithIcon extends HBox {
+        private ImageView imageView;
+        private Text text;
+
+        public TextWithIcon(Image icon, String text) {
+            setAlignment(Pos.CENTER_LEFT);
+            setPadding(new Insets(0, 0, 0, 24));
+            setSpacing(24);
+
+            imageView = new ImageView(icon);
+            getChildren().add(imageView);
+
+            this.text = new Text(text);
+            this.text.getStyleClass().add("gallery-text");
+            getChildren().add(this.text);
+
+            prefWidthProperty().addListener((obs, oldWidth, newWidth) -> {
+                resizeWidget(getPrefWidth(), getPrefHeight());
+            });
+            prefHeightProperty().addListener((obs, oldHeight, newHeight) -> {
+                resizeWidget(getPrefWidth(), getPrefHeight());
+            });
+        }
+
+        private void resizeWidget(double newWidth, double newHeight) {
+            text.setWrappingWidth(newWidth - newHeight * 0.8 - 24);
+            text.setStyle("-fx-font-size: " + newHeight);
+
+            imageView.setFitWidth(newHeight);
+            imageView.setFitHeight(newHeight);
+        }
     }
 }
