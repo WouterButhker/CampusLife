@@ -19,9 +19,10 @@ public class AgendaWidget extends VBox {
 
     private Listener listener;
 
+    private int minHour = 0;
+    private int maxHour = 23;
+
     private int topBlock = 10;
-    private int from = 0;
-    private int to = 23;
 
     private int selectedBlock = -1;
 
@@ -121,8 +122,29 @@ public class AgendaWidget extends VBox {
         redrawBlocks();
     }
 
+    /**
+     * Sets the minimum hour that is available.
+     * @param minHour the minimum hour (inclusive)
+     */
+    public void setMinHour(int minHour) {
+        this.minHour = minHour;
+
+        redrawBlocks();
+    }
+
+
+    /**
+     * Sets the maximum hour that is available.
+     * @param maxHour the maximum hour (inclusive)
+     */
+    public void setMaxHour(int maxHour) {
+        this.maxHour = maxHour;
+
+        redrawBlocks();
+    }
+
     private void scrollDown() {
-        if (topBlock + numb <= to) {
+        if (topBlock + numb <= 23) {
             topBlock += 1;
             redrawBlocks();
         }
@@ -137,14 +159,16 @@ public class AgendaWidget extends VBox {
 
     private void redrawBlocks() {
         for (int i = 0; i < numb; i++) {
-            agendaBlocks.get(i).setTime(String.format("%d:00", topBlock + i));
-            if ((topBlock + i) == selectedBlock) {
+            int hour = topBlock + i;
+            agendaBlocks.get(i).setTime(String.format("%d:00", hour));
+            if (hour == selectedBlock) {
                 agendaBlocks.get(i).setSelected(true);
             } else {
                 agendaBlocks.get(i).setSelected(false);
             }
-            agendaBlocks.get(i).setAvailable(availabilites[(topBlock + i)]);
-            if (!agendaBlocks.get(i).isAvailable) {
+            boolean isWithinRange = (minHour <= hour && hour <= maxHour);
+            agendaBlocks.get(i).setAvailable(availabilites[hour] && isWithinRange);
+            if (!agendaBlocks.get(i).isAvailable || !isWithinRange) {
                 agendaBlocks.get(i).setDisable(true);
             } else {
                 agendaBlocks.get(i).setDisable(false);

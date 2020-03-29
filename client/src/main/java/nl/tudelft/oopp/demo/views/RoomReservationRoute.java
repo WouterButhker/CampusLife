@@ -13,6 +13,7 @@ import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
+import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.widgets.AgendaWidget;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.CalendarWidget;
@@ -33,6 +34,7 @@ public class RoomReservationRoute extends Route {
 
     private List<RoomReservation> reservations;
     private Room room;
+    private Weekdays openingHours;
 
     /**
      * Instantiates a new RoomReservationRoute which displays the options
@@ -41,6 +43,7 @@ public class RoomReservationRoute extends Route {
      */
     public RoomReservationRoute(Room room) {
         this.room = room;
+        openingHours = new Weekdays(room.getBuilding().getOpeningHours());
         rootElement = new VBox();
 
         reservations = ReservationCommunication.getAllReservations();
@@ -62,6 +65,7 @@ public class RoomReservationRoute extends Route {
                 selectedDate = day;
                 reservationWidget.setPeriod(null, null);
                 agendaWidget.setAvailabilities(computeAvailabilities());
+                setOpeningTime();
             }
         });
         agendaWidget = new AgendaWidget(new AgendaWidget.Listener() {
@@ -114,6 +118,22 @@ public class RoomReservationRoute extends Route {
         });
 
         agendaWidget.setAvailabilities(computeAvailabilities());
+        setOpeningTime();
+    }
+
+    private void setOpeningTime() {
+        int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
+        dayOfWeek -= 2;
+        if (dayOfWeek == -2) {
+            dayOfWeek = 5;
+        } else if (dayOfWeek == -1) {
+            dayOfWeek = 6;
+        }
+        String openingTime = openingHours.getWeekdays().get(dayOfWeek);
+        int openingHour = Integer.parseInt(openingTime.substring(0, 2));
+        int closingHour = Integer.parseInt(openingTime.substring(6, 8));
+        agendaWidget.setMinHour(openingHour);
+        agendaWidget.setMaxHour(closingHour - 1);
     }
 
     private boolean[] computeAvailabilities() {
