@@ -90,7 +90,6 @@ public class AuthTest {
         Integer bikes = 30;
         Building building = new Building(buildingCode, name, location, openingHours, bikes);
         String url = "/buildings/";
-        System.out.println();
         mvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(building)))
