@@ -146,7 +146,7 @@ public class RoomsListRoute extends Route {
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
                 RoomsListRoute.this.roomList = RoomCommunication.getFilteredRooms(buildingCode,
                             myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
-                setRooms();
+               setRooms();
                 if (errorMessage.getText().equals("")) {
                     errorMessage.setText("Filters applied!");
                 }

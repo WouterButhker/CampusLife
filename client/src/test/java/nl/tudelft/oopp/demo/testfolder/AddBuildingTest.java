@@ -19,8 +19,7 @@ public class AddBuildingTest {
         Integer buildingCode = 1;
         String name = "Delete Me";
         String location = "Please";
-        String openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00,"
-                + " 08:00-22:00, 08:00-22:00, 08:00-22:00";
+        String openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
         Integer bikes = 42;
         Building building = new Building(buildingCode, name, location, openingHours, bikes);
         BuildingCommunication.saveBuilding(building);

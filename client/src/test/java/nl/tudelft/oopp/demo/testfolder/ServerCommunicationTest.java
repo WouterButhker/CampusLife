@@ -21,8 +21,7 @@ public class ServerCommunicationTest {
         Integer buildingCode = 35;
         String name = "Aula";
         String location = "Mekelweg 5";
-        String openingHours = "08:00-22:00, 08:00-22:00,"
-                + " 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
+        String openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
         Integer bikes = 12;
         Building building = new Building(buildingCode,
                 name, location, openingHours, bikes);

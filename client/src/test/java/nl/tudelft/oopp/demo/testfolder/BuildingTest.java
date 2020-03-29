@@ -1,11 +1,11 @@
 package nl.tudelft.oopp.demo.testfolder;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class BuildingTest {
 
@@ -27,8 +27,7 @@ class BuildingTest {
         code = 42069;
         name = "The Arena";
         location = "CityStreetRoute";
-        openingHours = "08:00-22:00, 08:00-22:00,"
-                + " 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
+        openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00";
         image = "https://cdn.bulbagarden.net/upload/3/36/Canalave_Gym_anime.png";
         bikes = 5;
         building = new Building(code, name, location, openingHours, bikes); //image,
