@@ -26,6 +26,7 @@ import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
 
+
 public class MainMenuRoute extends Route {
     public static final String BIKES_STRING = "Reserve a bike";
     public static final String ROOMS_STRING = "Reserve a room";
@@ -60,7 +61,9 @@ public class MainMenuRoute extends Route {
 
         rootContainer.getChildren().add(new AppBar(isAdmin));
 
-        addDummyRestaurantData();
+
+        // addDummyRestaurantData();
+
         createButtonsRow();
         createBuildingsTitle();
 
@@ -70,13 +73,14 @@ public class MainMenuRoute extends Route {
         rootContainer.getChildren().add(buildingsGrid);
     }
 
+    /*
     private void addDummyRestaurantData() {
         List<Restaurant> restaurants = RestaurantCommunication.getRestaurants();
         if (restaurants.isEmpty()) {
             Restaurant restaurant = RestaurantCommunication.createRestaurant(new Restaurant(
-                    null,
                     1,
                     "Subway",
+                    1,
                     "Takeaway food from Subway in Delft! "
                             + "Choose your favourite meal from a wide variety "
                             + "& have it delivered to your door!"
@@ -92,6 +96,7 @@ public class MainMenuRoute extends Route {
             FoodCommunication.createFood(new Food(null, "Pizza 4", id, 3.29));
         }
     }
+     */
 
     @Override
     public Parent getRootElement() {
@@ -139,10 +144,11 @@ public class MainMenuRoute extends Route {
             public void handle(MouseEvent event) {
                 RectangularImageButton button = (RectangularImageButton) event.getSource();
                 RoutingScene routingScene = (RoutingScene) button.getScene();
+                routingScene.pushRoute(new RestaurantsListRoute());
 
-                Restaurant restaurant = RestaurantCommunication.getRestaurants().get(0);
+                //Restaurant restaurant = RestaurantCommunication.getRestaurants().get(0);
 
-                routingScene.pushRoute(new RestaurantMenuRoute(restaurant));
+                //routingScene.pushRoute(new RestaurantMenuRoute(restaurant));
             }
         });
         mainButtons.add(foodButton);

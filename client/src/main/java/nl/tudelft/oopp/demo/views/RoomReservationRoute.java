@@ -11,8 +11,8 @@ import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AgendaWidget;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.CalendarWidget;
@@ -31,7 +31,7 @@ public class RoomReservationRoute extends Route {
     private Calendar fromTime;
     private Calendar toTime;
 
-    private List<Reservation> reservations;
+    private List<RoomReservation> reservations;
     private Room room;
 
     /**
@@ -77,7 +77,7 @@ public class RoomReservationRoute extends Route {
                 reservationWidget.setPeriod(fromTime, toTime);
                 reservationWidget.setAvailable(available);
             }
-        });
+        }, 5);
         reservationWidget = new ReservationWidget(room, new ReservationWidget.Listener() {
             @Override
             public void onReserveClicked() {
@@ -87,12 +87,12 @@ public class RoomReservationRoute extends Route {
                     String fromString = format.format(fromTime.getTime());
                     String toString = format.format(toTime.getTime());
                     String timeslot = String.format("%s - %s", fromString, toString);
-                    ReservationCommunication
-                            .addReservationToDatabase(user, room.getCode(), timeslot);
-                    reservations.add(new Reservation(-1, user, room.getCode(), timeslot));
+                    ReservationCommunication.addReservationToDatabase(user,
+                            room.getRoomCode(), timeslot);
+                    reservations.add(new RoomReservation(-1, user, room, timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
-                    System.out.println(user + " " + room.getCode() + " " + timeslot);
+                    System.out.println(user + " " + room.getRoomCode() + " " + timeslot);
                 }
             }
         });
@@ -121,9 +121,10 @@ public class RoomReservationRoute extends Route {
         for (int i = 0; i < 24; i++) {
             availabilities[i] = true;
         }
-        for (Reservation reservation : reservations) {
+        for (RoomReservation reservation : reservations) {
             System.out.println(reservation);
-            if (reservation.getRoom() != null && reservation.getRoom().equals(room.getCode())) {
+            if (reservation.getRoom() != null
+                    && reservation.getRoom().getRoomCode().equals(room.getRoomCode())) {
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                 try {
                     String fromTimeString = reservation.getTimeSlot().substring(0, 16);
