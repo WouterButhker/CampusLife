@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,8 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
-
-import java.util.List;
 
 public class GalleryWidget extends StackPane {
     private Rectangle background;
@@ -25,6 +24,10 @@ public class GalleryWidget extends StackPane {
     private int currentImage = 0;
     private List<Image> images;
 
+    /**
+     * Creates a gallery widget which displays the images passed.
+     * @param images the images to be displayed
+     */
     public GalleryWidget(List<Image> images) {
         this.images = images;
 
