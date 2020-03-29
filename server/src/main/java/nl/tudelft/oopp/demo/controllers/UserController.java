@@ -9,7 +9,8 @@ import nl.tudelft.oopp.demo.repositories.image.UserImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,19 +53,6 @@ public class UserController {
         }
         return res;
     }
-
-    /*
-     * Adds a new user to the database.
-     * @param username of the current user
-     * @return
-     */
-    @GetMapping(path = "/add")
-    public @ResponseBody
-    String addNewUser(@RequestParam String username) {
-        User user = new User();
-        user.setUsername(username);
-        usersRepository.save(user);
-        return "Saved";
 
     @Modifying
     @PutMapping(value = "/image/{userId}")
