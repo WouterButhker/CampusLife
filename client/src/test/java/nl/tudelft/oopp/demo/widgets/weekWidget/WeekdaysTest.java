@@ -14,7 +14,8 @@ public class WeekdaysTest {
 
     @BeforeEach
     void init() {
-        String openingHours = "12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00";
+        String openingHours = "12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00," +
+                " 12:00-24:00, 12:00-24:00, 12:00-24:00";
         weekdays = new Weekdays(openingHours);
     }
 
@@ -37,7 +38,8 @@ public class WeekdaysTest {
 
     @Test
     void toStringTest() {
-        String toString = "12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00";
+        String toString = "12:00-24:00, 12:00-24:00, 12:00-24:00, " +
+                "12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00";
         assertEquals(toString, weekdays.toString());
     }
 
@@ -85,14 +87,16 @@ public class WeekdaysTest {
 
     @Test
     void lengthLongTest() {
-        Weekdays test = new Weekdays("12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00" +
+        Weekdays test = new Weekdays("12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, " +
+                "12:00-24:00, 12:00-24:00, 12:00-24:00" +
                 ", 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00");
         assertEquals(7, test.getWeekdays().size());
     }
 
     @Test
     void lengthShortTest() {
-        Weekdays test = new Weekdays("12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00");
+        Weekdays test = new Weekdays("12:00-24:00, 12:00-24:00, 12:00-24:00, 12:00-24:00," +
+                " 12:00-24:00, 12:00-24:00");
         assertEquals(7, test.getWeekdays().size());
     }
 }
