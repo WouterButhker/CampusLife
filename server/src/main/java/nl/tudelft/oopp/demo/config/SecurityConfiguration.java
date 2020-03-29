@@ -44,7 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/buildings/**", "/rooms/**").hasAuthority("Admin")
                 .antMatchers("/admin", "/admin/**",
                         "/buildings/add", "/buildings/delete",
-                        "/rooms/add", "/rooms/delete", "/rest/users/all", "/rooms/image/**").hasAuthority("Admin")
+                        "/rooms/add", "/rooms/delete", "/rest/users/all",
+                        "/rooms/image/**").hasAuthority("Admin")
                 .antMatchers(HttpMethod.DELETE, "/rest/users/**").hasAnyAuthority("Admin")
                 .antMatchers("/employee", "/employee/**").hasAnyAuthority("Employee", "Admin")
                 .antMatchers("/**").hasAnyAuthority("Student", "Admin", "Employee")

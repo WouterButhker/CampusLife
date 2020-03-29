@@ -90,7 +90,6 @@ public class ImageCommunication {
             return defaultImage;
         } else if (response != null && response.getBody() != null
                 && response.getStatusCode().toString().equals("200 OK")) {
-            System.out.println("Image Url: " + response.getBody());
             return response.getBody();
         } else {
             System.out.println("Login failed");
@@ -116,7 +115,6 @@ public class ImageCommunication {
             return defaultResponse;
         } else if (response != null && response.getBody() != null
                 && response.getStatusCode().toString().equals("200 OK")) {
-            System.out.println("Image Url: " + response.getBody());
             Type listType = new TypeToken<List<String>>() {}.getType();
             return new Gson().fromJson(response.getBody(), listType);
         } else {
@@ -136,16 +134,20 @@ public class ImageCommunication {
 
     private static String deleteImageByUrl(String imageUrl, String defaultPath, String deleteUrl) {
         String imageId = imageUrl.substring(defaultPath.length());
-        System.out.println("id:" + imageId);
-        System.out.println("delete: "+ (deleteUrl + imageId));
         return ServerCommunication.authenticatedDeleteRequest(deleteUrl + imageId).getBody();
     }
 
+    /**
+     * Delete the selected image from the room.
+     * @param imageUrl the url of the image you want to delete
+     * @return "200 OK" / "400 BAD_REQUEST"
+     */
     public static String deleteRoomImage(String imageUrl) {
-        if (!imageUrl.equals("images/RoomTempIMG.jpg"))
+        if (!imageUrl.equals("images/RoomTempIMG.jpg")) {
             return deleteImageByUrl(imageUrl,
                     SERVER_URL + "/rooms/image/downloadFile/",
-                     "/rooms/image/");
+                    "/rooms/image/");
+        }
         return "400 BAD_REQUEST";
     }
 
