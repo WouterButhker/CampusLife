@@ -1,11 +1,11 @@
 package nl.tudelft.oopp.demo.entities;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RoomTest {
 
@@ -36,7 +36,7 @@ class RoomTest {
     }
 
     @Test
-    void emptyConstructorTest(){
+    void emptyConstructorTest() {
         assertNotNull(new Room());
     }
 

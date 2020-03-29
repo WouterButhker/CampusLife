@@ -36,7 +36,7 @@ public class BuildingTest {
     }
 
     @Test
-    void emptyConstructorTest(){
+    void emptyConstructorTest() {
         assertNotNull(new Building());
     }
 

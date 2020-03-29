@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.entities;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import nl.tudelft.oopp.demo.entities.image.BuildingImage;
 import nl.tudelft.oopp.demo.entities.image.Image;
 import nl.tudelft.oopp.demo.entities.image.RoomImage;
@@ -7,8 +9,6 @@ import nl.tudelft.oopp.demo.entities.image.UserImage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class ImageTest {
