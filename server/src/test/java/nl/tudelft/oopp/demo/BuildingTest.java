@@ -1,8 +1,6 @@
 package nl.tudelft.oopp.demo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
@@ -35,6 +33,11 @@ public class BuildingTest {
         bikes = 5;
         building = new Building(code, name, location, openingHours, bikes);
 
+    }
+
+    @Test
+    void emptyConstructorTest(){
+        assertNotNull(new Building());
     }
 
     @Test
@@ -134,5 +137,21 @@ public class BuildingTest {
         Assertions.assertEquals(building, building2);
         System.out.println(building2.toString());
          */
+    }
+
+    @Test
+    void equalsSameBuildingTest() {
+        assertTrue(building.equals(building));
+    }
+
+    @Test
+    void equalsNotSameObject() {
+        assertFalse(building.equals("abc"));
+    }
+
+    @Test
+    void equalsWithSomeOtherBuilding() {
+        Building building2 = new Building(code, name, location, openingHours, bikes);
+        assertTrue(building.equals(building2));
     }
 }
