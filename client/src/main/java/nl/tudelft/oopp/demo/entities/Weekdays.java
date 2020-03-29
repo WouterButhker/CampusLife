@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.entities;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
