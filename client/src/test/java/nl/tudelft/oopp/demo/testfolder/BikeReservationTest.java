@@ -91,16 +91,16 @@ class BikeReservationTest {
     @Test
     void getDropOffBuildingTest() {
         Building test = new Building(2, "Test2", "Test street2",
-                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
-                        + "06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00,"
+                        + " 06:00-18:00, 19:00-21:00", 32);
         assertEquals(test, bikeReservation.getDropOffBuilding());
     }
 
     @Test
     void setDropOffBuildingTest() {
         Building test = new Building(4, "Test2Changed", "Test street2",
-                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
-                        + "06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 19:00-21:00", 32);
         bikeReservation.setDropOffBuilding(test);
         assertEquals(test, bikeReservation.getDropOffBuilding());
     }
