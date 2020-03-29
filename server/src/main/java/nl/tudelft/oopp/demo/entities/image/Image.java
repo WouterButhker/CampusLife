@@ -68,6 +68,4 @@ public abstract class Image {
     public void setData(byte[] data) {
         this.data = data;
     }
-
-
 }
