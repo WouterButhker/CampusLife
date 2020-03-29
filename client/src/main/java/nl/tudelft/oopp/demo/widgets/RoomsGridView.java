@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.entities.Room;
 
 public class RoomsGridView extends GridPane {
@@ -62,8 +61,8 @@ public class RoomsGridView extends GridPane {
 
     private void addButtons() {
         for (int i = 0; i < rooms.size(); i++) {
-            Image image = new Image(ImageCommunication
-                    .getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
+            Image image = new Image(
+                    "https://cdn.mos.cms.futurecdn.net/K5nhgMGSRCzdppKW9bQcMd.jpg");
             RectangularImageButton button = new RectangularImageButton(image,
                     rooms.get(i).getName());
             int finalI = i;

@@ -1,14 +1,12 @@
 package nl.tudelft.oopp.demo.communication;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
 import org.springframework.http.ResponseEntity;
 
 public class ReservationCommunication {
@@ -38,7 +36,7 @@ public class ReservationCommunication {
         }
     }
 
-    private static RoomReservation parseReservation(JsonObject inputReservation) {
+    private static Reservation parseReservation(JsonObject inputReservation) {
         Integer id = inputReservation.get("id").getAsInt();
         //System.out.println(id);
         Integer user = null;
@@ -48,20 +46,21 @@ public class ReservationCommunication {
             );
         }
         //System.out.println(user);
-        Room room = null;
+        String room = null;
         if (!inputReservation.get("room").isJsonNull()) {
-            room = new Gson().fromJson(inputReservation.get("room").toString(), Room.class);
+            room = RoomCommunication.parseRoom(
+                    inputReservation.get("room").getAsJsonObject()).getCode();
         }
         //System.out.println(room);
         String timeSlot = inputReservation.get("timeSlot").getAsString();
         //System.out.println(timeSlot);
-        return new RoomReservation(id, user, room, timeSlot);
+        return new Reservation(id, user, room, timeSlot);
     }
 
-    private static List<RoomReservation> parseReservations(String inputReservations) {
+    private static List<Reservation> parseReservations(String inputReservations) {
         JsonParser jsonParser = new JsonParser();
         JsonArray jsonArray = jsonParser.parse(inputReservations).getAsJsonArray();
-        List<RoomReservation> listOfReservations = new ArrayList<>();
+        List<Reservation> listOfReservations = new ArrayList<>();
         for (int i = 0; i < jsonArray.size(); i++) {
             listOfReservations.add(parseReservation(jsonArray.get(i).getAsJsonObject()));
         }
@@ -73,7 +72,7 @@ public class ReservationCommunication {
      * Required permission: Student
      * @return List of Reservations
      */
-    public static List<RoomReservation> getAllReservations() {
+    public static List<Reservation> getAllReservations() {
         String url = "/reservations/all";
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
@@ -87,7 +86,7 @@ public class ReservationCommunication {
      * Get all of the reservations for the current User.
      * @return A list of the current user's reservations
      */
-    public static List<RoomReservation> getMyReservations() {
+    public static List<Reservation> getMyReservations() {
         String url = "/reservations/myReservations?user=" + AuthenticationCommunication.myUserId;
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
@@ -102,7 +101,7 @@ public class ReservationCommunication {
      * @param user the User whose reservations you are looking for
      * @return A List of Reservations
      */
-    public static List<RoomReservation> getAllReservationsForUser(Integer user) {
+    public static List<Reservation> getAllReservationsForUser(Integer user) {
         String url = "/reservations/allForUser?user=" + user;
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());
@@ -118,7 +117,7 @@ public class ReservationCommunication {
      * @param room the Room whose reservations you are looking for
      * @return A List of Reservations
      */
-    public static List<RoomReservation> getAllReservationsForRoom(String room) {
+    public static List<Reservation> getAllReservationsForRoom(String room) {
         String url = "/reservations/allForRoom?room=" + room;
         try {
             return parseReservations(ServerCommunication.authenticatedRequest(url).getBody());

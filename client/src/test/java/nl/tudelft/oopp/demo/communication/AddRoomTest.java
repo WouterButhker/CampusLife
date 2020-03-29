@@ -1,16 +1,9 @@
 package nl.tudelft.oopp.demo.communication;
 
-import nl.tudelft.oopp.demo.entities.Room;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 public class AddRoomTest {
-
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
 
     @Test
     public void testAddRoomToDatabaseForDeletion() {
@@ -20,10 +13,9 @@ public class AddRoomTest {
         Boolean hasWhiteboard = true;
         Boolean hasTV = true;
         Integer rights = 1;
-        Integer buildingCode = 1;
-        Room room = new Room(roomCode, name, capacity, hasWhiteboard,
-                hasTV, rights, BuildingCommunication.getBuildingByCode(buildingCode));
-        RoomCommunication.saveRoom(room);
+        Integer building = 1;
+        RoomCommunication.addRoomToDatabase(roomCode, name, capacity,
+                hasWhiteboard, hasTV, rights, building);
     }
 
 }

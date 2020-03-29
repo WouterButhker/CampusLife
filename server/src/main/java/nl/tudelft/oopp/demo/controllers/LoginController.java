@@ -27,7 +27,6 @@ public class LoginController {
             //TODO: better error handling
             return "Error user not found";
         } else {
-            System.out.println("User logged in with username:" + username);
             return user.get().getRole();
         }
     }

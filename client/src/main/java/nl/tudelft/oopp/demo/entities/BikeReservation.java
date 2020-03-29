@@ -4,8 +4,8 @@ public class BikeReservation {
 
     private Integer id;
     private Integer user;
-    private Building pickUpBuilding;
-    private Building dropOffBuilding;
+    private Integer pickUpBuildingCode;
+    private Integer dropOffBuildingCode;
     private String date;
     private String timeSlot;
 
@@ -13,18 +13,17 @@ public class BikeReservation {
      * Makes a new BikeReservation object.
      * @param id The number of the bike reservation
      * @param user The id of the user that made the bike reservation
-     * @param pickUpBuilding The building where the bike is picked up
-     * @param dropOffBuilding The building where the bike is dropped off
-     * @param date The date of the bike reservation
+     * @param pickUpBuildingCode The id of the building where the bike is picked up
+     * @param dropOffBuildingCode The id of the building where the bike is dropped off
      * @param timeSlot - The timeslot of the bike reservation
      */
     public BikeReservation(Integer id, Integer user,
-                           Building pickUpBuilding, Building dropOffBuilding,
+                           Integer pickUpBuildingCode, Integer dropOffBuildingCode,
                            String date, String timeSlot) {
         this.id = id;
         this.user = user;
-        this.pickUpBuilding = pickUpBuilding;
-        this.dropOffBuilding = dropOffBuilding;
+        this.pickUpBuildingCode = pickUpBuildingCode;
+        this.dropOffBuildingCode = dropOffBuildingCode;
         this.date = date;
         this.timeSlot = timeSlot;
     }
@@ -32,8 +31,8 @@ public class BikeReservation {
     @Override
     public String toString() {
         return "BikeReservation{" + "id=" + id + ", user=" + user
-                + ", pickUpBuildingCode=" + pickUpBuilding.getCode()
-                + ", dropOffBuildingCode=" + dropOffBuilding.getCode()
+                + ", pickUpBuildingCode=" + pickUpBuildingCode
+                + ", dropOffBuildingCode=" + dropOffBuildingCode
                 + ", date='" + date + '\'' + ", timeSlot='"
                 + timeSlot + '\'' + '}';
     }
@@ -54,20 +53,20 @@ public class BikeReservation {
         this.user = user;
     }
 
-    public Building getPickUpBuilding() {
-        return pickUpBuilding;
+    public Integer getPickUpBuildingCode() {
+        return pickUpBuildingCode;
     }
 
-    public void setPickUpBuilding(Building pickUpBuilding) {
-        this.pickUpBuilding = pickUpBuilding;
+    public void setPickUpBuildingCode(Integer pickUpBuildingCode) {
+        this.pickUpBuildingCode = pickUpBuildingCode;
     }
 
-    public Building getDropOffBuilding() {
-        return dropOffBuilding;
+    public Integer getDropOffBuildingCode() {
+        return dropOffBuildingCode;
     }
 
-    public void setDropOffBuilding(Building dropOffBuilding) {
-        this.dropOffBuilding = dropOffBuilding;
+    public void setDropOffBuildingCode(Integer dropOffBuildingCode) {
+        this.dropOffBuildingCode = dropOffBuildingCode;
     }
 
     public String getDate() {
@@ -84,22 +83,5 @@ public class BikeReservation {
 
     public void setTimeSlot(String timeSlot) {
         this.timeSlot = timeSlot;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof BikeReservation)) {
-            return false;
-        }
-        BikeReservation that = (BikeReservation) o;
-        return id.equals(that.id)
-                && user.equals(that.user)
-                && pickUpBuilding.equals(that.pickUpBuilding)
-                && dropOffBuilding.equals(that.dropOffBuilding)
-                && date.equals(that.date)
-                && timeSlot.equals(that.timeSlot);
     }
 }

@@ -20,7 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.ReservationCommunication;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
+import nl.tudelft.oopp.demo.entities.Reservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
 
@@ -43,6 +43,9 @@ public class AdminSceneReservationsController {
 
     @FXML
     private Button ok;
+
+    @FXML
+    private AnchorPane mainPane;
 
     @FXML
     private TextField reservationIdField;
@@ -79,7 +82,7 @@ public class AdminSceneReservationsController {
     }
 
     private void loadReservations(String choice) {
-        List<RoomReservation> reservations = new ArrayList<>();
+        List<Reservation> reservations = new ArrayList<>();
         if (choice.equals("Show by user")) {
             reservations = ReservationCommunication
                     .getAllReservationsForUser(Integer.parseInt(userOrRoomField.getText()));
@@ -98,14 +101,14 @@ public class AdminSceneReservationsController {
             reservation.setMaxWidth(1011);
             Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
                     + "User: " + reservations.get(i).getUser() + " | "
-                    + "Room: " + reservations.get(i).getRoom().getRoomCode() + " | "
+                    + "Room: " + reservations.get(i).getRoom() + " | "
                     + "TimeSlot: " + reservations.get(i).getTimeSlot());
             text.setPrefSize(900, 60);
             text.setStyle("-fx-font: 17 arial;");
 
             int finalI = i;
             Button delete = new Button("delete");
-            List<RoomReservation> finalReservations = reservations;
+            List<Reservation> finalReservations = reservations;
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -135,6 +138,8 @@ public class AdminSceneReservationsController {
         assert deleteReservationButton != null : "fx:id=\"deleteReservationButton\" "
                 + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";
         assert mainBox != null : "fx:id=\"mainBox\" was not injected: "
+                + "check your FXML file 'AdminSceneReservations.fxml'.";
+        assert mainPane != null : "fx:id=\"mainPane\" was not injected: "
                 + "check your FXML file 'AdminSceneReservations.fxml'.";
         assert reservationIdField != null : "fx:id=\"reservationIdField\" "
                 + "was not injected: check your FXML file 'AdminSceneReservations.fxml'.";

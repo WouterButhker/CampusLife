@@ -49,9 +49,7 @@ public class DateBox extends StackPane {
         setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (DateBox.this.isAvailable()) {
-                    hoverGlow.setVisible(true);
-                }
+                hoverGlow.setVisible(true);
             }
         });
         setOnMouseExited(new EventHandler<MouseEvent>() {
@@ -72,10 +70,6 @@ public class DateBox extends StackPane {
     public void setAvailable(boolean available) {
         this.isAvailable = available;
         updateBackground();
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
     }
 
     public void setToday(boolean today) {

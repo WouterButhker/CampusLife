@@ -1,12 +1,10 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.food.FoodOrder;
-import nl.tudelft.oopp.demo.entities.food.FoodOrderQuantity;
-import nl.tudelft.oopp.demo.repositories.FoodOrderQuantityRepository;
+import nl.tudelft.oopp.demo.entities.FoodOrder;
+import nl.tudelft.oopp.demo.entities.FoodOrderJunction;
+import nl.tudelft.oopp.demo.repositories.FoodJunctionRepository;
 import nl.tudelft.oopp.demo.repositories.FoodOrderRepository;
-import nl.tudelft.oopp.demo.repositories.FoodRepository;
-import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class FoodOrderController {
 
     @Autowired
-    FoodOrderRepository foodOrderRepository;
-
+    private FoodOrderRepository foodOrderRepository;
     @Autowired
-    FoodRepository foodRepository;
-
-    @Autowired
-    FoodOrderQuantityRepository foodOrderQuantityRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    private FoodJunctionRepository foodJunctionRepository;
 
     /**
      * Adds a new food order to the database.
@@ -33,26 +24,23 @@ public class FoodOrderController {
      */
     @PostMapping(consumes = "application/json", produces = "application/json")
     FoodOrder addFoodOrder(@RequestBody FoodOrder foodOrder) {
-        System.out.println(foodOrder);
-        FoodOrder foodOrderFix = new FoodOrder(userRepository.findById(foodOrder.getId()).get(),
-                foodOrder.getDate(), foodOrder.getTimeSlot(), foodOrder.getRestaurant());
-        FoodOrder createdOrder = foodOrderRepository.save(foodOrderFix);
+        FoodOrder createdOrder = foodOrderRepository.save(foodOrder);
 
         // Create all food junctions
         for (List<Integer> pairs : foodOrder.getFoodsList()) {
             int foodId = pairs.get(0);
             int quantity = pairs.get(1);
 
-            FoodOrderQuantity ding = new FoodOrderQuantity(
-                    foodRepository.getOne(foodId),
-                    createdOrder,
+            FoodOrderJunction junction = new FoodOrderJunction(
+                    null,
+                    createdOrder.getId(),
+                    foodId,
                     quantity
             );
-
-            foodOrderQuantityRepository.save(ding);
+            foodJunctionRepository.save(junction);
         }
 
-        foodOrderFix.setId(createdOrder.getId());
-        return foodOrderFix;
+        foodOrder.setId(createdOrder.getId());
+        return foodOrder;
     }
 }

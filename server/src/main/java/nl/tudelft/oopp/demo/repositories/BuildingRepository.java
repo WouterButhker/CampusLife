@@ -7,8 +7,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface BuildingRepository extends JpaRepository<Building, Integer> {
-    @Query("SELECT buildingCode, name FROM Building")
+    @Query("SELECT buildingCode, name FROM Building") /// building_code, name FROM building;
     List<String> findAllBuildingsCodeAndName();
+
+    // @Modifying
+    // @Query("delete from Book b where b.title=:title")
+    // void deleteBooks(@Param("title") String title);
 
     @Modifying
     @Query("DELETE FROM Building b WHERE b.buildingCode = ?1")
@@ -18,11 +22,9 @@ public interface BuildingRepository extends JpaRepository<Building, Integer> {
     Integer countAllBuildings();
 
     @Query("SELECT b FROM Building b WHERE b.bikes IS NOT NULL")
+
     List<Building> findAllBuildingsWithBikeStation();
 
-    boolean existsBuildingByBuildingCode(Integer buildingCode);
-
-    Building getBuildingByBuildingCode(Integer buildingCode);
-
-    Building findBuildingByBuildingCode(Integer buildingCode);
+    // @Query("DELETE FROM building where buildingCode = 3;")
+    // String removeBuilding()
 }

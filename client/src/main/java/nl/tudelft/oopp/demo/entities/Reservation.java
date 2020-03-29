@@ -1,40 +1,51 @@
 package nl.tudelft.oopp.demo.entities;
 
-public abstract class Reservation {
+import java.util.Objects;
 
-    private int id;
+public class Reservation {
 
-    private String date;
-
+    private Integer id;
+    private Integer user;
+    private String room;
+    /// DATE
     private String timeSlot;
 
-    /// TODO ADD JAVADOC COMMENT PLEASE.
     /**
-     * ADD JAVADOC COMMENT PLEASE.
-     * @param userID ADD JAVADOC COMMENT PLEASE.
-     * @param date ADD JAVADOC COMMENT PLEASE.
-     * @param timeSlot ADD JAVADOC COMMENT PLEASE.
+     * Make a Reservation object.
+     * @param id the number of the reservation
+     * @param user the User(id) that made the reservation
+     * @param room the Room(roomCode) that is reserved
+     * @param timeSlot the time at which the Room is reserved
      */
-    public Reservation(int userID, String date, String timeSlot) {
-        this.id = userID;
-        this.date = date;
+    public Reservation(Integer id, Integer user, String room, String timeSlot) {
+        this.id = id;
+        this.user = user;
+        this.room = room;
         this.timeSlot = timeSlot;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public String getDate() {
-        return date;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public Integer getUser() {
+        return user;
+    }
+
+    public void setUser(Integer user) {
+        this.user = user;
+    }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
     }
 
     public String getTimeSlot() {
@@ -45,5 +56,23 @@ public abstract class Reservation {
         this.timeSlot = timeSlot;
     }
 
-    public abstract String toString();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Reservation)) {
+            return false;
+        }
+        Reservation that = (Reservation) o;
+        return id.equals(that.id)
+                && user.equals(that.user)
+                && room.equals(that.room)
+                && timeSlot.equals(that.timeSlot);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, room, timeSlot);
+    }
 }

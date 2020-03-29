@@ -82,7 +82,7 @@ public class RoomDisplayRoute extends Route {
     }
 
     private Node createDescriptionTextBox() {
-        Text roomTitle = new Text(String.format("%s (%s)", room.getName(), room.getRoomCode()));
+        Text roomTitle = new Text(String.format("%s (%s)", room.getName(), room.getCode()));
         roomTitle.getStyleClass().add("room-display-title");
 
         String whiteboardString;

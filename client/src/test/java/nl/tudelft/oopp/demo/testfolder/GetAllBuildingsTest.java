@@ -15,7 +15,7 @@ public class GetAllBuildingsTest {
 
     @BeforeEach
     void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
+        AuthenticationCommunication.login("random", "admin");
     }
 
     @Test

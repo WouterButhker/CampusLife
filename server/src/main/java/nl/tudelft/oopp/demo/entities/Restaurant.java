@@ -1,33 +1,24 @@
 package nl.tudelft.oopp.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Objects;
 import javax.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "restaurant")
 public class Restaurant {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
+
+    @Column(name = "building")
+    private Integer building;
 
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "building")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Building building;
-
     @Column(name = "description")
     private String description;
-
-    @Transient
-    private Integer buildingCode;
 
     public Restaurant() {
 
@@ -41,13 +32,12 @@ public class Restaurant {
      * @param description a description of the restaurant
      */
     public Restaurant(Integer id,
+                      Integer building,
                       String name,
-                      Building building,
                       String description) {
         this.id = id;
-        this.name = name;
         this.building = building;
-        this.buildingCode = building.getBuildingCode();
+        this.name = name;
         this.description = description;
     }
 
@@ -59,34 +49,12 @@ public class Restaurant {
         this.id = id;
     }
 
-    //@JsonIgnore
-    public Building getBuilding() {
+    public Integer getBuilding() {
         return building;
     }
 
-    //@JsonIgnore
-    public void setBuilding(Building building) {
+    public void setBuilding(Integer building) {
         this.building = building;
-        this.buildingCode = building.getBuildingCode();
-    }
-
-    /**
-     * Getter for the building code.
-     *
-     * @return the building code
-     */
-    @JsonProperty(value = "buildingCode")
-    public Integer getBuildingCode() {
-        if (buildingCode == null && building != null) {
-            return building.getBuildingCode();
-        } else {
-            return buildingCode;
-        }
-    }
-
-    @JsonProperty(value = "buildingCode")
-    public void setBuildingCode(Integer buildingCode) {
-        this.buildingCode = buildingCode;
     }
 
     public String getName() {
@@ -103,29 +71,5 @@ public class Restaurant {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String toString() {
-        return "{" + id + ", " + name + ", "
-                + buildingCode + ", " + description + "}";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Restaurant)) {
-            return false;
-        }
-        Restaurant restaurant = (Restaurant) o;
-        return name.equals(restaurant.name)
-                && building.equals(restaurant.building)
-                && description.equals(restaurant.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, building, description);
     }
 }
