@@ -16,7 +16,7 @@ public class RoomsGridView extends GridPane {
 
     private Listener listener;
 
-    private final double scalar = 1.8;
+    private final double scalar = 1.1;
 
     /**
      * Creates the Grid View of the room list page.
@@ -58,7 +58,7 @@ public class RoomsGridView extends GridPane {
         });
     }
 
-    private final int roomsPerRow = 2;
+    private final int roomsPerRow = 4;
 
     private void addButtons() {
         for (int i = 0; i < rooms.size(); i++) {
