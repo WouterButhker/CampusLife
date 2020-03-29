@@ -1,0 +1,21 @@
+@import url("palette.css")
+
+.left-arrow-white {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/arrow_left_white.png');
+}
+
+.left-arrow-white:hover {
+    -fx-background-color: #FFFFFF55;
+    -fx-background-image: url('/images/arrow_left_white.png');
+}
+
+.right-arrow-white {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/arrow_right_white.png');
+}
+
+.right-arrow-white:hover {
+    -fx-background-color: #FFFFFF55;
+    -fx-background-image: url('/images/arrow_right_white.png');
+}
