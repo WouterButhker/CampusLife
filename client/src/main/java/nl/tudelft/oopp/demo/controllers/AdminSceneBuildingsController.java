@@ -36,12 +36,6 @@ import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 import nl.tudelft.oopp.demo.widgets.WeekWidget;
 
-
-
-
-
-
-
 public class AdminSceneBuildingsController implements Initializable {
 
     @FXML

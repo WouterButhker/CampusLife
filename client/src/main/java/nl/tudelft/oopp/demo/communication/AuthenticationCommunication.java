@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.UserDtO;
-import org.springframework.http.*;
+import nl.tudelft.oopp.demo.entities.User;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.AuthenticationException;
@@ -117,7 +121,7 @@ public class AuthenticationCommunication {
      * @throws HttpClientErrorException when authentication fails
      * @throws ResourceAccessException when the server can't be reached
      */
-    public static ResponseEntity<String> register(UserDtO user)
+    public static ResponseEntity<String> register(User user)
             throws HttpClientErrorException, ResourceAccessException {
 
 
@@ -131,7 +135,7 @@ public class AuthenticationCommunication {
         String url = SERVER_URL + "/register";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<UserDtO> request = new HttpEntity<>(user, headers);
+        HttpEntity<User> request = new HttpEntity<>(user, headers);
 
         out = template.exchange(url, HttpMethod.POST, request, String.class);
         System.out.println(out);
