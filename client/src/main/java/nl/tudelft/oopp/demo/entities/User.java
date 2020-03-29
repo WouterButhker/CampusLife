@@ -11,11 +11,15 @@ public class User implements Serializable {
     private String role;
     private boolean accountIsEnabled = true;
 
-
-    public User(String user, String pass, String role) {
+    /**
+     * Constructor used for registering a new account.
+     * @param user The username
+     * @param pass The password
+     */
+    public User(String user, String pass) {
         this.username = user;
         this.password = pass;
-        this.role = role;
+        this.role = "Student";
     }
 
     public String getUsername() {

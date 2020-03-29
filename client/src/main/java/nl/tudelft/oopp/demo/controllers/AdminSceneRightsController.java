@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,11 +10,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.UserCommunication;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
 public class AdminSceneRightsController implements Initializable {
@@ -34,6 +39,7 @@ public class AdminSceneRightsController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         addAppBar();
         loadUsers(null);
+        setGlobalEventHandler(mainBox);
     }
 
     private void addAppBar() {
@@ -41,25 +47,28 @@ public class AdminSceneRightsController implements Initializable {
     }
 
     @FXML
-    private void loadUsers() {
-        loadUsers(searchInput.getText());
-    }
-
-    @FXML
     private void resetUsers() {
         loadUsers(null);
     }
 
+    @FXML
+    private void loadUsers() {
+        loadUsers(searchInput.getText());
+    }
+
     private void loadUsers(String search) {
         usersBox.getChildren().clear();
-        //List<User> users = UserCommunication.getAllUsers();
-        int test = 15;
-        if (search != null && !search.equals("")) {
-            //users = searchUsers(search, users);
-            test = 6;
+        List<User> users = UserCommunication.getAllUsers();
+        if (users == null) {
+            return;
         }
 
-        for (int i = 0; i < test; i++) { //users.size()
+        if (search != null && !search.equals("")) {
+            users = searchUsers(search, users);
+        }
+
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
             HBox box = new HBox();
             box.setAlignment(Pos.CENTER_LEFT);
             String css = "-fx-border-color: black;\n"
@@ -69,24 +78,23 @@ public class AdminSceneRightsController implements Initializable {
                     + "-fx-border-radius: 10;";
             box.setStyle(css);
             box.setPrefHeight(50);
-            Label usernameText = new Label(" Username : " + i); //user.getUsername();
-            Label role = new Label("Current role : " + "Student"); //user.getRole()
+            Label usernameText = new Label(" Username : " + user.getUsername());
+            Label role = new Label("Current role : " + user.getRole());
             usernameText.setStyle("-fx-font-size: 18");
-            usernameText.setPrefWidth(250);
+            usernameText.setPrefWidth(225);
             role.setStyle("-fx-font-size: 18");
-            role.setPrefWidth(175);
+            role.setPrefWidth(200);
             ChoiceBox<String> options = new ChoiceBox<>();
             loadRights(options);
             options.setPrefWidth(100);
-            //options.setValue(user.getRole());
+            options.setValue(user.getRole());
             HBox.setMargin(options, new Insets(0, 10, 0,10));
             Button confirm = new Button("Confirm");
             confirm.setStyle("-fx-font-size: 14");
             confirm.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    //update user rights
-                    updateUserRights();
+                    updateUserRights(user, options.getValue());
                     loadUsers(search);
                 }
             });
@@ -96,12 +104,10 @@ public class AdminSceneRightsController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    //delete user
-                    deleteUser();
+                    deleteUser(user.getId());
                     loadUsers(search);
                 }
             });
-
             HBox.setMargin(delete, new Insets(0, 0, 0,50));
             box.getChildren().addAll(usernameText, role, options, confirm, delete);
             usersBox.getChildren().add(box);
@@ -116,20 +122,32 @@ public class AdminSceneRightsController implements Initializable {
         choiceBox.getItems().addAll(rights);
     }
 
-//    private List<User> searchUsers(String search, List<User> users) {
-//        List<User> res = new ArrayList<User>;
-//        for (int i = 0; i < users.size(); i++) {
-//            if (users.get(i).getUsername.contains(search)) {
-//                res.add(users.get(i));
-//            }
-//        }
-//        return res;
-//    }
-    private void updateUserRights() {
-
+    private List<User> searchUsers(String search, List<User> users) {
+        List<User> res = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().contains(search)) {
+                res.add(users.get(i));
+            }
+        }
+        return res;
     }
 
-    private void deleteUser() {
+    private void updateUserRights(User user, String role) {
+        user.setRole(role);
+        UserCommunication.updateUserRole(user);
+    }
 
+    private void deleteUser(Integer id) {
+        UserCommunication.deleteUser(id);
+    }
+
+    //if enterKey is pressed, then loadUsers with search is called
+    private void setGlobalEventHandler(Node root) {
+        root.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+            if (ev.getCode() == KeyCode.ENTER) {
+                loadUsers(searchInput.getText());
+                ev.consume();
+            }
+        });
     }
 }
