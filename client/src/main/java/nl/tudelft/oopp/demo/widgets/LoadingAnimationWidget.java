@@ -16,9 +16,8 @@ public class LoadingAnimationWidget {
 
     /**
      * Creates a popup that displays a loading animation.
-     * @throws FileNotFoundException if the loading animation gif is not found
      */
-    public static void showLoading() throws FileNotFoundException {
+    public static void showLoading() {
         Stage popupwindow = new Stage();
         popupwindow.setTitle("loading...");
         popupwindow.initModality(Modality.APPLICATION_MODAL);
