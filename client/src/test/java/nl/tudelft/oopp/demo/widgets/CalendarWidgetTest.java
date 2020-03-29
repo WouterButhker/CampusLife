@@ -1,9 +1,10 @@
 package nl.tudelft.oopp.demo.widgets;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import nl.tudelft.oopp.demo.widgets.CalendarWidgetLogic;
+
 import java.util.Calendar;
+import nl.tudelft.oopp.demo.widgets.CalendarWidgetLogic;
+import org.junit.jupiter.api.Test;
 
 public class CalendarWidgetTest {
 
