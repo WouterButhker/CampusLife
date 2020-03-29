@@ -19,11 +19,13 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-
 public class AuthenticationCommunication {
     public static Integer myUserId;
     public static String myUserRole;
     public static String myUsername;
+    public static String myImageUrl;
+    public static List<String> ids;
+    public static String auth;
     private static HttpHeaders authenticationHeader;
     private static RestTemplate template = new RestTemplate();
 
@@ -37,9 +39,14 @@ public class AuthenticationCommunication {
      */
     public static void login(String username, String password) throws HttpClientErrorException {
         authenticationHeader = createHeaders(username, password);
-        myUsername = username;
-        saveUserId(username);
-        saveUserRole(username);
+        if (authenticationHeader != null) {
+            myUsername = username;
+            saveUserId(username);
+            saveUserRole(username);
+            saveUserImageUrl(myUserId);
+        } else {
+            System.out.println("Login failed");
+        }
     }
 
     /**
@@ -60,7 +67,9 @@ public class AuthenticationCommunication {
     public static void saveUserId(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getId?username=" + username);
-        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
+        if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
+            ///ids = ImageCommunication.getAllImageIds();
             System.out.println("USER id: " + response.getBody());
             myUserId = Integer.parseInt(response.getBody());
         } else {
@@ -77,9 +86,28 @@ public class AuthenticationCommunication {
     public static void saveUserRole(String username) throws HttpClientErrorException {
         ResponseEntity<String> response = authenticatedRequest(
                 "/rest/users/getRole?username=" + username);
-        if (response.getStatusCode().toString().equals("200 OK") && response.getBody() != null) {
+        if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
             System.out.println("USER role: " + response.getBody());
             myUserRole = response.getBody();
+        } else {
+            System.out.println("Login failed");
+        }
+    }
+
+    /**
+     * Saves the image URL of the profile photo of the user in a static variable.
+     * @param userId the id of the user that logged in
+     */
+    public static void saveUserImageUrl(Integer userId) {
+        ResponseEntity<String> response = authenticatedRequest(
+                "rest/users/image/getUrl/" + userId);
+        if (response != null && response.getBody() == null) {
+            myImageUrl = "/images/myProfile.png";
+        } else if (response != null && response.getBody() != null
+                && response.getStatusCode().toString().equals("200 OK")) {
+            System.out.println("Image Url: " + response.getBody());
+            myImageUrl = response.getBody();
         } else {
             System.out.println("Login failed");
         }
@@ -197,7 +225,7 @@ public class AuthenticationCommunication {
     }
 
     private static HttpHeaders createHeaders(String username, String password) {
-        String auth = username + ":" + password;
+        auth = username + ":" + password;
 
         String encodedauth = Base64.getEncoder().encodeToString(auth.getBytes());
         HttpHeaders headers = new HttpHeaders();

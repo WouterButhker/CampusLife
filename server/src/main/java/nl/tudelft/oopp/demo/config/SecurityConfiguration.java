@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 @EnableJpaRepositories
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -33,8 +32,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/", "/login").permitAll()
+                .antMatchers("/", "/login", "/images/**",
+                        "/rest/users/image/downloadFile/**",
+                        "/buildings/image/downloadFile/**",
+                        "/rooms/image/downloadFile/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
+                .antMatchers("/rest/users/image/**")
+                    .hasAnyAuthority("Student", "Admin", "Employee")
+                .antMatchers(HttpMethod.GET, "/buildings/**", "/rooms/**")
+                    .hasAnyAuthority("Student", "Admin", "Employee")
+                .antMatchers(HttpMethod.POST, "/buildings/**", "/rooms/**").hasAuthority("Admin")
                 .antMatchers("/admin", "/admin/**",
                         "/buildings/add", "/buildings/delete",
                         "/rooms/add", "/rooms/delete", "/rest/users/all").hasAuthority("Admin")

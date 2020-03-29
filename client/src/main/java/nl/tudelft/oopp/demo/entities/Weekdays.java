@@ -39,66 +39,6 @@ public class Weekdays {
         return openingHours;
     }
 
-    public String getMonday() {
-        return openingHours.get(0);
-    }
-
-    public void setMonday(String newOpeningHours) {
-        openingHours.set(0, newOpeningHours);
-    }
-
-    public String getTuesday() {
-        return openingHours.get(1);
-    }
-
-    public void setTuesday(String newOpeningHours) {
-        openingHours.set(1, newOpeningHours);
-    }
-
-    public String getWednesday() {
-        return openingHours.get(2);
-    }
-
-    public void setWednesday(String newOpeningHours) {
-        openingHours.set(2, newOpeningHours);
-    }
-
-    public String getThursday() {
-        return openingHours.get(3);
-    }
-
-    public void setThursday(String newOpeningHours) {
-        openingHours.set(3, newOpeningHours);
-    }
-
-    public String getFriday() {
-        return openingHours.get(4);
-    }
-
-    public void setFriday(String newOpeningHours) {
-        openingHours.set(4, newOpeningHours);
-    }
-
-    public String getSaturday() {
-        return openingHours.get(5);
-    }
-
-    public void setSaturday(String newOpeningHours) {
-        openingHours.set(5, newOpeningHours);
-    }
-
-    public String getSunday() {
-        return openingHours.get(6);
-    }
-
-    public void setSunday(String newOpeningHours) {
-        openingHours.set(6, newOpeningHours);
-    }
-
-    public static String getClosed() {
-        return CLOSED;
-    }
-
     /**
      * A method that checks if all of the opening hours in the week have correct opening hours.
      * @return A boolean depending on the correctness of the opening hours.
