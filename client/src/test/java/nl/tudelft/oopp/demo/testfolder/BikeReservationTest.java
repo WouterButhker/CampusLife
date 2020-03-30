@@ -32,8 +32,8 @@ class BikeReservationTest {
                 "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
                         + "06:00-18:00, 19:00-21:00", 45);
         dropOffBuilding = new Building(2, "Test2", "Test street2",
-                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00,"
-                        + " 06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 19:00-21:00", 32);
         date = "22/03/2020";
         timeSlot = "14:00-19:00";
         bikeReservation = new BikeReservation(id, user, pickUpBuilding,
@@ -91,16 +91,16 @@ class BikeReservationTest {
     @Test
     void getDropOffBuildingTest() {
         Building test = new Building(2, "Test2", "Test street2",
-                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
-                        + "06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00,"
+                        + " 06:00-18:00, 19:00-21:00", 32);
         assertEquals(test, bikeReservation.getDropOffBuilding());
     }
 
     @Test
     void setDropOffBuildingTest() {
         Building test = new Building(4, "Test2Changed", "Test street2",
-                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
-                        + "06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 19:00-21:00", 32);
         bikeReservation.setDropOffBuilding(test);
         assertEquals(test, bikeReservation.getDropOffBuilding());
     }

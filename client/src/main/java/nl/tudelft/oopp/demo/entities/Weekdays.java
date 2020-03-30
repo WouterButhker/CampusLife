@@ -23,14 +23,22 @@ public class Weekdays {
 
     /**
      * The constructor used for creating a Weekdays Object with existing opening hours.
+     * Will always return a List with size 7, even if the parameter is wrong.
+     * In case of a parameter that is too long, it will cut off the end.
+     * In case of a parameter that is too short, it will fill the List up with CLOSED.
      * @param openingHoursUnparsed The String containing the opening hours
      *                             that are separated by a comma.
      */
     public Weekdays(String openingHoursUnparsed) {
-        openingHours = new ArrayList<>(7);
-
-        for (int i = 0; i < 7; i++) {
-            openingHours = Arrays.asList(openingHoursUnparsed.split(", "));
+        try {
+            openingHours = Arrays.asList(openingHoursUnparsed.split(", ")).subList(0, 7);
+        } catch (IndexOutOfBoundsException e) {
+            openingHours = new ArrayList<>();
+            String[] strings = openingHoursUnparsed.split(", ");
+            openingHours.addAll(Arrays.asList(strings));
+            for (int i = strings.length; i < 7; i++) {
+                openingHours.add(CLOSED);
+            }
         }
 
     }
@@ -45,9 +53,20 @@ public class Weekdays {
      */
     public boolean checkCorrectness() {
         for (int i = 0; i < 7; i++) {
-            if (!openingHours.get(i).equals(CLOSED) && openingHours.get(i).split("-")[0]
-                    .compareTo(openingHours.get(i).split("-")[1]) >= 0) {
-                return false;
+            try {
+                String[] strings = openingHours.get(i).split("-");
+                if (strings.length > 2) {
+                    return false;
+                }
+                String left = strings[0];
+                String right = strings[1];
+                if (left.compareTo(right) >= 0) {
+                    return false;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                if (!openingHours.get(i).equals(CLOSED)) {
+                    return false;
+                }
             }
         }
         return true;

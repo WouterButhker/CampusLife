@@ -18,6 +18,5 @@ public class ReservationTest {
         Room room = new Room("4", "Auditorium",1040, false, true, 2, building);
         RoomReservation res = new RoomReservation(user, room, "18/03/2020",
                 "17/03/2020,22:00 - 17/03/2020,23:00");
-        System.out.println(res.toString());
     }
 }
