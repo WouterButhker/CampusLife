@@ -83,8 +83,6 @@ public class AuthTest {
     @WithMockUser(authorities = "Admin")
     @Test
     public void addBuildingAdmin() throws Exception {
-        // TODO fix to work with images
-        /*
         Integer buildingCode = 99452;
         String name = "testBuilding";
         String location = "Delft";
@@ -92,19 +90,15 @@ public class AuthTest {
         Integer bikes = 30;
         Building building = new Building(buildingCode, name, location, openingHours, bikes);
         String url = "/buildings/";
-        System.out.println();
         mvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(building)))
                 .andExpect(status().isOk());
-         */
     }
 
     @WithMockUser(authorities = "Student")
     @Test
     public void addBuildingStudent() throws Exception {
-        // TODO fix to work with images
-        /*
         Integer buildingCode = 99452;
         String name = "testBuilding";
         String location = "Delft";
@@ -113,7 +107,6 @@ public class AuthTest {
         Building building = new Building(buildingCode, name, location, openingHours, bikes);
         String url = "/buildings/";
         mvc.perform(post(url, building)).andExpect(status().isForbidden());
-         */
     }
 
 }

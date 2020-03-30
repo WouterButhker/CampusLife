@@ -8,8 +8,6 @@ import nl.tudelft.oopp.demo.entities.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-
 class BikeReservationTest {
 
     private int id;
@@ -30,14 +28,16 @@ class BikeReservationTest {
     void init() {
         id = 2;
         user = 5;
-        pickUpBuilding = new Building(1, "Test", "Test street", "06:00-18:00, 06:00-18:00,"
-                + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
-        dropOffBuilding = new Building(2, "Test2", "Test street2", "06:00-18:00, 06:00-18:00, "
-                + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
+        pickUpBuilding = new Building(1, "Test", "Test street",
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 19:00-21:00", 45);
+        dropOffBuilding = new Building(2, "Test2", "Test street2",
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 19:00-21:00", 32);
         date = "22/03/2020";
         timeSlot = "14:00-19:00";
-        bikeReservation = new BikeReservation(id, user, pickUpBuilding, dropOffBuilding,
-                date, timeSlot);
+        bikeReservation = new BikeReservation(id, user, pickUpBuilding,
+                dropOffBuilding, date, timeSlot);
     }
 
     @Test
@@ -74,16 +74,16 @@ class BikeReservationTest {
     @Test
     void getPickUpBuildingTest() {
         Building test = new Building(1, "Test", "Test street",
-                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00,"
-                        + " 06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
         assertEquals(test, bikeReservation.getPickUpBuilding());
     }
 
     @Test
     void setPickUpBuildingTest() {
         Building test = new Building(3, "Changed", "Test street",
-                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00,"
-                        + " 06:00-18:00, 19:00-21:00", 45);
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
         bikeReservation.setPickUpBuilding(test);
         assertEquals(test, bikeReservation.getPickUpBuilding());
     }
