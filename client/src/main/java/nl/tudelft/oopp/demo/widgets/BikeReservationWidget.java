@@ -56,7 +56,6 @@ public class BikeReservationWidget extends VBox {
         setSelectedInList(-1);
         buildingList = BuildingCommunication.getAllBuildingsWithBikeStation();
         bikeReservations = BikeReservationCommunication.getAllRelevantReservations();
-        System.out.println(bikeReservations.toString());
         setAlignment(Pos.CENTER);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
 
