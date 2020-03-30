@@ -17,4 +17,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     @Query("SELECT id, name FROM Restaurant")
     List<String> getRestaurantsIdAndName();
+
+    boolean existsById(Integer id);
+
+    Restaurant findRestaurantById(Integer id);
 }

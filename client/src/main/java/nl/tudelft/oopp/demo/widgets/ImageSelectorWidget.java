@@ -65,12 +65,13 @@ public class ImageSelectorWidget extends VBox {
         this.image = selectedFile;
     }
 
-    public File getImage() {
-        return this.image;
+    public void reset() {
+        this.image = null;
+        fileChosen.setText("  No file chosen");
     }
 
-    public void setImage(File image) {
-        this.image = image;
+    public File getImage() {
+        return this.image;
     }
 
     public boolean imageSelected() {

@@ -162,9 +162,6 @@ public class RoomController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Room room = roomRepository.findRoomByRoomCode(roomCode);
-        if (roomImageRepository.existsByRoom(room)) {
-            roomImageRepository.deleteByRoom(room);
-        }
         String fileName = ImageController.checkFile(file);
         RoomImage roomImage = new RoomImage(fileName, file.getContentType(), file.getBytes(), room);
         roomImageRepository.save(roomImage);
@@ -188,6 +185,11 @@ public class RoomController {
     @GetMapping("/image/downloadFile/{imageId}")
     ResponseEntity<Resource> downloadFile(@PathVariable String imageId) {
         return ImageController.downloadFile(roomImageRepository.findByImageId(imageId));
+    }
+
+    @DeleteMapping("/image/{imageId}")
+    String deleteImage(@PathVariable String imageId) {
+        return roomImageRepository.deleteByImageId(imageId);
     }
 
 }
