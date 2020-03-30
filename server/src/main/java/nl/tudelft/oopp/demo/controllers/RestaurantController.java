@@ -1,15 +1,24 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.food.Food;
+import nl.tudelft.oopp.demo.entities.image.BuildingImage;
+import nl.tudelft.oopp.demo.entities.image.RestaurantImage;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
+import nl.tudelft.oopp.demo.repositories.image.RestaurantImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(path = "/restaurants")
@@ -23,6 +32,9 @@ public class RestaurantController {
 
     @Autowired
     private BuildingRepository buildingRepository;
+
+    @Autowired
+    private RestaurantImageRepository restaurantImageRepository;
 
     /**
      * Adds a new restaurant to the database.
@@ -112,5 +124,41 @@ public class RestaurantController {
         restaurantRepository.deleteById(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }*/
+
+    @Modifying
+    @PutMapping(value = "/image/{restaurantCode}")
+    ResponseEntity<RestaurantImage> uploadFile(@PathVariable Integer restaurantCode,
+                                             @RequestParam("file") MultipartFile file)
+            throws IOException {
+        if (!restaurantRepository.existsById(restaurantCode)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Restaurant restaurant = restaurantRepository.findRestaurantById(restaurantCode);
+
+        if (restaurantImageRepository.existsByRestaurant(restaurant)) {
+            restaurantImageRepository.deleteByRestaurant(restaurant);
+        }
+        String fileName = ImageController.checkFile(file);
+        RestaurantImage restaurantImage = new RestaurantImage(
+                fileName, file.getContentType(), file.getBytes(), restaurant);
+        restaurantImageRepository.save(restaurantImage);
+        return new ResponseEntity<>(restaurantImage, HttpStatus.OK);
+    }
+
+    @GetMapping("/image/getUrl/{restaurantCode}")
+    String getUrl(@PathVariable Integer restaurantCode) {
+        Restaurant restaurant = restaurantRepository.findRestaurantById(restaurantCode);
+        if (restaurantImageRepository.existsByRestaurant(restaurant)) {
+            RestaurantImage restaurantImage =
+                    restaurantImageRepository.findByRestaurant(restaurant);
+            return ImageController.getUrl("/restaurants/image/downloadFile/", restaurantImage);
+        }
+        return null;
+    }
+
+    @GetMapping("/image/downloadFile/{imageId}")
+    ResponseEntity<Resource> downloadFile(@PathVariable String imageId) {
+        return ImageController.downloadFile(restaurantImageRepository.findByImageId(imageId));
+    }
 
 }

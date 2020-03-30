@@ -35,7 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/login", "/images/**",
                         "/rest/users/image/downloadFile/**",
                         "/buildings/image/downloadFile/**",
-                        "/rooms/image/downloadFile/**").permitAll()
+                        "/rooms/image/downloadFile/**",
+                        "/restaurants/image/downloadFile/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers("/rest/users/image/**")
                     .hasAnyAuthority("Student", "Admin", "Employee")
@@ -45,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin", "/admin/**",
                         "/buildings/add", "/buildings/delete",
                         "/rooms/add", "/rooms/delete", "/rest/users/all",
-                        "/rooms/image/**").hasAuthority("Admin")
+                        "/rooms/image/**", "/restaurants/image/**").hasAuthority("Admin")
                 .antMatchers(HttpMethod.DELETE, "/rest/users/**").hasAnyAuthority("Admin")
                 .antMatchers("/employee", "/employee/**").hasAnyAuthority("Employee", "Admin")
                 .antMatchers("/**").hasAnyAuthority("Student", "Admin", "Employee")

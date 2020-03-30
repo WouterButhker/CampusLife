@@ -84,6 +84,11 @@ public class ImageCommunication {
         return updateImage(image, url);
     }
 
+    public static String updateRestaurantImage(Integer restaurantCode, File image) {
+        String url = "/restaurants/image/" + restaurantCode;
+        return updateImage(image, url);
+    }
+
     private static String getImageUrl(String url, String defaultImage) {
         ResponseEntity<String> response = authenticatedRequest(url);
         if (response != null && response.getBody() == null) {
@@ -105,6 +110,11 @@ public class ImageCommunication {
     public static String getBuildingImageUrl(Integer buildingCode) {
         return getImageUrl("/buildings/image/getUrl/" + buildingCode,
                 "images/TuDelftTempIMG.jpg");
+    }
+
+    public static String getRestaurantImageUrl(Integer restaurantCode) {
+        return getImageUrl("/restaurants/image/getUrl/" + restaurantCode,
+                "images/restaurant_image.jpg");
     }
 
     private static List<String> getImagesUrl(String url, String defaultImage) {
