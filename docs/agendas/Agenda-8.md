@@ -21,7 +21,23 @@ Check that everybody is present.
  - Do small widgets without much logic like WeekWidget also have to be tested?
 
 # Action points for next week (Scrum board)
- -
+ - Video script - everyone (until Tuesday)
+ - Video recording - starts Tuestday
+ - Reservations refactoring finish - Wouter
+ - My profile all types of Reservations - Ana
+ - Add images to Restaurant button - Andra
+ - Finish favourite - Tsin & Willem
+ - Better my profile - Kris
+ - Admin change colors - Hendy
+ - Report responsible CS continue with restaurant manager - Ana
+ - Are you sure popup? (for deletions) - Hendy
+ - Loading popups (thread) - Ana(example) 
+ - TESTS - Tsin(Food, User, Restaurant, Reservation - entities(both) , Room - controller), 
+ -          Andra(Food, Restaurants - controllers), 
+ -          Hendy (Bike reservation ALL), 
+ -          Ana (RoomReservationController), 
+ -          Wouter (User/Login Controller, CustomUserDetails)
+ - Meeting Tuesday (time not set)
  
 # Question round
 *If there are any questions, now is the time to ask them.*
