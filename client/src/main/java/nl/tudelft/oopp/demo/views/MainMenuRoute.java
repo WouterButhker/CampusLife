@@ -45,7 +45,6 @@ public class MainMenuRoute extends Route {
     public MainMenuRoute() {
         rootContainer = new VBox();
         rootContainer.setAlignment(Pos.TOP_CENTER);
-        rootContainer.setSpacing(20);
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
@@ -92,6 +91,7 @@ public class MainMenuRoute extends Route {
 
     private void createButtonsRow() {
         buttonsRow = new HBox();
+        buttonsRow.setPadding(new Insets(0, 0, 20, 0));
         rootContainer.getChildren().add(buttonsRow);
 
         mainButtons = new ArrayList<>();
@@ -162,7 +162,9 @@ public class MainMenuRoute extends Route {
          as to not make them the main thing
          */
 
-        rootContainer.setPadding(new Insets(0, 0, 0, 0));
+        buildingsTitle.setWrappingWidth(newWidth.doubleValue());
+        buildingsTitle.setTextAlignment(TextAlignment.CENTER);
+        buildingsTitle.setStyle("-fx-font-size: " + getRoutingScene().getHeight() * 0.045);
 
         buildingsTitleContainer.setMinWidth(newWidth.doubleValue());
         buildingsGrid.setPrefWidth(newWidth.doubleValue());
@@ -172,7 +174,7 @@ public class MainMenuRoute extends Route {
             imageButton.setFitWidth(buttonWidth * newWidth.doubleValue());
         }
         double horizontalSpacing = ((1 - buttonWidth * 3) / 4) * newWidth.doubleValue();
-        buttonsRow.setPadding(new Insets(0, 0, 0, horizontalSpacing));
+        buttonsRow.setPadding(new Insets(20, 0, 80, horizontalSpacing));
         buttonsRow.setSpacing(horizontalSpacing);
     }
 }
