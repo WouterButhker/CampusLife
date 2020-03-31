@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 class BikeReservationTest {
 
-    private int id;
-    private int user;
+
+    private User user;
     private Building pickUpBuilding;
     private Building dropOffBuilding;
     private String date;
@@ -28,15 +29,14 @@ class BikeReservationTest {
 
     @BeforeEach
     void init() {
-        id = 2;
-        user = 5;
+        user = new User(5);
         pickUpBuilding = new Building(1, "Test", "Test street", "06:00-18:00, 06:00-18:00,"
                 + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
         dropOffBuilding = new Building(2, "Test2", "Test street2", "06:00-18:00, 06:00-18:00, "
                 + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
         date = "22/03/2020";
         timeSlot = "14:00-19:00";
-        bikeReservation = new BikeReservation(id, user, pickUpBuilding, dropOffBuilding,
+        bikeReservation = new BikeReservation(user, pickUpBuilding, dropOffBuilding,
                 date, timeSlot);
     }
 
@@ -136,14 +136,14 @@ class BikeReservationTest {
 
     @Test
     void equalsDifferentObjectsSameBikeReservationTest() {
-        BikeReservation test = new BikeReservation(id, user, pickUpBuilding,
+        BikeReservation test = new BikeReservation(user, pickUpBuilding,
                 dropOffBuilding, date, timeSlot);
         assertEquals(test, bikeReservation);
     }
 
     @Test
     void notEqualsTest() {
-        BikeReservation test = new BikeReservation(6, 7, pickUpBuilding,
+        BikeReservation test = new BikeReservation(new User(6), pickUpBuilding,
                 dropOffBuilding, date, timeSlot);
         assertNotEquals(test, bikeReservation);
     }
