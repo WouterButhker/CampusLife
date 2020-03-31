@@ -63,7 +63,7 @@ public class RoomReservation extends Reservation {
     @Override
     public String toDisplayString() {
         return "Room reservation | Room: " + this.room.getName()
-                + " | Timeslot: " + getTimeSlot();
+                + " | " + getDateAndTimeslot();
     }
 
 

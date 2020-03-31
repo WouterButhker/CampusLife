@@ -131,7 +131,8 @@ public class FoodOrder extends Reservation {
             // TODO
         }
         return "Food order | " + this.restaurant.getName()
-                + " | Order: " + foodItems;
+                + " | Order: " + foodItems
+                + " | " + getDateAndTimeslot();
     }
 
     public List<List<Integer>> getFoodsList() {

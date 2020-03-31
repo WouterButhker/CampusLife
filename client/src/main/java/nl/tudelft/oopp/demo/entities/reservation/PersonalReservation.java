@@ -50,7 +50,8 @@ public class PersonalReservation extends Reservation {
 
     @Override
     public String toDisplayString() {
-        return "Appointment | Timeslot: " + getTimeSlot()
-                + " | " + this.activity;
+        return "Appointment | "
+                + " | " + this.activity
+                + " | " + getDateAndTimeslot();
     }
 }
