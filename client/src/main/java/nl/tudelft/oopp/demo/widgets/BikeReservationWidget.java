@@ -20,6 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
@@ -111,12 +112,12 @@ public class BikeReservationWidget extends VBox {
                     + "-fx-border-radius: 10;"
                     + "-fx-background-color: -primary-color-light";
             buildingBox.setStyle(css);
-            Image image = new Image("images/TuDelftTempIMG.jpg");
+            Building building = buildingList.get(i);
+            Image image = new Image(ImageCommunication.getBuildingImageUrl(building.getCode()));
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
             imageView.setPreserveRatio(true);
-            Building building = buildingList.get(i);
             Label label = new Label("Building Code : " + building.getCode()
                     + " | " + building.getName()
                     + "\nAmount of bikes : " + building.getBikes());
@@ -181,38 +182,25 @@ public class BikeReservationWidget extends VBox {
         setAvailabilities();
     }
 
+    /**
+     * Method that sets the availabilities for a bike to be rented in the Agendawidget.
+     */
     public void setAvailabilities() {
-        agendaWidget.setAvailabilities(computeAvailabilities());
+        if (computeAvailabilities() == null) {
+            agendaWidget.setMinHour(-1);
+            agendaWidget.setMaxHour(-1);
+        } else {
+            int[] hours = computeAvailabilities();
+            agendaWidget.setMinHour(hours[0]);
+            agendaWidget.setMaxHour(hours[1]);
+            boolean[] availabilities = new boolean[24];
+            Arrays.fill(availabilities, true);
+            agendaWidget.setAvailabilities(availabilities);
+        }
     }
 
-    private boolean[] computeAvailabilities() {
-        if (selected == null) {
-            return new boolean[24];
-        }
-        Building building = selected;
-        int day = selectedDate.get(Calendar.DAY_OF_WEEK);
-        //some modulo shenanigans because weekDays[0] is monday but Calendar doesn't have the same
-        day = day + 5;
-        day = day % 7;
-        Weekdays openingHoursWeek = new Weekdays(building.getOpeningHours());
-        String openingHoursDay = openingHoursWeek.getWeekdays().get(day);
-        //if closed
-        if (openingHoursDay.equals(Weekdays.CLOSED)) {
-            return new boolean[24];
-        }
-        String begin = openingHoursDay.split("-")[0];
-        String end = openingHoursDay.split("-")[1];
-        int beginTime = Integer.parseInt(begin.split(":")[0]);
-        int endTime = Integer.parseInt(end.split(":")[0]);
-        boolean[] res = new boolean[24];
-        for (int i = 0; i < res.length; i++) {
-            if (i >= beginTime && i < endTime) {
-                res [i] = true;
-            } else {
-                res [i] = false;
-            }
-        }
-        return res;
+    private int[] computeAvailabilities() {
+        return new BikeReservationWidgetLogic().computeAvailabilities(selected, selectedDate);
     }
 
     private void resizeDisplay(double newWidth) {
@@ -258,6 +246,7 @@ public class BikeReservationWidget extends VBox {
      * Method that calculates the current amount of bikes at all the buildings.
      */
     public void calculateNumBikes() {
+        //Database state
         if (timeSelected == null) {
             for (int i = 0; i < boxes.size(); i++) {
                 Label label = (Label) boxes.get(i).getChildren().get(1);
@@ -267,40 +256,15 @@ public class BikeReservationWidget extends VBox {
             return;
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy-HH:mm");
+        //State for selected time
         for (int i = 0; i < buildingList.size(); i++) {
             int bikes = buildingList.get(i).getBikes();
             Building building = buildingList.get(i);
-            for (int j = 0; j < bikeReservations.size(); j++) {
-                BikeReservation bikeReservation = bikeReservations.get(j);
-                String[] times = bikeReservation.getTimeSlot().split("-");
-                String pickUp = times[0];
-                String dropOff = times[1];
-                Date pickUpDate = null;
-                Date dropOffDate = null;
-                try {
-                    pickUpDate = sdf.parse(bikeReservation.getDate() + "-" + pickUp);
-                    dropOffDate = sdf.parse(bikeReservation.getDate() + "-" + dropOff);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                //the pickup time is before the selected time
-                if (timeSelected.getTime().before(pickUpDate)) {
-                    //we don't do anything
-                }
-                //the bike isn't dropped off yet
-                if (building.equals(bikeReservation.getDropOffBuilding())
-                    && timeSelected.getTime().before(dropOffDate)) {
-                    bikes--;
-                }
-                if (bikes < 0) {
-                    bikes = 0;
-                }
-                Label label = (Label) boxes.get(i).getChildren().get(1);
-                String labelText = label.getText().split("bikes : ")[0];
-                label.setText(labelText + "bikes : " + bikes);
-            }
+            bikes = new BikeReservationWidgetLogic().calculateNumBikes(bikeReservations,
+                    bikes, timeSelected, building);
+            Label label = (Label) boxes.get(i).getChildren().get(1);
+            String labelText = label.getText().split("bikes : ")[0];
+            label.setText(labelText + "bikes : " + bikes);
         }
     }
 

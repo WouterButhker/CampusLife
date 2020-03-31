@@ -3,7 +3,7 @@
 
 Date:           17.02.2020\
 Main focus:     General questions\
-Chair:          Wouter Büthker
+Chair:          Wouter Büthker\
 Note taker:     Hendy Liang
 
 # Opening
@@ -13,6 +13,8 @@ Check that everybody is present.
 *Make sure everything that needs to be discussed is in the agenda or add it if something is missing.*
 
 # Points of action
+ - How does SpotBugs work?
+ - Go over the first database sketch
  - Read Resources and Tools (on BrightSpace)
  - Create a planning and put it on GitLab
 	 - Implement all items on the todo list
@@ -38,6 +40,7 @@ Check that everybody is present.
 
 # Action points for next week (Scrum board)
 - Work out details of the specific components of the application
+- Lots of to do's are already added to GitLab issues
 - Divide the work
 - Planning poker
 - Scorion reviews

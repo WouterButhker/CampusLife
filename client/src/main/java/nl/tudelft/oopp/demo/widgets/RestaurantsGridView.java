@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.Room;
 
@@ -50,7 +51,8 @@ public class RestaurantsGridView extends GridPane {
 
     private void addButtons() {
         for (int i = 0; i < restaurants.size(); i++) {
-            Image image = new Image("/images/main-screen-food.jpg");
+            Image image =
+                    new Image(ImageCommunication.getRestaurantImageUrl(restaurants.get(i).getId()));
             RectangularImageButton button =
                     new RectangularImageButton(image, restaurants.get(i).getName());
             int finalI = i;

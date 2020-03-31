@@ -1,0 +1,61 @@
+# Agenda week 5
+---
+
+Date:           16.03.2020\
+Main focus:     Report + Show new features\
+Chair:          Tsin\
+Note taker:     Kriss
+
+# Opening
+Check that everybody is present.
+
+# Approval of the agenda
+*Make sure everything that needs to be discussed is in the agenda or add it if something is missing.*
+
+# Points of action 
+ - Ask TA if he's okay :)
+ - Show off our application with the new features
+ - Features include:
+    - Ordering food
+    - Reserving bike (once per account, delete not implemented yet)
+    - Profile page and adding personal events
+    - Register screen + password check + cooler looking login screen
+    - Room filters
+    - Building opening hours to have flexible opening hours for the week
+ - Ask TA if there is anything that we are not on track with.
+ - Ask TA how optimized our application has to be performance-wise
+ - What do we need to do for the end report?
+
+# Action points for next week (Scrum board)
+ - Add new tasks that came up to the GitLab issues tab.
+ - Making Reservations an abstract class -> having RoomReservation and BikeReservation inherit //Wouter + Ana + Hendy
+ - Make PersonalReservations and inherit from Reservations //Kriss
+ - Make error pop-up for when authentication fails //Wouter + Kriss
+ - Make general pop-up? //Kriss
+ - Throw error when registering when an username is already taken //Wouter + Kriss
+ - Change GET requests to POST requests (Creating) //Ana
+ - Change GET requests to PUT requests (Updating) //Ana + Hendy
+ - Not being able to overwrite old buildings/room/restaurants (automatically after POST requests)
+ - Adding + deducting bikes when reserving //Hendy
+ - Checking whether a building has bikes //Hendy
+ - Deleting BikeReservations //Hendy
+ - Restaurants list //Andra
+ - RestaurantsAdminPage //Andra
+ - FoodAdminPage //Andra
+ - Storing images in the database as blobs -> linking to buildings and rooms //Ana
+ - Adding images from the admin side //Kriss + Andra
+ - Friend list? (bonus) //Postpone
+ - Fix RoomDisplayRoute //Willem
+ - Have opening hours of the agenda widget be the same as the building's //Willem + Hendy
+ - Add button for ordering food //Willem
+ - Adding buildings/rooms/restaurants as favorites //Tsin + help
+ - Reservations only go up to 2 weeks in advance //Willem + Hendy
+ - Update filters //Tsin
+ - Change register screen look //Kriss
+ - TESTSSSSSS //ALL OF US T.T
+ - Polish AdminPage //Hendy + Kriss
+ - Finish rights //Kriss
+ - Information Literacy Module //Lazy people who haven't done it yet >:\
+
+# Question round
+*If there are any questions, now is the time to ask them.*

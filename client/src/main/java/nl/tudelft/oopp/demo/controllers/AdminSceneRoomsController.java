@@ -403,28 +403,12 @@ public class AdminSceneRoomsController implements Initializable {
         imagesBox.setPrefHeight(110);
         images.setStyle("-fx-background-color: -primary-color");
         images.setMinWidth(275);
+        loadImages(room, images);
         scrollPane.setFitToHeight(true);
         scrollPane.setMinViewportHeight(112);
         scrollPane.setPrefViewportHeight(112);
         scrollPane.setMinViewportWidth(275);
         scrollPane.setPrefViewportWidth(275);
-        List<String> imageUrls = ImageCommunication.getRoomImageUrl(room.getRoomCode());
-        for (int i = 0; i < imageUrls.size(); i++) {
-            Image image = new Image(imageUrls.get(i));
-            ImageView imageView = new ImageView(image);
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
-            Button delete = new Button("X");
-            delete.setPrefSize(20, 20);
-            HBox deleteContainer = new HBox(delete);
-            deleteContainer.setPrefHeight(20);
-            deleteContainer.setAlignment(Pos.TOP_RIGHT);
-            deleteContainer.setPadding(new Insets(5, 5, 0, 0));
-            StackPane container = new StackPane(imageView, deleteContainer);
-            container.setPrefSize(100, 100);
-            container.setPadding(new Insets(5));
-            images.getChildren().add(container);
-        }
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setOnScroll(event -> {
@@ -437,10 +421,28 @@ public class AdminSceneRoomsController implements Initializable {
         HBox imageSelectorWidgetBox = new HBox();
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
-        imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
-        //imageSelectorWidget.setImage(ImageCommunication.getRoomImageUrl(room.getRoomCode()));
+        Button submitImage = new Button("Add image");
+        HBox.setMargin(submitImage, new Insets(0, 0, 0,10));
+        submitImage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Node status = addImage(room, imageSelectorWidget.getImage());
+                if (status != null) {
+                    try {
+                        root.getChildren().remove(13);
+                        root.getChildren().add(status);
+                    } catch (IndexOutOfBoundsException e) {
+                        root.getChildren().add(status);
+                    }
+                } else {
+                    loadImages(room, images);
+                    imageSelectorWidget.reset();
+                }
+            }
+        });
+        imageSelectorWidgetBox.getChildren().addAll(imageSelectorWidget, submitImage);
 
-        Button submit = new Button("submit");
+        Button submit = new Button("Submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
         submitBox.setPadding(new Insets(10, 0,10, 0));
@@ -450,8 +452,7 @@ public class AdminSceneRoomsController implements Initializable {
             public void handle(ActionEvent event) {
                 Node status = modifyRoom(room.getRoomCode(), name.getText(), capacity.getText(),
                         whiteboard.selectedProperty().get(), tv.selectedProperty().get(),
-                        rights.getValue(), room.getBuilding().getCode(),
-                        imageSelectorWidget.getImage());
+                        rights.getValue(), room.getBuilding().getCode());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -481,8 +482,7 @@ public class AdminSceneRoomsController implements Initializable {
     }
 
     private Node modifyRoom(String roomCode, String roomName, String capacity,
-                             boolean whiteboard, boolean tv, String rights, int buildingCode,
-                            File image) {
+                             boolean whiteboard, boolean tv, String rights, int buildingCode) {
         int rightsNum = 0;
         Label message = null;
         if (rights.equals("Student")) {
@@ -506,7 +506,6 @@ public class AdminSceneRoomsController implements Initializable {
             Room room = new Room(roomCode, roomName, capacityInt, whiteboard,
                     tv, rightsNum, BuildingCommunication.getBuildingByCode(buildingCode));
             RoomCommunication.updateRoom(room);
-            ImageCommunication.updateRoomImage(roomCode, image);
         } else {
             message = new Label("All fields have to be entered");
         }
@@ -520,8 +519,46 @@ public class AdminSceneRoomsController implements Initializable {
         return res;
     }
 
-    @FXML
-    private void upload() {
-        //
+    private Node addImage(Room room, File image) {
+        if (image != null) {
+            ImageCommunication.updateRoomImage(room.getRoomCode(), image);
+            return null;
+        }
+        Label message = new Label("An image has to be selected");
+
+
+        message.setStyle("-fx-text-fill: red");
+        HBox res = new HBox(message);
+        res.setAlignment(Pos.CENTER);
+        return res;
+    }
+
+    private void loadImages(Room room, HBox images) {
+        images.getChildren().clear();
+        List<String> imageUrls = ImageCommunication.getRoomImageUrl(room.getRoomCode());
+        for (int i = 0; i < imageUrls.size(); i++) {
+            Image image = new Image(imageUrls.get(i));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            Button delete = new Button("X");
+            delete.setPrefSize(20, 20);
+            HBox deleteContainer = new HBox(delete);
+            deleteContainer.setPrefHeight(20);
+            deleteContainer.setAlignment(Pos.TOP_RIGHT);
+            deleteContainer.setPadding(new Insets(5, 5, 0, 0));
+            int finalI = i;
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    ImageCommunication.deleteRoomImage(imageUrls.get(finalI));
+                    loadImages(room, images);
+                }
+            });
+            StackPane container = new StackPane(imageView, deleteContainer);
+            container.setPrefSize(100, 100);
+            container.setPadding(new Insets(5));
+            images.getChildren().add(container);
+        }
     }
 }

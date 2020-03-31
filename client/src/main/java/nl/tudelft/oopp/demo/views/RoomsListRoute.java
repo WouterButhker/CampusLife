@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,18 +10,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import jdk.jfr.Event;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
-import nl.tudelft.oopp.demo.widgets.RoomsGridView;
+import nl.tudelft.oopp.demo.widgets.ButtonsGridView;
 
 //import javafx.scene.control.*;
 
@@ -29,16 +30,10 @@ public class RoomsListRoute extends Route {
     private ScrollPane scrollPane;
     private VBox rootContainer;
     private HBox horizontalBox;
-    private Text universityTitle;
 
-    private HBox buildingsTitleContainer;
-    private Text buildingsTitle;
-
-    private HBox buttonsRow;
-    private List<RectangularImageButton> mainButtons;
-
+    private List<Room> roomList;
     private VBox filters;
-    private Text filterTitle;
+    private ButtonsGridView roomsGrid;
 
     /**
      * A route that displays the list of rooms from a Building and also filters.
@@ -56,6 +51,7 @@ public class RoomsListRoute extends Route {
     }
 
     private void createRootElement(List<Room> roomList, Integer buildingCode) {
+        this.roomList = roomList;
         rootContainer = new VBox();
         horizontalBox = new HBox();
         AppBar appBar = new AppBar();
@@ -103,15 +99,17 @@ public class RoomsListRoute extends Route {
         //container for the rooms
         VBox rooms = new VBox();
 
-        RoomsGridView roomsGrid = new RoomsGridView(roomList);
+        roomsGrid = new ButtonsGridView(new ArrayList<>(), new ArrayList<>(), 4);
         rooms.getChildren().add(roomsGrid);
-        roomsGrid.setListener(new RoomsGridView.Listener() {
+        roomsGrid.setListener(new ButtonsGridView.Listener() {
             @Override
-            public void onRoomClicked(Room room) {
+            public void onButtonClicked(int buttonIndex) {
                 RoutingScene routingScene = getRoutingScene();
-                routingScene.pushRoute(new RoomDisplayRoute(room));
+                routingScene.pushRoute(new RoomDisplayRoute(
+                        RoomsListRoute.this.roomList.get(buttonIndex)));
             }
         });
+        setRooms();
 
         apply.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -146,25 +144,14 @@ public class RoomsListRoute extends Route {
                 }
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
-                List<Room> filteredList;
-                if (buildingCode == -1) {
-                    filteredList = RoomCommunication.getAllFilteredRooms(myRights,
-                            hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
-                } else {
-                    Integer building = buildingCode;
-                    filteredList = RoomCommunication.getFilteredRoomsFromBuilding(building,
-                            myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
-                }
-
-                rooms.getChildren().clear();
-                roomsGrid.setRooms(filteredList);
-                rooms.getChildren().add(roomsGrid);
+                RoomsListRoute.this.roomList = RoomCommunication.getFilteredRooms(buildingCode,
+                        myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+                setRooms();
                 if (errorMessage.getText().equals("")) {
                     errorMessage.setText("Filters applied!");
                 }
             }
         });
-
 
         scrollPane = new ScrollPane(rooms);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -173,33 +160,34 @@ public class RoomsListRoute extends Route {
         horizontalBox.getChildren().add(scrollPane);
 
         rootContainer.getChildren().add(horizontalBox);
+
+        // Resize layout on width change
+        rootContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
+            if (newScene != null) {
+                resizeDisplay(newScene.getWidth());
+                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+                    resizeDisplay(newWidth);
+                });
+            }
+        });
     }
 
+    private void setRooms() {
+        List<Image> images = new ArrayList<>();
+        List<String> texts = new ArrayList<>();
+        for (Room room : roomList) {
+            images.add(new Image(ImageCommunication.getRoomImageUrl(room.getRoomCode()).get(0)));
+            texts.add(room.getName());
+        }
+        roomsGrid.setButtons(images, texts);
+    }
 
     @Override
     public Parent getRootElement() {
         return rootContainer;
     }
 
-
-
     private void resizeDisplay(Number newWidth) {
-        /*
-        This route should display the title, main buttons, buildings title
-        and then the buildings below the building buttons should be partially
-        covered so as to not make them the main thing
-        */
-
-        rootContainer.setPadding(new Insets(20, 0, 0, 0));
-
-        buildingsTitleContainer.setMinWidth(newWidth.doubleValue());
-
-        final double buttonWidth = 0.245;
-        for (RectangularImageButton imageButton : mainButtons) {
-            imageButton.setFitWidth(buttonWidth * newWidth.doubleValue());
-        }
-        double horizontalSpacing = ((1 - buttonWidth * 3) / 4) * newWidth.doubleValue();
-        buttonsRow.setPadding(new Insets(0, 0, 0, horizontalSpacing));
-        buttonsRow.setSpacing(horizontalSpacing);
+        roomsGrid.setPrefWidth(newWidth.doubleValue() * 0.85);
     }
 }

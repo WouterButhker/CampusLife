@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Food;
@@ -70,7 +71,8 @@ public class RestaurantMenuRoute extends Route {
         restaurantContainer = new HBox();
         menuContainer.getChildren().add(restaurantContainer);
 
-        Image restaurantImage = new Image("/images/main-screen-food.jpg");
+        Image restaurantImage =
+                new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()));
         restaurantPicture = new ImageView(restaurantImage);
         restaurantPicture.setPreserveRatio(true);
         restaurantContainer.getChildren().add(restaurantPicture);

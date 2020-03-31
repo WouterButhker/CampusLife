@@ -15,4 +15,7 @@ public interface RoomImageRepository extends JpaRepository<RoomImage, Integer> {
 
     @Transactional
     void deleteByRoom(Room room);
+
+    @Transactional
+    String deleteByImageId(String imageId);
 }
