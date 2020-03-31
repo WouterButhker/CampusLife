@@ -44,7 +44,7 @@ public class AppBar extends StackPane {
      * Creates an AppBar with or without the Admin Mode link.
      * @param hasAdminMode true if the Admin Mode link should be displayed
      */
-    public AppBar(boolean hasAdminMode, boolean hasBack) {
+    public AppBar(boolean hasAdminMode, boolean hasBack, boolean hasProfile) {
         addComponents();
         adminScreenLink.setVisible(hasAdminMode);
         separator.setVisible(hasAdminMode);
@@ -53,6 +53,11 @@ public class AppBar extends StackPane {
         }
         if (hasAdminMode && !hasBack) {
             leftContainer.getChildren().remove(leftSeparator);
+        }
+
+        if (!hasProfile) {
+            profileButton.setVisible(false);
+            leftSeparator.setVisible(false);
         }
     }
 
