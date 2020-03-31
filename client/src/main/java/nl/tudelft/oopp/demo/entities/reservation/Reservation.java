@@ -75,6 +75,10 @@ public abstract class Reservation {
         return Objects.hash(id, user, date, timeSlot);
     }
 
+    /**
+     * Returns a programmer friendly representation of the object.
+     * @return a programmer friendly string representation of the object
+     */
     @Override
     public String toString() {
         return "user: " + this.user
@@ -82,13 +86,25 @@ public abstract class Reservation {
                 + ", timeslot: " + this.timeSlot;
     }
 
+    /**
+     * returns the date and timeslot in a string.
+     * @return the date and timeslot
+     */
     public String getDateAndTimeslot() {
         return "Date: " + this.date + " | Timeslot: "
                 + this.timeSlot;
     }
 
+    /**
+     * Returns a user friendly representation of the object.
+     * @return a user friendly string representation of the object
+     */
     public abstract String toDisplayString();
 
+    /**
+     * Returns a admin friendly representation of the object.
+     * @return a admin friendly string representation of the object
+     */
     public String toDisplayStringAdmin() {
         if (user.getUsername() == null) {
             return toDisplayString() + " | user: " + user.getId();
