@@ -81,4 +81,10 @@ public abstract class Reservation {
                 + ", date: " + this.date
                 + ", timeslot: " + this.timeSlot;
     }
+
+    public abstract String toDisplayString();
+
+    public String toDisplayStringAdmin() {
+        return toDisplayString() + " | user: " + user.getId();
+    }
 }

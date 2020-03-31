@@ -47,4 +47,10 @@ public class PersonalReservation extends Reservation {
                 + ", activity: " + this.activity
                 + "}";
     }
+
+    @Override
+    public String toDisplayString() {
+        return "Appointment | Timeslot: " + getTimeSlot()
+                + " | " + this.activity;
+    }
 }

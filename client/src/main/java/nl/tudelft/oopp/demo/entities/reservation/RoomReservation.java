@@ -59,4 +59,12 @@ public class RoomReservation extends Reservation {
                 + ", room: " + this.room
                 + "}";
     }
+
+    @Override
+    public String toDisplayString() {
+        return "Room reservation | Room: " + this.room.getName()
+                + " | Timeslot: " + getTimeSlot();
+    }
+
+
 }

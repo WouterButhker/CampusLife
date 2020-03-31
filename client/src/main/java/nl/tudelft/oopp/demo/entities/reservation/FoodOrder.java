@@ -124,6 +124,16 @@ public class FoodOrder extends Reservation {
                 + "}";
     }
 
+    @Override
+    public String toDisplayString() {
+        String foodItems = "Fix this in FoodOrder entity";
+        for (List<Integer> pair: this.foodsList) {
+            // TODO
+        }
+        return "Food order | " + this.restaurant.getName()
+                + " | Order: " + foodItems;
+    }
+
     public List<List<Integer>> getFoodsList() {
         return foodsList;
     }

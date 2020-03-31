@@ -74,5 +74,12 @@ public class BikeReservation extends Reservation {
                 + "}";
     }
 
+    @Override
+    public String toDisplayString() {
+        return "Bike reservation | Pickup location: " + pickUpBuilding.getName()
+                + " | Dropoff location: " + dropOffBuilding.getName()
+                + " | Timeslot: " + getTimeSlot();
+    }
+
 }
 
