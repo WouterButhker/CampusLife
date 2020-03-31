@@ -144,7 +144,8 @@ public class RoomsListRoute extends Route {
                 }
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
-                RoomsListRoute.this.roomList = RoomCommunication.getFilteredRoomsFromBuilding(buildingCode,
+                RoomsListRoute.this.roomList = RoomCommunication
+                        .getFilteredRoomsFromBuilding(buildingCode,
                         myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
                 setRooms();
                 if (errorMessage.getText().equals("")) {
