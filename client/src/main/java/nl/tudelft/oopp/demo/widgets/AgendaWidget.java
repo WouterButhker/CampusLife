@@ -15,13 +15,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 public class AgendaWidget extends VBox {
-    private static final int NUM_BLOCKS = 5;
+    private int numb = 5;
 
     private Listener listener;
 
+    private int minHour = 0;
+    private int maxHour = 23;
+
     private int topBlock = 10;
-    private int from = 0;
-    private int to = 23;
 
     private int selectedBlock = -1;
 
@@ -37,14 +38,14 @@ public class AgendaWidget extends VBox {
      * @param listener the listener which listens to the callbacks
      *                 specified in the interface
      */
-    public AgendaWidget(Listener listener) {
+    public AgendaWidget(Listener listener, int numBlocks) {
         this.listener = listener;
-
+        setNumBlocks(numBlocks);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
         setPadding(new Insets(8));
         setSpacing(8);
         setAlignment(Pos.CENTER);
-        for (int i = 0; i < NUM_BLOCKS; i++) {
+        for (int i = 0; i < numb; i++) {
             AgendaBlock agendaBlock = new AgendaBlock(String.format("%d:00", i), true);
             int finalI = i;
             agendaBlock.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -121,8 +122,29 @@ public class AgendaWidget extends VBox {
         redrawBlocks();
     }
 
+    /**
+     * Sets the minimum hour that is available.
+     * @param minHour the minimum hour (inclusive)
+     */
+    public void setMinHour(int minHour) {
+        this.minHour = minHour;
+
+        redrawBlocks();
+    }
+
+
+    /**
+     * Sets the maximum hour that is available.
+     * @param maxHour the maximum hour (inclusive)
+     */
+    public void setMaxHour(int maxHour) {
+        this.maxHour = maxHour;
+
+        redrawBlocks();
+    }
+
     private void scrollDown() {
-        if (topBlock + NUM_BLOCKS <= to) {
+        if (topBlock + numb <= 23) {
             topBlock += 1;
             redrawBlocks();
         }
@@ -136,15 +158,21 @@ public class AgendaWidget extends VBox {
     }
 
     private void redrawBlocks() {
-        for (int i = 0; i < NUM_BLOCKS; i++) {
-            agendaBlocks.get(i).setTime(String.format("%d:00", topBlock + i));
-            if ((topBlock + i) == selectedBlock) {
+        for (int i = 0; i < numb; i++) {
+            int hour = topBlock + i;
+            agendaBlocks.get(i).setTime(String.format("%d:00", hour));
+            if (hour == selectedBlock) {
                 agendaBlocks.get(i).setSelected(true);
             } else {
                 agendaBlocks.get(i).setSelected(false);
             }
-
-            agendaBlocks.get(i).setAvailable(availabilites[(topBlock + i)]);
+            boolean isWithinRange = (minHour <= hour && hour <= maxHour);
+            agendaBlocks.get(i).setAvailable(availabilites[hour] && isWithinRange);
+            if (!agendaBlocks.get(i).isAvailable || !isWithinRange) {
+                agendaBlocks.get(i).setDisable(true);
+            } else {
+                agendaBlocks.get(i).setDisable(false);
+            }
         }
     }
 
@@ -165,7 +193,7 @@ public class AgendaWidget extends VBox {
         double restSize = height * (1 - buttonsScale) - 16;
 
         for (AgendaBlock agendaBlock : agendaBlocks) {
-            agendaBlock.setPrefHeight(restSize / NUM_BLOCKS);
+            agendaBlock.setPrefHeight(restSize / numb);
         }
     }
 
@@ -243,6 +271,10 @@ public class AgendaWidget extends VBox {
             recolor();
         }
 
+        public boolean isAvailable() {
+            return isAvailable;
+        }
+
         private void recolor() {
             timeContainer.getStyleClass().clear();
             if (isSelected) {
@@ -257,6 +289,10 @@ public class AgendaWidget extends VBox {
         public void setTime(String time) {
             this.time.setText(time);
         }
+    }
+
+    private void setNumBlocks(int newNumBlocks) {
+        numb = newNumBlocks;
     }
 
     public interface Listener {

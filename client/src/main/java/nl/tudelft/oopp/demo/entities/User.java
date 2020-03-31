@@ -2,14 +2,24 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.io.Serializable;
 
-public class UserDtO implements Serializable {
+public class User implements Serializable {
+    private Integer id;
+
     private String username;
     private String password;
 
+    private String role;
+    private boolean accountIsEnabled = true;
 
-    public UserDtO(String user, String pass) {
+    /**
+     * Constructor used for registering a new account.
+     * @param user The username
+     * @param pass The password
+     */
+    public User(String user, String pass) {
         this.username = user;
         this.password = pass;
+        this.role = "Student";
     }
 
     public String getUsername() {
@@ -26,6 +36,30 @@ public class UserDtO implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isAccountIsEnabled() {
+        return accountIsEnabled;
+    }
+
+    public void setAccountIsEnabled(boolean accountIsEnabled) {
+        this.accountIsEnabled = accountIsEnabled;
     }
 
     /**
@@ -50,6 +84,6 @@ public class UserDtO implements Serializable {
      */
     @Override
     public String toString() {
-        return "User: " + this.username + " pass: " + password;
+        return "Id: " + id + " user: " + this.username + " pass: " + password + " role: " + role;
     }
 }

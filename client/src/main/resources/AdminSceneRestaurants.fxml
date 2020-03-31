@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.*?>
+<VBox fx:id="mainBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneRestaurantsController">
+    <children>
+        <AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0">
+            <children>
+                <Text layoutX="340.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="This is the restaurants page">
+                    <font>
+                        <Font size="36.0"/>
+                    </font>
+                </Text>
+                <Text layoutX="130.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Adding a new restaurant">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                </Text>
+                <TextField fx:id="restaurantNameInput" layoutX="180.0" layoutY="217.0" promptText="Restaurant name"/>
+                <ChoiceBox fx:id="buildingList" layoutX="179.0" layoutY="258.0" prefWidth="150.0"/>
+                <TextField fx:id="restaurantDescriptionInput" layoutX="180.0" layoutY="302.0"
+                           promptText="Restaurant description"/>
+                <Text layoutX="37.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant name"/>
+                <Text layoutX="37.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building"/>
+                <Text layoutX="37.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Restaurant description"/>
+                <Button fx:id="submit" layoutX="130.0" layoutY="455.0" mnemonicParsing="false"
+                        onAction="#submitNewRestaurant" text="Submit"/>
+                <Button layoutX="400.0" layoutY="130.0" mnemonicParsing="false"
+                        onAction="#refreshRestaurantsPage" text="Refresh"/>
+                <ChoiceBox fx:id="buildingList2" layoutX="772.0" layoutY="97.0" prefWidth="150.0"/>
+                <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="604.0" layoutY="142.0" prefHeight="432.0"
+                            prefWidth="417.0">
+                    <content>
+                        <AnchorPane fx:id="anchorPaneRestaurants" maxHeight="1.7976931348623157E308" minHeight="0.0"
+                                    minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
+                            <children>
+                                <VBox fx:id="restaurantsList"/>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </ScrollPane>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import nl.tudelft.oopp.demo.entities.Food;
+import java.util.List;
+import nl.tudelft.oopp.demo.entities.food.Food;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ public class FoodController {
 
     /**
      * Adds a new food to the database.
+     *
      * @param food the food
      * @return Saved
      */
@@ -34,5 +36,23 @@ public class FoodController {
 
         foodRepository.deleteById(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    /**
+     * Updates a food item.
+     *
+     * @param id The id of the food to be modified
+     * @param food The food to be modified
+     * @return the updated food
+     */
+    @PutMapping (value = "/{id}", consumes = "application/json", produces = "application/json")
+    public Food updateFood(@PathVariable Integer id,
+                                       @RequestBody Food food) {
+        return foodRepository.save(food);
+    }
+
+    @GetMapping
+    List<Food> getAll() {
+        return foodRepository.findAll();
     }
 }
