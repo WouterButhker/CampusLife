@@ -1,9 +1,8 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
+import java.util.Objects;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
-
-import java.util.Objects;
 
 public class BikeReservation extends Reservation {
 

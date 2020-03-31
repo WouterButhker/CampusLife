@@ -1,9 +1,7 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
-import nl.tudelft.oopp.demo.entities.User;
-
 import java.util.Objects;
-
+import nl.tudelft.oopp.demo.entities.User;
 
 public class PersonalReservation extends Reservation {
 

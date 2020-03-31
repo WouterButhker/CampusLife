@@ -1,10 +1,8 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
+import java.util.Objects;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
-
-import java.util.Objects;
-
 
 public class RoomReservation extends Reservation {
 
