@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import org.springframework.http.ResponseEntity;
 
 public class RoomReservationCommunication {

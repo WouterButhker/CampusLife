@@ -20,7 +20,7 @@ import nl.tudelft.oopp.demo.communication.FoodOrderCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.FoodOrder;
+import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 
 public class OrderWidget extends StackPane {
     private FoodOrder foodOrder;

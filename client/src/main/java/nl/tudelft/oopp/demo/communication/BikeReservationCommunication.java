@@ -1,9 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -12,11 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
-import org.springframework.http.ResponseEntity;
 
 public class BikeReservationCommunication {
 

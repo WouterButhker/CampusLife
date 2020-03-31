@@ -1,4 +1,6 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.demo.entities.reservation;
+
+import nl.tudelft.oopp.demo.entities.User;
 
 import java.util.Objects;
 

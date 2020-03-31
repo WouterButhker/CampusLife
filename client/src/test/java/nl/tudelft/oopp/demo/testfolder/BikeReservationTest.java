@@ -3,7 +3,7 @@ package nl.tudelft.oopp.demo.testfolder;
 import static org.junit.jupiter.api.Assertions.*;
 
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
 import org.junit.jupiter.api.BeforeEach;
