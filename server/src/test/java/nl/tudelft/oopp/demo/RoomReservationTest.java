@@ -1,9 +1,10 @@
 package nl.tudelft.oopp.demo;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
-import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.repositories.RoomRepository;
@@ -14,9 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class RoomReservationTest {

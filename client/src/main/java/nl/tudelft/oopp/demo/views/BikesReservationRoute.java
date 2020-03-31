@@ -178,7 +178,8 @@ public class BikesReservationRoute extends Route {
             String slot = pickUp + "-" + dropOff;
             DateFormat dayFormat = new SimpleDateFormat("dd/MM/yyyy");
             String date = dayFormat.format(pickUpTime.getTime());
-            BikeReservation res = new BikeReservation(new User(AuthenticationCommunication.myUserId),
+            BikeReservation res = new BikeReservation(
+                    new User(AuthenticationCommunication.myUserId),
                       pickUpBuilding, dropOffBuilding, date, slot);
             BikeReservationCommunication.createBikeReservation(res);
             PopupWidget.display("Bike Reserved!", "Bike reserved");

@@ -14,16 +14,16 @@ public class FoodOrderQuantity {
     private FoodOrderQuantityKey id;
 
     @ManyToOne
-    @MapsId("foodId")
-    @JoinColumn(name = "food_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Food food;
-
-    @ManyToOne
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private FoodOrder foodOrder;
+
+    @ManyToOne
+    @MapsId("foodId")
+    @JoinColumn(name = "food_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Food food;
 
     private int quantity;
 

@@ -54,7 +54,7 @@ public class FoodOrder extends Reservation {
     }
 
     /**
-     * Creates a new FoodOrder object for pickup
+     * Creates a new FoodOrder object for pickup.
      * @param user the userID
      * @param date the date of the foodorder
      * @param timeSlot the prefered time of delivery/pickup
