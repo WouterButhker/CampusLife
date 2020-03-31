@@ -19,7 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.communication.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 

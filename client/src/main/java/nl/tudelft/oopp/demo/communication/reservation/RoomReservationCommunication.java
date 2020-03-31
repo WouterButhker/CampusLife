@@ -1,9 +1,11 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.communication.reservation;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import org.springframework.http.ResponseEntity;
 

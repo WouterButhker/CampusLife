@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.BikeReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.communication.reservation;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 

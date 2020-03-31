@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.communication;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

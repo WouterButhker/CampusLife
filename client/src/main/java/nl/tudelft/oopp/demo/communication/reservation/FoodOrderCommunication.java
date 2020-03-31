@@ -1,6 +1,7 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.communication.reservation;
 
 import com.google.gson.Gson;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 
 public class FoodOrderCommunication {

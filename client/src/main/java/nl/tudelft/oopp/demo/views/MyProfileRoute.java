@@ -22,7 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;

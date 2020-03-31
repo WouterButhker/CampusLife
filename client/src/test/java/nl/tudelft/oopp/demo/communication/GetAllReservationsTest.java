@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
 import java.util.List;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
