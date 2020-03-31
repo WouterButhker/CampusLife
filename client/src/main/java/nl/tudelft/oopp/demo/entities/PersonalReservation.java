@@ -2,61 +2,16 @@ package nl.tudelft.oopp.demo.entities;
 
 import java.util.Objects;
 
+
 public class PersonalReservation extends Reservation {
-    private Integer id;
-    private String date;
-    private String timeSlot;
-    private Integer user;
+
     private String activity;
 
-    /**
-     * Make a PersonalReservation object.
-     *
-     * @param id       the number of the reservation
-     * @param user     the User(id) that made the reservation
-     * @param timeSlot the time at which the reservation is made
-     * @param activity the activity of the reservation
-     */
-    public PersonalReservation(Integer id, Integer user,
-                               String activity, String date, String timeSlot) {
-        super(id, user, date, timeSlot);
 
-        this.user = user;
+    public PersonalReservation(User user, String date, String timeSlot, String activity) {
+        super(user, date, timeSlot);
         this.activity = activity;
     }
-
-    @Override
-    public String toString() {
-        return "PersonalReservation{" + "id=" + id + ", user=" + user
-                + ", activity=" + activity
-                + ", date='" + date + '\'' + ", timeSlot='"
-                + timeSlot + '\'' + '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUser() {
-        return user;
-    }
-
-    public void setUser(Integer user) {
-        this.user = user;
-    }
-
-    public String getTimeSlot() {
-        return timeSlot;
-    }
-
-    public void setTimeSlot(String timeSlot) {
-        this.timeSlot = timeSlot;
-    }
-
 
     public String getActivity() {
         return activity;
@@ -74,15 +29,22 @@ public class PersonalReservation extends Reservation {
         if (!(o instanceof PersonalReservation)) {
             return false;
         }
+        if (!super.equals(o)) {
+            return false;
+        }
         PersonalReservation that = (PersonalReservation) o;
-        return id.equals(that.id)
-                && user.equals(that.user)
-                && activity.equals(that.activity)
-                && timeSlot.equals(that.timeSlot);
+        return Objects.equals(activity, that.activity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, timeSlot, activity);
+        return Objects.hash(super.hashCode(), activity);
+    }
+
+    @Override
+    public String toString() {
+        return "personal reservation{" + super.toString()
+                + ", activity: " + this.activity
+                + "}";
     }
 }

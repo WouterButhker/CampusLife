@@ -1,35 +1,30 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.util.Objects;
+
 public class BikeReservation extends Reservation {
 
     private Building pickUpBuilding;
     private Building dropOffBuilding;
 
+
     /**
      * Makes a new BikeReservation object.
-     * @param id The number of the bike reservation
-     * @param user The id of the user that made the bike reservation
-     * @param pickUpBuilding The building where the bike is picked up
-     * @param dropOffBuilding The building where the bike is dropped off
-     * @param date The date of the bike reservation
-     * @param timeSlot - The timeslot of the bike reservation
+     * @param user The user that reserved
+     * @param pickUpBuilding the building from where the bike is picked up
+     * @param dropOffBuilding the building where the bike is dropped off
+     * @param date The date of the reservation
+     * @param timeSlot The timeslot of the reservation
      */
-    public BikeReservation(Integer id, Integer user,
-                           Building pickUpBuilding, Building dropOffBuilding,
-                           String date, String timeSlot) {
-        super(id, user, date, timeSlot);
+    public BikeReservation(User user,
+                           Building pickUpBuilding,
+                           Building dropOffBuilding,
+                           String date,
+                           String timeSlot)  {
+        super(user, date, timeSlot);
         this.pickUpBuilding = pickUpBuilding;
         this.dropOffBuilding = dropOffBuilding;
 
-    }
-
-    @Override
-    public String toString() {
-        return "BikeReservation{" + "id=" + id + ", user=" + userId
-                + ", pickUpBuildingCode=" + pickUpBuilding.getCode()
-                + ", dropOffBuildingCode=" + dropOffBuilding.getCode()
-                + ", date='" + date + '\'' + ", timeSlot='"
-                + timeSlot + '\'' + '}';
     }
 
     public Building getPickUpBuilding() {
@@ -56,12 +51,26 @@ public class BikeReservation extends Reservation {
         if (!(o instanceof BikeReservation)) {
             return false;
         }
+        if (!super.equals(o)) {
+            return false;
+        }
         BikeReservation that = (BikeReservation) o;
-        return id.equals(that.id)
-                && userId.equals(that.userId)
-                && pickUpBuilding.equals(that.pickUpBuilding)
-                && dropOffBuilding.equals(that.dropOffBuilding)
-                && date.equals(that.date)
-                && timeSlot.equals(that.timeSlot);
+        return Objects.equals(pickUpBuilding, that.pickUpBuilding)
+                && Objects.equals(dropOffBuilding, that.dropOffBuilding);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), pickUpBuilding, dropOffBuilding);
+    }
+
+    @Override
+    public String toString() {
+        return "bike reservation{" + super.toString()
+                + ", pickup building: " + this.pickUpBuilding
+                + ", dropoff building: " + this.dropOffBuilding
+                + "}";
+    }
+
 }
+

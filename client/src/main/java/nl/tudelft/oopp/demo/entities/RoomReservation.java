@@ -1,28 +1,28 @@
 package nl.tudelft.oopp.demo.entities;
 
+import java.util.Objects;
+
+
 public class RoomReservation extends Reservation {
 
-    private Integer user;
-    private Room room;
+    private Room room;          // room code
 
     /**
-     * Make a Reservation object.
-     * @param user the User(id) that made the reservation
-     * @param room the Room(roomCode) that is reserved
+     * Make a RoomReservation object.
+     * @param user the User that makes the reservation
+     * @param room the Room that is reserved
      * @param timeSlot the time at which the Room is reserved
      */
-    public RoomReservation(int user, Room room, String timeSlot) {
-        super(null, user, timeSlot.substring(0, 10), timeSlot);
+    public RoomReservation(User user,
+                           Room room,
+                           String date,
+                           String timeSlot)  {
+
+        super(user, date, timeSlot);
         this.room = room;
+
     }
 
-    public Integer getUser() {
-        return user;
-    }
-
-    public void setUser(Integer user) {
-        this.user = user;
-    }
 
     public Room getRoom() {
         return room;
@@ -33,7 +33,29 @@ public class RoomReservation extends Reservation {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RoomReservation)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        RoomReservation that = (RoomReservation) o;
+        return Objects.equals(room, that.room);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), room);
+    }
+
+    @Override
     public String toString() {
-        return null;
+        return "Roomreservation{" + super.toString()
+                + ", room: " + this.room
+                + "}";
     }
 }
