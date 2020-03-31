@@ -26,7 +26,7 @@ public class FoodOrder extends Reservation {
     Set<FoodOrderQuantity> quantities;
 
     @ManyToOne
-    @JoinColumn(name = "room_reservation", nullable = false)
+    @JoinColumn(name = "room_reservation")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private RoomReservation reservation;        // room code
 
