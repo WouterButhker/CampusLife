@@ -150,4 +150,39 @@ class BikeReservationTest {
     void nullEqualsTest() {
         assertNotEquals(null, bikeReservation);
     }
+
+    @Test
+    void toStringTest() {
+        String out = "bike reservation{user: Id: 5 user: null pass: null role: Student,"
+                + " date: 22/03/2020, timeslot: 14:00-19:00, "
+                + "pickup building: {1, Test, Test street, 06:00-18:00, 06:00-18:00, "
+                + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00,"
+                + " image, 45}, dropoff building: {2, Test2, Test street2, 06:00-18:00,"
+                + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                + "19:00-21:00, image, 32}}";
+        assertEquals(bikeReservation.toString(), out);
+    }
+
+    @Test
+    void toDisplayStringTest() {
+        String out = "Bike reservation | Pickup location: Test"
+                + " | Dropoff location: Test2 | Date: 22/03/2020 | Timeslot: 14:00-19:00";
+        assertEquals(bikeReservation.toDisplayString(), out);
+    }
+
+    @Test
+    void toDisplayStringAdminTest() {
+        String out = "Bike reservation | Pickup location: Test | "
+                + "Dropoff location: Test2 | Date: 22/03/2020 | Timeslot: 14:00-19:00 | user: 5";
+        assertEquals(bikeReservation.toDisplayStringAdmin(), out);
+    }
+
+    @Test
+    void toDisplayStringAdminWithUsernameTest() {
+        String out = "Bike reservation | Pickup location: Test | "
+                + "Dropoff location: Test2 | Date: 22/03/2020 | Timeslot: 14:00-19:00 | user: 5 "
+                + "(Wouter)";
+        bikeReservation.getUser().setUsername("Wouter");
+        assertEquals(bikeReservation.toDisplayStringAdmin(), out);
+    }
 }
