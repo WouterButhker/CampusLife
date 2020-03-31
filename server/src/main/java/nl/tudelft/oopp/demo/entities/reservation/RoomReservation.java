@@ -12,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class RoomReservation extends Reservation {
 
     @ManyToOne
-    @JoinColumn(name = "room_code")
+    @JoinColumn(name = "room_code", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;          // room code
 

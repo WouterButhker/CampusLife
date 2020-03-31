@@ -16,7 +16,7 @@ public abstract class Reservation {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "users")
+    @JoinColumn(name = "users", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 

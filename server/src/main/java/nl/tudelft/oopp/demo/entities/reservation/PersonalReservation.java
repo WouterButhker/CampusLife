@@ -8,7 +8,7 @@ import nl.tudelft.oopp.demo.entities.User;
 @Entity
 public class PersonalReservation extends Reservation {
 
-    @Column(name = "activity")
+    @Column(name = "activity", nullable = false)
     private String activity;
 
     public PersonalReservation() {

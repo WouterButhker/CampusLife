@@ -13,12 +13,12 @@ public class BikeReservation extends Reservation {
 
 
     @ManyToOne
-    @JoinColumn(name = "pick_up_building")
+    @JoinColumn(name = "pick_up_building", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Building pickUpBuilding;          // building code
 
     @ManyToOne
-    @JoinColumn(name = "drop_off_building")
+    @JoinColumn(name = "drop_off_building", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Building dropOffBuilding;
 
