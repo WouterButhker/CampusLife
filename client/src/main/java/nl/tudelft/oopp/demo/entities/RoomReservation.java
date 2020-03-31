@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class RoomReservation extends Reservation {
 
-    private Room room;          // room code
+    private Room room;
 
     /**
      * Make a RoomReservation object.

@@ -51,7 +51,7 @@ public class OrderWidget extends StackPane {
      */
     public OrderWidget(FoodOrder foodOrder) {
         this.foodOrder = foodOrder;
-        foods = RestaurantCommunication.getAllFood(foodOrder.getRestaurant());
+        foods = RestaurantCommunication.getAllFood(foodOrder.getRestaurant().getId());
 
         background = new Rectangle();
         background.setFill(Color.WHITE);

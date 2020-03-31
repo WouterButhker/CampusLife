@@ -13,6 +13,7 @@ import nl.tudelft.oopp.demo.communication.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.RoomReservation;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.widgets.AgendaWidget;
 import nl.tudelft.oopp.demo.widgets.AppBar;
@@ -86,17 +87,18 @@ public class RoomReservationRoute extends Route {
             @Override
             public void onReserveClicked() {
                 if (fromTime != null) {
-                    int user = AuthenticationCommunication.myUserId;
+                    int userId = AuthenticationCommunication.myUserId;
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                     String fromString = format.format(fromTime.getTime());
                     String toString = format.format(toTime.getTime());
                     String timeslot = String.format("%s - %s", fromString, toString);
+                    String date = timeslot.substring(0, 9);
                     RoomReservationCommunication
-                            .addReservationToDatabase(user, room.getRoomCode(), timeslot);
-                    reservations.add(new RoomReservation(user, room, timeslot));
+                            .addReservationToDatabase(userId, room.getRoomCode(), timeslot);
+                    reservations.add(new RoomReservation(new User(userId), room, date, timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
-                    System.out.println(user + " " + room.getRoomCode() + " " + timeslot);
+                    System.out.println(userId + " " + room.getRoomCode() + " " + timeslot);
                 }
             }
         });

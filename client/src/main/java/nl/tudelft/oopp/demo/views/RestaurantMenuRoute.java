@@ -18,6 +18,7 @@ import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.FoodOrder;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.FoodItemWidget;
 import nl.tudelft.oopp.demo.widgets.OrderWidget;
@@ -49,8 +50,8 @@ public class RestaurantMenuRoute extends Route {
     public RestaurantMenuRoute(Restaurant restaurant) {
         // TODO: Date and time
         // TODO: GET RIGHT USER
-        foodOrder = new FoodOrder(AuthenticationCommunication.myUserId,"Today",
-                "ASAP", restaurant.getId());
+        foodOrder = new FoodOrder(new User(AuthenticationCommunication.myUserId),"Today",
+                "ASAP", restaurant);
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
