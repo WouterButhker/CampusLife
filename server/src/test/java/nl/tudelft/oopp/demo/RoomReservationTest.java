@@ -51,7 +51,7 @@ public class RoomReservationTest {
 
     @Test
     void testRoomReservationToString() {
-        String out = "Roomreservation{user: user{name:user, role: Student}, "
+        String out = "Roomreservation{user: user{id: null, name:user, role: Student}, "
                 + "date: 18/03/2020, "
                 + "timeslot: 17/03/2020,22:00 - 17/03/2020,23:00, "
                 + "room: room{roomcode: 4, name: Auditorium, capacity: 1040, "
