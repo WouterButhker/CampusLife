@@ -54,7 +54,7 @@ public class MainMenuRoute extends Route {
             isAdmin = true;
         }
 
-        rootContainer.getChildren().add(new AppBar(isAdmin));
+        rootContainer.getChildren().add(new AppBar(isAdmin, false));
 
         createButtonsRow();
         createBuildingsTitle();
