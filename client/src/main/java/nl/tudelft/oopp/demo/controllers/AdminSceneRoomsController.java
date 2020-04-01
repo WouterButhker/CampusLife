@@ -32,7 +32,6 @@ import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 
-
 public class AdminSceneRoomsController implements Initializable {
 
     @FXML
@@ -259,10 +258,8 @@ public class AdminSceneRoomsController implements Initializable {
         int height = numRooms * 82;
         anchorPaneRooms.setPrefHeight(height);
         if (height <= scrollPane.getPrefHeight()) {
-            scrollPaneVBox.setPrefWidth(400);
             scrollPane.setPrefWidth(400);
         } else {
-            scrollPaneVBox.setPrefWidth(417);
             scrollPane.setPrefWidth(417);
         }
         for (int i = 0; i < numRooms; i++) {

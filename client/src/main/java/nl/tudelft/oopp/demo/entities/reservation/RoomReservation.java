@@ -1,24 +1,12 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
 import java.util.Objects;
-import javax.persistence.*;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-@Entity
-@Table(name = "room_reservation")
 public class RoomReservation extends Reservation {
 
-    @ManyToOne
-    @JoinColumn(name = "room_code", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Room room;          // room code
-
-    public RoomReservation() {
-
-    }
+    private Room room;
 
     /**
      * Make a RoomReservation object.
@@ -71,4 +59,12 @@ public class RoomReservation extends Reservation {
                 + ", room: " + this.room
                 + "}";
     }
+
+    @Override
+    public String toDisplayString() {
+        return "Room reservation | Room: " + this.room.getName()
+                + " | " + getDateAndTimeslot();
+    }
+
+
 }

@@ -6,8 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +54,8 @@ public class BikeReservationWidgetTest {
     void calculateNumBikesTest() {
         List<BikeReservation> list = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            BikeReservation bikeReservation = new BikeReservation(1, 1, building, building,
+            BikeReservation bikeReservation = new BikeReservation(new User(1),
+                    building, building,
                     "23/03/2020", "12:00-14:00");
             list.add(bikeReservation);
         }
