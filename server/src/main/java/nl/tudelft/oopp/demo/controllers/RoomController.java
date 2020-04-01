@@ -57,7 +57,7 @@ public class RoomController {
 
     /**
      * Adds a new room in the database.
-     * @param roomCode the abreviation of the room
+     * @param roomCode the abbreviation of the room
      * @param name the actual name of the room
      * @param capacity how many spaces when empty
      * @param hasWhiteboard if the room has a whiteboard
