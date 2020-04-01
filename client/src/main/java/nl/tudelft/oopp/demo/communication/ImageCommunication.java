@@ -112,8 +112,8 @@ public class ImageCommunication {
                 "images/TuDelftTempIMG.jpg");
     }
 
-    public static String getRestaurantImageUrl(Integer restaurantCode) {
-        return getImageUrl("/restaurants/image/getUrl/" + restaurantCode,
+    public static List<String> getRestaurantImageUrl(Integer restaurantCode) {
+        return getImagesUrl("/restaurants/image/getUrl/" + restaurantCode,
                 "images/restaurant_image.jpg");
     }
 
@@ -157,6 +157,20 @@ public class ImageCommunication {
             return deleteImageByUrl(imageUrl,
                     SERVER_URL + "/rooms/image/downloadFile/",
                     "/rooms/image/");
+        }
+        return "400 BAD_REQUEST";
+    }
+
+    /**
+     * Delete the selected image from the restaurant.
+     * @param imageUrl the url of the image you want to delete
+     * @return "200 OK" / "400 BAD_REQUEST"
+     */
+    public static String deleteRestaurantImage(String imageUrl) {
+        if (!imageUrl.equals("images/restaurant_image.jpg")) {
+            return deleteImageByUrl(imageUrl,
+                    SERVER_URL + "/restaurants/image/downloadFile/",
+                    "/restaurants/image/");
         }
         return "400 BAD_REQUEST";
     }

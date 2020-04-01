@@ -16,4 +16,7 @@ public interface RestaurantImageRepository extends JpaRepository<RestaurantImage
 
     @Transactional
     void deleteByRestaurant(Restaurant restaurant);
+
+    @Transactional
+    String deleteByImageId(String imageId);
 }

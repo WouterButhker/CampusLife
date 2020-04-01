@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -21,12 +23,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
 
 public class AdminSceneRestaurantsController implements Initializable {
     @FXML
@@ -56,9 +61,15 @@ public class AdminSceneRestaurantsController implements Initializable {
     @FXML
     private VBox restaurantsList;
 
+    @FXML
+    private VBox settingsBox;
+
+    private ImageSelectorWidget imageSelectorWidget;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadBuildings();
+        loadImageSelectorWidget();
         addAppBar();
     }
 
@@ -85,6 +96,15 @@ public class AdminSceneRestaurantsController implements Initializable {
         }
     }
 
+    private void loadImageSelectorWidget() {
+        imageSelectorWidget = new ImageSelectorWidget();
+        HBox box = new HBox();
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(imageSelectorWidget);
+        box.setPadding(new Insets(10));
+        settingsBox.getChildren().add(2, box);
+    }
+
     @FXML
     private void submitNewRestaurant() {
         boolean buildingFound = false;
@@ -104,11 +124,12 @@ public class AdminSceneRestaurantsController implements Initializable {
 
         Text submitStatus = new Text();
 
-        if (!restaurantName.equals("") && buildingFound) {
+        if (!restaurantName.equals("") && buildingFound && imageSelectorWidget.imageSelected()) {
             RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
                                                                     restaurantName,
                                                                     buildingCode,
                                                                     restaurantDescription));
+            ImageCommunication.updateRestaurantImage(restaurantID, imageSelectorWidget.getImage());
             submitStatus.setText("Restaurant has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
@@ -122,6 +143,10 @@ public class AdminSceneRestaurantsController implements Initializable {
 
         if (!buildingFound) {
             submitStatus.setText("Please select a building");
+        }
+
+        if (!imageSelectorWidget.imageSelected()) {
+            submitStatus.setText("Image has to be selected");
         }
 
         Button back = new Button("Okay! take me back");
@@ -170,7 +195,8 @@ public class AdminSceneRestaurantsController implements Initializable {
         for (int i = 0; i < numRestaurants; i++) {
             HBox restaurant = new HBox();
             restaurant.setMaxWidth(400);
-            Image image = new Image("images/main-screen-food.jpg");
+            Image image = new Image(ImageCommunication
+                    .getRestaurantImageUrl(restaurants.get(i).getId()).get(0));
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
@@ -234,17 +260,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         HBox headerBox = new HBox(header);
         headerBox.setPadding(new Insets(20, 125, 10, 125));
 
-        /*Label idText = new Label("Id :");
-        HBox idTextBox = new HBox(idText);
-        idTextBox.setPadding(new Insets(10, 175, 0, 175));
-
-        Pane spacer = new Pane();
-        spacer.setPrefSize(125, 20);
-        TextField id = new TextField(Integer.toString(restaurant.getId()));
-        id.setPrefSize(150, 20);
-        HBox idBox = new HBox(spacer, id);
-        idBox.setPadding(new Insets(10, 0, 0, 0));*/
-
+        // Name
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
         nameTextBox.setPadding(new Insets(10, 175, 0, 175));
@@ -256,6 +272,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         HBox nameBox = new HBox(spacer1, name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
+        // Description
         Label descriptionText = new Label("Description :");
         HBox descriptionTextBox = new HBox(descriptionText);
         descriptionTextBox.setPadding(new Insets(10, 175, 0, 175));
@@ -267,6 +284,56 @@ public class AdminSceneRestaurantsController implements Initializable {
         final HBox descriptionBox = new HBox(spacer2, description);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
+        // Images
+        HBox images = new HBox();
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(images);
+        HBox imagesBox = new HBox(scrollPane);
+        imagesBox.setPadding(new Insets(10, 0, 10,0));
+        imagesBox.setAlignment(Pos.CENTER);
+        imagesBox.setPrefHeight(110);
+        images.setStyle("-fx-background-color: -primary-color");
+        images.setMinWidth(275);
+        loadImages(restaurant, images);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setMinViewportHeight(112);
+        scrollPane.setPrefViewportHeight(112);
+        scrollPane.setMinViewportWidth(275);
+        scrollPane.setPrefViewportWidth(275);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setOnScroll(event -> {
+            if (event.getDeltaX() == 0 && event.getDeltaY() != 0) {
+                scrollPane.setHvalue(scrollPane.getHvalue()
+                        - event.getDeltaY() / imagesBox.getWidth());
+            }
+        });
+
+        HBox imageSelectorWidgetBox = new HBox();
+        imageSelectorWidgetBox.setAlignment(Pos.CENTER);
+        ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        Button submitImage = new Button("Add image");
+        HBox.setMargin(submitImage, new Insets(0, 0, 0,10));
+        submitImage.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Node status = addImage(restaurant, imageSelectorWidget.getImage());
+                if (status != null) {
+                    try {
+                        root.getChildren().remove(13);
+                        root.getChildren().add(status);
+                    } catch (IndexOutOfBoundsException e) {
+                        root.getChildren().add(status);
+                    }
+                } else {
+                    loadImages(restaurant, images);
+                    imageSelectorWidget.reset();
+                }
+            }
+        });
+        imageSelectorWidgetBox.getChildren().addAll(imageSelectorWidget, submitImage);
+
+        // Submit button
         Button submit = new Button("Submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
@@ -318,6 +385,49 @@ public class AdminSceneRestaurantsController implements Initializable {
         }
 
         return null;
+    }
+
+    private Node addImage(Restaurant restaurant, File image) {
+        if (image != null) {
+            ImageCommunication.updateRestaurantImage(restaurant.getId(), image);
+            return null;
+        }
+        Label message = new Label("An image has to be selected");
+
+
+        message.setStyle("-fx-text-fill: red");
+        HBox res = new HBox(message);
+        res.setAlignment(Pos.CENTER);
+        return res;
+    }
+
+    private void loadImages(Restaurant restaurant, HBox images) {
+        images.getChildren().clear();
+        List<String> imageUrls = ImageCommunication.getRestaurantImageUrl(restaurant.getId());
+        for (int i = 0; i < imageUrls.size(); i++) {
+            Image image = new Image(imageUrls.get(i));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            Button delete = new Button("X");
+            delete.setPrefSize(20, 20);
+            HBox deleteContainer = new HBox(delete);
+            deleteContainer.setPrefHeight(20);
+            deleteContainer.setAlignment(Pos.TOP_RIGHT);
+            deleteContainer.setPadding(new Insets(5, 5, 0, 0));
+            int finalI = i;
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    ImageCommunication.deleteRestaurantImage(imageUrls.get(finalI));
+                    loadImages(restaurant, images);
+                }
+            });
+            StackPane container = new StackPane(imageView, deleteContainer);
+            container.setPrefSize(100, 100);
+            container.setPadding(new Insets(5));
+            images.getChildren().add(container);
+        }
     }
 
 }

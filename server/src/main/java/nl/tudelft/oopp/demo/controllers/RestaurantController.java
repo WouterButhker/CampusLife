@@ -161,4 +161,9 @@ public class RestaurantController {
         return ImageController.downloadFile(restaurantImageRepository.findByImageId(imageId));
     }
 
+    @DeleteMapping("/image/{imageId}")
+    String deleteImage(@PathVariable String imageId) {
+        return restaurantImageRepository.deleteByImageId(imageId);
+    }
+
 }

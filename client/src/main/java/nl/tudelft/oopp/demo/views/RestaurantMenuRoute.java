@@ -71,7 +71,7 @@ public class RestaurantMenuRoute extends Route {
         menuContainer.getChildren().add(restaurantContainer);
 
         Image restaurantImage =
-                new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()));
+                new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()).get(0));
         restaurantPicture = new ImageView(restaurantImage);
         restaurantPicture.setPreserveRatio(true);
         restaurantContainer.getChildren().add(restaurantPicture);
