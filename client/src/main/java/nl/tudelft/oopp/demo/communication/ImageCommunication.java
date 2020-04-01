@@ -112,11 +112,6 @@ public class ImageCommunication {
                 "images/TuDelftTempIMG.jpg");
     }
 
-    public static List<String> getRestaurantImageUrl(Integer restaurantCode) {
-        return getImagesUrl("/restaurants/image/getUrl/" + restaurantCode,
-                "images/restaurant_image.jpg");
-    }
-
     private static List<String> getImagesUrl(String url, String defaultImage) {
         List<String> defaultResponse = new ArrayList<>();
         defaultResponse.add(defaultImage);
@@ -131,6 +126,11 @@ public class ImageCommunication {
             System.out.println("Login failed");
         }
         return defaultResponse;
+    }
+
+    public static List<String> getRestaurantImageUrl(Integer restaurantCode) {
+        return getImagesUrl("/restaurants/image/getUrl/" + restaurantCode,
+                "images/restaurant_image.jpg");
     }
 
     /**
