@@ -62,14 +62,12 @@ public class AdminSceneRestaurantsController implements Initializable {
     private VBox restaurantsList;
 
     @FXML
-    private VBox settingsBox;
-
     private ImageSelectorWidget imageSelectorWidget;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadBuildings();
-        loadImageSelectorWidget();
+        // loadImageSelectorWidget();
         addAppBar();
     }
 
@@ -96,14 +94,11 @@ public class AdminSceneRestaurantsController implements Initializable {
         }
     }
 
+    /*
     private void loadImageSelectorWidget() {
         imageSelectorWidget = new ImageSelectorWidget();
-        HBox box = new HBox();
-        box.setAlignment(Pos.CENTER);
-        box.getChildren().add(imageSelectorWidget);
-        box.setPadding(new Insets(10));
-        settingsBox.getChildren().add(2, box);
-    }
+        imageSelectorBox.getChildren().add(imageSelectorWidget);
+    }*/
 
     @FXML
     private void submitNewRestaurant() {
@@ -125,11 +120,11 @@ public class AdminSceneRestaurantsController implements Initializable {
         Text submitStatus = new Text();
 
         if (!restaurantName.equals("") && buildingFound && imageSelectorWidget.imageSelected()) {
-            RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
+            Restaurant result = RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
                                                                     restaurantName,
                                                                     buildingCode,
                                                                     restaurantDescription));
-            ImageCommunication.updateRestaurantImage(restaurantID, imageSelectorWidget.getImage());
+            ImageCommunication.updateRestaurantImage(result.getId(), imageSelectorWidget.getImage());
             submitStatus.setText("Restaurant has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
