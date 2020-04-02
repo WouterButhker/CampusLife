@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.event.EventHandler;
@@ -43,13 +45,16 @@ public class OrderWidget extends StackPane {
     private List<OrderItem> orderItems;
     private List<Food> foods;
 
+    private boolean isTakeoutEnabled;
+
     /**
      * Creates an OrderWidget.
      * The OrderWidget works like a 'cart' for ordering food.
      * It displays all food currently on the order
      * @param foodOrder the foodOrder to display
      */
-    public OrderWidget(FoodOrder foodOrder) {
+    public OrderWidget(FoodOrder foodOrder, boolean isTakeoutEnabled) {
+        this.isTakeoutEnabled = isTakeoutEnabled;
         this.foodOrder = foodOrder;
         foods = RestaurantCommunication.getAllFood(foodOrder.getRestaurant().getId());
 
@@ -108,24 +113,33 @@ public class OrderWidget extends StackPane {
         bottomContainer.getChildren().add(totalContainer);
 
         takeoutButton = new Button("Order takeout");
-        takeoutButton.getStyleClass().add("order-button");
+        if (isTakeoutEnabled) {
+            takeoutButton.getStyleClass().add("order-button");
+        } else {
+            takeoutButton.getStyleClass().add("order-button-disabled");
+        }
         takeoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                FoodOrderCommunication.createFoodOrder(foodOrder);
+                if (isTakeoutEnabled) {
+                    Calendar now = Calendar.getInstance();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
 
-                RoutingScene routingScene = (RoutingScene) takeoutButton.getScene();
-                try {
-                    routingScene.popRoute();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    FoodOrderCommunication.createFoodOrder(foodOrder);
+                    RoutingScene routingScene = (RoutingScene) takeoutButton.getScene();
+                    try {
+                        routingScene.popRoute();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
         bottomContainer.getChildren().add(takeoutButton);
         deliveryButton = new Button("Order delivery");
         deliveryButton.getStyleClass().add("order-button");
-        //bottomContainer.getChildren().add(deliveryButton);
+        bottomContainer.getChildren().add(deliveryButton);
 
         prefWidthProperty().addListener((observable, oldValue, newValue) -> {
             resizeWidget(newValue.doubleValue(), getPrefHeight());

@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,14 +15,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.Restaurant;
-import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.*;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.CalendarWidgetLogic;
 import nl.tudelft.oopp.demo.widgets.FoodItemWidget;
 import nl.tudelft.oopp.demo.widgets.OrderWidget;
 
@@ -49,10 +51,15 @@ public class RestaurantMenuRoute extends Route {
      * @param restaurant the restaurant to be displayed
      */
     public RestaurantMenuRoute(Restaurant restaurant) {
-        // TODO: Date and time
-        // TODO: GET RIGHT USER
-        foodOrder = new FoodOrder(new User(AuthenticationCommunication.myUserId),"Today",
-                "ASAP", restaurant);
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        foodOrder = new FoodOrder(
+                new User(AuthenticationCommunication.myUserId),
+                dateFormat.format(now.getTime()),
+                null,
+                restaurant,
+                null
+        );
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
@@ -65,7 +72,16 @@ public class RestaurantMenuRoute extends Route {
         menuScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         menuContainer.setPadding(new Insets(16));
         mainContainer.getChildren().add(menuScroll);
-        orderWidget = new OrderWidget(foodOrder);
+
+        Building building = BuildingCommunication.getBuildingByCode(restaurant.getBuildingCode());
+        Weekdays weekdays = new Weekdays(building.getOpeningHours());
+        int dayOfWeek = new CalendarWidgetLogic().getDayOfWeek(Calendar.getInstance());
+        boolean isBuildingOpen = weekdays.isOpenAt(
+                dayOfWeek,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE)
+        );
+        orderWidget = new OrderWidget(foodOrder, isBuildingOpen);
         mainContainer.getChildren().add(orderWidget);
 
         restaurantContainer = new HBox();

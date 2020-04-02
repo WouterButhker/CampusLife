@@ -12,6 +12,12 @@
     -fx-font-weight: bold;
 }
 
+.order-button-disabled {
+    -fx-background-color: #E0E0E0;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
 .add-button {
     -fx-background-color: #00000000;
     -fx-background-image: url('/images/add_icon.png');
