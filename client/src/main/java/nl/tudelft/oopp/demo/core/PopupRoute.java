@@ -63,6 +63,8 @@ public class PopupRoute extends Route {
         }
         super.setRoutingScene(routingScene);
 
+        fadeBox.setWidth(routingScene.getWidth());
+        fadeBox.setHeight(routingScene.getHeight());
         routingScene.widthProperty().addListener(widthListener);
         routingScene.heightProperty().addListener(heightListener);
     }
