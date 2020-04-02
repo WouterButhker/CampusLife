@@ -3,12 +3,19 @@ package nl.tudelft.oopp.demo.core;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class PopupRoute extends Route {
 
@@ -18,6 +25,7 @@ public class PopupRoute extends Route {
     private Node mainElement;
 
     private Node popup;
+    private Group popupGroup;
 
     private ChangeListener<Number> heightListener;
     private ChangeListener<Number> widthListener;
@@ -30,6 +38,12 @@ public class PopupRoute extends Route {
 
         fadeBox = new Rectangle();
         fadeBox.setFill(new Color(0, 0, 0, 0.2));
+        fadeBox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                removePopup();
+            }
+        });
         heightListener = (observable, oldValue, newValue) -> {
             fadeBox.setHeight(newValue.doubleValue());
         };
@@ -45,6 +59,7 @@ public class PopupRoute extends Route {
     public void showPopup(Node popup) {
         removePopup();
 
+        this.popup = popup;
         rootElement.getChildren().addAll(fadeBox, popup);
     }
 
