@@ -18,9 +18,6 @@ public class BikeReservationController {
     @Autowired
     private BikeReservationRepository bikeReservationRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @GetMapping(path = "/all")
     public List<BikeReservation> getAll() {
         return bikeReservationRepository.findAll();
@@ -28,11 +25,7 @@ public class BikeReservationController {
 
     @PostMapping
     BikeReservation addNewBikeReservation(@RequestBody BikeReservation bikeReservation) {
-        User user = userRepository.findUserById(bikeReservation.getUser().getId());
-        BikeReservation res = new BikeReservation(user, bikeReservation.getPickUpBuilding(),
-                bikeReservation.getDropOffBuilding(), bikeReservation.getDate(),
-                bikeReservation.getTimeSlot());
-        return bikeReservationRepository.save(res);
+        return bikeReservationRepository.save(bikeReservation);
     }
 
     @PutMapping

@@ -1,16 +1,13 @@
-package nl.tudelft.oopp.demo.testfolder;
+package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BikeReservationTest {
 
+public class BikeReservationTest {
 
     private User user;
     private Building pickUpBuilding;
@@ -123,6 +120,11 @@ class BikeReservationTest {
     }
 
     @Test
+    void equalsDifferentType() {
+        assertNotEquals(dropOffBuilding, bikeReservation);
+    }
+
+    @Test
     void equalsSameObjectTest() {
         assertEquals(bikeReservation, bikeReservation);
     }
@@ -148,36 +150,15 @@ class BikeReservationTest {
 
     @Test
     void toStringTest() {
-        String out = "bike reservation{user: Id: 5 user: null pass: null role: Student,"
-                + " date: 22/03/2020, timeslot: 14:00-19:00, "
-                + "pickup building: {1, Test, Test street, 06:00-18:00, 06:00-18:00, "
-                + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00,"
-                + " 45}, dropoff building: {2, Test2, Test street2, 06:00-18:00,"
-                + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
-                + "19:00-21:00, 32}}";
-        assertEquals(bikeReservation.toString(), out);
+        String test = "bike reservation{user: user{id: 5, name:null, role: null}, "
+                + "date: 22/03/2020, timeslot: 14:00-19:00, pickup building: "
+                + "building{buildingcode: 1, name: Test, location: Test street, "
+                + "opening hours: 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00,"
+                + " 06:00-18:00, 06:00-18:00, 19:00-21:00, bikes: 45}, dropoff building:"
+                + " building{buildingcode: 2, name: Test2, location: Test street2, opening"
+                + " hours: 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00,"
+                + " 06:00-18:00, 19:00-21:00, bikes: 32}}";
+        assertEquals(test, bikeReservation.toString());
     }
 
-    @Test
-    void toDisplayStringTest() {
-        String out = "Bike reservation | Pickup location: Test"
-                + " | Dropoff location: Test2 | Date: 22/03/2020 | Timeslot: 14:00-19:00";
-        assertEquals(bikeReservation.toDisplayString(), out);
-    }
-
-    @Test
-    void toDisplayStringAdminTest() {
-        String out = "Bike reservation | Pickup location: Test | "
-                + "Dropoff location: Test2 | Date: 22/03/2020 | Timeslot: 14:00-19:00 | user: 5";
-        assertEquals(bikeReservation.toDisplayStringAdmin(), out);
-    }
-
-    @Test
-    void toDisplayStringAdminWithUsernameTest() {
-        String out = "Bike reservation | Pickup location: Test | "
-                + "Dropoff location: Test2 | Date: 22/03/2020 | Timeslot: 14:00-19:00 | user: 5 "
-                + "(Wouter)";
-        bikeReservation.getUser().setUsername("Wouter");
-        assertEquals(bikeReservation.toDisplayStringAdmin(), out);
-    }
 }

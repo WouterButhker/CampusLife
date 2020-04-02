@@ -13,7 +13,6 @@ class BuildingTest {
     private String name;
     private String location;
     private String openingHours;
-    private String image;
     private Integer bikes;
     private Building building;
 
@@ -29,10 +28,8 @@ class BuildingTest {
         location = "CityStreetRoute";
         openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, "
                 + "08:00-22:00, 08:00-22:00, 08:00-22:00";
-        image = "https://cdn.bulbagarden.net/upload/3/36/Canalave_Gym_anime.png";
         bikes = 5;
         building = new Building(code, name, location, openingHours, bikes); //image,
-        building.setImage(image);
     }
 
     @Test
@@ -83,17 +80,6 @@ class BuildingTest {
     void setOpeningHoursTest() {
         building.setOpeningHours("09:00-21:61");
         assertEquals("09:00-21:61", building.getOpeningHours());
-    }
-
-    @Test
-    void getImageTest() {
-        assertEquals(image, building.getImage());
-    }
-
-    @Test
-    void setImageTest() {
-        building.setImage("https://cdn.bulbagarden.net/upload/7/79/Canalave_Gym_Battlefield.png");
-        assertEquals("https://cdn.bulbagarden.net/upload/7/79/Canalave_Gym_Battlefield.png", building.getImage());
     }
 
     @Test
