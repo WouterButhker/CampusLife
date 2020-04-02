@@ -73,15 +73,17 @@ public class PopupRoute extends Route {
     @Override
     protected void setRoutingScene(RoutingScene routingScene) {
         if (getRoutingScene() != null) {
-            routingScene.widthProperty().removeListener(widthListener);
-            routingScene.heightProperty().removeListener(heightListener);
+            getRoutingScene().widthProperty().removeListener(widthListener);
+            getRoutingScene().heightProperty().removeListener(heightListener);
         }
         super.setRoutingScene(routingScene);
 
-        fadeBox.setWidth(routingScene.getWidth());
-        fadeBox.setHeight(routingScene.getHeight());
-        routingScene.widthProperty().addListener(widthListener);
-        routingScene.heightProperty().addListener(heightListener);
+        if (routingScene != null) {
+            fadeBox.setWidth(routingScene.getWidth());
+            fadeBox.setHeight(routingScene.getHeight());
+            routingScene.widthProperty().addListener(widthListener);
+            routingScene.heightProperty().addListener(heightListener);
+        }
     }
 
     @Override
