@@ -77,7 +77,7 @@ public class BuildingControllerTest {
     private void postOneBuilding() throws Exception {
         mvc.perform(post("/buildings/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(building)));
+                .content(new Gson().toJson(building))).andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = "Student")
@@ -97,6 +97,7 @@ public class BuildingControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(building)))
                 .andExpect(status().isBadRequest());
+
     }
 
     @WithMockUser(authorities = "Admin")
