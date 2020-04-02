@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 
 public class BikeReservationCommunication {
 
@@ -61,6 +64,22 @@ public class BikeReservationCommunication {
     private static List<BikeReservation> parseBikeReservations(String inputReservations) {
         Type listType = new TypeToken<List<BikeReservation>>() {}.getType();
         return new Gson().fromJson(inputReservations, listType);
+    }
+
+    /**
+     * Get all of the reservations for the current User.
+     * @return A list of the current user's reservations
+     */
+    public static List<BikeReservation> getMyReservations() {
+        String url = "/bikeReservations/myReservations?user="
+                + AuthenticationCommunication.myUserId;
+        try {
+            System.out.println(ServerCommunication.authenticatedRequest(url).getBody());
+            return parseBikeReservations(ServerCommunication.authenticatedRequest(url).getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

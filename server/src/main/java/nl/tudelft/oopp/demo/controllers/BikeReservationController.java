@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.controllers;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.repositories.BikeReservationRepository;
 import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class BikeReservationController {
                 bikeReservation.getDropOffBuilding(), bikeReservation.getDate(),
                 bikeReservation.getTimeSlot());
         return bikeReservationRepository.save(res);
+    }
+
+    @GetMapping(path = "/myReservations")
+    public List<BikeReservation> getAllForUser(@RequestParam Integer user) {
+        User actualUser = userRepository.findUserById(user);
+        return bikeReservationRepository.findAllByUser(actualUser);
     }
 
     @PutMapping

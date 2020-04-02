@@ -22,8 +22,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
@@ -42,8 +45,8 @@ public class MyProfileRoute extends Route {
     ToggleButton newEvent;
     private Rectangle rect;
 
-    private List<RoomReservation> pastReservations;
-    private List<RoomReservation> futureReservations;
+    private List<Reservation> pastReservations;
+    private List<Reservation> futureReservations;
 
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy,HH:mm");
     private String currentDate;
@@ -123,9 +126,27 @@ public class MyProfileRoute extends Route {
         futureReservations = new ArrayList<>();
         Date dateObj = new Date();
         currentDate = dateFormat.format(dateObj);
-        List<RoomReservation> allMyReservations = RoomReservationCommunication.getMyReservations();
-        for (RoomReservation reservation : allMyReservations) {
-            String endTime = reservation.getTimeSlot().substring(19);
+
+        List<Reservation> allMyReservations = new ArrayList<>();
+
+        List<RoomReservation> allMyRoomReservations = RoomReservationCommunication.getMyReservations();
+        allMyReservations.addAll(allMyRoomReservations);
+
+        List<BikeReservation> allMyBikeReservations = BikeReservationCommunication.getMyReservations();
+        allMyReservations.addAll(allMyBikeReservations);
+
+        for (Reservation reservation : allMyReservations) {
+            String endTime = "";
+            if (reservation instanceof BikeReservation){
+                BikeReservation bikeReservation = (BikeReservation) reservation;
+                endTime = bikeReservation.getDate() + "," + bikeReservation.getTimeSlot().substring(6);
+                System.out.println("BikeReservation");
+            } else {
+                System.out.println("RoomReservation");
+                endTime = reservation.getTimeSlot().substring(19);
+            }
+            System.out.println(endTime);
+
             if (endTime.compareTo(currentDate) <= 0) {
                 pastReservations.add(reservation);
             } else {
@@ -143,13 +164,13 @@ public class MyProfileRoute extends Route {
         return separator;
     }
 
-    private void makeListOfReservations(List<RoomReservation> reservations) {
+    private void makeListOfReservations(List<Reservation> reservations) {
         scrollPane = new ScrollPane();
         VBox reservationsList = new VBox();
         reservationsList.setSpacing(2);
 
         for (int i = 0; i < reservations.size(); i++) {
-            RoomReservation reservation = reservations.get(i);
+            Reservation reservation = reservations.get(i);
             HBox currentReservation = new HBox();
             Background background = new Background(
                     new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -158,21 +179,38 @@ public class MyProfileRoute extends Route {
             currentReservation.setSpacing(7);
             currentReservation.setPadding(new Insets(16, 16, 16, 16));
 
-            Text dateText = new Text("Date: " + reservation.getTimeSlot().substring(0, 10));
+            Text dateText = new Text();
+            Text timeText = new Text();
+
+            if (reservation instanceof RoomReservation) {
+                dateText = new Text("Date: " + reservation.getTimeSlot().substring(0, 10));
+                timeText = new Text("Time: " + reservation.getTimeSlot().substring(11, 18)
+                        + " " + reservation.getTimeSlot().substring(30));
+            } else {
+                BikeReservation bikeReservation = (BikeReservation) reservation;
+                dateText = new Text("Date: " + bikeReservation.getDate());
+                timeText = new Text("Time: " + bikeReservation.getTimeSlot());
+            }
+
             currentReservation.getChildren().add(dateText);
             currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
 
-            Text timeText = new Text("Time: " + reservation.getTimeSlot().substring(11, 18)
-                    + " " + reservation.getTimeSlot().substring(30));
+
             currentReservation.getChildren().add(timeText);
             currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
 
-            Text roomText = new Text("Type: my reservation");
-            if (reservation.getRoom() != null) {
-                roomText = new Text("Room: " + reservation.getRoom().getRoomCode());
+            Text typeText = new Text("Type: my reservation");
+            if (reservation instanceof RoomReservation) {
+                RoomReservation roomReservation = (RoomReservation) reservation;
+                System.out.println(roomReservation);
+                if (roomReservation.getRoom() != null)
+                    typeText = new Text("Room: " + roomReservation.getRoom().getRoomCode());
+            } else if (reservation instanceof BikeReservation) {
+                typeText = new Text("Type: bike reservation");
             }
 
-            currentReservation.getChildren().add(roomText);
+
+            currentReservation.getChildren().add(typeText);
 
             int finalI = i;
             Button delete = new Button("X");
