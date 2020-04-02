@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.testfolder;
+package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,10 +19,11 @@ class BikeReservationTest {
 
     private BikeReservation bikeReservation;
 
-    @BeforeEach
-    void login() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
+//    This doesn't add anything to the tests. This just makes it slower.
+//    @BeforeEach
+//    void login() {
+//        AuthenticationCommunication.login("admin", "admin");
+//    }
 
     @BeforeEach
     void init() {
@@ -43,6 +44,11 @@ class BikeReservationTest {
     @Test
     void constructorTest() {
         assertNotNull(bikeReservation);
+    }
+
+    @Test
+    void toStringTest() {
+        assertEquals("BikeReservation{id=2, user=5, pickUpBuildingCode=1, dropOffBuildingCode=2, date='22/03/2020', timeSlot='14:00-19:00'}", bikeReservation.toString());
     }
 
     @Test
@@ -146,6 +152,11 @@ class BikeReservationTest {
         BikeReservation test = new BikeReservation(6, 7, pickUpBuilding,
                 dropOffBuilding, date, timeSlot);
         assertNotEquals(test, bikeReservation);
+    }
+
+    @Test
+    void notInstanceofEqualsTest() {
+        assertNotEquals(bikeReservation, new Object());
     }
 
     @Test

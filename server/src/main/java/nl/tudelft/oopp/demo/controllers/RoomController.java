@@ -55,29 +55,6 @@ public class RoomController {
         return roomRepository.findAll(Specification.where(specs));
     }
 
-    /**
-     * Adds a new room in the database.
-     * @param roomCode the abbreviation of the room
-     * @param name the actual name of the room
-     * @param capacity how many spaces when empty
-     * @param hasWhiteboard if the room has a whiteboard
-     * @param hasTV if the room has a TV
-     * @param rights (minimum) required to reserve this room
-     * @param building in which the room is
-     */
-    @GetMapping(path = "/add")
-    public @ResponseBody String addNewRoom(@RequestParam String roomCode,
-                                           @RequestParam String name,
-                                           @RequestParam Integer capacity,
-                                           @RequestParam boolean hasWhiteboard,
-                                           @RequestParam boolean hasTV,
-                                           @RequestParam Integer rights,
-                                           @RequestParam Building building) {
-        Room room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
-        roomRepository.save(room);
-        return "Saved";
-    }
-
     @GetMapping(path = "/getRoomNamesFromBuilding")
     public List<String> getAllRoomNamesFromBuilding(@RequestParam Building building) {
         return roomRepository.allRoomNamesFromBuilding(building);

@@ -7,7 +7,7 @@ public class RoomReservation {
     private Integer id;
     private Integer user;
     private Room room;
-    /// DATE
+    /// DATE (who ever wrote this, also needs to update the corresponding test)
     private String timeSlot;
 
     /**
@@ -69,10 +69,5 @@ public class RoomReservation {
                 && user.equals(that.user)
                 && room.equals(that.room)
                 && timeSlot.equals(that.timeSlot);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, room, timeSlot);
     }
 }

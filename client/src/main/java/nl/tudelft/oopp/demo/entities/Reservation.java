@@ -8,7 +8,6 @@ public abstract class Reservation {
 
     private String timeSlot;
 
-    /// TODO ADD JAVADOC COMMENT PLEASE.
     /**
      * ADD JAVADOC COMMENT PLEASE.
      * @param userID ADD JAVADOC COMMENT PLEASE.

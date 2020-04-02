@@ -86,7 +86,7 @@ class RoomControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(building)));
 
-        String url = "/rooms/add/";
+        String url = "/rooms";
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(room)))
@@ -133,9 +133,12 @@ class RoomControllerTest {
     void getAllRoomNamesFromBuilding() throws Exception {
         addToDatabaseTest();
         String url = "/rooms/getAllRoomsFromBuilding?search=building.buildingCode:123 AND rights<3";
-        mockMvc.perform(get(url))
+        mockMvc.perform(get(url).param("buildingCode", "123").param("rights", "3"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("TestRoom"));
+                .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
+                        + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
+                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
     }
 
     @WithMockUser(authorities = "Admin")

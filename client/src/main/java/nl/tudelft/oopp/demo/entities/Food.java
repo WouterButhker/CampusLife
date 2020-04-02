@@ -72,9 +72,4 @@ public class Food {
                 && restaurant.equals(food.restaurant)
                 && price.equals(food.price);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, restaurant, price);
-    }
 }

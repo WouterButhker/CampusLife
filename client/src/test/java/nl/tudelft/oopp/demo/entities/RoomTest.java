@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.testfolder;
+package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,11 +19,6 @@ class RoomTest {
     private Integer buildingCode;
     private Room room;
     private Building building;
-
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
 
     @BeforeEach
     void setUpper() {
@@ -105,12 +100,11 @@ class RoomTest {
         assertEquals(rights, room.getRights());
     }
 
-    /*
     @Test
     void setRightsTest() {
-        //TODO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+        room.setRights(0);
+        assertEquals(0, room.getRights().intValue());
     }
-     */
 
     @Test
     void getBuildingCodeTest() {
@@ -124,9 +118,33 @@ class RoomTest {
     }
 
     @Test
-    void equalsTest() {
+    void getBuildingTest() {
+        assertEquals(building, room.getBuilding());
+    }
+
+    @Test
+    void setBuildingTest() {
+        Building otherBuilding = new Building(1, "Test", "Test street",
+                "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
+                        + "06:00-18:00, 19:00-21:00", 45);
+        room.setBuilding(otherBuilding);
+        assertEquals(otherBuilding, room.getBuilding());
+    }
+
+    @Test
+    void equalsTestTrue() {
         Room copyRoom = new Room(code, name, capacity, hasWhiteboard, hasTV, rights, building);
         assertEquals(room, copyRoom);
+    }
+
+    @Test
+    void equalsTestTrue2() {
+        assertEquals(room, room);
+    }
+
+    @Test
+    void equalsTestFalse() {
+        assertFalse(room.equals(new Object()));
     }
 
     @Test
