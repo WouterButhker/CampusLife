@@ -20,9 +20,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 
 public class OrderWidget extends StackPane {
     private FoodOrder foodOrder;
@@ -53,7 +55,10 @@ public class OrderWidget extends StackPane {
      * It displays all food currently on the order
      * @param foodOrder the foodOrder to display
      */
-    public OrderWidget(FoodOrder foodOrder, boolean isTakeoutEnabled) {
+    public OrderWidget(FoodOrder foodOrder,
+                       boolean isTakeoutEnabled,
+                       List<RoomReservation> reservations,
+                       PopupRoute popupRoute) {
         this.isTakeoutEnabled = isTakeoutEnabled;
         this.foodOrder = foodOrder;
         foods = RestaurantCommunication.getAllFood(foodOrder.getRestaurant().getId());
@@ -138,7 +143,49 @@ public class OrderWidget extends StackPane {
         });
         bottomContainer.getChildren().add(takeoutButton);
         deliveryButton = new Button("Order delivery");
-        deliveryButton.getStyleClass().add("order-button");
+        if (!reservations.isEmpty()) {
+            deliveryButton.getStyleClass().add("order-button");
+        } else {
+            deliveryButton.getStyleClass().add("order-button-disabled");
+        }
+        deliveryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!reservations.isEmpty()) {
+                    Calendar now = Calendar.getInstance();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+                    foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
+
+                    List<ListItem> items = new ArrayList<>();
+                    for (RoomReservation reservation : reservations) {
+                        items.add(new ListItem(
+                                reservation.getRoom().getName(),
+                                reservation.getTimeSlot()
+                        ));
+                    }
+                    popupRoute.showPopup(new ListPopup(
+                            "Select delivery time",
+                            items,
+                            new ListPopup.Listener() {
+                                @Override
+                                public void onItemClicked(int index) {
+                                    foodOrder.setRoom(reservations.get(index));
+                                    FoodOrderCommunication.createFoodOrder(foodOrder);
+
+                                    popupRoute.removePopup();
+                                    RoutingScene routingScene =
+                                            (RoutingScene) takeoutButton.getScene();
+                                    try {
+                                        routingScene.popRoute();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                    ));
+                }
+            }
+        });
         bottomContainer.getChildren().add(deliveryButton);
 
         prefWidthProperty().addListener((observable, oldValue, newValue) -> {

@@ -1,5 +1,32 @@
 @import url("palette.css");
 
+.list-item-bg:hover {
+    -fx-background-color: #00000033;
+}
+
+.list-item-ptext {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+.list-item-stext {
+    -fx-fill: #9E9E9E;
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 14;
+}
+
+.list-popup-title {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+.popup-bg {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8px;
+}
+
 .order-button {
     -fx-background-color: -secondary-color;
     -fx-font-family: -primary-font-name;
