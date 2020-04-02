@@ -1,9 +1,6 @@
 package nl.tudelft.oopp.demo.widgets;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -11,11 +8,15 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
-import nl.tudelft.oopp.demo.core.RoutingScene;
 
 public class ListPopup extends Group {
 
+    /**
+     * A popup with a list, useful for asking input from user.
+     * @param title the title of the popup
+     * @param items the list items
+     * @param listener the listener with a callback
+     */
     public ListPopup(String title, List<ListItem> items, Listener listener) {
         VBox container = new VBox();
         container.setSpacing(16);

@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.core;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -12,10 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class PopupRoute extends Route {
 
@@ -30,6 +24,10 @@ public class PopupRoute extends Route {
     private ChangeListener<Number> heightListener;
     private ChangeListener<Number> widthListener;
 
+    /**
+     * Creates a special Route that can display nice popups on top.
+     * @param mainElement the main element of the route
+     */
     public PopupRoute(Node mainElement) {
         this.mainElement = mainElement;
         rootElement = new StackPane();
@@ -56,6 +54,11 @@ public class PopupRoute extends Route {
         return mainElement;
     }
 
+    /**
+     * Displays a popup.
+     * Removes the previous popup if there is one
+     * @param popup the popup to be displayed
+     */
     public void showPopup(Node popup) {
         removePopup();
 
@@ -63,6 +66,9 @@ public class PopupRoute extends Route {
         rootElement.getChildren().addAll(fadeBox, popup);
     }
 
+    /**
+     * Removes the current popup or does nothing if no popup.
+     */
     public void removePopup() {
         if (popup != null) {
             rootElement.getChildren().remove(1, 3);
