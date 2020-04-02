@@ -5,12 +5,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
 import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
-import nl.tudelft.oopp.demo.repositories.BikeReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +58,7 @@ public class BikeReservationControllerTest {
                 .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
-        user = new User(6);
+        user = new User("test", "test");
         pickUpBuilding = new Building(1, "Test", "Test street", "06:00-18:00, 06:00-18:00,"
                 + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
 
@@ -65,11 +67,9 @@ public class BikeReservationControllerTest {
 
         date = "22/03/2020";
         timeSlot = "14:00-19:00";
-        bikeReservation = new BikeReservation(user, pickUpBuilding, dropOffBuilding, date, timeSlot);
         insertBuildings();
     }
 
-    @WithMockUser(authorities = "Admin")
     private void insertBuildings() throws Exception {
         mvc.perform(post("/buildings/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -77,6 +77,14 @@ public class BikeReservationControllerTest {
         mvc.perform(post("/buildings/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(dropOffBuilding)));
+        mvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(user)));
+        int userId = Integer.parseInt(mvc.perform(get("/rest/users/getId?username=test"))
+                .andReturn().getResponse().getContentAsString());
+        user = new User(userId);
+        bikeReservation = new BikeReservation(user, pickUpBuilding,
+                dropOffBuilding, date, timeSlot);
     }
 
     @WithMockUser(authorities = "Admin")
@@ -97,11 +105,29 @@ public class BikeReservationControllerTest {
 
     @WithMockUser(authorities = "Admin")
     @Test
+    void updateBikeReservation() throws Exception {
+        bikeReservation.setId(3);
+        mvc.perform(post("/bikeReservations/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(bikeReservation)));
+        String response = mvc.perform(get("/bikeReservations/all")).andReturn()
+                        .getResponse().getContentAsString();
+        Type listType = new TypeToken<List<BikeReservation>>() {}.getType();
+        List<BikeReservation> bikeReservations = new Gson().fromJson(response, listType);
+        BikeReservation bikeReservationChanged = bikeReservations.get(0);
+        bikeReservationChanged.setDate("12/12/2012");
+        mvc.perform(put("/bikeReservations")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(bikeReservationChanged))).andExpect(status().isOk());
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
     void createBikeReservation() throws Exception {
-        mvc.perform(post("/bikeReservations")
+        bikeReservation.setId(4);
+        mvc.perform(post("/bikeReservations/")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(new Gson().toJson(bikeReservation)))
-            .andExpect(status().isOk());
+            .content(new Gson().toJson(bikeReservation))).andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = "Admin")
@@ -114,11 +140,10 @@ public class BikeReservationControllerTest {
     @WithMockUser(authorities = "Admin")
     @Test
     void deleteBikeReservationTest() throws Exception {
-        mvc.perform(post("/bikeReservations")
+        mvc.perform(post("/bikeReservations/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(bikeReservation)))
-                .andExpect(status().isOk());
-        mvc.perform(delete("/bikeReservations/5"))
+                .content(new Gson().toJson(bikeReservation)));
+        mvc.perform(delete("/bikeReservations/1"))
                 .andExpect(status().isOk());
     }
 }
