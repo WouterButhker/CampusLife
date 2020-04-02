@@ -75,6 +75,5 @@ public class BikeReservation extends Reservation {
                 + " | Dropoff location: " + dropOffBuilding.getName()
                 + " | " + getDateAndTimeslot();
     }
-
 }
 

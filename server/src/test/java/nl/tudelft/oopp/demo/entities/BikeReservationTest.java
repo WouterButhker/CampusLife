@@ -121,7 +121,7 @@ public class BikeReservationTest {
 
     @Test
     void equalsDifferentType() {
-        assertNotEquals(dropOffBuilding, bikeReservation);
+        assertNotEquals(bikeReservation, dropOffBuilding);
     }
 
     @Test

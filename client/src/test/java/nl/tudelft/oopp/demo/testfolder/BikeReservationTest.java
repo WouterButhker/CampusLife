@@ -135,6 +135,11 @@ class BikeReservationTest {
     }
 
     @Test
+    void notEqualsDifferentTypes() {
+        assertNotEquals(bikeReservation, dropOffBuilding);
+    }
+
+    @Test
     void notEqualsTest() {
         BikeReservation test = new BikeReservation(new User(6), pickUpBuilding,
                 dropOffBuilding, date, timeSlot);
