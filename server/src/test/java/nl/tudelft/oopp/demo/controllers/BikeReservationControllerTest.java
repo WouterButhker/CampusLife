@@ -66,29 +66,27 @@ public class BikeReservationControllerTest {
         date = "22/03/2020";
         timeSlot = "14:00-19:00";
         bikeReservation = new BikeReservation(user, pickUpBuilding, dropOffBuilding, date, timeSlot);
+        insertBuildings();
     }
 
-//    @WithMockUser(authorities = "Admin")
-//    @BeforeEach
-//    void insertBuildings() throws Exception {
-//        mvc.perform(post("/buildings/")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(new Gson().toJson(pickUpBuilding)))
-//                .andExpect(status().isOk());
-//        mvc.perform(post("/buildings/")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(new Gson().toJson(dropOffBuilding)))
-//                .andExpect(status().isOk());
-//    }
+    @WithMockUser(authorities = "Admin")
+    private void insertBuildings() throws Exception {
+        mvc.perform(post("/buildings/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(pickUpBuilding)));
+        mvc.perform(post("/buildings/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(dropOffBuilding)));
+    }
 
-    @WithMockUser(authorities = "Student")
+    @WithMockUser(authorities = "Admin")
     @Test
     void getAllBikeReservationsTest() throws Exception {
         mvc.perform(get("/bikeReservations/all"))
                 .andExpect(status().isOk());
     }
 
-    @WithMockUser(authorities = "Student")
+    @WithMockUser(authorities = "Admin")
     @Test
     void updateBikeReservationButNotThere() throws Exception {
         mvc.perform(put("/bikeReservations")
@@ -97,7 +95,7 @@ public class BikeReservationControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @WithMockUser(authorities = "Student")
+    @WithMockUser(authorities = "Admin")
     @Test
     void createBikeReservation() throws Exception {
         mvc.perform(post("/bikeReservations")
@@ -106,14 +104,14 @@ public class BikeReservationControllerTest {
             .andExpect(status().isOk());
     }
 
-    @WithMockUser(authorities = "Student")
+    @WithMockUser(authorities = "Admin")
     @Test
     void deleteBikeReservationButNotThere() throws Exception {
         mvc.perform(delete("/bikeReservations/5"))
                 .andExpect(status().isNotFound());
     }
 
-    @WithMockUser(authorities = "Student")
+    @WithMockUser(authorities = "Admin")
     @Test
     void deleteBikeReservationTest() throws Exception {
         mvc.perform(post("/bikeReservations")
