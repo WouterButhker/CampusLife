@@ -73,6 +73,24 @@ public class Weekdays {
     }
 
     /**
+     * Returns true if the time is within the opening hour of the weekday.
+     * @param weekday the weekday
+     * @param hour the hour
+     * @param minute the minute
+     * @return true if hour:minute is withing the opening times of weekday
+     */
+    public boolean isOpenAt(int weekday, int hour, int minute) {
+        String openingTime = getWeekdays().get(weekday);
+        int openHour = Integer.parseInt(openingTime.substring(0, 2));
+        int closeHour = Integer.parseInt(openingTime.substring(6, 8));
+        int openMinute = Integer.parseInt(openingTime.substring(3, 5)) + 60 * openHour;
+        int closeMinute = Integer.parseInt(openingTime.substring(9, 11)) + 60 * closeHour;
+        minute += hour * 60;
+
+        return (openMinute <= minute && minute < closeMinute);
+    }
+
+    /**
      * Method that sets the selected day to Closed.
      * @param id The day that has to be set to Closed.
      */
