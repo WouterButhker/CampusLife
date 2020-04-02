@@ -120,11 +120,13 @@ public class AdminSceneRestaurantsController implements Initializable {
         Text submitStatus = new Text();
 
         if (!restaurantName.equals("") && buildingFound && imageSelectorWidget.imageSelected()) {
-            Restaurant result = RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
+            Restaurant result =
+                    RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
                                                                     restaurantName,
                                                                     buildingCode,
                                                                     restaurantDescription));
-            ImageCommunication.updateRestaurantImage(result.getId(), imageSelectorWidget.getImage());
+            ImageCommunication.updateRestaurantImage(result.getId(),
+                    imageSelectorWidget.getImage());
             submitStatus.setText("Restaurant has been successfully added to "
                     + buildingList.getValue().split(" ")[1]);
             try {
