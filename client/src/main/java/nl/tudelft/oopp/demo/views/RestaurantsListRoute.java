@@ -10,7 +10,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
@@ -20,8 +19,6 @@ import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ButtonsGridView;
-import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
-import nl.tudelft.oopp.demo.widgets.RestaurantsGridView;
 
 public class RestaurantsListRoute extends Route {
     private AppBar appBar;
