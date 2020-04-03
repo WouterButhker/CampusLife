@@ -1,23 +1,24 @@
 package nl.tudelft.oopp.demo.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class FavoriteRestaurantTest {
 
     private Integer id;
-    private Integer restaurant;
-    private Integer user;
+    private Restaurant restaurant;
+    private User user;
     private FavoriteRestaurant fr;
 
     @BeforeEach
     void setUpper() {
         id = 42;
-        restaurant = 123;
-        user = 3;
+        restaurant = new Restaurant(123, null, 1, null);
+        user = new User(3);
         fr = new FavoriteRestaurant(id, restaurant, user);
     }
 
@@ -44,8 +45,8 @@ class FavoriteRestaurantTest {
 
     @Test
     void setRestaurantTest() {
-        fr.setRestaurant(1212);
-        assertEquals(1212, fr.getRestaurant());
+        fr.setRestaurant(new Restaurant(1212, null, 1, null));
+        assertEquals(1212, fr.getRestaurant().getId());
     }
 
     @Test
@@ -55,7 +56,7 @@ class FavoriteRestaurantTest {
 
     @Test
     void setUserTest() {
-        fr.setUser(1212);
-        assertEquals(1212, fr.getUser());
+        fr.setUser(new User(1212));
+        assertEquals(1212, fr.getUser().getId());
     }
 }
