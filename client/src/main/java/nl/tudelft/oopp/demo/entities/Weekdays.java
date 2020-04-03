@@ -81,6 +81,10 @@ public class Weekdays {
      */
     public boolean isOpenAt(int weekday, int hour, int minute) {
         String openingTime = getWeekdays().get(weekday);
+        if (openingTime.equals(CLOSED)) {
+            return false;
+        }
+
         int openHour = Integer.parseInt(openingTime.substring(0, 2));
         int closeHour = Integer.parseInt(openingTime.substring(6, 8));
         int openMinute = Integer.parseInt(openingTime.substring(3, 5)) + 60 * openHour;
