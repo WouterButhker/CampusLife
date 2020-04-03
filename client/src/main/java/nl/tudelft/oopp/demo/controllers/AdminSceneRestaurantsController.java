@@ -27,6 +27,7 @@ import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
 public class AdminSceneRestaurantsController implements Initializable {
     @FXML
@@ -102,47 +103,35 @@ public class AdminSceneRestaurantsController implements Initializable {
 
         String restaurantDescription = restaurantDescriptionInput.getText();
 
-        Text submitStatus = new Text();
+        String submitStatus;
+        boolean correct = false;
 
         if (!restaurantName.equals("") && buildingFound) {
             RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
                                                                     restaurantName,
                                                                     buildingCode,
                                                                     restaurantDescription));
-            submitStatus.setText("Restaurant has been successfully added to "
-                    + buildingList.getValue().split(" ")[1]);
+            submitStatus = "Restaurant has been successfully added to \n"
+                    + buildingList.getValue().split(" ")[1];
+            correct = true;
             try {
                 refreshRestaurantsPage();
             } catch (Exception e) {
                 System.out.println("Refresh failed");
             }
         } else {
-            submitStatus.setText("All fields have to be entered");
+            submitStatus = ("All fields have to be entered");
         }
 
         if (!buildingFound) {
-            submitStatus.setText("Please select a building");
+            submitStatus = ("Please select a building");
         }
 
-        Button back = new Button("Okay! take me back");
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Button button = (Button) event.getSource();
-                Stage stage = (Stage) button.getScene().getWindow();
-                stage.close();
-            }
-        });
-        VBox restaurantBox = new VBox(submitStatus, back);
-        restaurantBox.setPrefSize(300, 200);
-        restaurantBox.setAlignment(Pos.CENTER);
-        AnchorPane root = new AnchorPane(restaurantBox);
-        root.setPrefSize(300, 200);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        if (correct) {
+            PopupWidget.displaySuccess(submitStatus, "Success!");
+        } else {
+            PopupWidget.displayError(submitStatus, "Error!");
+        }
     }
 
     private void loadRestaurants(String buildingCodeString) {
@@ -196,9 +185,13 @@ public class AdminSceneRestaurantsController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    RestaurantCommunication.deleteRestaurantFromDatabase(
-                            restaurants.get(finalI).getId());
-                    loadRestaurants(buildingList2.getValue());
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        RestaurantCommunication.deleteRestaurantFromDatabase(
+                                restaurants.get(finalI).getId());
+                        loadRestaurants(buildingList2.getValue());
+                    }
                 }
             });
             delete.setPrefSize(45, 40);
