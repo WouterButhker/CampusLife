@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.demo.entities;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,11 +14,19 @@ public class FavoriteRestaurant {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
-    @Column(name = "restaurant")
-    private Integer restaurant;
+    @ManyToOne
+    @JoinColumn(name = "restaurant")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Restaurant restaurant;
 
-    @Column(name = "user")
-    private Integer user;
+    @ManyToOne
+    @JoinColumn(name = "user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+
+    public FavoriteRestaurant() {
+
+    }
 
     /**
      * Makes a new FavoriteRestaurant object.
@@ -23,7 +34,7 @@ public class FavoriteRestaurant {
      * @param restaurant the id of the restaurant
      * @param user the id of the user
      */
-    public FavoriteRestaurant(Integer id, Integer restaurant, Integer user) {
+    public FavoriteRestaurant(Integer id, Restaurant restaurant, User user) {
         this.id = id;
         this.restaurant = restaurant;
         this.user = user;
@@ -37,19 +48,19 @@ public class FavoriteRestaurant {
         this.id = id;
     }
 
-    public Integer getRestaurant() {
+    public Restaurant getRestaurant() {
         return restaurant;
     }
 
-    public void setRestaurant(Integer room) {
-        this.restaurant = room;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
-    public Integer getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Integer user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
