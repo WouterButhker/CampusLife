@@ -33,7 +33,7 @@ class FavoriteRoomTest {
     @Test
     void setIdTest() {
         fr.setId(1212);
-        assertEquals(1212, fr.getId());
+        assertTrue(fr.getId().equals(1212));
     }
 
     @Test
@@ -55,6 +55,6 @@ class FavoriteRoomTest {
     @Test
     void setUserTest() {
         fr.setUser(new User(1212));
-        assertEquals(1212, fr.getUser().getId());
+        assertTrue(fr.getUser().getId().equals(1212));
     }
 }
