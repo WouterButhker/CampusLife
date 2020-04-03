@@ -3,21 +3,23 @@ package nl.tudelft.oopp.demo;
 import static org.junit.jupiter.api.Assertions.*;
 
 import nl.tudelft.oopp.demo.entities.FavoriteRoom;
+import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class FavoriteRoomTest {
 
     private Integer id;
-    private Integer room;
-    private Integer user;
+    private Room room;
+    private User user;
     private FavoriteRoom fr;
 
     @BeforeEach
     void setUpper() {
         id = 42;
-        room = 123;
-        user = 3;
+        room = new Room();
+        user = new User();
         fr = new FavoriteRoom(id, room, user);
     }
 
@@ -44,8 +46,8 @@ class FavoriteRoomTest {
 
     @Test
     void setRoomTest() {
-        fr.setRoom(1212);
-        assertEquals(1212, fr.getRoom());
+        fr.setRoom(new Room("PC1", null, 1, false, false, 1, null));
+        assertEquals("PC1", fr.getRoom().getRoomCode());
     }
 
     @Test
@@ -55,7 +57,7 @@ class FavoriteRoomTest {
 
     @Test
     void setUserTest() {
-        fr.setUser(1212);
-        assertEquals(1212, fr.getUser());
+        fr.setUser(new User(1212));
+        assertEquals(1212, fr.getUser().getId());
     }
 }
