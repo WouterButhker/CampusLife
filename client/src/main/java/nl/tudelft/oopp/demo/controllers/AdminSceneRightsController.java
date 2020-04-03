@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.UserCommunication;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
 public class AdminSceneRightsController implements Initializable {
 
@@ -49,6 +50,7 @@ public class AdminSceneRightsController implements Initializable {
     @FXML
     private void resetUsers() {
         loadUsers(null);
+        searchInput.setText("");
     }
 
     @FXML
@@ -104,8 +106,12 @@ public class AdminSceneRightsController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    deleteUser(user.getId());
-                    loadUsers(search);
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        deleteUser(user.getId());
+                        loadUsers(search);
+                    }
                 }
             });
             HBox.setMargin(delete, new Insets(0, 0, 0,50));
