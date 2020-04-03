@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.demo.entities;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
@@ -79,13 +79,13 @@ class UserTest {
     }
 
     @Test
-    void setAccountIsEnabledTest() {
-        user.setAccountIsEnabled(false);
-        assertEquals(false, user.isAccountIsEnabled());
+    void toStringTest() {
+        assertEquals("Id: null user: username pass: password role: Student", user.toString());
     }
 
     @Test
-    void toStringTest() {
-        assertEquals("Id: null user: username pass: password role: Student", user.toString());
+    void setAccountIsEnabledTest() {
+        user.setAccountIsEnabled(false);
+        assertEquals(false, user.isAccountIsEnabled());
     }
 }

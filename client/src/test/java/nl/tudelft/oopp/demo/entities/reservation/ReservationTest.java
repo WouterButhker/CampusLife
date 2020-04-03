@@ -1,16 +1,19 @@
-package nl.tudelft.oopp.demo.entities;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+package nl.tudelft.oopp.demo.entities.reservation;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class ReservationTest {
 
     private int id;
     private String date;
     private String timeSlot;
-    private Integer restaurant;
+    private Restaurant restaurant;
     private FoodOrder testOrder;
 
     @BeforeEach
@@ -18,8 +21,9 @@ class ReservationTest {
         id = 123;
         date = "1-1-1970";
         timeSlot = "12:00-20:00";
-        restaurant = 4;
-        testOrder = new FoodOrder(id, date, timeSlot, restaurant);
+        restaurant = new Restaurant(456, "test rest", 456, "desc");
+        testOrder = new FoodOrder(new User(id), date, timeSlot, restaurant);
+        testOrder.setId(id);
     }
 
     @Test
@@ -62,6 +66,8 @@ class ReservationTest {
 
     @Test
     void testToStringTest() {
-        assertEquals(null, testOrder.toString());
+        assertEquals("food order{user: Id: 123 user: null pass: null role: Student, date: 1-1-1970"
+                + ", timeslot: 12:00-20:00, restaurant: {456, test rest, 456, desc}"
+                + ", delivery room: null}", testOrder.toString());
     }
 }

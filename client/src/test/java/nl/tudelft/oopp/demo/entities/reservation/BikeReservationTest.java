@@ -1,9 +1,7 @@
-package nl.tudelft.oopp.demo.testfolder;
+package nl.tudelft.oopp.demo.entities.reservation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 class BikeReservationTest {
 
-
     private User user;
     private Building pickUpBuilding;
     private Building dropOffBuilding;
@@ -20,12 +17,6 @@ class BikeReservationTest {
     private String timeSlot;
 
     private BikeReservation bikeReservation;
-
-//    This doesn't add anything to the tests. This just makes it slower.
-//    @BeforeEach
-//    void login() {
-//        AuthenticationCommunication.login("admin", "admin");
-//    }
 
     @BeforeEach
     void init() {
@@ -36,8 +27,8 @@ class BikeReservationTest {
                 + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 32);
         date = "22/03/2020";
         timeSlot = "14:00-19:00";
-        bikeReservation = new BikeReservation(user, pickUpBuilding, dropOffBuilding,
-                date, timeSlot);
+        bikeReservation = new BikeReservation(user, pickUpBuilding, dropOffBuilding, date,
+                timeSlot);
     }
 
     @Test
@@ -45,60 +36,27 @@ class BikeReservationTest {
         assertNotNull(bikeReservation);
     }
 
-    //    @Test
-    //    void getIdTest() {
-    //        Integer test = 2;
-    //        assertEquals(test, bikeReservation.getId());
-    //    }
-    //
-    //    @Test
-    //    void setIdTest() {
-    //        bikeReservation.setId(3);
-    //        Integer test = 3;
-    //        assertEquals(test, bikeReservation.getId());
-    //    }
-    //
-    //    @Test
-    //    void getUserTest() {
-    //        Integer test = 5;
-    //        assertEquals(test, bikeReservation.getUser());
-    //    }
-    //
-    //    @Test
-    //    void setUserTest() {
-    //        bikeReservation.setUser(6);
-    //        Integer test = 6;
-    //        assertEquals(test, bikeReservation.getUser());
-    //    }
-    @Test
-    void toStringTest() {
-        assertEquals("BikeReservation{id=2, user=5, pickUpBuildingCode=1, dropOffBuildingCode=2, date='22/03/2020', timeSlot='14:00-19:00'}", bikeReservation.toString());
-    }
-
     @Test
     void getIdTest() {
-        Integer test = 2;
-        assertEquals(test, bikeReservation.getId());
+        assertEquals(0, bikeReservation.getId());
     }
 
     @Test
     void setIdTest() {
         bikeReservation.setId(3);
-        Integer test = 3;
-        assertEquals(test, bikeReservation.getId());
+        assertEquals(3, bikeReservation.getId());
     }
 
     @Test
     void getUserTest() {
-        Integer test = 5;
-        assertEquals(test, bikeReservation.getUser());
+        assertEquals(user, bikeReservation.getUser());
     }
 
     @Test
     void setUserTest() {
-        bikeReservation.setUser(6);
-        Integer test = 6;
-        assertEquals(test, bikeReservation.getUser());
+        User testUser = new User(123);
+        bikeReservation.setUser(testUser);
+        assertEquals(testUser, bikeReservation.getUser());
     }
 
     @Test
@@ -166,9 +124,14 @@ class BikeReservationTest {
 
     @Test
     void equalsDifferentObjectsSameBikeReservationTest() {
-        BikeReservation test = new BikeReservation(user, pickUpBuilding,
-                dropOffBuilding, date, timeSlot);
-        assertEquals(test, bikeReservation);
+        BikeReservation test = new BikeReservation(user, pickUpBuilding, dropOffBuilding, date,
+                timeSlot);
+        assertEquals(bikeReservation, test);
+    }
+
+    @Test
+    void equalsTestFalse() {
+        assertNotEquals(bikeReservation, new Object());
     }
 
     @Test

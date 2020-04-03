@@ -1,10 +1,9 @@
 package nl.tudelft.oopp.demo.entities.food;
 
-import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FoodOrderQuantityKeyTest {
 

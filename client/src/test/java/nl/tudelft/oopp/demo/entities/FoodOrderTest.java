@@ -1,17 +1,17 @@
 package nl.tudelft.oopp.demo.entities;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class FoodOrderTest {
 
-    private Integer restaurant;
+    private Restaurant restaurant;
     private List<List<Integer>> foodsList;
     private int userId;
     private String date;
@@ -20,11 +20,11 @@ class FoodOrderTest {
 
     @BeforeEach
     void setUpper() {
-        restaurant = 42;
+        restaurant = new Restaurant(4, "rest name", 68, "descriptive building");
         userId = 123;
         date = "2-4-2019";
         timeSlot = "13:00-15:00";
-        order = new FoodOrder(userId, date, timeSlot, restaurant);
+        order = new FoodOrder(new User(userId), date, timeSlot, restaurant);
         foodsList = new ArrayList<>();
     }
 
@@ -40,13 +40,16 @@ class FoodOrderTest {
 
     @Test
     void setRestaurantTest() {
-        order.setRestaurant(2121);
-        assertEquals(2121, order.getRestaurant().intValue());
+        Restaurant testRest = new Restaurant(99, "name yes", 55, "description here");
+        order.setRestaurant(testRest);
+        assertEquals(testRest, order.getRestaurant());
     }
 
     @Test
     void testToStringTest() {
-        assertEquals(null, order.toString());
+        assertEquals("food order{user: Id: 123 user: null pass: null role: Student, date: 2-4-2019"
+                + ", timeslot: 13:00-15:00, restaurant: {4, rest name, 68, descriptive building}"
+                + ", delivery room: null}", order.toString());
     }
 
     @Test

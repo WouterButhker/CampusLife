@@ -97,8 +97,9 @@ public class BuildingTest {
 
     @Test
     void setBikesTest() {
-        building.setBikes(21);
-        assertEquals(21, building.getBikes());
+        Integer bikeAmount = 22;
+        building.setBikes(bikeAmount);
+        assertEquals(bikeAmount, building.getBikes());
     }
 
     @Test
