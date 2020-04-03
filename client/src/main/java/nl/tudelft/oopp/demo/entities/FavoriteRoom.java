@@ -3,16 +3,16 @@ package nl.tudelft.oopp.demo.entities;
 public class FavoriteRoom {
 
     private Integer id;
-    private Integer room;
-    private Integer user;
+    private Room room;
+    private User user;
 
     /**
      * Makes a new FavoriteRoom object.
      * @param id the id of the favorite pair in the database
-     * @param room the id of the room
-     * @param user the id of the user
+     * @param room the room
+     * @param user the user
      */
-    public FavoriteRoom(Integer id, Integer room, Integer user) {
+    public FavoriteRoom(Integer id, Room room, User user) {
         this.id = id;
         this.room = room;
         this.user = user;
@@ -26,19 +26,19 @@ public class FavoriteRoom {
         this.id = id;
     }
 
-    public Integer getRoom() {
+    public Room getRoom() {
         return room;
     }
 
-    public void setRoom(Integer room) {
+    public void setRoom(Room room) {
         this.room = room;
     }
 
-    public Integer getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Integer user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
