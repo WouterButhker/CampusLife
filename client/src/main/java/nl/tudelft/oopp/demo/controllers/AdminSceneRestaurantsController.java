@@ -309,7 +309,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         HBox imageSelectorWidgetBox = new HBox();
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
-        Button submitImage = new Button("Add image");
+        Button submitImage = new Button("Update image");
         HBox.setMargin(submitImage, new Insets(0, 0, 0,10));
         submitImage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
