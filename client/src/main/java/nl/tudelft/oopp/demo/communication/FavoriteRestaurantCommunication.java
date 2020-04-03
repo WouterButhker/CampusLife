@@ -2,13 +2,11 @@ package nl.tudelft.oopp.demo.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.Restaurant;
-import nl.tudelft.oopp.demo.entities.User;
-
 import java.lang.reflect.Type;
 import java.util.List;
+import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
+import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.User;
 
 public class FavoriteRestaurantCommunication {
 
