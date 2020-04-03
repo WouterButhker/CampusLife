@@ -58,10 +58,20 @@ public class AdminSceneFoodController implements Initializable {
     @FXML
     private Button submit;
 
+    @FXML
+    private Button refresh;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadRestaurants();
         addAppBar();
+        addStyle();
+    }
+
+    private void addStyle() {
+        mainBox.setStyle("-fx-background-color: -primary-color-light");
+        submit.getStyleClass().add("adminButton");
+        refresh.getStyleClass().add("adminButton");
     }
 
     private void addAppBar() {
@@ -125,6 +135,7 @@ public class AdminSceneFoodController implements Initializable {
             text.setPrefSize(225, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
+            modify.getStyleClass().add("adminButtonSmall");
             int finalI = i;
             modify.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -137,6 +148,7 @@ public class AdminSceneFoodController implements Initializable {
             StackPane modifyPane = new StackPane(modify);
             modifyPane.setPadding(new Insets(10, 0, 10, 0));
             Button delete = new Button("delete");
+            delete.getStyleClass().add("adminButtonSmall");
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -154,12 +166,7 @@ public class AdminSceneFoodController implements Initializable {
             StackPane deletePane = new StackPane(delete);
             deletePane.setPadding(new Insets(10, 0, 10, 0));
             restaurant.setPadding(new Insets(5, 5, 5, 5));
-            String css = "-fx-border-color: black;\n"
-                    + "-fx-border-insets: 4\n;"
-                    + "-fx-border-style: solid\n;"
-                    + "-fx-border-width: 1;"
-                    + "-fx-border-radius: 10;";
-            restaurant.setStyle(css);
+            restaurant.getStyleClass().add("boxContainer");
             restaurant.getChildren().addAll(imageView, text, modifyPane, deletePane);
             foodsList.getChildren().add(restaurant);
         }
@@ -167,6 +174,7 @@ public class AdminSceneFoodController implements Initializable {
 
     private void createModifyPopup(Food food) {
         VBox root = new VBox();
+        root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(400, 500);
 
         Text header = new Text("Modify the food item");
@@ -197,6 +205,7 @@ public class AdminSceneFoodController implements Initializable {
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
         Button submit = new Button("Submit");
+        submit.getStyleClass().add("adminButtonSmall");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
         submitBox.setPadding(new Insets(10, 150, 10, 150));
@@ -230,6 +239,8 @@ public class AdminSceneFoodController implements Initializable {
                 submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("css/palette.css");
+        scene.getStylesheets().add("css/admin-scene.css");
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(restaurantsList1.getScene().getWindow());

@@ -63,19 +63,16 @@ public class AdminSceneRoomsController implements Initializable {
     private Button submit;
 
     @FXML
+    private Button refresh;
+
+    @FXML
     private ChoiceBox<String> buildingList2;
 
     @FXML
-    private AnchorPane anchorPaneRooms;
-
-    @FXML
-    private VBox scrollPaneVBox;
+    private VBox roomsBox;
 
     @FXML
     private ScrollPane scrollPane;
-
-    @FXML
-    private VBox roomsList;
 
     @FXML
     private VBox settingsBox;
@@ -88,6 +85,13 @@ public class AdminSceneRoomsController implements Initializable {
         loadRights();
         loadImageSelectorWidget();
         addAppBar();
+        addStyle();
+    }
+
+    private void addStyle() {
+        mainBox.setStyle("-fx-background-color: -primary-color-light");
+        submit.getStyleClass().add("adminButton");
+        refresh.getStyleClass().add("adminButton");
     }
 
     private void addAppBar() {
@@ -229,7 +233,7 @@ public class AdminSceneRoomsController implements Initializable {
     }
 
     private void loadRooms(String buildingCodeString) {
-        roomsList.getChildren().clear();
+        roomsBox.getChildren().clear();
         int buildingCode;
         if (buildingCodeString.equals("All buildings")) {
             buildingCode = -1;
@@ -244,15 +248,14 @@ public class AdminSceneRoomsController implements Initializable {
         }
         int numRooms = rooms.size();
         int height = numRooms * 82;
-        anchorPaneRooms.setPrefHeight(height);
         if (height <= scrollPane.getPrefHeight()) {
-            scrollPane.setPrefWidth(400);
+            scrollPane.setPrefWidth(500);
         } else {
-            scrollPane.setPrefWidth(417);
+            scrollPane.setPrefWidth(517);
         }
         for (int i = 0; i < numRooms; i++) {
             HBox room = new HBox();
-            room.setMaxWidth(400);
+            room.setMaxWidth(500);
             Image image = new Image(ImageCommunication
                     .getRoomImageUrl(rooms.get(i).getRoomCode()).get(0));
             ImageView imageView = new ImageView(image);
@@ -271,9 +274,10 @@ public class AdminSceneRoomsController implements Initializable {
                     + " " + rightsString + " capacity: " + rooms.get(i).getCapacity()
                     + "\nWhiteboard: " + rooms.get(i).isHasWhiteboard() + " TV: "
                     + rooms.get(i).isHasTV());
-            text.setPrefSize(225, 60);
+            text.setPrefSize(295, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
+            modify.getStyleClass().add("adminButtonSmall");
             int finalI = i;
             modify.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -281,11 +285,12 @@ public class AdminSceneRoomsController implements Initializable {
                     createModifyPopup(rooms.get(finalI));
                 }
             });
-            modify.setPrefSize(45, 40);
+            modify.setPrefSize(55, 40);
             modify.setPadding(new Insets(0, 0, 0,0));
             StackPane modifyPane = new StackPane(modify);
-            modifyPane.setPadding(new Insets(10, 0, 10, 0));
+            modifyPane.setPadding(new Insets(10, 10, 10, 0));
             Button delete = new Button("delete");
+            delete.getStyleClass().add("adminButtonSmall");
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -297,24 +302,20 @@ public class AdminSceneRoomsController implements Initializable {
                     }
                 }
             });
-            delete.setPrefSize(45, 40);
+            delete.setPrefSize(55, 40);
             delete.setPadding(new Insets(0, 0,0,0));
             StackPane deletePane = new StackPane(delete);
             deletePane.setPadding(new Insets(10, 0, 10, 0));
             room.setPadding(new Insets(5, 5, 5,5));
-            String css = "-fx-border-color: black;\n"
-                    + "-fx-border-insets: 4\n;"
-                    + "-fx-border-style: solid\n;"
-                    + "-fx-border-width: 1;"
-                    + "-fx-border-radius: 10;";
-            room.setStyle(css);
+            room.getStyleClass().add("boxContainer");
             room.getChildren().addAll(imageView, text, modifyPane, deletePane);
-            roomsList.getChildren().add(room);
+            roomsBox.getChildren().add(room);
         }
     }
 
     private void createModifyPopup(Room room) {
         VBox root = new VBox();
+        root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(400, 650);
 
         Text header = new Text("Modify your room");
@@ -393,7 +394,7 @@ public class AdminSceneRoomsController implements Initializable {
         imagesBox.setPadding(new Insets(10, 0, 10,0));
         imagesBox.setAlignment(Pos.CENTER);
         imagesBox.setPrefHeight(110);
-        images.setStyle("-fx-background-color: -primary-color");
+        images.setStyle("-fx-background-color: -primary-color-light");
         images.setMinWidth(275);
         loadImages(room, images);
         scrollPane.setFitToHeight(true);
@@ -414,6 +415,7 @@ public class AdminSceneRoomsController implements Initializable {
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
         Button submitImage = new Button("Add image");
+        submitImage.getStyleClass().add("adminButtonSmall");
         HBox.setMargin(submitImage, new Insets(0, 0, 0,10));
         submitImage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -435,6 +437,7 @@ public class AdminSceneRoomsController implements Initializable {
         imageSelectorWidgetBox.getChildren().addAll(imageSelectorWidget, submitImage);
 
         Button submit = new Button("Submit");
+        submit.getStyleClass().add("adminButtonSmall");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
         submitBox.setPadding(new Insets(10, 0,10, 0));
@@ -466,6 +469,7 @@ public class AdminSceneRoomsController implements Initializable {
                 whiteboardBox, tvBox, imagesBox, imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("css/admin-scene.css");
         scene.getStylesheets().add("css/palette.css");
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);

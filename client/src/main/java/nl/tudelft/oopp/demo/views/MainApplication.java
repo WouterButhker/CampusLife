@@ -18,6 +18,7 @@ public class MainApplication extends Application {
         routingScene.getStylesheets().add("css/calendar.css");
         routingScene.getStylesheets().add("css/food-menu.css");
         routingScene.getStylesheets().add("css/gallery.css");
+        routingScene.getStylesheets().add("css/admin-scene.css");
         primaryStage.setScene(routingScene);
         primaryStage.setMaximized(true);
         primaryStage.show();

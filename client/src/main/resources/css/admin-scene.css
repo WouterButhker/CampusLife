@@ -1,0 +1,38 @@
+@import url("palette.css");
+
+.adminButton {
+    -fx-font-size: 17;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.adminButton:hover {
+    -fx-font-size: 17;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color-dark;
+    -fx-background-radius: 8;
+}
+
+.adminButtonSmall {
+    -fx-font-size: 12;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.adminButtonSmall:hover {
+    -fx-font-size: 12;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color-dark;
+    -fx-background-radius: 8;
+}
+
+.boxContainer {
+    -fx-border-color: black;
+    -fx-border-insets: 4;
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-color: -primary-color
+}
