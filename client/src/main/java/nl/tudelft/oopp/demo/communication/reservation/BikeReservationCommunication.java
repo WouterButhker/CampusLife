@@ -1,9 +1,7 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.demo.communication.reservation;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -12,11 +10,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
-import org.springframework.http.ResponseEntity;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 
 public class BikeReservationCommunication {
 
@@ -39,26 +36,7 @@ public class BikeReservationCommunication {
     }
 
     private static BikeReservation parseBikeReservation(JsonObject inputReservation) {
-        Integer user = null;
-        if (!inputReservation.get("user").isJsonNull()) {
-            user = Integer.parseInt(
-                    inputReservation.getAsJsonObject("user").get("id").getAsString()
-            );
-        }
-        Building pickUpBuilding = null;
-        if (!inputReservation.get("pickUpBuilding").isJsonNull()) {
-            pickUpBuilding = new Gson().fromJson(inputReservation
-                    .get("pickUpBuilding").toString(), Building.class);
-        }
-        Building dropOffBuilding = null;
-        if (!inputReservation.get("pickUpBuilding").isJsonNull()) {
-            dropOffBuilding = new Gson().fromJson(inputReservation
-                    .get("pickUpBuilding").toString(), Building.class);
-        }
-        String date = inputReservation.get("date").getAsString();
-        String timeSlot = inputReservation.get("timeSlot").getAsString();
-        Integer id = inputReservation.get("id").getAsInt();
-        return new BikeReservation(id, user, pickUpBuilding, dropOffBuilding, date, timeSlot);
+        return new Gson().fromJson(inputReservation, BikeReservation.class);
     }
 
     //    /**
@@ -81,13 +59,8 @@ public class BikeReservationCommunication {
     //    }
 
     private static List<BikeReservation> parseBikeReservations(String inputReservations) {
-        JsonParser jsonParser = new JsonParser();
-        JsonArray jsonArray = jsonParser.parse(inputReservations).getAsJsonArray();
-        List<BikeReservation> listOfReservations = new ArrayList<>();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            listOfReservations.add(parseBikeReservation(jsonArray.get(i).getAsJsonObject()));
-        }
-        return listOfReservations;
+        Type listType = new TypeToken<List<BikeReservation>>() {}.getType();
+        return new Gson().fromJson(inputReservations, listType);
     }
 
     /**

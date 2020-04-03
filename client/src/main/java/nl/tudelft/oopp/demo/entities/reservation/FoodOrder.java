@@ -1,42 +1,18 @@
-package nl.tudelft.oopp.demo.entities.food;
+package nl.tudelft.oopp.demo.entities.reservation;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.*;
+import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
-import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
-import nl.tudelft.oopp.demo.entities.reservation.Reservation;
-import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-@Entity
-@Table(name = "food_order")
 public class FoodOrder extends Reservation {
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant", nullable = false)
     private Restaurant restaurant;
-
-    @OneToMany(mappedBy = "foodOrder")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    Set<FoodOrderQuantity> quantities;
-
-    @ManyToOne
-    @JoinColumn(name = "room_reservation")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private RoomReservation reservation;        // room code
-
-    @JsonInclude
-    @Transient
+    private RoomReservation reservation;
     private List<List<Integer>> foodsList;
-
-    public FoodOrder() {
-
-    }
 
     /**
      * Creates a new FoodOrder object for delivery.
@@ -51,6 +27,7 @@ public class FoodOrder extends Reservation {
         super(user, date, timeSlot);
         this.restaurant = restaurant;
         this.reservation = reservation;
+        this.foodsList = new ArrayList<>();
     }
 
     /**
@@ -64,7 +41,41 @@ public class FoodOrder extends Reservation {
                      Restaurant restaurant) {
         super(user, date, timeSlot);
         this.restaurant = restaurant;
+        this.foodsList = new ArrayList<>();
+    }
 
+    /**
+     * Adds a food to the order.
+     * @param food the food to be added
+     */
+    public void addFood(Food food) {
+        for (List<Integer> pair : foodsList) {
+            if (pair.get(0).equals(food.getId())) {
+                int quantity = pair.get(1);
+                pair.set(1, quantity + 1);
+                return;
+            }
+        }
+        foodsList.add(Arrays.asList(food.getId(), 1));
+    }
+
+    /**
+     * Removes a food from the order.
+     * @param food the food to be removed
+     */
+    public void removeFood(Food food) {
+        for (int i = 0; i < foodsList.size(); i++) {
+            List<Integer> pair = foodsList.get(i);
+            if (pair.get(0).equals(food.getId())) {
+                int quantity = pair.get(1);
+                pair.set(1, quantity - 1);
+
+                if (quantity == 1) {
+                    foodsList.remove(pair);
+                }
+                return;
+            }
+        }
     }
 
     public void setRestaurant(Restaurant restaurant) {
@@ -96,14 +107,13 @@ public class FoodOrder extends Reservation {
         }
         FoodOrder foodOrder = (FoodOrder) o;
         return Objects.equals(restaurant, foodOrder.restaurant)
-                && Objects.equals(quantities, foodOrder.quantities)
                 && Objects.equals(reservation, foodOrder.reservation)
                 && Objects.equals(foodsList, foodOrder.foodsList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), restaurant, quantities, reservation, foodsList);
+        return Objects.hash(super.hashCode(), restaurant, reservation, foodsList);
     }
 
     @Override
@@ -112,6 +122,14 @@ public class FoodOrder extends Reservation {
                 + ", restaurant: " + this.restaurant
                 + ", delivery room: " + this.reservation
                 + "}";
+    }
+
+    @Override
+    public String toDisplayString() {
+        // TODO add items in foodorder
+        return "Food order | " + this.restaurant.getName()
+                + " | Order: (order details are not implemented yet)"
+                + " | " + getDateAndTimeslot();
     }
 
     public List<List<Integer>> getFoodsList() {

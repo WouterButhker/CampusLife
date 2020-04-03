@@ -18,10 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.BikeReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.BikeReservationWidget;
 import nl.tudelft.oopp.demo.widgets.CalendarWidget;
@@ -177,7 +178,8 @@ public class BikesReservationRoute extends Route {
             String slot = pickUp + "-" + dropOff;
             DateFormat dayFormat = new SimpleDateFormat("dd/MM/yyyy");
             String date = dayFormat.format(pickUpTime.getTime());
-            BikeReservation res = new BikeReservation(null, AuthenticationCommunication.myUserId,
+            BikeReservation res = new BikeReservation(
+                    new User(AuthenticationCommunication.myUserId),
                       pickUpBuilding, dropOffBuilding, date, slot);
             BikeReservationCommunication.createBikeReservation(res);
             PopupWidget.display("Bike Reserved!", "Bike reserved");

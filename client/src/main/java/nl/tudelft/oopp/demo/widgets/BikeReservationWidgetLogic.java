@@ -5,9 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Weekdays;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 
 public class BikeReservationWidgetLogic {
 

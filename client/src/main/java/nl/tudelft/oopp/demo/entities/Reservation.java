@@ -1,3 +1,4 @@
+
 package nl.tudelft.oopp.demo.entities;
 
 public abstract class Reservation {

@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping(path = "/rooms")
 public class RoomController {
+
     @Autowired
     private final RoomRepository roomRepository;
 
@@ -44,7 +45,6 @@ public class RoomController {
         return roomRepository.findAll(Specification.where(specs));
     }
 
-    //also a refactored method but put here for CheckStyle
     @GetMapping
     public List<Room> getAll() {
         return roomRepository.findAll();

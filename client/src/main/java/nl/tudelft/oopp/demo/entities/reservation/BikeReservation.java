@@ -1,31 +1,13 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
 import java.util.Objects;
-import javax.persistence.*;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.User;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-@Entity
-@Table(name = "bike_reservation")
 public class BikeReservation extends Reservation {
 
-
-    @ManyToOne
-    @JoinColumn(name = "pick_up_building", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Building pickUpBuilding;          // building code
-
-    @ManyToOne
-    @JoinColumn(name = "drop_off_building", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Building pickUpBuilding;
     private Building dropOffBuilding;
-
-
-    public BikeReservation() {
-
-    }
 
 
     /**
@@ -90,6 +72,13 @@ public class BikeReservation extends Reservation {
                 + ", pickup building: " + this.pickUpBuilding
                 + ", dropoff building: " + this.dropOffBuilding
                 + "}";
+    }
+
+    @Override
+    public String toDisplayString() {
+        return "Bike reservation | Pickup location: " + pickUpBuilding.getName()
+                + " | Dropoff location: " + dropOffBuilding.getName()
+                + " | " + getDateAndTimeslot();
     }
 
 }
