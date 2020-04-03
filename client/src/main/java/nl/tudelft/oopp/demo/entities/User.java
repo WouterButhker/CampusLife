@@ -22,6 +22,11 @@ public class User implements Serializable {
         this.role = "Student";
     }
 
+    public User(int id) {
+        this.id = id;
+        this.role = "Student";
+    }
+
     public String getUsername() {
         return username;
     }

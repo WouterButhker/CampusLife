@@ -34,9 +34,11 @@ public class FoodOrderController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     FoodOrder addFoodOrder(@RequestBody FoodOrder foodOrder) {
         System.out.println(foodOrder);
-        FoodOrder foodOrderFix = new FoodOrder(userRepository.findById(foodOrder.getId()).get(),
-                foodOrder.getDate(), foodOrder.getTimeSlot(), foodOrder.getRestaurant());
-        FoodOrder createdOrder = foodOrderRepository.save(foodOrderFix);
+        FoodOrder createdOrder = foodOrderRepository.save(foodOrder);
+
+        //FoodOrder foodOrderFix = new FoodOrder(userRepository.findById(foodOrder.getId()).get(),
+        //     foodOrder.getDate(), foodOrder.getTimeSlot(), foodOrder.getRestaurant());
+        //FoodOrder createdOrder = foodOrderRepository.save(foodOrderFix);
 
         // Create all food junctions
         for (List<Integer> pairs : foodOrder.getFoodsList()) {
@@ -52,7 +54,7 @@ public class FoodOrderController {
             foodOrderQuantityRepository.save(ding);
         }
 
-        foodOrderFix.setId(createdOrder.getId());
-        return foodOrderFix;
+        foodOrder.setId(createdOrder.getId());
+        return foodOrder;
     }
 }

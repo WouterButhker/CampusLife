@@ -1,19 +1,12 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import nl.tudelft.oopp.demo.entities.User;
 
-@Entity
 public class PersonalReservation extends Reservation {
 
-    @Column(name = "activity", nullable = false)
     private String activity;
 
-    public PersonalReservation() {
-
-    }
 
     public PersonalReservation(User user, String date, String timeSlot, String activity) {
         super(user, date, timeSlot);
@@ -53,5 +46,12 @@ public class PersonalReservation extends Reservation {
         return "personal reservation{" + super.toString()
                 + ", activity: " + this.activity
                 + "}";
+    }
+
+    @Override
+    public String toDisplayString() {
+        return "Appointment | "
+                + " | " + this.activity
+                + " | " + getDateAndTimeslot();
     }
 }

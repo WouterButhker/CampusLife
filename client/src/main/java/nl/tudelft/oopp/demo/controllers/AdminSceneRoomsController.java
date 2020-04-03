@@ -31,7 +31,7 @@ import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
-
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
 public class AdminSceneRoomsController implements Initializable {
 
@@ -177,60 +177,47 @@ public class AdminSceneRoomsController implements Initializable {
         String roomCode = roomCodeInput.getText();
         String roomName = roomNameInput.getText();
 
-        Text submitStatus = new Text();
+        String submitStatus;
+        boolean correct = false;
         if (!roomCode.equals("") && !roomName.equals("") && capacityCorrect
                 && buildingFound && rightsFound && imageSelectorWidget.imageSelected()) {
             Room room = new Room(roomCode, roomName, capacity, whiteboard,
                     tv, rights, BuildingCommunication.getBuildingByCode(buildingCode));
             RoomCommunication.saveRoom(room);
             ImageCommunication.updateRoomImage(roomCode, imageSelectorWidget.getImage());
-            submitStatus.setText("Room has been successfully added to "
-                    + buildingList.getValue().split(" ")[1]);
+            submitStatus = "Room has been successfully added to \n"
+                    + buildingList.getValue().split(" ")[1];
+            correct = true;
             try {
                 refreshRoomsPage();
             } catch (Exception e) {
                 System.out.println("Refresh failed");
             }
         } else {
-            submitStatus.setText("All fields have to be entered");
+            submitStatus = ("All fields have to be entered");
         }
 
         if (!capacityCorrect) {
-            submitStatus.setText("The capacity has to be a proper number");
+            submitStatus = ("The capacity has to be a proper number");
         }
 
         if (!buildingFound) {
-            submitStatus.setText("Please select a building");
+            submitStatus = ("Please select a building");
         }
 
         if (!rightsFound) {
-            submitStatus.setText("Rights have to be set");
+            submitStatus = ("Rights have to be set");
         }
 
         if (!imageSelectorWidget.imageSelected()) {
-            submitStatus.setText("Image has to be selected");
+            submitStatus = ("Image has to be selected");
         }
 
-        Button back = new Button("Okay! take me back");
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Button button = (Button) event.getSource();
-                Stage stage = (Stage) button.getScene().getWindow();
-                stage.close();
-            }
-        });
-        VBox roomBox = new VBox(submitStatus, back);
-        roomBox.setPrefSize(300, 200);
-        roomBox.setAlignment(Pos.CENTER);
-        AnchorPane root = new AnchorPane(roomBox);
-        root.setPrefSize(300, 200);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        //stage.initOwner(buildingList.getScene().getWindow());
-        stage.showAndWait();
+        if (correct) {
+            PopupWidget.displaySuccess(submitStatus, "Success!");
+        } else {
+            PopupWidget.displayError(submitStatus, "Error!");
+        }
     }
 
     @FXML
@@ -259,10 +246,8 @@ public class AdminSceneRoomsController implements Initializable {
         int height = numRooms * 82;
         anchorPaneRooms.setPrefHeight(height);
         if (height <= scrollPane.getPrefHeight()) {
-            scrollPaneVBox.setPrefWidth(400);
             scrollPane.setPrefWidth(400);
         } else {
-            scrollPaneVBox.setPrefWidth(417);
             scrollPane.setPrefWidth(417);
         }
         for (int i = 0; i < numRooms; i++) {
@@ -304,8 +289,12 @@ public class AdminSceneRoomsController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    RoomCommunication.deleteRoom(rooms.get(finalI).getRoomCode());
-                    loadRooms(buildingList2.getValue());
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        RoomCommunication.deleteRoom(rooms.get(finalI).getRoomCode());
+                        loadRooms(buildingList2.getValue());
+                    }
                 }
             });
             delete.setPrefSize(45, 40);
@@ -554,8 +543,12 @@ public class AdminSceneRoomsController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    ImageCommunication.deleteRoomImage(imageUrls.get(finalI));
-                    loadImages(room, images);
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        ImageCommunication.deleteRoomImage(imageUrls.get(finalI));
+                        loadImages(room, images);
+                    }
                 }
             });
             StackPane container = new StackPane(imageView, deleteContainer);

@@ -176,7 +176,10 @@ public class User implements UserDetails {
      */
     @Override
     public String toString() {
-        return "NAME: " + username;
+        return "user{id: " + this.id
+                + ", name:" + this.username
+                + ", role: " + this.role
+                + "}";
     }
 
 

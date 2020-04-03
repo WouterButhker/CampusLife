@@ -1,7 +1,8 @@
 package nl.tudelft.oopp.demo.communication;
 
 import java.util.List;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ public class GetAllReservationsTest {
 
     @Test
     public void testGetAllReservations() {
-        List<RoomReservation> reservationList = ReservationCommunication.getAllReservations();
+        List<RoomReservation> reservationList = RoomReservationCommunication.getAllReservations();
         System.out.println("---------------------------");
         System.out.println("Test = testGetAllRooms");
         if (reservationList != null) {
