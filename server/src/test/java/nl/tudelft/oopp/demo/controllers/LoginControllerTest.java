@@ -18,6 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,5 +59,14 @@ public class LoginControllerTest {
     @Test
     void testRegisterUser() throws Exception {
         registerUser();
+    }
+
+    @Test
+    void testLogin() throws Exception {
+        registerUser();
+        mvc.perform(get("/login")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("Wouter")).andExpect(status().isOk());
+
     }
 }

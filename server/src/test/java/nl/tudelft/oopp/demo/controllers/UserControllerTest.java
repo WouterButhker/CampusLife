@@ -75,14 +75,15 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(authorities = "Student")
-    void testGetId() throws Exception {
-        mvc.perform(get("/rest/users/getId?username=wouter")).andExpect(status().isOk());
+    String testGetId() throws Exception {
+        return mvc.perform(get("/rest/users/getId?username=Wouter")).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
     }
 
     @Test
     @WithMockUser(authorities = "Student")
     void testGetRole() throws Exception {
-        mvc.perform(get("/rest/users/getRole?username=wouter")).andExpect(status().isOk());
+        mvc.perform(get("/rest/users/getRole?username=Wouter")).andExpect(status().isOk());
     }
 
     @Test
@@ -91,6 +92,14 @@ public class UserControllerTest {
         mvc.perform(put("/rest/users/changeRole")
             .contentType(MediaType.APPLICATION_JSON)
             .content(new Gson().toJson(user))).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testDelete() throws Exception {
+        registerUser();
+        int id = Integer.parseInt(testGetId());
+        mvc.perform(delete("/rest/users/" + id)).andExpect(status().isOk());
     }
 
 }
