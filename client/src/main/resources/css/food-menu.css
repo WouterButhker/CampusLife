@@ -44,6 +44,20 @@
     -fx-background-radius: 0 8 0 0;
 }
 
+.favorite-button2 {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/favorite_empty.png');
+}
+
+.favorite-button2:selected {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/favorite_filled.png');
+}
+
+.fav-hover:hover {
+    -fx-background-color: #00000033;
+}
+
 .order-name-text {
     -fx-font-family: -primary-font-name;
 }
