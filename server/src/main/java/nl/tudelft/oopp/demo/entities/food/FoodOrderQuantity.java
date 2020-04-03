@@ -100,9 +100,4 @@ public class FoodOrderQuantity {
         return food.equals(that.food)
                 && foodOrder.equals(that.foodOrder);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(food, foodOrder);
-    }
 }

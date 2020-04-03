@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.entities.food;
 
+import nl.tudelft.oopp.demo.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,13 @@ class FoodOrderTest {
     }
 
     @Test
+    void constructorTest2() {
+        User user = new User(123);
+        FoodOrder foodOrder = new FoodOrder(user, date, timeSlot, restaurant);
+        assertNotNull(foodOrder);
+    }
+
+    @Test
     void getRestaurant() {
         assertEquals(restaurant, order.getRestaurant());
     }
@@ -44,6 +52,6 @@ class FoodOrderTest {
 
     @Test
     void getFoodsList() {
-        assertEquals(foodsList, order.getFoodsList());
+        assertEquals(null, order.getFoodsList());
     }
 }
