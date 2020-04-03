@@ -1,5 +1,12 @@
 @import url("palette.css");
 
+.info-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-style: italic;
+    -fx-text-fill: #BDBDBD;
+    -fx-fill: #BDBDBD;
+}
+
 .list-item-bg:hover {
     -fx-background-color: #00000033;
 }

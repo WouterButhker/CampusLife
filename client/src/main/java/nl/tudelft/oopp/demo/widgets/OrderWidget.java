@@ -42,7 +42,9 @@ public class OrderWidget extends StackPane {
     private Text totalText;
     private Text priceText;
     private Button takeoutButton;
+    private Text takeoutText;
     private Button deliveryButton;
+    private Text deliveryText;
 
     private List<OrderItem> orderItems;
     private List<Food> foods;
@@ -142,6 +144,12 @@ public class OrderWidget extends StackPane {
             }
         });
         bottomContainer.getChildren().add(takeoutButton);
+        if (!isTakeoutEnabled) {
+            takeoutText = new Text("The restaurant is currently closed");
+            takeoutText.setTextAlignment(TextAlignment.CENTER);
+            takeoutText.getStyleClass().add("info-text");
+            bottomContainer.getChildren().add(takeoutText);
+        }
         deliveryButton = new Button("Order delivery");
         if (!reservations.isEmpty()) {
             deliveryButton.getStyleClass().add("order-button");
@@ -187,6 +195,12 @@ public class OrderWidget extends StackPane {
             }
         });
         bottomContainer.getChildren().add(deliveryButton);
+        if (reservations.isEmpty()) {
+            deliveryText = new Text("There are no reservations to deliver to");
+            deliveryText.setTextAlignment(TextAlignment.CENTER);
+            deliveryText.getStyleClass().add("info-text");
+            bottomContainer.getChildren().add(deliveryText);
+        }
 
         prefWidthProperty().addListener((observable, oldValue, newValue) -> {
             resizeWidget(newValue.doubleValue(), getPrefHeight());
@@ -280,9 +294,20 @@ public class OrderWidget extends StackPane {
         takeoutButton.setStyle("-fx-font-size: " + newHeight * 0.015);
         takeoutButton.setPrefWidth(newWidth * 0.9);
         takeoutButton.setPrefHeight(newHeight * 0.08);
+
+        if (takeoutText != null) {
+            takeoutText.setStyle("-fx-font-size: " + newHeight * 0.015);
+            takeoutText.setWrappingWidth(newWidth * 0.45);
+        }
+
         deliveryButton.setStyle("-fx-font-size: " + newHeight * 0.015);
         deliveryButton.setPrefWidth(newWidth * 0.9);
         deliveryButton.setPrefHeight(newHeight * 0.08);
+
+        if (deliveryText != null) {
+            deliveryText.setStyle("-fx-font-size: " + newHeight * 0.015);
+            deliveryText.setWrappingWidth(newWidth * 0.45);
+        }
 
         for (OrderItem orderItem : orderItems) {
             orderItem.setPrefWidth(newWidth * 0.8);
