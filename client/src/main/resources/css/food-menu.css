@@ -32,6 +32,18 @@
     -fx-background-image: url('/images/remove_icon.png');
 }
 
+.favorite-button {
+    -fx-background-color: #FFFFFF99;
+    -fx-background-image: url('/images/favorite_empty.png');
+    -fx-background-radius: 0 8 0 0;
+}
+
+.favorite-button:selected {
+    -fx-background-color: #FFFFFF99;
+    -fx-background-image: url('/images/favorite_filled.png');
+    -fx-background-radius: 0 8 0 0;
+}
+
 .order-name-text {
     -fx-font-family: -primary-font-name;
 }

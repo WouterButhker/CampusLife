@@ -4,18 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.User;
@@ -36,11 +42,17 @@ public class RestaurantMenuRoute extends Route {
 
     private HBox restaurantContainer;
     private VBox restaurantTextContainer;
+
+    private StackPane imageContainer;
     private ImageView restaurantPicture;
+    private ToggleButton favoriteButton;
+
     private Text restaurantTitle;
     private Text restaurantDescription;
     private List<FoodItemWidget> foodItems;
     private OrderWidget orderWidget;
+
+    private FavoriteRestaurant favorite;
 
     /**
      * Creates a RestaurantMenuRoute.
@@ -71,11 +83,29 @@ public class RestaurantMenuRoute extends Route {
         restaurantContainer = new HBox();
         menuContainer.getChildren().add(restaurantContainer);
 
+        favorite = FavoriteRestaurantCommunication.isFavorite(restaurant);
+
+        favoriteButton = new ToggleButton();
+        favoriteButton.setSelected(favorite != null);
+        favoriteButton.getStyleClass().add("favorite-button");
+        favoriteButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!oldValue) {
+                favorite = FavoriteRestaurantCommunication.addFavorite(restaurant);
+            } else {
+                FavoriteRestaurantCommunication.removeFavorite(favorite.getId());
+            }
+        });
+
         Image restaurantImage =
                 new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()));
         restaurantPicture = new ImageView(restaurantImage);
         restaurantPicture.setPreserveRatio(true);
-        restaurantContainer.getChildren().add(restaurantPicture);
+
+        imageContainer = new StackPane();
+        imageContainer.setAlignment(Pos.BOTTOM_LEFT);
+        imageContainer.getChildren().add(restaurantPicture);
+        imageContainer.getChildren().add(favoriteButton);
+        restaurantContainer.getChildren().add(imageContainer);
 
         restaurantTextContainer = new VBox();
         restaurantContainer.getChildren().add(restaurantTextContainer);
@@ -133,6 +163,15 @@ public class RestaurantMenuRoute extends Route {
         restaurantTitle.setStyle("-fx-font-size: " + newHeight * 0.06);
         restaurantDescription.setWrappingWidth(newWidth * 0.4);
         restaurantDescription.setStyle("-fx-font-size: " + newHeight * 0.025);
+
+        double favoriteSize = newHeight * 0.25 * 0.2;
+        favoriteButton.setPrefWidth(favoriteSize);
+        favoriteButton.setPrefHeight(favoriteSize);
+        favoriteButton.setStyle(String.format(
+                "-fx-background-size: %fpx %fpx",
+                favoriteSize,
+                favoriteSize
+        ));
 
         for (FoodItemWidget foodItemWidget : foodItems) {
             foodItemWidget.setPrefWidth(newWidth * 0.55);
