@@ -334,7 +334,8 @@ public class AdminSceneRestaurantsController implements Initializable {
         Button submit = new Button("Submit");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
-        submitBox.setPadding(new Insets(10, 150, 10, 150));
+        submitBox.setPadding(new Insets(10, 0,10, 0));
+        submitBox.setAlignment(Pos.CENTER);
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -362,7 +363,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         root.getChildren().addAll(headerBox,
                 nameTextBox, nameBox,
                 descriptionTextBox, descriptionBox,
-                submitBox);
+                imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
