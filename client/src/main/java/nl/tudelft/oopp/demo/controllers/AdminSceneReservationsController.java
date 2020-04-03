@@ -19,8 +19,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.communication.ReservationCommunication;
-import nl.tudelft.oopp.demo.entities.Reservation;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
 
@@ -79,15 +79,15 @@ public class AdminSceneReservationsController {
     }
 
     private void loadReservations(String choice) {
-        List<Reservation> reservations = new ArrayList<>();
+        List<RoomReservation> reservations = new ArrayList<>();
         if (choice.equals("Show by user")) {
-            reservations = ReservationCommunication
+            reservations = RoomReservationCommunication
                     .getAllReservationsForUser(Integer.parseInt(userOrRoomField.getText()));
         } else if (choice.equals("Show by room")) {
-            reservations = ReservationCommunication
+            reservations = RoomReservationCommunication
                     .getAllReservationsForRoom(userOrRoomField.getText());
         } else {
-            reservations = ReservationCommunication.getAllReservations();
+            reservations = RoomReservationCommunication.getAllReservations();
         }
 
         reservationsList.getChildren().clear();
@@ -96,21 +96,22 @@ public class AdminSceneReservationsController {
         for (int i = 0; i < reservations.size(); i++) {
             HBox reservation = new HBox();
             reservation.setMaxWidth(1011);
+
             Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
-                    + "User: " + reservations.get(i).getUser() + " | "
-                    + "Room: " + reservations.get(i).getRoom() + " | "
+                    + "User: " + reservations.get(i).getId() + " | "
+                    + "Room: " + reservations.get(i).getRoom().getRoomCode() + " | "
                     + "TimeSlot: " + reservations.get(i).getTimeSlot());
             text.setPrefSize(900, 60);
             text.setStyle("-fx-font: 17 arial;");
 
             int finalI = i;
             Button delete = new Button("delete");
-            List<Reservation> finalReservations = reservations;
+            List<RoomReservation> finalReservations = reservations;
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     Integer id = finalReservations.get(finalI).getId();
-                    ReservationCommunication.deleteReservationFromDatabase(id);
+                    RoomReservationCommunication.deleteReservationFromDatabase(id);
                     loadReservations(choiceBox.getValue().toString());
                 }
             });

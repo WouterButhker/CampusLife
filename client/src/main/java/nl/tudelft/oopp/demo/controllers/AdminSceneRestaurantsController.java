@@ -33,9 +33,6 @@ public class AdminSceneRestaurantsController implements Initializable {
     private VBox mainBox;
 
     @FXML
-    private TextField restaurantIdInput;
-
-    @FXML
     private TextField restaurantNameInput;
 
     @FXML
@@ -173,7 +170,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         for (int i = 0; i < numRestaurants; i++) {
             HBox restaurant = new HBox();
             restaurant.setMaxWidth(400);
-            Image image = new Image("images/RoomTempIMG.jpg");
+            Image image = new Image("images/main-screen-food.jpg");
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
@@ -223,7 +220,7 @@ public class AdminSceneRestaurantsController implements Initializable {
     @FXML
     private void refreshRestaurantsPage() throws Exception {
         RoutingScene scene = (RoutingScene) mainBox.getScene();
-        Route route = new XmlRoute(getClass().getResource("/AdminSceneFood.fxml"));
+        Route route = new XmlRoute(getClass().getResource("/AdminSceneRestaurants.fxml"));
         scene.popRoute();
         scene.pushRoute(route);
     }
@@ -277,7 +274,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Label status = modifyRestaurant(restaurant.getId(),
+                Label status = updateRestaurant(restaurant.getId(),
                         name.getText(),
                         restaurant.getBuildingCode(),
                         description.getText());
@@ -310,7 +307,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         stage.showAndWait();
     }
 
-    private Label modifyRestaurant(int id, String name, int buildingCode, String description) {
+    private Label updateRestaurant(int id, String name, int buildingCode, String description) {
         if (!name.equals("") && !description.equals("")) {
             RestaurantCommunication.updateRestaurant(new Restaurant(id,
                                                                     name,

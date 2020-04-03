@@ -13,18 +13,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.BuildingCommunication;
-import nl.tudelft.oopp.demo.communication.FoodCommunication;
-import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
+import nl.tudelft.oopp.demo.communication.*;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.BuildingsGridView;
+import nl.tudelft.oopp.demo.widgets.ButtonsGridView;
 import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
+
 
 public class MainMenuRoute extends Route {
     public static final String BIKES_STRING = "Reserve a bike";
@@ -40,6 +36,7 @@ public class MainMenuRoute extends Route {
 
     private HBox buttonsRow;
     private List<RectangularImageButton> mainButtons;
+    private ButtonsGridView buildingsGrid;
 
     /**
      * Creates a MainMenuRoute which is the Route that displays the option to order
@@ -48,7 +45,6 @@ public class MainMenuRoute extends Route {
     public MainMenuRoute() {
         rootContainer = new VBox();
         rootContainer.setAlignment(Pos.TOP_CENTER);
-        rootContainer.setSpacing(20);
         scrollPane = new ScrollPane(rootContainer);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
@@ -57,43 +53,29 @@ public class MainMenuRoute extends Route {
             isAdmin = true;
         }
 
-
         rootContainer.getChildren().add(new AppBar(isAdmin));
 
-        // addDummyRestaurantData();
         createButtonsRow();
         createBuildingsTitle();
 
         List<Building> buildingsList = BuildingCommunication.getAllBuildings();
-
-        BuildingsGridView buildingsGrid = new BuildingsGridView(buildingsList);
+        List<Image> images = new ArrayList<>();
+        List<String> buildingNames = new ArrayList<>();
+        for (Building building : buildingsList) {
+            images.add(new Image(ImageCommunication.getBuildingImageUrl(building.getCode())));
+            buildingNames.add(building.getNameAndCode());
+        }
+        buildingsGrid = new ButtonsGridView(images, buildingNames, 5);
+        buildingsGrid.setListener(new ButtonsGridView.Listener() {
+            @Override
+            public void onButtonClicked(int buttonIndex) {
+                Building building = buildingsList.get(buttonIndex);
+                RoutingScene routingScene = MainMenuRoute.this.getRoutingScene();
+                routingScene.pushRoute(new RoomsListRoute(building.getCode()));
+            }
+        });
         rootContainer.getChildren().add(buildingsGrid);
     }
-
-    /*
-    private void addDummyRestaurantData() {
-        List<Restaurant> restaurants = RestaurantCommunication.getRestaurants();
-        if (restaurants.isEmpty()) {
-            Restaurant restaurant = RestaurantCommunication.createRestaurant(new Restaurant(
-                    1,
-                    "Subway",
-                    1,
-                    "Takeaway food from Subway in Delft! "
-                            + "Choose your favourite meal from a wide variety "
-                            + "& have it delivered to your door!"
-            ));
-            int id = restaurant.getId();
-            FoodCommunication.createFood(new Food(null, "Broodje Doner", id, 1.55));
-            FoodCommunication.createFood(new Food(null, "Italiano BMT", id, 4.30));
-            FoodCommunication.createFood(new Food(null, "Kapsalon Medium", 1, 5.50));
-            FoodCommunication.createFood(new Food(null, "Spa Rood", id, 3.20));
-            FoodCommunication.createFood(new Food(null, "Pizza 1", id, 3.24));
-            FoodCommunication.createFood(new Food(null, "Pizza 2", id, 3.25));
-            FoodCommunication.createFood(new Food(null, "Pizza 3", id, 3.25));
-            FoodCommunication.createFood(new Food(null, "Pizza 4", id, 3.29));
-        }
-    }
-     */
 
     @Override
     public Parent getRootElement() {
@@ -109,6 +91,7 @@ public class MainMenuRoute extends Route {
 
     private void createButtonsRow() {
         buttonsRow = new HBox();
+        buttonsRow.setPadding(new Insets(0, 0, 20, 0));
         rootContainer.getChildren().add(buttonsRow);
 
         mainButtons = new ArrayList<>();
@@ -179,16 +162,19 @@ public class MainMenuRoute extends Route {
          as to not make them the main thing
          */
 
-        rootContainer.setPadding(new Insets(0, 0, 0, 0));
+        buildingsTitle.setWrappingWidth(newWidth.doubleValue());
+        buildingsTitle.setTextAlignment(TextAlignment.CENTER);
+        buildingsTitle.setStyle("-fx-font-size: " + getRoutingScene().getHeight() * 0.045);
 
         buildingsTitleContainer.setMinWidth(newWidth.doubleValue());
+        buildingsGrid.setPrefWidth(newWidth.doubleValue());
 
         final double buttonWidth = 0.245;
         for (RectangularImageButton imageButton : mainButtons) {
             imageButton.setFitWidth(buttonWidth * newWidth.doubleValue());
         }
         double horizontalSpacing = ((1 - buttonWidth * 3) / 4) * newWidth.doubleValue();
-        buttonsRow.setPadding(new Insets(0, 0, 0, horizontalSpacing));
+        buttonsRow.setPadding(new Insets(20, 0, 80, horizontalSpacing));
         buttonsRow.setSpacing(horizontalSpacing);
     }
 }

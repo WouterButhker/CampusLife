@@ -42,7 +42,9 @@ public class User implements UserDetails {
      * @param password the users password (bcrypt)
      * @param role the users access level
      */
-    public User(String username, String password, String role) {
+    public User(String username,
+                String password,
+                String role) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -57,6 +59,10 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.role = "Student";
+    }
+
+    public User(int id) {
+        this.id = id;
     }
 
     public User() {
@@ -170,7 +176,10 @@ public class User implements UserDetails {
      */
     @Override
     public String toString() {
-        return "NAME: " + username;
+        return "user{id: " + this.id
+                + ", name:" + this.username
+                + ", role: " + this.role
+                + "}";
     }
 
 

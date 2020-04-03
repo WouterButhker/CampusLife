@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.entities.Room;
 
 public class ReservationWidget extends VBox {
@@ -48,7 +49,7 @@ public class ReservationWidget extends VBox {
         roomName = new Text(room.getName());
         roomName.getStyleClass().add("reservation-date-text");
         getChildren().add(roomName);
-        Image image = new Image("https://cdn.mos.cms.futurecdn.net/K5nhgMGSRCzdppKW9bQcMd.jpg");
+        Image image = new Image(ImageCommunication.getRoomImageUrl(room.getRoomCode()).get(0));
         roomImage = new ImageView(image);
         roomImage.setPreserveRatio(true);
         getChildren().add(roomImage);

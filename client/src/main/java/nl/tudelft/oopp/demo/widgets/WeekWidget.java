@@ -147,13 +147,13 @@ public class WeekWidget extends VBox {
             return;
         }
 
-        if (newOpeningHours.equals(Weekdays.getClosed())) {
+        if (newOpeningHours.equals(Weekdays.CLOSED)) {
             weekDays.setClosed(id);
         } else {
             weekDays.getWeekdays().set(id, newOpeningHours);
         }
 
-        if (!newOpeningHours.equals(Weekdays.getClosed())
+        if (!newOpeningHours.equals(Weekdays.CLOSED)
                 && newOpeningHours.split("-")[0].compareTo(newOpeningHours.split("-")[1]) >= 0) {
             labels.get(id).setStyle("-fx-text-fill: red");
         } else {
@@ -181,8 +181,8 @@ public class WeekWidget extends VBox {
         for (int i = 0; i < 5; i++) {
             dayChanged(i, newOpeningHours);
         }
-        dayChanged(5, Weekdays.getClosed());
-        dayChanged(6, Weekdays.getClosed());
+        dayChanged(5, Weekdays.CLOSED);
+        dayChanged(6, Weekdays.CLOSED);
     }
 
     public Weekdays getWeekDays() {

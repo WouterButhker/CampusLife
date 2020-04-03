@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Building {
 
     @Id
-    @Column(name = "buildingCode")
+    @Column(name = "building_code", unique = true)
     private Integer buildingCode;
 
     @Column(name = "name")
@@ -20,7 +20,7 @@ public class Building {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "openingHours")
+    @Column(name = "opening_hours")
     private String openingHours;
 
     @Column(name = "bikes")
@@ -49,21 +49,6 @@ public class Building {
         this.openingHours = openingHours;
         this.bikes = bikes;
     }
-
-    /*
-    public Building(Integer buidlingCode) {
-        BuildingRepository buildingRepository = null;
-        List<Building> buildingList = buildingRepository.getBuildingByCode(buildingCode);
-        if(buildingList.size() > 0) {
-            Building b = buildingList.get(0);
-            this.buildingCode = b.buildingCode;
-            this.name = b.name;
-            this.location = b.location;
-            this.openingHours = b.openingHours;
-            this.bikes = b.bikes;
-        }
-        this.buildingCode = buidlingCode;
-    }*/
 
     public Integer getBuildingCode() {
         return buildingCode;
@@ -110,9 +95,12 @@ public class Building {
      * @return String representation of a Building
      */
     public String toString() {
-        return "[\"buildingCode\":\"" + buildingCode + "\",\"name\":\"" + name
-                + "\",\"location\":\"" + location + "\",\"openingHours\":\"" + openingHours
-                + "\",\"bikes\":\"" + bikes + "\"]";
+        return "building{buildingcode: " + this.buildingCode
+                + ", name: " + this.name
+                + ", location: " + this.location
+                + ", opening hours: " + this.openingHours
+                + ", bikes: " + this.bikes
+                + "}";
     }
 
     @Override

@@ -2,9 +2,10 @@ package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
 import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.repositories.RoomReservationRepository;
+import nl.tudelft.oopp.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/reservations")
+@RequestMapping(path = "/roomReservations")
 public class RoomReservationController {
 
     @Autowired
     private RoomReservationRepository roomReservationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(path = "/all")
     public List<RoomReservation> getAll() {
@@ -26,8 +30,9 @@ public class RoomReservationController {
     }
 
     @GetMapping(path = "/allForUser")
-    public List<RoomReservation> getAllForUser(@RequestParam User user) {
-        return roomReservationRepository.findAllByUser(user);
+    public List<RoomReservation> getAllForUser(@RequestParam Integer user) {
+        User actualUser = userRepository.findUserById(user);
+        return roomReservationRepository.findAllByUser(actualUser);
     }
 
     @GetMapping(path = "/allForRoom")
@@ -43,21 +48,23 @@ public class RoomReservationController {
      * @return
      */
     @GetMapping(path = "/add")
-    public @ResponseBody String addNewReservation(@RequestParam User user,
+    public @ResponseBody String addNewReservation(@RequestParam Integer user,
                                                   @RequestParam Room room,
                                                   @RequestParam String slot) {
         String timeSlot = slot.substring(11, 19) + slot.substring(30);
         String date = slot.substring(0, 10);
         System.out.println(date);
         System.out.println(timeSlot);
-        RoomReservation reservation = new RoomReservation(user, room, date, slot);
+        User actualUser = userRepository.findUserById(user);
+        RoomReservation reservation = new RoomReservation(actualUser, room, date, slot);
         roomReservationRepository.save(reservation);
         return "Saved";
     }
 
     @GetMapping("/myReservations")
-    public @ResponseBody List<RoomReservation> getMyReservations(@RequestParam User user) {
-        return roomReservationRepository.getMyReservations(user);
+    public @ResponseBody List<RoomReservation> getMyReservations(@RequestParam int user) {
+        User actualUser = userRepository.findUserById(user);
+        return roomReservationRepository.findAllByUser(actualUser);
     }
 
     @Transactional

@@ -20,6 +20,7 @@ Important:
             - Displayed like a calendar
             - Cancel reservation (optional)
             - Bike reserved (Yes/No)
+            - Food reserved
 
 2. Rooms:
     - Code
@@ -42,7 +43,7 @@ Important:
     - Name
     - Location
     - Opening hours
-    - Bike station (Yes/No)
+    - Bike station (Yes/No) 
     - Food stores
     - Pictures
 
@@ -52,9 +53,11 @@ Important:
     - Can only rent from buildings where a bike station is located
     - Can rent multiple blocks of the fixed timeslots (so 3 times 1 hour slot)
     - That bike station has to have atleast one bike available
+    - Current amount of bikes should be shown
     - Rent for a fixed timeslot, can return earlier than the indicated end time
     - We don't have to deal with illegal stuff like returning later or not returning at all
     - Can return to any building with an attached bike station
+    - Same opening hours as building it is attached to
 
 5. Food:
     - Menu
@@ -65,3 +68,4 @@ Important:
     - Can only choose from food stores in the same building as your reserved room if you want it to be delivered to your room
     - Food is unlimited and food is done at the given time
     - Products and food stores added by admin
+    - Different opening hours from the building it is attached to

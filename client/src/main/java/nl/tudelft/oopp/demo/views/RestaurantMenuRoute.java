@@ -12,11 +12,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Food;
-import nl.tudelft.oopp.demo.entities.FoodOrder;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.FoodItemWidget;
 import nl.tudelft.oopp.demo.widgets.OrderWidget;
@@ -46,7 +49,10 @@ public class RestaurantMenuRoute extends Route {
      * @param restaurant the restaurant to be displayed
      */
     public RestaurantMenuRoute(Restaurant restaurant) {
-        foodOrder = new FoodOrder(null, restaurant.getId(), -1);
+        // TODO: Date and time
+        // TODO: GET RIGHT USER
+        foodOrder = new FoodOrder(new User(AuthenticationCommunication.myUserId),"Today",
+                "ASAP", restaurant);
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         rootContainer = new VBox();
@@ -65,7 +71,8 @@ public class RestaurantMenuRoute extends Route {
         restaurantContainer = new HBox();
         menuContainer.getChildren().add(restaurantContainer);
 
-        Image restaurantImage = new Image("https://therockbury.com/wp-content/uploads/2014/03/subway-logo.jpg");
+        Image restaurantImage =
+                new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()));
         restaurantPicture = new ImageView(restaurantImage);
         restaurantPicture.setPreserveRatio(true);
         restaurantContainer.getChildren().add(restaurantPicture);
