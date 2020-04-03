@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 public class OtherBuildingTests {
 
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
+//    @BeforeEach
+//    void doBeforeEach() {
+//        AuthenticationCommunication.login("admin", "admin");
+//    }
 
     @Test
     public void testGetBuildingsCodeAndName() {

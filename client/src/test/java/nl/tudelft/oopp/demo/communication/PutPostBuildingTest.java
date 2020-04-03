@@ -16,10 +16,10 @@ public class PutPostBuildingTest {
     private String image;
     private Building building;
 
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
+//    @BeforeEach
+//    void doBeforeEach() {
+//        AuthenticationCommunication.login("admin", "admin");
+//    }
 
     @BeforeEach
     void preparation() {
