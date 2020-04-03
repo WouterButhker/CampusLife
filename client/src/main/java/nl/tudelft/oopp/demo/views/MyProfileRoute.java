@@ -59,7 +59,7 @@ public class MyProfileRoute extends Route {
         if (AuthenticationCommunication.myUserRole.equals("Admin")) {
             isAdmin = true;
         }
-        AppBar appBar = new AppBar(isAdmin);
+        AppBar appBar = new AppBar(isAdmin, true, false);
         rootElement.getChildren().add(appBar);
         addUserInformation();
         eventContainer = new VBox();
