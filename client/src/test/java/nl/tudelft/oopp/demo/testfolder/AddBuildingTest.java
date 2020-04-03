@@ -9,11 +9,6 @@ import org.junit.jupiter.api.Test;
 
 public class AddBuildingTest {
 
-//    @BeforeEach
-//    void doBeforeEach() {
-//        AuthenticationCommunication.login("admin", "admin");
-//    }
-
     @Test
     public void testAddBuildingToDatabaseForDeletion() {
         Integer buildingCode = 1;

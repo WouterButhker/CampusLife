@@ -8,10 +8,6 @@ import org.junit.jupiter.api.Test;
 
 public class GetAllRoomsTest {
 
-//    @BeforeEach
-//    void doBeforeEach() {
-//        AuthenticationCommunication.login("admin", "admin");
-//    }
 
     @Test
     public void testGetAllRooms() {

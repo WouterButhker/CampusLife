@@ -20,10 +20,6 @@ class BikeReservationTest {
 
     private BikeReservation bikeReservation;
 
-//    @BeforeEach
-//    void login() {
-//        AuthenticationCommunication.login("admin", "admin");
-//    }
 
     @BeforeEach
     void init() {

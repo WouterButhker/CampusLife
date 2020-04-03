@@ -20,11 +20,6 @@ class RoomTest {
     private Room room;
     private Building building;
 
-//    @BeforeEach
-//    void doBeforeEach() {
-//        AuthenticationCommunication.login("admin", "admin");
-//    }
-
     @BeforeEach
     void setUpper() {
         code = "69";
