@@ -13,7 +13,7 @@ public class FavoriteRoom {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "room")
+    @JoinColumn(name = "room", referencedColumnName = "room_code")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
 
