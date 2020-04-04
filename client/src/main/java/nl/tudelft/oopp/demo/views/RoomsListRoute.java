@@ -156,7 +156,8 @@ public class RoomsListRoute extends Route {
                 RoomsListRoute.this.roomList = RoomCommunication.getAllRooms();
                 for (int i = 0; i < RoomsListRoute.this.roomList.size(); i++) {
                     Room room = RoomsListRoute.this.roomList.get(i);
-                    if (room.isHasTV() != hasTvBool || room.isHasWhiteboard() != hasWhiteboardBool
+                    if ((hasTvBool && !room.isHasTV())
+                            || (hasWhiteboardBool && !room.isHasWhiteboard())
                             || room.getCapacity() < minCapInt
                             || room.getCapacity() > maxCapInt
                             || (buildingCode != -1
