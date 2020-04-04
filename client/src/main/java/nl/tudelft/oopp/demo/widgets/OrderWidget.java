@@ -129,29 +129,20 @@ public class OrderWidget extends StackPane {
             @Override
             public void handle(MouseEvent event) {
                 if (isTakeoutEnabled) {
-                    Calendar now = Calendar.getInstance();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                    foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
-
-                    FoodOrderCommunication.createFoodOrder(foodOrder);
-
-                    popupRoute.showPopup(new InformationPopup(
-                            "Success!",
-                            "Your order has successfully been placed.",
-                            new InformationPopup.Listener() {
+                    popupRoute.showPopup(new ConfirmationPopup(
+                            "Confirm Order",
+                            "Are you done selecting food?",
+                            new ConfirmationPopup.Listener() {
                                 @Override
-                                public void onOkClicked() {
-                                    popupRoute.removePopup();
-                                    RoutingScene routingScene =
-                                            (RoutingScene) takeoutButton.getScene();
-                                    try {
-                                        routingScene.popRoute();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                public void onConfirmClicked() {
+                                    confirmTakeout(popupRoute);
                                 }
-                            }
-                    ), false);
+
+                                @Override
+                                public void onCancelClicked() {
+                                    popupRoute.removePopup();
+                                }
+                            }), true);
                 }
             }
         });
@@ -172,46 +163,21 @@ public class OrderWidget extends StackPane {
             @Override
             public void handle(MouseEvent event) {
                 if (!reservations.isEmpty()) {
-                    Calendar now = Calendar.getInstance();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                    foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
-
-                    List<ListItem> items = new ArrayList<>();
-                    for (RoomReservation reservation : reservations) {
-                        items.add(new ListItem(
-                                reservation.getRoom().getName(),
-                                reservation.getTimeSlot()
-                        ));
-                    }
-                    popupRoute.showPopup(new ListPopup(
-                            "Select delivery time",
-                            items,
-                            new ListPopup.Listener() {
+                    popupRoute.showPopup(new ConfirmationPopup(
+                            "Confirm Order",
+                            "Are you done selecting food?",
+                            new ConfirmationPopup.Listener() {
                                 @Override
-                                public void onItemClicked(int index) {
-                                    foodOrder.setRoom(reservations.get(index));
-                                    FoodOrderCommunication.createFoodOrder(foodOrder);
-
-                                    popupRoute.showPopup(new InformationPopup(
-                                            "Success!",
-                                            "Your order has successfully been placed.",
-                                            new InformationPopup.Listener() {
-                                                @Override
-                                                public void onOkClicked() {
-                                                    popupRoute.removePopup();
-                                                    RoutingScene routingScene =
-                                                            (RoutingScene) takeoutButton.getScene();
-                                                    try {
-                                                        routingScene.popRoute();
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            }
-                                    ), false);
+                                public void onConfirmClicked() {
+                                    confirmDelivery(popupRoute, reservations);
                                 }
-                            }
-                    ), true);
+
+                                @Override
+                                public void onCancelClicked() {
+                                    popupRoute.removePopup();
+                                }
+                            }),
+                            true);
                 }
             }
         });
@@ -231,6 +197,75 @@ public class OrderWidget extends StackPane {
         });
 
         refresh();
+    }
+
+    private void confirmTakeout(PopupRoute popupRoute) {
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
+
+        FoodOrderCommunication.createFoodOrder(foodOrder);
+
+        popupRoute.showPopup(new InformationPopup(
+                "Success!",
+                "Your order has successfully been placed.",
+                new InformationPopup.Listener() {
+                    @Override
+                    public void onOkClicked() {
+                        popupRoute.removePopup();
+                        RoutingScene routingScene =
+                                (RoutingScene) takeoutButton.getScene();
+                        try {
+                            routingScene.popRoute();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ), false);
+    }
+
+    private void confirmDelivery(PopupRoute popupRoute, List<RoomReservation> reservations) {
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
+
+        List<ListItem> items = new ArrayList<>();
+        for (RoomReservation reservation : reservations) {
+            items.add(new ListItem(
+                    reservation.getRoom().getName(),
+                    reservation.getTimeSlot()
+            ));
+        }
+        popupRoute.showPopup(new ListPopup(
+                "Select delivery time",
+                items,
+                new ListPopup.Listener() {
+                    @Override
+                    public void onItemClicked(int index) {
+                        foodOrder.setRoom(reservations.get(index));
+                        FoodOrderCommunication.createFoodOrder(foodOrder);
+
+                        popupRoute.showPopup(new InformationPopup(
+                                "Success!",
+                                "Your order has successfully been placed.",
+                                new InformationPopup.Listener() {
+                                    @Override
+                                    public void onOkClicked() {
+                                        popupRoute.removePopup();
+                                        RoutingScene routingScene =
+                                                (RoutingScene) takeoutButton.getScene();
+                                        try {
+                                            routingScene.popRoute();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                        ), false);
+                    }
+                }
+        ), true);
     }
 
     private Rectangle createSeparator() {
