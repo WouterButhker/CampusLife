@@ -134,12 +134,24 @@ public class OrderWidget extends StackPane {
                     foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
 
                     FoodOrderCommunication.createFoodOrder(foodOrder);
-                    RoutingScene routingScene = (RoutingScene) takeoutButton.getScene();
-                    try {
-                        routingScene.popRoute();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+
+                    popupRoute.showPopup(new InformationPopup(
+                            "Success!",
+                            "Your order has successfully been placed.",
+                            new InformationPopup.Listener() {
+                                @Override
+                                public void onOkClicked() {
+                                    popupRoute.removePopup();
+                                    RoutingScene routingScene =
+                                            (RoutingScene) takeoutButton.getScene();
+                                    try {
+                                        routingScene.popRoute();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                    ), false);
                 }
             }
         });
