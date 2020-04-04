@@ -2,13 +2,12 @@ package nl.tudelft.oopp.demo.communication.reservation;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 import nl.tudelft.oopp.demo.entities.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
-
-import java.lang.reflect.Type;
-import java.util.List;
 
 public class FoodOrderCommunication {
 
@@ -28,6 +27,10 @@ public class FoodOrderCommunication {
         return null;
     }
 
+    /**
+     * Retrieves all food orders of the logged in user.
+     * @return a list of all food orders of the logged in user
+     */
     public static List<FoodOrder> getAll() {
         try {
             String responseString = ServerCommunication.authenticatedRequest(
@@ -42,6 +45,11 @@ public class FoodOrderCommunication {
         return null;
     }
 
+    /**
+     * Retrieves all food order quantities of the food order.
+     * @param foodOrder the food order
+     * @return a list of all food order quantities of the food order
+     */
     public static List<FoodOrderQuantity> getAllQuantities(FoodOrder foodOrder) {
         try {
             String responseString = ServerCommunication.authenticatedRequest(

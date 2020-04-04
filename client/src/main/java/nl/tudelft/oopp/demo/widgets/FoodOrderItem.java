@@ -32,6 +32,10 @@ public class FoodOrderItem extends Group {
 
     private VBox innerContainer;
 
+    /**
+     * Creates an expandable display for food orders.
+     * @param foodOrder the food order to be displayed
+     */
     public FoodOrderItem(FoodOrder foodOrder) {
         this.foodOrder = foodOrder;
 

@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
-
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.food.FoodOrder;
 import nl.tudelft.oopp.demo.entities.food.FoodOrderQuantity;
