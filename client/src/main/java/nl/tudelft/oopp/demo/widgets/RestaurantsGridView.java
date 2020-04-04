@@ -51,8 +51,8 @@ public class RestaurantsGridView extends GridPane {
 
     private void addButtons() {
         for (int i = 0; i < restaurants.size(); i++) {
-            Image image =
-                    new Image(ImageCommunication.getRestaurantImageUrl(restaurants.get(i).getId()));
+            Image image = new Image(ImageCommunication
+                            .getRestaurantImageUrl(restaurants.get(i).getId()).get(0));
             RectangularImageButton button =
                     new RectangularImageButton(image, restaurants.get(i).getName());
             int finalI = i;

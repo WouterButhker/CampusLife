@@ -52,7 +52,7 @@ public class ImageSelectorWidget extends VBox {
     public void pickImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters()
-                .addAll(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png"));
+                .addAll(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.jpeg"));
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {

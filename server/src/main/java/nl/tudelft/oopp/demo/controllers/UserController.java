@@ -39,7 +39,7 @@ public class UserController {
         return usersRepository.findRoleByUsername(username);
     }
 
-    @PutMapping
+    @PutMapping(path = "changeRole")
     public User changeRole(@RequestBody User user) {
         return usersRepository.save(user);
     }
