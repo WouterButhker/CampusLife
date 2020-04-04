@@ -223,7 +223,12 @@ public class MyProfileRoute extends Route {
                 @Override
                 public void handle(ActionEvent event) {
                     int id = reservations.get(finalI).getId();
-                    RoomReservationCommunication.deleteReservationFromDatabase(id);
+                    if (reservation instanceof RoomReservation) {
+                        RoomReservationCommunication.deleteReservationFromDatabase(id);
+                    } else if (reservation instanceof BikeReservation) {
+                        BikeReservationCommunication.deleteBikeReservation(id);
+                    }
+
                     if (past.isSelected()) {
                         displayPastEvents();
                     } else if (upcoming.isSelected()) {
