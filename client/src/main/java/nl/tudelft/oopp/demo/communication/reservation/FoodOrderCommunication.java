@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.demo.entities.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 
 import java.lang.reflect.Type;
@@ -34,6 +35,20 @@ public class FoodOrderCommunication {
             ).getBody();
             Gson gson = new Gson();
             Type listType = new TypeToken<List<FoodOrder>>() {}.getType();
+            return gson.fromJson(responseString, listType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<FoodOrderQuantity> getAllQuantities(FoodOrder foodOrder) {
+        try {
+            String responseString = ServerCommunication.authenticatedRequest(
+                    String.format("/foodOrder/%d", foodOrder.getId())
+            ).getBody();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<FoodOrderQuantity>>() {}.getType();
             return gson.fromJson(responseString, listType);
         } catch (Exception e) {
             e.printStackTrace();
