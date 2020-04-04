@@ -48,7 +48,7 @@ public class MyProfileRoute extends Route {
     private List<Reservation> pastReservations;
     private List<Reservation> futureReservations;
 
-    private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy,HH:mm");
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm");
     private String currentDate;
 
     private ScrollPane scrollPane;
@@ -129,25 +129,29 @@ public class MyProfileRoute extends Route {
 
         List<Reservation> allMyReservations = new ArrayList<>();
 
-        List<RoomReservation> allMyRoomReservations = RoomReservationCommunication.getMyReservations();
+        List<RoomReservation> allMyRoomReservations =
+                RoomReservationCommunication.getMyReservations();
         allMyReservations.addAll(allMyRoomReservations);
 
-        List<BikeReservation> allMyBikeReservations = BikeReservationCommunication.getMyReservations();
+        List<BikeReservation> allMyBikeReservations =
+                BikeReservationCommunication.getMyReservations();
         allMyReservations.addAll(allMyBikeReservations);
 
         for (Reservation reservation : allMyReservations) {
             String endTime = "";
-            if (reservation instanceof BikeReservation){
+            if (reservation instanceof BikeReservation) {
                 BikeReservation bikeReservation = (BikeReservation) reservation;
-                endTime = bikeReservation.getDate() + "," + bikeReservation.getTimeSlot().substring(6);
-                System.out.println("BikeReservation");
+                endTime = bikeReservation.getDate() + ","
+                        + bikeReservation.getTimeSlot().substring(6);
             } else {
-                System.out.println("RoomReservation");
                 endTime = reservation.getTimeSlot().substring(19);
             }
-            System.out.println(endTime);
 
-            if (endTime.compareTo(currentDate) <= 0) {
+            String sortingEndTime = endTime.substring(6, 10) + "/"
+                    + endTime.substring(3, 5) + "/"
+                    + endTime.substring(0, 2) + ","
+                    + endTime.substring(11);
+            if (sortingEndTime.compareTo(currentDate) <= 0) {
                 pastReservations.add(reservation);
             } else {
                 futureReservations.add(reservation);
@@ -170,7 +174,6 @@ public class MyProfileRoute extends Route {
         reservationsList.setSpacing(2);
 
         for (int i = 0; i < reservations.size(); i++) {
-            Reservation reservation = reservations.get(i);
             HBox currentReservation = new HBox();
             Background background = new Background(
                     new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
@@ -182,6 +185,7 @@ public class MyProfileRoute extends Route {
             Text dateText = new Text();
             Text timeText = new Text();
 
+            Reservation reservation = reservations.get(i);
             if (reservation instanceof RoomReservation) {
                 dateText = new Text("Date: " + reservation.getTimeSlot().substring(0, 10));
                 timeText = new Text("Time: " + reservation.getTimeSlot().substring(11, 18)
@@ -202,9 +206,9 @@ public class MyProfileRoute extends Route {
             Text typeText = new Text("Type: my reservation");
             if (reservation instanceof RoomReservation) {
                 RoomReservation roomReservation = (RoomReservation) reservation;
-                System.out.println(roomReservation);
-                if (roomReservation.getRoom() != null)
+                if (roomReservation.getRoom() != null) {
                     typeText = new Text("Room: " + roomReservation.getRoom().getRoomCode());
+                }
             } else if (reservation instanceof BikeReservation) {
                 typeText = new Text("Type: bike reservation");
             }
