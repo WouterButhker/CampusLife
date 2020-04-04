@@ -1,5 +1,23 @@
 @import url("palette.css");
 
+.profile-page-tab {
+    -fx-background-color: -primary-color;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.profile-page-tab:selected {
+    -fx-background-color: -primary-color-dark;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.profile-page-tab-hov:hover {
+    -fx-background-color: -primary-color-light;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
 .main-screen-medium-text {
     -fx-text-fill: -primary-color-text;
     -fx-font-family: -primary-font-name;
