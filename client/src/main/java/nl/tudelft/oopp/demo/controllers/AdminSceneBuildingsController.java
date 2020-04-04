@@ -24,6 +24,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
@@ -34,6 +35,7 @@ import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 import nl.tudelft.oopp.demo.widgets.WeekWidget;
 
 public class AdminSceneBuildingsController implements Initializable {
@@ -291,9 +293,13 @@ public class AdminSceneBuildingsController implements Initializable {
                 delete.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        int code = buildings.get(finalI).getCode();
-                        BuildingCommunication.deleteBuilding(code);
-                        loadBuildings();
+                        boolean confirmation = PopupWidget.displayBool("Are you sure about "
+                              + "deleting this?\nThe change will be irreversible.", "Confirmation");
+                        if (confirmation) {
+                            int code = buildings.get(finalI).getCode();
+                            BuildingCommunication.deleteBuilding(code);
+                            loadBuildings();
+                        }
                     }
                 });
                 delete.setPadding(new Insets(0, 0,0,0));
@@ -334,14 +340,14 @@ public class AdminSceneBuildingsController implements Initializable {
             System.out.println("Not a proper number");
         }
         String openingHours = week.getWeekDays().toString();
-        Text submitStatus = new Text();
+        String submitStatus;
         Integer bikes = null;
 
         if (hasBikeStationCheck.isSelected()) {
             try {
                 bikes = Integer.parseInt(bikeAmountInput.getText());
             } catch (NumberFormatException e) {
-                submitStatus.setText("Invalid number");
+                submitStatus = ("Invalid number");
             }
         }
         if (!location.equals("") && !name.equals("") && codeFound
@@ -350,26 +356,26 @@ public class AdminSceneBuildingsController implements Initializable {
             Building building = new Building(buildingCode, name, location, openingHours, bikes);
             BuildingCommunication.saveBuilding(building);
             ImageCommunication.updateBuildingImage(buildingCode, imageSelectorWidget.getImage());
-            submitStatus.setText("Building successfully added!");
+            submitStatus = ("Building successfully added!");
             try {
                 refreshBuildingsPage();
             } catch (Exception e) {
                 System.out.println("Refresh failed");
             }
         } else {
-            submitStatus.setText("The input is wrong or not all fields are entered");
+            submitStatus = ("The input is wrong or not all fields are entered");
         }
 
         if (!codeFound) {
-            submitStatus.setText("The building code has to be a number!");
+            submitStatus = ("The building code has to be a number!");
         }
 
         if (!week.getWeekDays().checkCorrectness()) {
-            submitStatus.setText("These opening hours don't make sense");
+            submitStatus = ("These opening hours don't make sense");
         }
 
         if (!imageSelectorWidget.imageSelected()) {
-            submitStatus.setText("Image has to be selected");
+            submitStatus = ("Image has to be selected");
         }
 
         Button back = new Button("Okay! take me back");
@@ -382,17 +388,12 @@ public class AdminSceneBuildingsController implements Initializable {
                 loadBuildings();
             }
         });
-        VBox buildingBox = new VBox(submitStatus, back);
-        buildingBox.setPrefSize(300, 200);
-        buildingBox.setAlignment(Pos.CENTER);
-        AnchorPane root = new AnchorPane(buildingBox);
-        root.setPrefSize(300, 200);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        //stage.initOwner(mainBox.getScene().getWindow());
-        stage.showAndWait();
+        if (submitStatus.equals("Building successfully added!")) {
+            PopupWidget.displaySuccess(submitStatus, "Success!");
+            loadBuildings();
+        } else {
+            PopupWidget.displayError(submitStatus, "Error!");
+        }
     }
 
     private void createModifyPopup(Building building) {

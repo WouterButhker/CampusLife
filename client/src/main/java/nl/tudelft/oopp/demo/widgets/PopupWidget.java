@@ -47,7 +47,7 @@ public class PopupWidget {
         Stage popUpWindow = new Stage();
         popUpWindow.setTitle(title);
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
-        Label label1 = new Label("  " + message);
+        Label label1 = new Label(message);
         label1.setStyle("-fx-font-size: 14");
 
         Button button1 = new Button(" OK ");
@@ -59,7 +59,7 @@ public class PopupWidget {
         error.setImage(errorImage);
 
         errorMessage.setAlignment(Pos.CENTER_LEFT);
-        errorMessage.getChildren().addAll(new Label("    "), error, label1);
+        errorMessage.getChildren().addAll(new Label("    "), error, new Label("  "), label1);
 
 
 
@@ -84,7 +84,7 @@ public class PopupWidget {
         Stage popUpWindow = new Stage();
         popUpWindow.setTitle(title);
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
-        Label label1 = new Label("  " + message);
+        Label label1 = new Label(message);
         label1.setStyle("-fx-font-size: 14");
 
         Button button1 = new Button(" OK ");
@@ -96,7 +96,7 @@ public class PopupWidget {
         error.setImage(errorImage);
 
         errorMessage.setAlignment(Pos.CENTER_LEFT);
-        errorMessage.getChildren().addAll(new Label("    "), error, label1);
+        errorMessage.getChildren().addAll(new Label("    "), error, new Label("  "), label1);
 
         button1.setOnAction(e -> popUpWindow.close());
 

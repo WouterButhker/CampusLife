@@ -8,10 +8,6 @@ import org.junit.jupiter.api.Test;
 
 public class AddRoomReservationTest {
 
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
 
     @Test
     public void testAddReservationToDatabase() {
