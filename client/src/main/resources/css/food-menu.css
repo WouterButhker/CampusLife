@@ -1,5 +1,49 @@
 @import url("palette.css");
 
+.food-item-name {
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 16;
+}
+
+.food-item-quantity {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+.food-item-price {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-fill: -primary-color-dark;
+    -fx-font-size: 16;
+}
+
+.food-order-item-title {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 18;
+}
+
+.food-order-item-time {
+    -fx-fill: #9E9E9E;
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 16;
+}
+
+.food-order-item-bg:hover {
+    -fx-background-color: #00000033;
+}
+
+.expand-button {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/expand_icon.png');
+}
+
+.expand-button:selected {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/expanded_icon.png');
+}
+
 .order-button {
     -fx-background-color: -secondary-color;
     -fx-font-family: -primary-font-name;
