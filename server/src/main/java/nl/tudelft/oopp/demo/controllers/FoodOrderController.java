@@ -66,4 +66,11 @@ public class FoodOrderController {
 
         return foodOrderRepository.allFoodOrdersOfUser(user);
     }
+
+    @GetMapping(value = "/{foodOrderId}")
+    List<FoodOrderQuantity> getFoods(@PathVariable Integer foodOrderId) {
+        FoodOrder foodOrder = foodOrderRepository.findById(foodOrderId).get();
+
+        return foodOrderQuantityRepository.allFoodQuantitiesOfOrder(foodOrder);
+    }
 }
