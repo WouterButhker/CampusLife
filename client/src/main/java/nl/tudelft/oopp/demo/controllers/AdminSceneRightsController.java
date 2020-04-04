@@ -51,6 +51,7 @@ public class AdminSceneRightsController implements Initializable {
     }
 
     private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
         mainBox.setStyle("-fx-background-color: -primary-color-light");
         search.getStyleClass().add("adminButtonSmall");
         reset.getStyleClass().add("adminButtonSmall");

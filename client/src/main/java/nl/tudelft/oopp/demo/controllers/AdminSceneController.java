@@ -45,6 +45,7 @@ public class AdminSceneController implements Initializable {
     }
 
     private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
         modifyBuildingsEnter.getStyleClass().add("adminButton");
         modifyRoomsEnter.getStyleClass().add("adminButton");
         modifyRestaurantEnter.getStyleClass().add("adminButton");

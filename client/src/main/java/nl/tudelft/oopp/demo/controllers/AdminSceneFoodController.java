@@ -69,6 +69,7 @@ public class AdminSceneFoodController implements Initializable {
     }
 
     private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
         mainBox.setStyle("-fx-background-color: -primary-color-light");
         submit.getStyleClass().add("adminButton");
         refresh.getStyleClass().add("adminButton");
@@ -238,6 +239,8 @@ public class AdminSceneFoodController implements Initializable {
                 priceTextBox, priceBox,
                 submitBox);
         Stage stage = new Stage();
+        stage.setTitle("Modifying " + food.getName());
+        stage.getIcons().add(new Image("images/modifyingImage.png"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add("css/palette.css");
         scene.getStylesheets().add("css/admin-scene.css");

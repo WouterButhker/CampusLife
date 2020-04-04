@@ -89,6 +89,7 @@ public class AdminSceneRoomsController implements Initializable {
     }
 
     private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
         mainBox.setStyle("-fx-background-color: -primary-color-light");
         submit.getStyleClass().add("adminButton");
         refresh.getStyleClass().add("adminButton");
@@ -129,6 +130,7 @@ public class AdminSceneRoomsController implements Initializable {
 
     private void loadImageSelectorWidget() {
         imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidget.getChooseFileButton().getStyleClass().add("adminButtonSmall");
         HBox box = new HBox();
         box.setAlignment(Pos.CENTER);
         box.getChildren().add(imageSelectorWidget);
@@ -414,6 +416,7 @@ public class AdminSceneRoomsController implements Initializable {
         HBox imageSelectorWidgetBox = new HBox();
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidget.getChooseFileButton().getStyleClass().add("adminButtonSmall");
         Button submitImage = new Button("Add image");
         submitImage.getStyleClass().add("adminButtonSmall");
         HBox.setMargin(submitImage, new Insets(0, 0, 0,10));
@@ -468,6 +471,8 @@ public class AdminSceneRoomsController implements Initializable {
                 nameBox, capacityTextBox, capacityBox, rightsBox,
                 whiteboardBox, tvBox, imagesBox, imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
+        stage.setTitle("Modifying " + room.getName());
+        stage.getIcons().add(new Image("images/modifyingImage.png"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add("css/admin-scene.css");
         scene.getStylesheets().add("css/palette.css");

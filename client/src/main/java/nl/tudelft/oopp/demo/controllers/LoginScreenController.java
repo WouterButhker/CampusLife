@@ -104,7 +104,7 @@ public class LoginScreenController {
                 + "was not injected: check your FXML file 'LoginScreen.fxml'.";
         assert welcome != null : "fx:id=\"welcome\" "
                 + "was not injected: check your FXML file 'LoginScreen.fxml'.";
-
+        vbox.getStylesheets().add("css/admin-scene.css");
         loginButton.setStyle("-fx-font-size: 17");
         passwordField.setStyle("-fx-font-size: 17");
         usernameField.setStyle("-fx-font-size: 17");

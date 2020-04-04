@@ -110,9 +110,15 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
         mainBox.setStyle("-fx-background-color: -primary-color-light");
         submit.getStyleClass().add("adminButton");
         refresh.getStyleClass().add("adminButton");
+        fromChoicebox.getStyleClass().add("choice-box");
+        toChoicebox.getStyleClass().add("choice-box");
+        open.getStyleClass().add("choice-box");
+        options.getStyleClass().add("choice-box");
+        nameInput.getStyleClass().add("text-field");
     }
 
     private void addAppBar() {
@@ -123,6 +129,7 @@ public class AdminSceneBuildingsController implements Initializable {
         Pane spacerPane = new Pane();
         spacerPane.setPrefWidth(10);
         imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidget.getChooseFileButton().getStyleClass().add("adminButtonSmall");
         HBox box = new HBox();
         box.getChildren().addAll(spacerPane, imageSelectorWidget);
         settingsBox.getChildren().add(7, box);
@@ -475,12 +482,15 @@ public class AdminSceneBuildingsController implements Initializable {
         Pane spacer11 = new Pane();
         spacer11.setPrefSize(50, 20);
         ChoiceBox<String> options = new ChoiceBox<>();
+        options.getStyleClass().add("choice-box");
         options.setPrefSize(75, 20);
         options.getItems().addAll("Open", Weekdays.CLOSED);
         options.setValue("Open");
         ChoiceBox<String> from = new ChoiceBox<>();
+        from.getStyleClass().add("choice-box");
         from.setPrefSize(75, 20);
         ChoiceBox<String> to = new ChoiceBox<>();
+        to.getStyleClass().add("choice-box");
         to.setPrefSize(75, 20);
 
         //The calendar updates when you click on another day with this
@@ -601,6 +611,7 @@ public class AdminSceneBuildingsController implements Initializable {
         HBox imageSelectorWidgetBox = new HBox();
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidget.getChooseFileButton().getStyleClass().add("adminButtonSmall");
         imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
         imageSelectorWidgetBox.setPadding(new Insets(10, 10, 0, 0));
 
@@ -643,6 +654,8 @@ public class AdminSceneBuildingsController implements Initializable {
                 calender, bikeStationTextBox, bikeStationInput,
                 imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
+        stage.setTitle("Modifying " + building.getName());
+        stage.getIcons().add(new Image("images/modifyingImage.png"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add("css/palette.css");
         scene.getStylesheets().add("css/admin-scene.css");
