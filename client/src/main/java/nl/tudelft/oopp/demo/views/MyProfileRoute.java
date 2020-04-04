@@ -23,9 +23,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.PersonalReservationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.PersonalReservation;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
@@ -137,6 +139,10 @@ public class MyProfileRoute extends Route {
                 BikeReservationCommunication.getMyReservations();
         allMyReservations.addAll(allMyBikeReservations);
 
+        List<PersonalReservation> allMyPersonalReservations =
+                PersonalReservationCommunication.getMyReservations();
+        allMyReservations.addAll(allMyPersonalReservations);
+
         for (Reservation reservation : allMyReservations) {
             String endTime = "";
             if (reservation instanceof BikeReservation) {
@@ -186,11 +192,12 @@ public class MyProfileRoute extends Route {
             Text timeText = new Text();
 
             Reservation reservation = reservations.get(i);
-            if (reservation instanceof RoomReservation) {
+            if (reservation instanceof RoomReservation
+                    || reservation instanceof PersonalReservation) {
                 dateText = new Text("Date: " + reservation.getTimeSlot().substring(0, 10));
                 timeText = new Text("Time: " + reservation.getTimeSlot().substring(11, 18)
                         + " " + reservation.getTimeSlot().substring(30));
-            } else {
+            } else if (reservation instanceof BikeReservation) {
                 BikeReservation bikeReservation = (BikeReservation) reservation;
                 dateText = new Text("Date: " + bikeReservation.getDate());
                 timeText = new Text("Time: " + bikeReservation.getTimeSlot());
@@ -211,6 +218,9 @@ public class MyProfileRoute extends Route {
                 }
             } else if (reservation instanceof BikeReservation) {
                 typeText = new Text("Type: bike reservation");
+            } else if (reservation instanceof PersonalReservation) {
+                PersonalReservation personalReservation = (PersonalReservation) reservation;
+                typeText = new Text("Activity: " + personalReservation.getActivity());
             }
 
 
@@ -227,6 +237,8 @@ public class MyProfileRoute extends Route {
                         RoomReservationCommunication.deleteReservationFromDatabase(id);
                     } else if (reservation instanceof BikeReservation) {
                         BikeReservationCommunication.deleteBikeReservation(id);
+                    } else if (reservation instanceof PersonalReservation) {
+                        PersonalReservationCommunication.deleteReservationFromDatabase(id);
                     }
 
                     if (past.isSelected()) {
@@ -282,15 +294,15 @@ public class MyProfileRoute extends Route {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String type = "-" + t1.getText();
+                String activity = t1.getText();
                 String timeslot = t2.getText() + "," + t3.getText()
                         + " - " + t2.getText() + "," + t4.getText();
                 if (t1.getText() != null
                         && t2.getText() != null
                         && t3.getText() != null
                         && t4.getText() != null) {
-                    RoomReservationCommunication.addReservationToDatabase(
-                            AuthenticationCommunication.myUserId, type, timeslot);
+                    PersonalReservationCommunication.addReservationToDatabase(
+                            AuthenticationCommunication.myUserId, timeslot, activity);
                 }
 
             }
