@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.util.List;
+
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.food.FoodOrder;
 import nl.tudelft.oopp.demo.entities.food.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.repositories.FoodOrderQuantityRepository;
@@ -56,5 +58,12 @@ public class FoodOrderController {
 
         foodOrder.setId(createdOrder.getId());
         return foodOrder;
+    }
+
+    @GetMapping(value = "/user/{userId}")
+    List<FoodOrder> getFoodOrders(@PathVariable Integer userId) {
+        User user = userRepository.findById(userId).get();
+
+        return foodOrderRepository.allFoodOrdersOfUser(user);
     }
 }
