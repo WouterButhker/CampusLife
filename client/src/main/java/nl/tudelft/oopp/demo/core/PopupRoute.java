@@ -24,6 +24,8 @@ public class PopupRoute extends Route {
     private ChangeListener<Number> heightListener;
     private ChangeListener<Number> widthListener;
 
+    private boolean popupDismissible = true;
+
     /**
      * Creates a special Route that can display nice popups on top.
      * @param mainElement the main element of the route
@@ -39,7 +41,9 @@ public class PopupRoute extends Route {
         fadeBox.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                removePopup();
+                if (popupDismissible) {
+                    removePopup();
+                }
             }
         });
         heightListener = (observable, oldValue, newValue) -> {
@@ -58,8 +62,10 @@ public class PopupRoute extends Route {
      * Displays a popup.
      * Removes the previous popup if there is one
      * @param popup the popup to be displayed
+     * @param dismissible if the popup can be removed by clicking outside of it
      */
-    public void showPopup(Node popup) {
+    public void showPopup(Node popup, boolean dismissible) {
+        this.popupDismissible = dismissible;
         removePopup();
 
         this.popup = popup;

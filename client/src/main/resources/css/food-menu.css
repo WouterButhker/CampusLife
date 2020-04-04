@@ -29,9 +29,26 @@
     -fx-font-size: 20;
 }
 
+.list-popup-body {
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 16;
+}
+
 .popup-bg {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 8px;
+}
+
+.popup-button {
+    -fx-background-color: -secondary-color;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.popup-button:hover {
+    -fx-background-color: -secondary-color-dark;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
 }
 
 .order-button {
