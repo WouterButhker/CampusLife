@@ -72,6 +72,10 @@ public class RestaurantMenuRoute extends PopupRoute {
             if (reservation.getRoom() == null) {
                 roomReservations.remove(i);
                 i--;
+            } else if (!reservation.getRoom().getBuilding().getCode()
+                    .equals(restaurant.getBuildingCode())) {
+                roomReservations.remove(i);
+                i--;
             } else {
                 SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                 Calendar reservationTime = Calendar.getInstance();
