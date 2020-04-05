@@ -76,10 +76,13 @@ public class RestaurantControllerTest {
         restaurant = new Restaurant(id, name, building, description);
     }
 
-    private void insertBuildings() throws Exception {
-        mvc.perform(post("/buildings/")
+    private Building insertBuildings() throws Exception {
+        String response = mvc.perform(post("/buildings/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(building)));
+                .content(new Gson().toJson(building)))
+                .andReturn().getResponse().getContentAsString();
+        Building buildingResponse = new Gson().fromJson(response, Building.class);
+        return buildingResponse;
     }
 
     private void postFood() throws Exception {
@@ -90,15 +93,19 @@ public class RestaurantControllerTest {
     }
 
     private Restaurant postRestaurant() throws Exception {
-        mvc.perform(post("/restaurants")
+        String response = mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(restaurant)));
-        String response = mvc.perform(get("/restaurants")).andReturn()
+                .content(new Gson().toJson(restaurant)))
+                .andReturn().getResponse().getContentAsString();
+        Restaurant responseRestaurant = new Gson().fromJson(response, Restaurant.class);
+        restaurant.setId(responseRestaurant.getId());
+        return responseRestaurant;
+        /*String response = mvc.perform(get("/restaurants")).andReturn()
                 .getResponse().getContentAsString();
         Type listType = new TypeToken<List<Restaurant>>() {}.getType();
         List<Restaurant> restaurantList = new Gson().fromJson(response, listType);
         Restaurant responseRestaurant = restaurantList.get(0);
-        return responseRestaurant;
+        return responseRestaurant;*/
     }
 
     @WithMockUser(authorities = "Admin")
@@ -204,22 +211,60 @@ public class RestaurantControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = "Student")
-    String testGetImageUrl() throws Exception {
+    @WithMockUser(authorities = "Admin")
+    void testGetImageUrl() throws Exception {
         testPutImage();
-        int id = postRestaurant().getId();
-        String out = mvc.perform(get("/restaurants/image/getUrl/" + id)).andExpect(status().isOk())
+        int id = restaurant.getId();
+        String out = mvc.perform(get("/restaurants/image/getUrl/" + id))
+                .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
         System.out.println(out);
-        System.out.println("-----------------------------------------------------------------\n\n\n\n\n\n");
+        System.out.println("---------------------------"
+                + "--------------------------------------\n\n\n\n\n\n");
+        //return out;
+    }
+
+    void putImage() throws Exception {
+        int id = postRestaurant().getId();
+
+        String contentType = "image/jpeg";
+        byte[] bytes = "image".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "orig.jpg", contentType, bytes);
+
+        MockMultipartHttpServletRequestBuilder builder =
+                MockMvcRequestBuilders.multipart("/restaurants/image/" + id);
+        builder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        mvc.perform(builder.file(file));
+    }
+
+    String getImageUrl() throws Exception {
+        putImage();
+        int id = restaurant.getId();
+        String response = mvc.perform(get("/restaurants/image/getUrl/" + id))
+                .andReturn().getResponse().getContentAsString();
+        Type listType = new TypeToken<List<String>>() {}.getType();
+        List<String> outList = new Gson().fromJson(response, listType);
+        String out = outList.get(0);
+        System.out.println(out);
+        System.out.println("---------------------------"
+                + "--------------------------------------\n\n\n\n\n\n");
+
         return out;
     }
 
     @Test
-    @WithMockUser(authorities = "Student")
+    @WithMockUser(authorities = "Admin")
     void testDownloadImage() throws Exception {
-        String url = testGetImageUrl().substring(16); // String without the http://localhost/
-        System.out.println("-----------------------------------------------------------------\n\n\n\n\n\n");
+        String url = getImageUrl().substring(16); // String without the http://localhost/
+        System.out.println("---------------------------"
+                + "--------------------------------------\n\n\n\n\n\n");
         System.out.println(url);
         MockHttpServletResponse res = mvc.perform(get(url)).andExpect(status().isOk())
                 .andReturn().getResponse();

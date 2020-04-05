@@ -156,18 +156,18 @@ public class RestaurantController {
 
     @GetMapping("/image/getUrl/{restaurantCode}")
     List<String> getUrl(@PathVariable Integer restaurantCode) {
+        List<String> response = null;
         Restaurant restaurant = restaurantRepository.findRestaurantById(restaurantCode);
         if (restaurantImageRepository.existsByRestaurant(restaurant)) {
             List<RestaurantImage> restaurantImages =
                     restaurantImageRepository.findByRestaurant(restaurant);
-            List<String> response = new ArrayList<>();
+            response = new ArrayList<>();
             for (RestaurantImage restaurantImage : restaurantImages) {
                 response.add(ImageController.getUrl(
                         "/restaurants/image/downloadFile/", restaurantImage));
             }
-            return response;
         }
-        return null;
+        return response;
     }
 
     @GetMapping("/image/downloadFile/{imageId}")
