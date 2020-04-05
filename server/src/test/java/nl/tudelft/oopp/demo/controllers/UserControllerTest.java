@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.controllers;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
@@ -14,10 +15,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,6 +103,20 @@ public class UserControllerTest {
         registerUser();
         int id = Integer.parseInt(testGetId());
         mvc.perform(delete("/rest/users/" + id)).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testImage() throws Exception {
+        registerUser();
+        int id = Integer.parseInt(testGetId());
+        String contentType = "image/jpeg";
+        byte[] bytes = "image".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "orig.jpg", contentType, bytes);
+
+        MvcResult postResult = mvc.perform(multipart("/rest/users/image/" + id).file(file))
+                .andExpect(status().isOk()).andReturn();
+
     }
 
 }

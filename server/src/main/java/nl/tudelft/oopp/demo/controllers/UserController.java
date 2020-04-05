@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @Modifying
-    @PutMapping(value = "/image/{userId}")
+    @PostMapping(value = "/image/{userId}")
     ResponseEntity<UserImage> uploadFile(@PathVariable Integer userId,
                                          @RequestParam("file") MultipartFile file)
             throws IOException {
