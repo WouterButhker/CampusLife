@@ -32,19 +32,15 @@ public interface RoomRepository extends
     List<Room> allRoomsWithCapacity(Building myBuilding, Integer lowerCapacity,
                                     Integer upperCapacity);
 
-    @Query(value = "SELECT r FROM Room r WHERE "
-            + "r.building = :myBuilding AND "
-            + "r.rights <= :myRights AND "
-            + "(NOT :hasTV OR r.hasTV = :hasTV) AND "
-            + "(NOT :hasWhiteboard OR r.hasWhiteboard = :hasWhiteboard) AND "
-            + "r.capacity >= :minCap AND "
-            + "r.capacity <= :maxCap", nativeQuery = true)
-    List<Room> getFilteredRoomsFromBuilding(@Param("myBuilding") Building myBuilding,
-                                            @Param("myRights") Integer myRights,
-                                            @Param("hasTV") Boolean hasTV,
-                                            @Param("hasWhiteboard") Boolean hasWhiteboard,
-                                            @Param("minCap") Integer minCap,
-                                            @Param("maxCap") Integer maxCap);
+    @Query("SELECT r FROM Room r WHERE "
+            + "r.building = ?1 AND "
+            + "r.rights <= ?2 AND "
+            + "r.hasTV = ?3 AND "
+            + "r.hasWhiteboard = ?4 AND "
+            + "r.capacity >= ?5 AND "
+            + "r.capacity <= ?6")
+    List<Room> getFilteredRoomsFromBuilding(Building myBuilding, Integer myRights, Boolean hasTV,
+                                            Boolean hasWhiteboard, Integer minCap, Integer maxCap);
 
     @Query("SELECT r FROM Room r WHERE "
             + "r.rights <= ?1 AND "

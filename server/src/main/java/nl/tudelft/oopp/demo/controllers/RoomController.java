@@ -61,8 +61,8 @@ public class RoomController {
     }
 
     @GetMapping(path = "/filter/rights")
-    public List<Room> getAllRoomsWithTV(@RequestParam Building building,
-                                        @RequestParam Integer rights) {
+    public List<Room> getAllRoomsWithRights(@RequestParam Building building,
+                                            @RequestParam Integer rights) {
         return roomRepository.allRoomsWithRights(building, rights);
     }
 

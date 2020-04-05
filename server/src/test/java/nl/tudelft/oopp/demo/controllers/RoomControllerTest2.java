@@ -22,8 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,7 +75,7 @@ class RoomControllerTest2 {
 
     @WithMockUser(authorities = "Admin")
     @Test
-    public void addToDatabaseTest() throws Exception {
+    public void saveRoomTest() throws Exception {
         mockMvc.perform(post("/buildings/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(building)));
@@ -92,7 +91,7 @@ class RoomControllerTest2 {
     @WithMockUser(authorities = "Admin")
     @Test
     void getFilteredRoomsTest() throws Exception {
-        addToDatabaseTest();
+        saveRoomTest();
         String url = "/rooms/getFilteredRooms/";
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
@@ -105,7 +104,7 @@ class RoomControllerTest2 {
     @WithMockUser(authorities = "Admin")
     @Test
     void getAllTest() throws Exception {
-        addToDatabaseTest();
+        saveRoomTest();
         String url = "/rooms/all?search=roomCode:69";
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
@@ -118,7 +117,7 @@ class RoomControllerTest2 {
     @WithMockUser(authorities = "Admin")
     @Test
     void getAllRoomsFromBuildingTest() throws Exception {
-        addToDatabaseTest();
+        saveRoomTest();
         String url = "/rooms/getAllRoomsFromBuilding";
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
@@ -131,72 +130,181 @@ class RoomControllerTest2 {
     @WithMockUser(authorities = "Admin")
     @Test
     void getAllRoomNamesFromBuildingTest() throws Exception {
-        addToDatabaseTest();
-        String url = "/rooms/getRoomNamesFromBuilding";
+        saveRoomTest();
+        String url = "/rooms/getRoomNamesFromBuilding?building=123";
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[\"TestRoom\"]"));
+        String urlEmpty = "/rooms/getRoomNamesFromBuilding?building=0";
+        mockMvc.perform(get(urlEmpty))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithTVTest() {
+    void getAllRoomsWithRightsTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/filter/rights?building=123&rights=2";
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
+                        + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
+                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
+        String notRightsUrl = "/rooms/filter/rights?building=123&rights=0";
+        mockMvc.perform(get(notRightsUrl))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithCapacityTest() {
+    void getAllRoomsWithCapacityTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/filter/getRoomsWithCapacity?building=123&lowerCapacity=0&upperCapacity=69";
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
+                        + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
+                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
+        String notInCapacityUrl = "/rooms/filter/getRoomsWithCapacity?building=123&lowerCapacity=100&upperCapacity=300";
+        mockMvc.perform(get(notInCapacityUrl))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithTvTest() {
+    void getAllRoomsWithTvTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/filter/getRoomsWithTV?building=123";
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
+                        + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
+                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithWhiteBoardTest() {
+    void getAllRoomsWithWhiteBoardTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/filter/getRoomsWithWhiteBoard?building=123";
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
+                        + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
+                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getFilteredRoomsFromBuildingTest() {
+    void getFilteredRoomsFromBuildingTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/filter/getFilteredRoomsFromBuilding?myBuilding=123&myRights=2&hasTV=true&hasWhiteboard=true&minCap=0&maxCap=500";
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
+                        + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
+                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllFilteredRoomsTest() {
+    void getAllFilteredRoomsTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/filter/getAllFilteredRooms?myRights=2&hasTV=true&hasWhiteboard=true&minCap=0&maxCap=500";
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
+                        + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
+                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void saveRoomTest() {
+    void saveRoomAlreadyExistTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms";
+        mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(room)))
+                .andExpect(status().isBadRequest());
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void updateRoomTest() {
+    void updateRoomTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms";
+        room.setCapacity(333);
+        mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(room)))
+                .andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void deleteRoomTest() {
+    void updateRoomNotExistTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms";
+        room.setRoomCode("new updated fresh code");
+        mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(room)))
+                .andExpect(status().isBadRequest());
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void uploadFileTest() {
+    void deleteRoomTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/" + roomCode;
+        mockMvc.perform(delete(url).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("69"));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getUrlTest() {
+    void deleteRoomNotFoundTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/" + 404;
+        mockMvc.perform(delete(url)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""));
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void downloadFileTest() {
+    void uploadFileRoomNotFoundTest() throws Exception {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void deleteImageTest() {
+    void getUrlTest() throws Exception {
+        saveRoomTest();
+        String url = "/rooms/image/getUrl/" + roomCode;
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void downloadFileTest() throws Exception {
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void deleteImageTest() throws Exception {
     }
 }
