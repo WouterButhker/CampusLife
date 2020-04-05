@@ -19,6 +19,9 @@ public class BikeReservationController {
     @Autowired
     private BikeReservationRepository bikeReservationRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping(path = "/all")
     public List<BikeReservation> getAll() {
         return bikeReservationRepository.findAll();
