@@ -89,7 +89,7 @@ public class BuildingDisplayRoute extends Route {
 
         // Add info texts
         Image locationImage = new Image("/images/location_icon.png");
-        locationText = new TextWithIcon(locationImage, building.getLocation());
+        locationText = new TextWithIcon(locationImage, building.getLocation(), 1);
         rightContainer.getChildren().add(locationText);
 
         Image timetableIcon = new Image("/images/time_icon.png");
@@ -103,12 +103,12 @@ public class BuildingDisplayRoute extends Route {
                 timetableString += "\n";
             }
         }
-        timetableText = new TextWithIcon(timetableIcon, timetableString);
+        timetableText = new TextWithIcon(timetableIcon, timetableString, 0.6);
         rightContainer.getChildren().add(timetableText);
 
         // Create rooms button
         buttonPadding = new Rectangle();
-        buttonPadding.setHeight(24);
+        buttonPadding.setHeight(36);
         rightContainer.getChildren().add(buttonPadding);
         roomsButton = new Button("Browse rooms");
         roomsButton.getStyleClass().add("reserve-button");
@@ -123,7 +123,7 @@ public class BuildingDisplayRoute extends Route {
         rightContainer.getChildren().add(roomsButton);
 
         buttonPadding = new Rectangle();
-        buttonPadding.setHeight(24);
+        buttonPadding.setHeight(60);
         rightContainer.getChildren().add(buttonPadding);
 
         List<Restaurant> restaurants = RestaurantCommunication
@@ -168,7 +168,7 @@ public class BuildingDisplayRoute extends Route {
     }
 
     private void resizeDisplay(double newWidth, double newHeight) {
-        topPadding.setHeight(newHeight * 0.050);
+        topPadding.setHeight(newHeight * 0.100);
 
         rightContainer.setPrefWidth(newWidth * 0.5);
         title.setStyle("-fx-font-size: " + newHeight * 0.075);
@@ -205,8 +205,10 @@ public class BuildingDisplayRoute extends Route {
     private static class TextWithIcon extends HBox {
         private ImageView imageView;
         private Text text;
+        private double textScale;
 
-        public TextWithIcon(Image icon, String text) {
+        public TextWithIcon(Image icon, String text, double textScale) {
+            this.textScale = textScale;
             setAlignment(Pos.TOP_LEFT);
             setPadding(new Insets(0, 0, 0, 24));
             setSpacing(24);
@@ -228,7 +230,7 @@ public class BuildingDisplayRoute extends Route {
 
         private void resizeWidget(double newWidth, double newHeight) {
             text.setWrappingWidth(newWidth - newHeight * 0.8 - 24);
-            text.setStyle("-fx-font-size: " + newHeight);
+            text.setStyle("-fx-font-size: " + (newHeight * textScale));
             text.setLineSpacing(newHeight * 0.25);
 
             imageView.setFitWidth(newHeight);
