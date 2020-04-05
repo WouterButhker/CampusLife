@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u.role FROM User u WHERE u.username = ?1")
     String findRoleByUsername(String username);
 
+    @Query("UPDATE User u SET u.password = :username WHERE u.username = :password")
+    void updatePassword(String username, String password);
 }
