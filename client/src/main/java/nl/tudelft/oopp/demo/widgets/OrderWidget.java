@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.demo.widgets;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import javafx.event.EventHandler;
@@ -18,9 +20,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 
 public class OrderWidget extends StackPane {
     private FoodOrder foodOrder;
@@ -38,10 +42,14 @@ public class OrderWidget extends StackPane {
     private Text totalText;
     private Text priceText;
     private Button takeoutButton;
+    private Text takeoutText;
     private Button deliveryButton;
+    private Text deliveryText;
 
     private List<OrderItem> orderItems;
     private List<Food> foods;
+
+    private boolean isTakeoutEnabled;
 
     /**
      * Creates an OrderWidget.
@@ -49,7 +57,11 @@ public class OrderWidget extends StackPane {
      * It displays all food currently on the order
      * @param foodOrder the foodOrder to display
      */
-    public OrderWidget(FoodOrder foodOrder) {
+    public OrderWidget(FoodOrder foodOrder,
+                       boolean isTakeoutEnabled,
+                       List<RoomReservation> reservations,
+                       PopupRoute popupRoute) {
+        this.isTakeoutEnabled = isTakeoutEnabled;
         this.foodOrder = foodOrder;
         foods = RestaurantCommunication.getAllFood(foodOrder.getRestaurant().getId());
 
@@ -108,24 +120,60 @@ public class OrderWidget extends StackPane {
         bottomContainer.getChildren().add(totalContainer);
 
         takeoutButton = new Button("Order takeout");
-        takeoutButton.getStyleClass().add("order-button");
+        if (isTakeoutEnabled) {
+            takeoutButton.getStyleClass().add("order-button");
+        } else {
+            takeoutButton.getStyleClass().add("order-button-disabled");
+        }
         takeoutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                FoodOrderCommunication.createFoodOrder(foodOrder);
+                if (isTakeoutEnabled) {
+                    popupRoute.showPopup(new ConfirmationPopup(
+                            "Confirm Order",
+                            "Are you done selecting food?",
+                            new ConfirmationPopup.Listener() {
+                                @Override
+                                public void onConfirmClicked() {
+                                    confirmTakeout(popupRoute);
+                                }
 
-                RoutingScene routingScene = (RoutingScene) takeoutButton.getScene();
-                try {
-                    routingScene.popRoute();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                                @Override
+                                public void onCancelClicked() {
+                                    popupRoute.removePopup();
+                                }
+                            }), true);
                 }
             }
         });
         bottomContainer.getChildren().add(takeoutButton);
+        if (!isTakeoutEnabled) {
+            takeoutText = new Text("The restaurant is currently closed");
+            takeoutText.setTextAlignment(TextAlignment.CENTER);
+            takeoutText.getStyleClass().add("info-text");
+            bottomContainer.getChildren().add(takeoutText);
+        }
         deliveryButton = new Button("Order delivery");
-        deliveryButton.getStyleClass().add("order-button");
-        //bottomContainer.getChildren().add(deliveryButton);
+        if (!reservations.isEmpty()) {
+            deliveryButton.getStyleClass().add("order-button");
+        } else {
+            deliveryButton.getStyleClass().add("order-button-disabled");
+        }
+        deliveryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!reservations.isEmpty()) {
+                    selectDeliveryTime(popupRoute, reservations);
+                }
+            }
+        });
+        bottomContainer.getChildren().add(deliveryButton);
+        if (reservations.isEmpty()) {
+            deliveryText = new Text("There are no reservations to deliver to");
+            deliveryText.setTextAlignment(TextAlignment.CENTER);
+            deliveryText.getStyleClass().add("info-text");
+            bottomContainer.getChildren().add(deliveryText);
+        }
 
         prefWidthProperty().addListener((observable, oldValue, newValue) -> {
             resizeWidget(newValue.doubleValue(), getPrefHeight());
@@ -135,6 +183,95 @@ public class OrderWidget extends StackPane {
         });
 
         refresh();
+    }
+
+    private void confirmTakeout(PopupRoute popupRoute) {
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
+
+        FoodOrderCommunication.createFoodOrder(foodOrder);
+
+        popupRoute.showPopup(new InformationPopup(
+                "Success!",
+                "Your order has successfully been placed.",
+                new InformationPopup.Listener() {
+                    @Override
+                    public void onOkClicked() {
+                        popupRoute.removePopup();
+                        RoutingScene routingScene =
+                                (RoutingScene) takeoutButton.getScene();
+                        try {
+                            routingScene.popRoute();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ), false);
+    }
+
+    private void selectDeliveryTime(PopupRoute popupRoute, List<RoomReservation> reservations) {
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
+
+        List<ListItem> items = new ArrayList<>();
+        for (RoomReservation reservation : reservations) {
+            items.add(new ListItem(
+                    reservation.getRoom().getName(),
+                    reservation.getTimeSlot()
+            ));
+        }
+        popupRoute.showPopup(new ListPopup(
+                "Select delivery time",
+                items,
+                new ListPopup.Listener() {
+                    @Override
+                    public void onItemClicked(int index) {
+                        popupRoute.showPopup(new ConfirmationPopup(
+                                "Confirm Order",
+                                "Are you done selecting food?",
+                                new ConfirmationPopup.Listener() {
+                                    @Override
+                                    public void onConfirmClicked() {
+                                        confirmDelivery(popupRoute, reservations.get(index));
+                                    }
+
+                                    @Override
+                                    public void onCancelClicked() {
+                                        selectDeliveryTime(popupRoute, reservations);
+                                    }
+                                }), true);
+                    }
+                }
+        ), true);
+    }
+
+    private void confirmDelivery(PopupRoute popupRoute, RoomReservation reservation) {
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        foodOrder.setTimeSlot(dateFormat.format(now.getTime()));
+        foodOrder.setRoom(reservation);
+        FoodOrderCommunication.createFoodOrder(foodOrder);
+
+        popupRoute.showPopup(new InformationPopup(
+                "Success!",
+                "Your order has successfully been placed.",
+                new InformationPopup.Listener() {
+                    @Override
+                    public void onOkClicked() {
+                        popupRoute.removePopup();
+                        RoutingScene routingScene =
+                                (RoutingScene) takeoutButton.getScene();
+                        try {
+                            routingScene.popRoute();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        ), false);
     }
 
     private Rectangle createSeparator() {
@@ -219,9 +356,20 @@ public class OrderWidget extends StackPane {
         takeoutButton.setStyle("-fx-font-size: " + newHeight * 0.015);
         takeoutButton.setPrefWidth(newWidth * 0.9);
         takeoutButton.setPrefHeight(newHeight * 0.08);
+
+        if (takeoutText != null) {
+            takeoutText.setStyle("-fx-font-size: " + newHeight * 0.015);
+            takeoutText.setWrappingWidth(newWidth * 0.45);
+        }
+
         deliveryButton.setStyle("-fx-font-size: " + newHeight * 0.015);
         deliveryButton.setPrefWidth(newWidth * 0.9);
         deliveryButton.setPrefHeight(newHeight * 0.08);
+
+        if (deliveryText != null) {
+            deliveryText.setStyle("-fx-font-size: " + newHeight * 0.015);
+            deliveryText.setWrappingWidth(newWidth * 0.45);
+        }
 
         for (OrderItem orderItem : orderItems) {
             orderItem.setPrefWidth(newWidth * 0.8);

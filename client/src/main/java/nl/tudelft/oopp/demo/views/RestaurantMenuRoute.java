@@ -1,12 +1,12 @@
 package nl.tudelft.oopp.demo.views;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
@@ -18,19 +18,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
+import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
-import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.*;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
-import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.FoodItemWidget;
-import nl.tudelft.oopp.demo.widgets.OrderWidget;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
+import nl.tudelft.oopp.demo.widgets.*;
 
-public class RestaurantMenuRoute extends Route {
+public class RestaurantMenuRoute extends PopupRoute {
     private FoodOrder foodOrder;
     private Restaurant restaurant;
     private List<Food> foods;
@@ -53,6 +55,7 @@ public class RestaurantMenuRoute extends Route {
     private OrderWidget orderWidget;
 
     private FavoriteRestaurant favorite;
+    private List<RoomReservation> roomReservations;
 
     /**
      * Creates a RestaurantMenuRoute.
@@ -61,13 +64,46 @@ public class RestaurantMenuRoute extends Route {
      * @param restaurant the restaurant to be displayed
      */
     public RestaurantMenuRoute(Restaurant restaurant) {
-        // TODO: Date and time
-        // TODO: GET RIGHT USER
-        foodOrder = new FoodOrder(new User(AuthenticationCommunication.myUserId),"Today",
-                "ASAP", restaurant);
+        super(new VBox());
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        foodOrder = new FoodOrder(
+                new User(AuthenticationCommunication.myUserId),
+                dateFormat.format(now.getTime()),
+                null,
+                restaurant,
+                null
+        );
         foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
-        rootContainer = new VBox();
+        // Get reservations of rooms only and remove past events
+        roomReservations = RoomReservationCommunication.getMyReservations();
+        for (int i = 0; i < roomReservations.size(); i++) {
+            RoomReservation reservation = roomReservations.get(i);
+            if (reservation.getRoom() == null) {
+                roomReservations.remove(i);
+                i--;
+            } else if (!reservation.getRoom().getBuilding().getCode()
+                    .equals(restaurant.getBuildingCode())) {
+                roomReservations.remove(i);
+                i--;
+            } else {
+                SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
+                Calendar reservationTime = Calendar.getInstance();
+                String time = reservation.getTimeSlot().substring(0, 17);
+                try {
+                    reservationTime.setTime(dateTimeFormat.parse(time));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (reservationTime.getTimeInMillis() + 60 * 60 * 1000 < now.getTimeInMillis()) {
+                    roomReservations.remove(i);
+                    i--;
+                }
+            }
+        }
+
+        rootContainer = (VBox) getMainElement();
         rootContainer.getChildren().add(new AppBar());
 
         mainContainer = new HBox();
@@ -77,7 +113,16 @@ public class RestaurantMenuRoute extends Route {
         menuScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         menuContainer.setPadding(new Insets(16));
         mainContainer.getChildren().add(menuScroll);
-        orderWidget = new OrderWidget(foodOrder);
+
+        Building building = BuildingCommunication.getBuildingByCode(restaurant.getBuildingCode());
+        Weekdays weekdays = new Weekdays(building.getOpeningHours());
+        int dayOfWeek = new CalendarWidgetLogic().getDayOfWeek(Calendar.getInstance());
+        boolean isBuildingOpen = weekdays.isOpenAt(
+                dayOfWeek,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE)
+        );
+        orderWidget = new OrderWidget(foodOrder, isBuildingOpen, roomReservations, this);
         mainContainer.getChildren().add(orderWidget);
 
         restaurantContainer = new HBox();
@@ -180,10 +225,5 @@ public class RestaurantMenuRoute extends Route {
 
         orderWidget.setPrefWidth(newWidth * 0.25);
         orderWidget.setPrefHeight(newHeight * 0.91);
-    }
-
-    @Override
-    public Parent getRootElement() {
-        return rootContainer;
     }
 }
