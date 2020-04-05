@@ -152,9 +152,9 @@ class BikeReservationTest {
                 + " date: 22/03/2020, timeslot: 14:00-19:00, "
                 + "pickup building: {1, Test, Test street, 06:00-18:00, 06:00-18:00, "
                 + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00,"
-                + " image, 45}, dropoff building: {2, Test2, Test street2, 06:00-18:00,"
+                + " 45}, dropoff building: {2, Test2, Test street2, 06:00-18:00,"
                 + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
-                + "19:00-21:00, image, 32}}";
+                + "19:00-21:00, 32}}";
         assertEquals(bikeReservation.toString(), out);
     }
 

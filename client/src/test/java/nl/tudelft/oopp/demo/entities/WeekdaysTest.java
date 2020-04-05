@@ -75,6 +75,15 @@ class WeekdaysTest {
     }
 
     @Test
+    void isOpenAtTest() {
+        assertFalse(weekdays.isOpenAt(3, 13, 15));
+
+        Weekdays testDays = new Weekdays("09:00-17:00, 09:00-17:00, 09:00-17:00"
+                + ", 09:00-17:00, 09:00-17:00, 10:00-16:00, 10:00-16:00");
+        assertTrue(testDays.isOpenAt(4, 10, 30));
+    }
+
+    @Test
     void setClosedTest() {
         Weekdays testDays = new Weekdays("09:00-17:00, 09:00-17:00, 09:00-17:00"
                 + ", 09:00-17:00, 09:00-17:00, 10:00-16:00, 10:00-16:00");

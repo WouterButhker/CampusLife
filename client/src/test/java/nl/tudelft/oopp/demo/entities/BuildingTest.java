@@ -103,7 +103,7 @@ class BuildingTest {
     @Test
     void toStringTest() {
         assertEquals("{" + code + ", " + name + ", " + location
-                + ", " + openingHours + ", " + "image" + ", " + bikes + "}", building.toString());
+                + ", " + openingHours + ", " + bikes + "}", building.toString());
     }
 
     @Test

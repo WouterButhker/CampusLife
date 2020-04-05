@@ -96,9 +96,8 @@ public class BuildingTest {
 
     @Test
     void toStringTest() {
-        String res = "building{buildingcode: 42069, name: The Arena, location: "
-                + "CityStreetRoute, opening hours: 08:00-22:00, bikes: 5}";
-        assertEquals(building.toString(), res);
+        assertEquals("building{buildingcode: 42069, name: The Arena, location: CityStreetRoute"
+                + ", opening hours: 08:00-22:00, bikes: 5}", building.toString());
     }
 
     @Test
