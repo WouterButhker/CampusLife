@@ -35,27 +35,8 @@ public class BikeReservationCommunication {
         }
     }
 
-    private static BikeReservation parseBikeReservation(JsonObject inputReservation) {
-        return new Gson().fromJson(inputReservation, BikeReservation.class);
-    }
-
-    //    /**
-    //     * Returns a list of all the bike reservations from the database.
-    //     * @return List of BikeReservations
-    //     */
-    //    public static List<BikeReservation> getAllReservations() {
-    //        String url = "/bikeReservations/all";
-    //
-    //        try {
-    //            ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
-    //            if (response != null) {
-    //                Type listType = new TypeToken<List<BikeReservation>>() {}.getType();
-    //                return new Gson().fromJson(response.getBody(), listType);
-    //            }
-    //        } catch (Exception e) {
-    //            e.printStackTrace();
-    //        }
-    //        return null;
+    //    private static BikeReservation parseBikeReservation(JsonObject inputReservation) {
+    //        return new Gson().fromJson(inputReservation, BikeReservation.class);
     //    }
 
     private static List<BikeReservation> parseBikeReservations(String inputReservations) {
