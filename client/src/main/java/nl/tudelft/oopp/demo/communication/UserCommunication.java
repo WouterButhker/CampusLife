@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserCommunication {
 
@@ -57,11 +58,19 @@ public class UserCommunication {
     }
 
     /**
-     * Changes the user password to the one supplied in the user object
-     * @param user the object with the requested name and password
+     * changes the password of a user
+     * @param username the user to edit the password of
+     * @param password the password to change it to
      */
-    public static void changePassword(User user) {
+    public static void changePassword(String username, String password) {
+        // users can only change own password
+        if (!AuthenticationCommunication.myUsername.equals(username)) {
+            return;
+        }
+
         String url = "/rest/users/changePassword";
+        String encryptedPw = new BCryptPasswordEncoder().encode(password);
+        User user = new User(username, encryptedPw);
         try {
             ServerCommunication.authenticatedPutRequest(url, user);
         } catch (Exception e) {
