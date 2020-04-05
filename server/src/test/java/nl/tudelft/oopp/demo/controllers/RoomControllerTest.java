@@ -1,6 +1,14 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.google.gson.Gson;
+import java.util.Arrays;
+import java.util.List;
 import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import nl.tudelft.oopp.demo.entities.Building;
@@ -11,19 +19,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -161,14 +171,17 @@ class RoomControllerTest {
     @Test
     void getAllRoomsWithCapacityTest() throws Exception {
         saveRoomTest();
-        String url = "/rooms/filter/getRoomsWithCapacity?building=123&lowerCapacity=0&upperCapacity=69";
+        String url = "/rooms/filter/getRoomsWithCapacity?building=123&lowerCapacity=0&"
+                + "upperCapacity=69";
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
                         + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
-                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\"location\""
-                        + ":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\":42}}]"));
-        String notInCapacityUrl = "/rooms/filter/getRoomsWithCapacity?building=123&lowerCapacity=100&upperCapacity=300";
+                        + "building\":{\"buildingCode\":123,\"name\":\"Test Building\",\""
+                        + "location\":\"Somewhere\",\"openingHours\":\"11:11-22:22\",\"bikes\""
+                        + ":42}}]"));
+        String notInCapacityUrl = "/rooms/filter/getRoomsWithCapacity?building=123&"
+                + "lowerCapacity=100&upperCapacity=300";
         mockMvc.perform(get(notInCapacityUrl))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
@@ -204,7 +217,8 @@ class RoomControllerTest {
     @Test
     void getFilteredRoomsFromBuildingTest() throws Exception {
         saveRoomTest();
-        String url = "/rooms/filter/getFilteredRoomsFromBuilding?myBuilding=123&myRights=2&hasTV=true&hasWhiteboard=true&minCap=0&maxCap=500";
+        String url = "/rooms/filter/getFilteredRoomsFromBuilding?myBuilding=123&myRights=2"
+                + "&hasTV=true&hasWhiteboard=true&minCap=0&maxCap=500";
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
@@ -217,7 +231,8 @@ class RoomControllerTest {
     @Test
     void getAllFilteredRoomsTest() throws Exception {
         saveRoomTest();
-        String url = "/rooms/filter/getAllFilteredRooms?myRights=2&hasTV=true&hasWhiteboard=true&minCap=0&maxCap=500";
+        String url = "/rooms/filter/getAllFilteredRooms?myRights="
+                + "2&hasTV=true&hasWhiteboard=true&minCap=0&maxCap=500";
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
@@ -283,27 +298,78 @@ class RoomControllerTest {
     }
 
     @WithMockUser(authorities = "Admin")
+    void putImageTest() throws Exception {
+        saveRoomTest();
+        String contentType = "image/jpeg";
+        byte[] bytes = "image".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "orig.jpg", contentType, bytes);
+
+        MockMultipartHttpServletRequestBuilder builder =
+                MockMvcRequestBuilders.multipart("/rooms/image/" + roomCode);
+        builder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        mockMvc.perform(builder.file(file))
+                .andExpect(status().isOk());
+    }
+
     @Test
-    void uploadFileRoomNotFoundTest() throws Exception {
+    @WithMockUser(authorities = "Admin")
+    String getImageUrlTest() throws Exception {
+        putImageTest();
+
+        return mockMvc.perform(RestDocumentationRequestBuilders
+                .get("/rooms/image/getUrl/" + roomCode))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getUrlTest() throws Exception {
+    void getUrlWithoutImagesTest() throws Exception {
         saveRoomTest();
         String url = "/rooms/image/getUrl/" + roomCode;
         mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andExpect(content().string(""));
+                .andExpect(status().isOk());
     }
 
-    @WithMockUser(authorities = "Admin")
     @Test
-    void downloadFileTest() throws Exception {
+    @WithMockUser(authorities = "Admin")
+    void downloadImageTest() throws Exception {
+        List<String> urls = parseLinkListTest(getImageUrlTest());
+        for (String url: urls) {
+            MockHttpServletResponse res = mockMvc.perform(RestDocumentationRequestBuilders.get(url))
+                    .andExpect(status().isOk())
+                    .andReturn().getResponse();
+            byte[] response = res.getContentAsByteArray();
+
+            assertArrayEquals(response, "image".getBytes());
+            assertEquals(res.getContentType(), "image/jpeg");
+        }
+
+    }
+
+    private List<String> parseLinkListTest(String list) {
+        String[] link = list.replace("\"", "").replace("[", "").replace("]", "")
+                .split(",");
+        List<String> out = Arrays.asList(link);
+        for (String s: out) {
+            s = s.replace("[", "").replace("\"", "").replace("]", "");
+            s = s.substring(16);
+        }
+        return out;
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
     void deleteImageTest() throws Exception {
+        String url = "/rooms/image/2";
+        mockMvc.perform(delete(url))
+                .andExpect(status().isOk());
     }
 }
