@@ -55,4 +55,17 @@ public class UserCommunication {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Changes the user password to the one supplied in the user object
+     * @param user the object with the requested name and password
+     */
+    public static void changePassword(User user) {
+        String url = "/rest/users/changePassword";
+        try {
+            ServerCommunication.authenticatedPutRequest(url, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
