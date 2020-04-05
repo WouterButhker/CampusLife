@@ -114,7 +114,7 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(authorities = "Admin")
-    MvcResult testPutImage() throws Exception {
+    void testPutImage() throws Exception {
         registerUser();
         int id = Integer.parseInt(testGetId());
         String contentType = "image/jpeg";
@@ -131,7 +131,7 @@ public class UserControllerTest {
             }
         });
 
-        return mvc.perform(builder.file(file))
+        mvc.perform(builder.file(file))
                 .andExpect(status().isOk()).andReturn();
     }
 
@@ -140,7 +140,8 @@ public class UserControllerTest {
     String testGetImageUrl() throws Exception {
         testPutImage();
         int id = Integer.parseInt(testGetId());
-        return mvc.perform(get("/rest/users/image/getUrl/" + id)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        return mvc.perform(get("/rest/users/image/getUrl/" + id)).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
     }
 
     @Test
