@@ -7,7 +7,6 @@ public class PersonalReservation extends Reservation {
 
     private String activity;
 
-
     public PersonalReservation(User user, String date, String timeSlot, String activity) {
         super(user, date, timeSlot);
         this.activity = activity;

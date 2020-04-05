@@ -118,6 +118,7 @@ class RoomReservationTest {
 
     @Test
     void toDisplayStringTest() {
-        assertEquals("Room reservation | Room: Auditorium | Date: 1-1-2020 | Timeslot: 11:00-15:00", rr.toDisplayString());
+        assertEquals("Room reservation | Room: Auditorium | "
+                + "Date: 1-1-2020 | Timeslot: 11:00-15:00", rr.toDisplayString());
     }
 }

@@ -1,12 +1,5 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.google.gson.Gson;
 import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
@@ -27,6 +20,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = {
@@ -35,12 +35,12 @@ import org.springframework.web.context.WebApplicationContext;
         PlatformTransactionManager.class
 })
 @Transactional
-class RoomControllerTest {
+class RoomControllerTest2 {
 
     @Autowired
     WebApplicationContext context;
 
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     private String roomCode;
     private String name;
@@ -52,7 +52,7 @@ class RoomControllerTest {
     private Room room;
 
     @BeforeEach
-    public void setup() throws Exception {
+    void setUpper() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
@@ -67,8 +67,6 @@ class RoomControllerTest {
         building = new Building(123, "Test Building", "Somewhere", "11:11-22:22", 42);
 
         room = new Room(roomCode, name, capacity, hasWhiteboard, hasTV, rights, building);
-
-
     }
 
     @WithMockUser(authorities = "Admin")
@@ -119,22 +117,10 @@ class RoomControllerTest {
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsFromBuilding() throws Exception {
+    void getAllRoomsFromBuildingTest() throws Exception {
         addToDatabaseTest();
-        String url = "";
-    }
-
-    @WithMockUser(authorities = "Admin")
-    @Test
-    void addNewRoom() throws Exception {
-    }
-
-    @WithMockUser(authorities = "Admin")
-    @Test
-    void getAllRoomNamesFromBuilding() throws Exception {
-        addToDatabaseTest();
-        String url = "/rooms/getAllRoomsFromBuilding?search=building.buildingCode:123 AND rights<3";
-        mockMvc.perform(get(url).param("buildingCode", "123").param("rights", "3"))
+        String url = "/rooms/getAllRoomsFromBuilding";
+        mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[{\"roomCode\":\"69\",\"name\":\"TestRoom\",\""
                         + "capacity\":69,\"hasWhiteboard\":true,\"hasTV\":true,\"rights\":2,\""
@@ -144,66 +130,73 @@ class RoomControllerTest {
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithTV() {
+    void getAllRoomNamesFromBuildingTest() throws Exception {
+        addToDatabaseTest();
+        String url = "/rooms/getRoomNamesFromBuilding";
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithCapacity() {
+    void getAllRoomsWithTVTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithTv() {
+    void getAllRoomsWithCapacityTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllRoomsWithWhiteBoard() {
+    void getAllRoomsWithTvTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getFilteredRoomsFromBuilding() {
+    void getAllRoomsWithWhiteBoardTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getAllFilteredRooms() {
+    void getFilteredRoomsFromBuildingTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void saveRoom() {
+    void getAllFilteredRoomsTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void updateRoom() {
+    void saveRoomTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void deleteRoom() {
+    void updateRoomTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void uploadFile() {
+    void deleteRoomTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getUrl() {
+    void uploadFileTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void downloadFile() {
+    void getUrlTest() {
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void deleteImage() {
+    void downloadFileTest() {
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void deleteImageTest() {
     }
 }

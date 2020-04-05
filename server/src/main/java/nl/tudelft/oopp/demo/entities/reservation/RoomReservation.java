@@ -33,7 +33,6 @@ public class RoomReservation extends Reservation {
 
         super(user, date, timeSlot);
         this.room = room;
-
     }
 
 

@@ -74,13 +74,13 @@ class UserTest {
     }
 
     @Test
-    void isAccountIsEnabledTest() {
-        assertEquals(true, user.isAccountIsEnabled());
+    void testToStringTest() {
+        assertEquals("Id: null user: username pass: password role: Student", user.toString());
     }
 
     @Test
-    void toStringTest() {
-        assertEquals("Id: null user: username pass: password role: Student", user.toString());
+    void isAccountIsEnabledTest() {
+        assertEquals(true, user.isAccountIsEnabled());
     }
 
     @Test

@@ -65,6 +65,16 @@ class ReservationTest {
     }
 
     @Test
+    void equalsTest() {
+        assertTrue(testOrder.equals(testOrder));
+    }
+
+    @Test
+    void equalsNotInstanceOfTest() {
+        assertFalse(testOrder.equals(new Object()));
+    }
+
+    @Test
     void testToStringTest() {
         assertEquals("food order{user: Id: 123 user: null pass: null role: Student, date: 1-1-1970"
                 + ", timeslot: 12:00-20:00, restaurant: {456, test rest, 456, desc}"

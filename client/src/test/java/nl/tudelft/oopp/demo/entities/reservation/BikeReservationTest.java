@@ -19,7 +19,7 @@ class BikeReservationTest {
     private BikeReservation bikeReservation;
 
     @BeforeEach
-    void init() {
+    void setUpper() {
         user = new User(5);
         pickUpBuilding = new Building(1, "Test", "Test street", "06:00-18:00, 06:00-18:00,"
                 + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
