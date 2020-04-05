@@ -71,6 +71,7 @@ public class AgendaWidget extends VBox {
         buttonsContainer.setAlignment(Pos.CENTER);
 
         upButton = new Button();
+
         upButton.getStyleClass().add("up-arrow");
         upButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override

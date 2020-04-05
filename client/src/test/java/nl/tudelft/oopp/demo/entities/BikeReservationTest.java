@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.testfolder;
+package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +20,6 @@ class BikeReservationTest {
 
     private BikeReservation bikeReservation;
 
-
     @BeforeEach
     void init() {
         user = new User(5);
@@ -39,31 +38,31 @@ class BikeReservationTest {
         assertNotNull(bikeReservation);
     }
 
-    //    @Test
-    //    void getIdTest() {
-    //        Integer test = 2;
-    //        assertEquals(test, bikeReservation.getId());
-    //    }
-    //
-    //    @Test
-    //    void setIdTest() {
-    //        bikeReservation.setId(3);
-    //        Integer test = 3;
-    //        assertEquals(test, bikeReservation.getId());
-    //    }
-    //
-    //    @Test
-    //    void getUserTest() {
-    //        Integer test = 5;
-    //        assertEquals(test, bikeReservation.getUser());
-    //    }
-    //
-    //    @Test
-    //    void setUserTest() {
-    //        bikeReservation.setUser(6);
-    //        Integer test = 6;
-    //        assertEquals(test, bikeReservation.getUser());
-    //    }
+    @Test
+    void getIdTest() {
+        bikeReservation.setId(2);
+        int test = 2;
+        assertEquals(test, bikeReservation.getId());
+    }
+
+    @Test
+    void setIdTest() {
+        bikeReservation.setId(3);
+        int test = 3;
+        assertEquals(test, bikeReservation.getId());
+    }
+
+    @Test
+    void getUserTest() {
+        assertEquals(user, bikeReservation.getUser());
+    }
+
+    @Test
+    void setUserTest() {
+        User test = new User(6);
+        bikeReservation.setUser(test);
+        assertEquals(test, bikeReservation.getUser());
+    }
 
     @Test
     void getPickUpBuildingTest() {
@@ -136,6 +135,11 @@ class BikeReservationTest {
     }
 
     @Test
+    void notEqualsDifferentTypes() {
+        assertNotEquals(bikeReservation, dropOffBuilding);
+    }
+
+    @Test
     void notEqualsTest() {
         BikeReservation test = new BikeReservation(new User(6), pickUpBuilding,
                 dropOffBuilding, date, timeSlot);
@@ -153,9 +157,9 @@ class BikeReservationTest {
                 + " date: 22/03/2020, timeslot: 14:00-19:00, "
                 + "pickup building: {1, Test, Test street, 06:00-18:00, 06:00-18:00, "
                 + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00,"
-                + " image, 45}, dropoff building: {2, Test2, Test street2, 06:00-18:00,"
+                + " 45}, dropoff building: {2, Test2, Test street2, 06:00-18:00,"
                 + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, "
-                + "19:00-21:00, image, 32}}";
+                + "19:00-21:00, 32}}";
         assertEquals(bikeReservation.toString(), out);
     }
 

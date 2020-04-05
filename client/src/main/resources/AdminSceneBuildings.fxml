@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="mainBox" prefHeight="630.0" prefWidth="1120.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneBuildingsController">
+<VBox fx:id="mainBox" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.demo.controllers.AdminSceneBuildingsController">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER" prefHeight="100.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Buildings Page">
                <font>
@@ -112,12 +112,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="45.0" prefWidth="797.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#refreshBuildingsPage" text="Refresh">
+                        <Button fx:id="refresh" mnemonicParsing="false" onAction="#refreshBuildingsPage" text="Refresh">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
                         <Pane prefHeight="0.0" prefWidth="15.0" />
-                        <Button fx:id="submitNewBuilding" mnemonicParsing="false" onAction="#submitNewBuilding" text="Submit">
+                        <Button fx:id="submit" mnemonicParsing="false" onAction="#submitNewBuilding" text="Submit">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
@@ -125,8 +125,8 @@
                   </HBox>
                </children>
             </VBox>
-            <Pane fx:id="spacerPane" prefHeight="528.0" prefWidth="250.0" />
-            <VBox fx:id="scrollPaneVBox" prefHeight="482.0" prefWidth="417.0">
+            <Pane fx:id="spacerPane" prefHeight="528.0" prefWidth="75.0" />
+            <VBox fx:id="scrollPaneVBox" prefHeight="482.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="45.0" prefWidth="418.0">
                      <children>
@@ -137,14 +137,10 @@
                         </Text>
                      </children>
                   </HBox>
-                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="482.0" prefWidth="417.0">
-                    <content>
-                      <AnchorPane fx:id="anchorPaneBuildings" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="400.0">
-                           <children>
-                              <VBox fx:id="buildingsList" />
-                           </children>
-                        </AnchorPane>
-                    </content>
+                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportWidth="650.0" prefHeight="482.0" prefViewportWidth="650.0" prefWidth="667.0">
+                     <content>
+                        <VBox fx:id="buildingsBox" />
+                     </content>
                   </ScrollPane>
                </children>
             </VBox>

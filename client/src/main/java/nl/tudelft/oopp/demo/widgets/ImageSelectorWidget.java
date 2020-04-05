@@ -70,6 +70,10 @@ public class ImageSelectorWidget extends VBox {
         fileChosen.setText("  No file chosen");
     }
 
+    public Button getChooseFileButton() {
+        return chooseFileButton;
+    }
+
     public File getImage() {
         return this.image;
     }

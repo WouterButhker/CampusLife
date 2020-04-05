@@ -130,6 +130,7 @@ public class RegisterScreenController {
         assert usernameField != null : "fx:id=\"usernameField\" "
                 + "was not injected: check your FXML file 'RegisterScreen.fxml'.";
 
+        //mainBox.getStylesheets().add("css/admin-scene.css");
         mainBox.setStyle("-fx-background-color: -primary-color");
         registerButton.setStyle("-fx-font-size: 17");
         passwordField.setStyle("-fx-font-size: 17");
