@@ -140,10 +140,18 @@ public class BikeReservationControllerTest {
     @WithMockUser(authorities = "Admin")
     @Test
     void deleteBikeReservationTest() throws Exception {
+        bikeReservation.setId(2);
         mvc.perform(post("/bikeReservations/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(bikeReservation)));
-        mvc.perform(delete("/bikeReservations/1"))
+        String response = mvc.perform(get("/bikeReservations/all")).andReturn()
+                .getResponse().getContentAsString();
+        Type listType = new TypeToken<List<BikeReservation>>() {}.getType();
+        List<BikeReservation> bikeReservations = new Gson().fromJson(response, listType);
+        BikeReservation bikeReservationInserted = bikeReservations.get(0);
+        int id = bikeReservationInserted.getId();
+        String url = "/bikeReservations/" + id;
+        mvc.perform(delete(url))
                 .andExpect(status().isOk());
     }
 }
