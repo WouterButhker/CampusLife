@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.HBox?>
 <?import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget?>
@@ -11,16 +10,14 @@
     <children>
         <AnchorPane fx:id="mainPane" prefHeight="630.0" prefWidth="1120.0">
             <children>
-                <Text layoutX="340.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="This is the restaurants page">
+                <Text layoutX="340.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the restaurants page">
                     <font>
-                        <Font size="36.0"/>
+                        <Font size="36.0" />
                     </font>
                 </Text>
-                <Text layoutX="130.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Adding a new restaurant">
+                <Text layoutX="130.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adding a new restaurant">
                     <font>
-                        <Font size="24.0"/>
+                        <Font size="24.0" />
                     </font>
                 </Text>
                 <Text layoutX="37.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant name"/>
@@ -42,10 +39,9 @@
                 <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="604.0" layoutY="142.0" prefHeight="432.0"
                             prefWidth="417.0">
                     <content>
-                        <AnchorPane fx:id="anchorPaneRestaurants" maxHeight="1.7976931348623157E308" minHeight="0.0"
-                                    minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
+                        <AnchorPane fx:id="anchorPaneRestaurants" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
                             <children>
-                                <VBox fx:id="restaurantsList"/>
+                                <VBox fx:id="restaurantsList" />
                             </children>
                         </AnchorPane>
                     </content>

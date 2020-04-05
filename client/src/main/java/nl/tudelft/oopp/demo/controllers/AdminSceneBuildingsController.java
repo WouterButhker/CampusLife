@@ -65,10 +65,7 @@ public class AdminSceneBuildingsController implements Initializable {
     private ChoiceBox<String> open;
 
     @FXML
-    private AnchorPane anchorPaneBuildings;
-
-    @FXML
-    private VBox buildingsList;
+    private VBox buildingsBox;
 
     @FXML
     private CheckBox hasBikeStationCheck;
@@ -84,6 +81,12 @@ public class AdminSceneBuildingsController implements Initializable {
 
     @FXML
     private ScrollPane scrollPane;
+
+    @FXML
+    private Button submit;
+
+    @FXML
+    private Button refresh;
 
     private ImageSelectorWidget imageSelectorWidget;
 
@@ -103,6 +106,14 @@ public class AdminSceneBuildingsController implements Initializable {
         addAppBar();
         addImageSelectorWidget();
         addWeekCalendar(new Weekdays());
+        addStyle();
+    }
+
+    private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
+        submit.getStyleClass().add("adminButton");
+        refresh.getStyleClass().add("adminButton");
     }
 
     private void addAppBar() {
@@ -113,6 +124,7 @@ public class AdminSceneBuildingsController implements Initializable {
         Pane spacerPane = new Pane();
         spacerPane.setPrefWidth(10);
         imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidget.getChooseFileButton().getStyleClass().add("adminButtonSmall");
         HBox box = new HBox();
         box.getChildren().addAll(spacerPane, imageSelectorWidget);
         settingsBox.getChildren().add(7, box);
@@ -239,24 +251,23 @@ public class AdminSceneBuildingsController implements Initializable {
     }
 
     private void loadBuildings() {
-        if (anchorPaneBuildings != null && buildingsList != null) {
-            buildingsList.getChildren().clear();
+        if (buildingsBox != null) {
+            buildingsBox.getChildren().clear();
             List<Building> buildings = BuildingCommunication.getAllBuildings();
             int numBuildings = buildings.size();
             int height = 82 * numBuildings;
             if (height <= scrollPane.getPrefHeight()) {
-                scrollPaneVBox.setPrefWidth(400);
-                scrollPane.setPrefWidth(400);
+                scrollPaneVBox.setPrefWidth(650);
+                scrollPane.setPrefWidth(650);
             } else {
-                scrollPaneVBox.setPrefWidth(417);
-                scrollPane.setPrefWidth(417);
+                scrollPaneVBox.setPrefWidth(667);
+                scrollPane.setPrefWidth(667);
             }
-            anchorPaneBuildings.setPrefHeight(height);
-            //One HBox is 60 x 400
-            //The entire AnchorPane holding all the HBoxes is 60*numBuildings x 400
+            //One HBox is 60 x scrollPaneViewPortWidth
             for (int i = 0; i < numBuildings; i++) {
                 HBox building = new HBox();
-                building.setMaxWidth(400);
+                building.setPrefWidth(scrollPane.getPrefViewportWidth());
+                building.setMaxWidth(scrollPane.getPrefViewportWidth());
                 Image image = new Image(getBuildingImageUrl(buildings.get(i).getCode()));
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(65);
@@ -268,28 +279,33 @@ public class AdminSceneBuildingsController implements Initializable {
                 } else {
                     bikesString = Integer.toString(bikes);
                 }
+                String openingHours = splitOpeningHours(buildings.get(i).getOpeningHours());
                 Label text = new Label("Building Code: " + buildings.get(i).getCode()
                         + " | " + buildings.get(i).getName()
-                        + "\nOpening Hours: " + buildings.get(i).getOpeningHours() + "\n"
-                        + buildings.get(i).getLocation() + " | Bikes: " + bikesString);
-                text.setPrefSize(225, 60);
+                        + " | " + buildings.get(i).getLocation()
+                        + " | Bikes: " + bikesString
+                        + "\nOpening Hours: " + openingHours);
+                text.setPrefSize(scrollPane.getPrefViewportWidth() - 65 - 10 - 12
+                        - 55 - 55 - 10, 60);
                 text.setPadding(new Insets(0, 0, 0, 10));
 
                 int finalI = i;
                 Button modify = new Button("modify");
+                modify.getStyleClass().add("adminButtonSmall");
                 modify.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         createModifyPopup(buildings.get(finalI));
                     }
                 });
-                modify.setPrefSize(45, 40);
+                modify.setPrefSize(55, 40);
                 modify.setPadding(new Insets(0, 0, 0,0));
                 StackPane modifyPane = new StackPane(modify);
                 modifyPane.setPadding(new Insets(10, 0, 10, 0));
 
                 Button delete = new Button("delete");
-                delete.setPrefSize(45, 40);
+                delete.getStyleClass().add("adminButtonSmall");
+                delete.setPrefSize(55, 40);
                 delete.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -304,17 +320,12 @@ public class AdminSceneBuildingsController implements Initializable {
                 });
                 delete.setPadding(new Insets(0, 0,0,0));
                 StackPane deletePane = new StackPane(delete);
-                deletePane.setPadding(new Insets(10, 0, 10, 0));
+                deletePane.setPadding(new Insets(10, 0, 10, 10));
 
                 building.setPadding(new Insets(5, 5, 5,5));
-                String css = "-fx-border-color: black;\n"
-                        + "-fx-border-insets: 4\n;"
-                        + "-fx-border-style: solid\n;"
-                        + "-fx-border-width: 1;"
-                        + "-fx-border-radius: 10;";
-                building.setStyle(css);
+                building.getStyleClass().add("boxContainer");
                 building.getChildren().addAll(imageView, text, modifyPane, deletePane);
-                buildingsList.getChildren().add(building);
+                buildingsBox.getChildren().add(building);
             }
         }
     }
@@ -398,6 +409,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
     private void createModifyPopup(Building building) {
         VBox root = new VBox();
+        //root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(600, 700);
 
         Text header = new Text("Modify your building");
@@ -459,12 +471,15 @@ public class AdminSceneBuildingsController implements Initializable {
         Pane spacer11 = new Pane();
         spacer11.setPrefSize(50, 20);
         ChoiceBox<String> options = new ChoiceBox<>();
+        options.getStyleClass().add("choice-box");
         options.setPrefSize(75, 20);
         options.getItems().addAll("Open", Weekdays.CLOSED);
         options.setValue("Open");
         ChoiceBox<String> from = new ChoiceBox<>();
+        from.getStyleClass().add("choice-box");
         from.setPrefSize(75, 20);
         ChoiceBox<String> to = new ChoiceBox<>();
+        to.getStyleClass().add("choice-box");
         to.setPrefSize(75, 20);
 
         //The calendar updates when you click on another day with this
@@ -585,10 +600,12 @@ public class AdminSceneBuildingsController implements Initializable {
         HBox imageSelectorWidgetBox = new HBox();
         imageSelectorWidgetBox.setAlignment(Pos.CENTER);
         ImageSelectorWidget imageSelectorWidget = new ImageSelectorWidget();
+        imageSelectorWidget.getChooseFileButton().getStyleClass().add("adminButtonSmall");
         imageSelectorWidgetBox.getChildren().add(imageSelectorWidget);
         imageSelectorWidgetBox.setPadding(new Insets(10, 10, 0, 0));
 
         Button submit = new Button("submit");
+        submit.getStyleClass().add("adminButtonSmall");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
         submitBox.setPadding(new Insets(10, 0,10, 0));
@@ -626,7 +643,11 @@ public class AdminSceneBuildingsController implements Initializable {
                 calender, bikeStationTextBox, bikeStationInput,
                 imageSelectorWidgetBox, submitBox);
         Stage stage = new Stage();
+        stage.setTitle("Modifying " + building.getName());
+        stage.getIcons().add(new Image("images/modifyingImage.png"));
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("css/palette.css");
+        scene.getStylesheets().add("css/admin-scene.css");
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(mainBox.getScene().getWindow());
@@ -675,6 +696,22 @@ public class AdminSceneBuildingsController implements Initializable {
             res = new HBox();
             res.setAlignment(Pos.CENTER);
             res.getChildren().add(message);
+        }
+        return res;
+    }
+
+    private String splitOpeningHours(String openingHours) {
+        String[] strings = openingHours.split(", ");
+        String res = "";
+        for (int i = 0; i < 4; i++) {
+            res = res + strings[i] + ", ";
+        }
+        res = res + "\n";
+        for (int i = 4; i < 7; i++) {
+            res = res + strings[i];
+            if (i != 6) {
+                res = res + ", ";
+            }
         }
         return res;
     }

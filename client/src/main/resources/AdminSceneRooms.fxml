@@ -132,7 +132,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="45.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#refreshRoomsPage" text="Refresh">
+                              <Button fx:id="refresh" mnemonicParsing="false" onAction="#refreshRoomsPage" text="Refresh">
                                  <font>
                                     <Font size="16.0" />
                                  </font></Button>
@@ -144,7 +144,7 @@
                            </children></HBox>
                      </children>
                   </VBox>
-                  <Pane prefHeight="200.0" prefWidth="250.0" />
+                  <Pane prefHeight="200.0" prefWidth="150.0" />
                   <VBox fx:id="scrollPaneVBox" prefHeight="432.0" prefWidth="418.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="45.0" prefWidth="0.0">
@@ -158,14 +158,10 @@
                               <ChoiceBox fx:id="buildingList2" prefWidth="150.0" />
                            </children>
                         </HBox>
-                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="432.0" prefWidth="417.0">
-                          <content>
-                            <AnchorPane fx:id="anchorPaneRooms" maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="417.0">
-                                 <children>
-                                    <VBox fx:id="roomsList" />
-                                 </children>
-                              </AnchorPane>
-                          </content>
+                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" minViewportWidth="500.0" prefHeight="432.0" prefViewportWidth="500.0" prefWidth="517.0">
+                           <content>
+                              <VBox fx:id="roomsBox" />
+                           </content>
                         </ScrollPane>
                      </children></VBox>
                </children>
