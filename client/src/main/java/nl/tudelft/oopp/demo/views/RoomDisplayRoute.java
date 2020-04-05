@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -14,9 +15,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
+import nl.tudelft.oopp.demo.communication.FavoriteRoomCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.entities.FavoriteRoom;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.GalleryWidget;
@@ -29,6 +33,8 @@ public class RoomDisplayRoute extends Route {
     private VBox leftContainer;
     private GalleryWidget galleryWidget;
 
+    private ToggleButton favoriteButton;
+    private HBox titleContainer;
     private Text title;
     private Rectangle titlePadding;
     private TextWithIcon capacityText;
@@ -38,6 +44,8 @@ public class RoomDisplayRoute extends Route {
 
     private Rectangle buttonPadding;
     private Button reserveButton;
+
+    private FavoriteRoom favorite;
 
     /**
      * Instantiates the room display route for the room passed as parameter.
@@ -64,9 +72,29 @@ public class RoomDisplayRoute extends Route {
         contentContainer.getChildren().add(galleryWidget);
 
         // Add title
+        titleContainer = new HBox();
+        titleContainer.setAlignment(Pos.CENTER_LEFT);
+        titleContainer.setSpacing(16);
+        leftContainer.getChildren().add(titleContainer);
+
         title = new Text(String.format("%s (%s)", room.getName(), room.getRoomCode()));
         title.getStyleClass().add("gallery-text");
-        leftContainer.getChildren().add(title);
+        titleContainer.getChildren().add(title);
+
+        favorite = FavoriteRoomCommunication.isFavorite(room);
+        favoriteButton = new ToggleButton();
+        favoriteButton.setSelected(favorite != null);
+        favoriteButton.getStyleClass().add("favorite-button2");
+        favoriteButton.getStyleClass().add("fav-hover");
+        favoriteButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!oldValue) {
+                favorite = FavoriteRoomCommunication.addFavorite(room);
+            } else {
+                FavoriteRoomCommunication.removeFavorite(favorite.getId());
+            }
+        });
+        titleContainer.getChildren().add(favoriteButton);
+
         titlePadding = new Rectangle();
         titlePadding.setHeight(24);
         leftContainer.getChildren().add(titlePadding);
@@ -134,7 +162,7 @@ public class RoomDisplayRoute extends Route {
     private void resizeDisplay(double newWidth, double newHeight) {
         leftContainer.setPrefWidth(newWidth * 0.5);
         title.setStyle("-fx-font-size: " + newHeight * 0.075);
-        title.setWrappingWidth(newWidth * 0.5 - 64);
+        title.setWrappingWidth(newWidth * 0.4 - 64);
         double infoTextHeight = newHeight * 0.045;
         capacityText.setPrefWidth(newWidth * 0.5 - 64);
         capacityText.setPrefHeight(infoTextHeight);
@@ -146,6 +174,15 @@ public class RoomDisplayRoute extends Route {
         buildingText.setPrefHeight(infoTextHeight);
 
         reserveButton.setStyle("-fx-font-size: " + newHeight * 0.025);
+
+        double favoriteSize = newHeight * 0.25 * 0.3;
+        favoriteButton.setPrefWidth(favoriteSize);
+        favoriteButton.setPrefHeight(favoriteSize);
+        favoriteButton.setStyle(String.format(
+                "-fx-background-size: %fpx %fpx",
+                favoriteSize,
+                favoriteSize
+        ));
 
         galleryWidget.setPrefWidth(newWidth * 0.5);
         galleryWidget.setPrefHeight(newHeight);

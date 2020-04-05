@@ -28,12 +28,12 @@
                   <HBox alignment="CENTER" prefHeight="47.0" prefWidth="395.0">
                      <children>
                         <TextField fx:id="searchInput" maxWidth="175.0" prefWidth="175.0" promptText="Username" />
-                        <Button mnemonicParsing="false" onAction="#loadUsers" text="Search">
+                        <Button fx:id="search" mnemonicParsing="false" onAction="#loadUsers" text="Search">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#resetUsers" text="Reset">
+                        <Button fx:id="reset" mnemonicParsing="false" onAction="#resetUsers" text="Reset">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
