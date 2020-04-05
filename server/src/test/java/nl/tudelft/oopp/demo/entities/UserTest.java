@@ -98,6 +98,6 @@ class UserTest {
 
     @Test
     void toStringTest() {
-        assertEquals("NAME: username", user1.toString());
+        assertEquals("user{id: null, name:username, role: Student}", user1.toString());
     }
 }
