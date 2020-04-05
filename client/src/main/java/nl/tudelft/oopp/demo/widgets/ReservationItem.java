@@ -21,7 +21,7 @@ public class ReservationItem extends Group {
 
     /**
      * Creates a Reservation item that displays a RoomReservation.
-     * @param reservation
+     * @param reservation the reservation whose information will be displayed
      */
     public ReservationItem(RoomReservation reservation) {
         this.reservation = reservation;
@@ -31,23 +31,23 @@ public class ReservationItem extends Group {
         reservationType.setStyle("-fx-font-family: -primary-font-name;"
                 + "-fx-font-weight: bold;"
                 + "-fx-font-size: 18;");
-        reservationType.setPadding(new Insets(10, 0, 10 ,9));
+        reservationType.setPadding(new Insets(10, 0, 10,9));
 
         Label reservationData = new Label("Building: "
                 + reservation.getRoom().getBuilding().getName() + "Room: "
                 + reservation.getRoom().getName());
 
-        reservationData.setStyle("-fx-fill: #9E9E9E;"
+        reservationData.setStyle("-fx-text-fill: #9E9E9E;"
                 + "-fx-font-family: -primary-font-name;"
                 + "-fx-font-size: 16;");
-        reservationData.setPadding(new Insets(5, 0, 0 ,9));
+        reservationData.setPadding(new Insets(5, 0, 0,9));
 
         Label dateAndTime = new Label(reservation.getTimeSlot());
 
-        dateAndTime.setStyle("-fx-fill: #9E9E9E;"
+        dateAndTime.setStyle("-fx-text-fill: #9E9E9E;"
                 + "-fx-font-family: -primary-font-name;"
                 + "-fx-font-size: 16;");
-        dateAndTime.setPadding(new Insets(5, 0, 0 ,9));
+        dateAndTime.setPadding(new Insets(5, 0, 0,9));
 
 
         mainContainer = new VBox();
@@ -59,8 +59,8 @@ public class ReservationItem extends Group {
     }
 
     /**
-     * Creates a ReservationItem that displays a PersonalReservation
-     * @param reservation
+     * Creates a ReservationItem that displays a PersonalReservation.
+     * @param reservation the reservation whose information will be displayed
      */
     public ReservationItem(PersonalReservation reservation) {
         this.reservation = reservation;
@@ -70,21 +70,21 @@ public class ReservationItem extends Group {
         reservationType.setStyle("-fx-font-family: -primary-font-name;"
                 + "-fx-font-weight: bold;"
                 + "-fx-font-size: 18;");
-        reservationType.setPadding(new Insets(10, 0, 10 ,9));
+        reservationType.setPadding(new Insets(10, 0, 10,9));
 
         Label reservationData = new Label(reservation.getActivity());
 
-        reservationData.setStyle("-fx-fill: #9E9E9E;"
+        reservationData.setStyle("-fx-text-fill: #9E9E9E;"
                 + "-fx-font-family: -primary-font-name;"
                 + "-fx-font-size: 16;");
-        reservationData.setPadding(new Insets(5, 0, 0 ,9));
+        reservationData.setPadding(new Insets(5, 0, 0,9));
 
         Label dateAndTime = new Label(reservation.getTimeSlot());
 
-        dateAndTime.setStyle("-fx-fill: #9E9E9E;"
+        dateAndTime.setStyle("-fx-text-fill: #9E9E9E;"
                 + "-fx-font-family: -primary-font-name;"
                 + "-fx-font-size: 16;");
-        dateAndTime.setPadding(new Insets(5, 0, 0 ,9));
+        dateAndTime.setPadding(new Insets(5, 0, 0,9));
 
 
         mainContainer = new VBox();
@@ -96,8 +96,8 @@ public class ReservationItem extends Group {
     }
 
     /**
-     * Creates a ReservationItem that displays a BikeReservation
-     * @param reservation
+     * Creates a ReservationItem that displays a BikeReservation.
+     * @param reservation the reservation whose information will be displayed
      */
     public ReservationItem(BikeReservation reservation) {
         this.reservation = reservation;
@@ -107,23 +107,23 @@ public class ReservationItem extends Group {
         reservationType.setStyle("-fx-font-family: -primary-font-name;"
                 + "-fx-font-weight: bold;"
                 + "-fx-font-size: 18;");
-        reservationType.setPadding(new Insets(10, 0, 10 ,9));
+        reservationType.setPadding(new Insets(10, 0, 10,9));
 
         Label reservationData = new Label("Pick up Building: "
                 + reservation.getPickUpBuilding().getName() + "Drop off Building: "
                 + reservation.getDropOffBuilding().getName());
 
-        reservationData.setStyle("-fx-fill: #9E9E9E;"
+        reservationData.setStyle("-fx-text-fill: #9E9E9E;"
                 + "-fx-font-family: -primary-font-name;"
                 + "-fx-font-size: 16;");
-        reservationData.setPadding(new Insets(5, 0, 0 ,9));
+        reservationData.setPadding(new Insets(5, 0, 0,9));
 
         Label dateAndTime = new Label(reservation.getTimeSlot());
 
-        dateAndTime.setStyle("-fx-fill: #9E9E9E;"
+        dateAndTime.setStyle("-fx-text-fill: #9E9E9E;"
                 + "-fx-font-family: -primary-font-name;"
                 + "-fx-font-size: 16;");
-        dateAndTime.setPadding(new Insets(5, 0, 0 ,9));
+        dateAndTime.setPadding(new Insets(5, 0, 0,9));
 
 
         mainContainer = new VBox();

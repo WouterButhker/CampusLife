@@ -210,10 +210,10 @@ public class MyProfileRoute extends Route {
 
             currentReservation.getChildren().add(reservationInformation);
 
-            String styleHovered = "-fx-background-color:#cf3229;" +
-                    "-fx-text-fill: white;";
-            String style = "-fx-background-color:#e4685d;" +
-                    "-fx-text-fill: white;";
+            String styleHovered = "-fx-background-color:#cf3229;"
+                    + "-fx-text-fill: white; -fx-font-size: 16;";
+            String style = "-fx-background-color:#e4685d;"
+                    + "-fx-text-fill: white; -fx-font-size: 16;";
             int finalI = i;
             Button delete = new Button("Delete");
 
@@ -224,10 +224,17 @@ public class MyProfileRoute extends Route {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    if (PopupWidget.displayBool("Are you sure you want to delete this reservation?" +
-                            "\nThis will be irreversible", "Are you sure?")) {
+                    if (PopupWidget.displayBool("Are you sure you want to delete this reservation?"
+                            + "\nThis will be irreversible", "Are you sure?")) {
                         int id = reservations.get(finalI).getId();
-                        RoomReservationCommunication.deleteReservationFromDatabase(id);
+                        if (reservation instanceof RoomReservation) {
+                            RoomReservationCommunication.deleteReservationFromDatabase(id);
+                        } else if (reservation instanceof BikeReservation) {
+                            BikeReservationCommunication.deleteBikeReservation(id);
+                        } else if (reservation instanceof PersonalReservation) {
+                            PersonalReservationCommunication.deleteReservationFromDatabase(id);
+                        }
+
                         if (past.isSelected()) {
                             displayPastEvents();
                         } else if (upcoming.isSelected()) {
