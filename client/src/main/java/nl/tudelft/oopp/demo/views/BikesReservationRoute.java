@@ -182,9 +182,9 @@ public class BikesReservationRoute extends Route {
                     new User(AuthenticationCommunication.myUserId),
                       pickUpBuilding, dropOffBuilding, date, slot);
             BikeReservationCommunication.createBikeReservation(res);
-            PopupWidget.display("Bike Reserved!", "Bike reserved");
+            PopupWidget.displaySuccess("Bike Reserved!", "Bike reserved");
         } else {
-            PopupWidget.display("There are no bikes available at the pickup building",
+            PopupWidget.displayError("There are no bikes available at the pickup building",
                     "An error has occurred");
         }
     }

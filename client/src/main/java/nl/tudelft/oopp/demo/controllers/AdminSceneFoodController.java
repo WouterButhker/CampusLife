@@ -28,6 +28,7 @@ import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
 public class AdminSceneFoodController implements Initializable {
     @FXML
@@ -139,9 +140,13 @@ public class AdminSceneFoodController implements Initializable {
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    FoodCommunication.deleteFood(
-                            foods.get(finalI).getId());
-                    loadFoods(restaurantsList2.getValue());
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        FoodCommunication.deleteFood(
+                                foods.get(finalI).getId());
+                        loadFoods(restaurantsList2.getValue());
+                    }
                 }
             });
             delete.setPrefSize(45, 40);
@@ -259,7 +264,8 @@ public class AdminSceneFoodController implements Initializable {
 
         String foodName = foodNameInput.getText();
 
-        Text submitStatus = new Text();
+        String submitStatus;
+        boolean correct = false;
 
         try {
             Double foodPrice = Double.parseDouble(foodPriceInput.getText());
@@ -269,43 +275,30 @@ public class AdminSceneFoodController implements Initializable {
                         foodName,
                         restaurantId,
                         foodPrice));
-                submitStatus.setText("Food has been successfully added to "
-                        + restaurantsList1.getValue().split(",")[0]);
+                submitStatus = "Food has been successfully added to \n"
+                        + restaurantsList1.getValue().split(",")[0];
+                correct = true;
                 try {
                     refreshFoodPage();
                 } catch (Exception e) {
                     System.out.println("Refresh failed");
                 }
             } else {
-                submitStatus.setText("All fields have to be entered");
+                submitStatus = ("All fields have to be entered");
             }
 
             if (!restaurantFound) {
-                submitStatus.setText("Please select a restaurants");
+                submitStatus = ("Please select a restaurants");
             }
         } catch (NumberFormatException nfe) {
-            submitStatus.setText("Price must be a number");
+            submitStatus = ("Price must be a number");
         }
 
-        Button back = new Button("Okay! take me back");
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Button button = (Button) event.getSource();
-                Stage stage = (Stage) button.getScene().getWindow();
-                stage.close();
-            }
-        });
-        VBox foodBox = new VBox(submitStatus, back);
-        foodBox.setPrefSize(300, 200);
-        foodBox.setAlignment(Pos.CENTER);
-        AnchorPane root = new AnchorPane(foodBox);
-        root.setPrefSize(300, 200);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        if (correct) {
+            PopupWidget.displaySuccess(submitStatus, "Success!");
+        } else {
+            PopupWidget.displayError(submitStatus, "Error!");
+        }
     }
     
     @FXML

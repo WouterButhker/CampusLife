@@ -16,10 +16,6 @@ class BuildingTest {
     private Integer bikes;
     private Building building;
 
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
 
     @BeforeEach
     void setUpper() {

@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,12 +23,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
-import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
-import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
+import nl.tudelft.oopp.demo.widgets.*;
 
 public class MyProfileRoute extends Route {
     private VBox rootElement;
@@ -40,6 +41,7 @@ public class MyProfileRoute extends Route {
     ToggleButton upcoming;
     ToggleButton past;
     ToggleButton newEvent;
+    ToggleButton foodToggle;
     private Rectangle rect;
 
     private List<RoomReservation> pastReservations;
@@ -59,7 +61,7 @@ public class MyProfileRoute extends Route {
         if (AuthenticationCommunication.myUserRole.equals("Admin")) {
             isAdmin = true;
         }
-        AppBar appBar = new AppBar(isAdmin);
+        AppBar appBar = new AppBar(isAdmin, true, false);
         rootElement.getChildren().add(appBar);
         addUserInformation();
         eventContainer = new VBox();
@@ -72,12 +74,22 @@ public class MyProfileRoute extends Route {
 
         final ToggleGroup group = new ToggleGroup();
         upcoming = new ToggleButton("Upcoming events");
+        upcoming.getStyleClass().add("profile-page-tab");
+        upcoming.getStyleClass().add("profile-page-tab-hov");
         upcoming.setSelected(true);
         upcoming.setToggleGroup(group);
         past = new ToggleButton("Past events");
+        past.getStyleClass().add("profile-page-tab");
+        past.getStyleClass().add("profile-page-tab-hov");
         past.setToggleGroup(group);
         newEvent = new ToggleButton("New event");
+        newEvent.getStyleClass().add("profile-page-tab");
+        newEvent.getStyleClass().add("profile-page-tab-hov");
         newEvent.setToggleGroup(group);
+        foodToggle = new ToggleButton("Food orders");
+        foodToggle.getStyleClass().add("profile-page-tab");
+        foodToggle.getStyleClass().add("profile-page-tab-hov");
+        foodToggle.setToggleGroup(group);
 
         past.setUserData(Color.LIGHTBLUE);
         newEvent.setUserData(Color.SALMON);
@@ -87,7 +99,8 @@ public class MyProfileRoute extends Route {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle toggle, Toggle newToggle) {
 
-                if (!upcoming.isSelected() && !past.isSelected() && !newEvent.isSelected()) {
+                if (!upcoming.isSelected() && !past.isSelected()
+                        && !newEvent.isSelected() && !foodToggle.isSelected()) {
                     upcoming.setSelected(true);
                 }
 
@@ -95,13 +108,15 @@ public class MyProfileRoute extends Route {
                     displayPastEvents();
                 } else if (newEvent.isSelected()) {
                     displayNewEvent();
-                } else {
+                } else if (upcoming.isSelected()) {
                     displayUpcomingEvents();
+                } else {
+                    displayFoodOrders();
                 }
             }
         });
         HBox toggleGroupBox = new HBox();
-        toggleGroupBox.getChildren().addAll(upcoming, past, newEvent);
+        toggleGroupBox.getChildren().addAll(upcoming, past, newEvent, foodToggle);
         eventContainer.getChildren().addAll(toggleGroupBox, rect);
         displayUpcomingEvents();
     }
@@ -250,6 +265,27 @@ public class MyProfileRoute extends Route {
         });
         newEventBox.getChildren().addAll(txt1, t1, txt2, t2, txt3, t3, txt4, t4, submit);
         eventContainer.getChildren().addAll(newEventBox);
+    }
+
+    private void displayFoodOrders() {
+        cleanBeforeDisplaying();
+
+        List<FoodOrder> foodOrders = FoodOrderCommunication.getAll();
+
+        VBox list = new VBox();
+        for (int i = 0; i < foodOrders.size(); i++) {
+            FoodOrder foodOrder = foodOrders.get(i);
+            list.getChildren().add(new FoodOrderItem(foodOrder));
+
+            Rectangle separator = new Rectangle();
+            separator.setWidth(500);
+            separator.setHeight(1);
+            separator.setFill(Color.LIGHTGRAY);
+            list.getChildren().add(separator);
+        }
+
+        scrollPane = new ScrollPane(list);
+        eventContainer.getChildren().add(scrollPane);
     }
 
     private void addUserInformation() {
