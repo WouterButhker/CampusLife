@@ -13,12 +13,15 @@ public class BikeReservationWidgetLogic {
 
     /**
      * Method that calculates the start and end of the opening hours of a Building.
+     * Takes into account the current time.
      * @param selected The selected Building from which the opening hours are taken
      * @param selectedDate The date for which the opening hours are taken
+     * @param now The date with which we are going to compare.
+     *           Should be called with Calendar.getInstance().
      * @return An array with 2 values, the opening time and the closing time
      *      or a null if the Building is closed.
      */
-    public int[] computeAvailabilities(Building selected, Calendar selectedDate) {
+    public int[] computeAvailabilities(Building selected, Calendar selectedDate, Calendar now) {
         if (selected == null) {
             return null;
         }
@@ -32,11 +35,24 @@ public class BikeReservationWidgetLogic {
         if (openingHoursDay.equals(Weekdays.CLOSED)) {
             return null;
         }
+        int nowDay = now.get(Calendar.DAY_OF_WEEK);
+        int nowMonth = now.get(Calendar.DAY_OF_MONTH);
+        int dayClean = selectedDate.get(Calendar.DAY_OF_WEEK);
+        int month = selectedDate.get(Calendar.DAY_OF_MONTH);
+        int hours = now.get(Calendar.HOUR_OF_DAY);
+        int minutes = now.get(Calendar.MINUTE);
+        if (minutes != 0) {
+            hours++;
+        }
         String begin = openingHoursDay.split("-")[0];
         String end = openingHoursDay.split("-")[1];
         int beginTime = Integer.parseInt(begin.split(":")[0]);
         int endTime = Integer.parseInt(end.split(":")[0]);
         int[] res = new int[2];
+        if (nowDay == dayClean
+                && nowMonth == month && hours > beginTime) {
+            beginTime = hours;
+        }
         res[0] = beginTime;
         res[1] = endTime;
         return res;
