@@ -57,12 +57,16 @@ public class UserController {
 
     @PutMapping(path = "/changePassword")
     public ResponseEntity<User> changePassword(@RequestBody User user) {
-        ResponseEntity<User> res = new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         if (usersRepository.existsById(user.getId())) {
-            usersRepository.updatePassword(user.getUsername(), user.getPassword());
-            res = new ResponseEntity<>(user, HttpStatus.OK);
+            int affectedRows = usersRepository.updatePassword(
+                    user.getUsername(), user.getPassword());
+            if (affectedRows < 1) {
+                return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
         }
-        return res;
+        return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
     }
 
     @Modifying

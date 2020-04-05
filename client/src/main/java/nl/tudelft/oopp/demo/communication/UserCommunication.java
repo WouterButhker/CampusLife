@@ -73,6 +73,7 @@ public class UserCommunication {
         User user = new User(username, encryptedPw);
         try {
             ServerCommunication.authenticatedPutRequest(url, user);
+            AuthenticationCommunication.updateHeaders(encryptedPw);
         } catch (Exception e) {
             e.printStackTrace();
         }
