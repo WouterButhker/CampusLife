@@ -71,7 +71,7 @@ public class MainMenuRoute extends Route {
             public void onButtonClicked(int buttonIndex) {
                 Building building = buildingsList.get(buttonIndex);
                 RoutingScene routingScene = MainMenuRoute.this.getRoutingScene();
-                routingScene.pushRoute(new RoomsListRoute(building.getCode()));
+                routingScene.pushRoute(new BuildingDisplayRoute(building));
             }
         });
         rootContainer.getChildren().add(buildingsGrid);
