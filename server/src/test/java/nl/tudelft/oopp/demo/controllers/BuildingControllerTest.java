@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -160,15 +159,14 @@ public class BuildingControllerTest {
         mvc.perform(delete(url)).andExpect(status().isNotFound());
     }
 
-    @Test
-    @WithMockUser(authorities = "Admin")
-    void testPutImage() throws Exception {
-        hasOneBuilding();
-        postOneBuilding();
+    private MockMultipartFile makeImageFile() {
         String contentType = "image/jpeg";
         byte[] bytes = "image".getBytes();
         MockMultipartFile file = new MockMultipartFile("file", "orig.jpg", contentType, bytes);
+        return file;
+    }
 
+    private MockMultipartHttpServletRequestBuilder putImageToBuilding() {
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/buildings/image/" + buildingCode);
         builder.with(new RequestPostProcessor() {
@@ -178,7 +176,36 @@ public class BuildingControllerTest {
                 return request;
             }
         });
+        return builder;
+    }
 
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testPutImage() throws Exception {
+        hasOneBuilding();
+        postOneBuilding();
+        MockMultipartFile file = makeImageFile();
+        MockMultipartHttpServletRequestBuilder builder = putImageToBuilding();
+        mvc.perform(builder.file(file)).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testPutImageWithoutBuilding() throws Exception {
+        hasOneBuilding();
+        MockMultipartFile file = makeImageFile();
+        MockMultipartHttpServletRequestBuilder builder = putImageToBuilding();
+        mvc.perform(builder.file(file)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testPutImageWithAnotherImage() throws Exception {
+        hasOneBuilding();
+        postOneBuilding();
+        MockMultipartFile file = makeImageFile();
+        MockMultipartHttpServletRequestBuilder builder = putImageToBuilding();
+        mvc.perform(builder.file(file));
         mvc.perform(builder.file(file)).andExpect(status().isOk());
     }
 
@@ -193,6 +220,16 @@ public class BuildingControllerTest {
 
     @Test
     @WithMockUser(authorities = "Admin")
+    void testGetImageUrlNoImage() throws Exception {
+        hasOneBuilding();
+        postOneBuilding();
+        int id = buildingCode;
+        assertNull(mvc.perform(get("/buildings/image/getUrl/" + id))
+                .andReturn().getResponse().getContentType());
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
     void testDownloadImage() throws Exception {
         String url = testGetImageUrl().substring(16); // String without the http://localhost/
         MockHttpServletResponse res = mvc.perform(get(url)).andExpect(status().isOk())
@@ -201,6 +238,18 @@ public class BuildingControllerTest {
 
         assertArrayEquals(response, "image".getBytes());
         assertEquals(res.getContentType(), "image/jpeg");
+    }
+
+    @Test
+    void testImageControllerCheckFile() {
+        String contentType = "image/jpeg";
+        byte[] bytes = "image".getBytes();
+        MockMultipartFile file = new MockMultipartFile(
+                "../file", "../orig.jpg", contentType, bytes);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            ImageController.checkFile(file);
+        });
     }
 
 }

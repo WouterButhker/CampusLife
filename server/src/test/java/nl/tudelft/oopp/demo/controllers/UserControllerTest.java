@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -154,6 +153,55 @@ public class UserControllerTest {
 
         assertArrayEquals(response, "image".getBytes());
         assertEquals(res.getContentType(), "image/jpeg");
+    }
+
+    private MockMultipartFile makeImageFile() {
+        String contentType = "image/jpeg";
+        byte[] bytes = "image".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "orig.jpg", contentType, bytes);
+        return file;
+    }
+
+    private MockMultipartHttpServletRequestBuilder putImageToUser(int id) throws Exception {
+        MockMultipartHttpServletRequestBuilder builder =
+                MockMvcRequestBuilders.multipart("/rest/users/image/" + id);
+        builder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+        return builder;
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testPutImageWithoutUser() throws Exception {
+        MockMultipartFile file = makeImageFile();
+        MockMultipartHttpServletRequestBuilder builder = putImageToUser(1);
+        mvc.perform(builder.file(file)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testPutImageWithAnotherImage() throws Exception {
+        registerUser();
+        MockMultipartFile file = makeImageFile();
+        MockMultipartHttpServletRequestBuilder builder =
+                putImageToUser(Integer.parseInt(testGetId()));
+        mvc.perform(builder.file(file));
+        mvc.perform(builder.file(file)).andExpect(status().isOk());
+    }
+
+
+    @Test
+    @WithMockUser(authorities = "Admin")
+    void testGetImageUrlNoImage() throws Exception {
+        registerUser();
+        int id = Integer.parseInt(testGetId());
+        assertNull(mvc.perform(get("/rest/users/image/getUrl/" + id))
+                .andReturn().getResponse().getContentType());
     }
 
 }
