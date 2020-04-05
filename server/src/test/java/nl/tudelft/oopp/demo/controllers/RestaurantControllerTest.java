@@ -136,15 +136,14 @@ public class RestaurantControllerTest {
                 .andExpect(status().isOk());
     }
 
-    /*
     @WithMockUser(authorities = "Admin")
     @Test
     void getRestaurantsFromBuildingTest() throws Exception {
         postRestaurant();
-        mvc.perform(get("/restaurants/getAllRestaurantsFromBuilding?building=" + building))
+        mvc.perform(get("/restaurants/getAllRestaurantsFromBuilding?building="
+                + building.getBuildingCode()))
                 .andExpect(status().isOk());
     }
-    */
 
     @WithMockUser(authorities = "Admin")
     @Test
