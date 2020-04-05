@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -111,7 +114,7 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(authorities = "Admin")
-    void testImage() throws Exception {
+    MvcResult testPutImage() throws Exception {
         registerUser();
         int id = Integer.parseInt(testGetId());
         String contentType = "image/jpeg";
@@ -128,9 +131,28 @@ public class UserControllerTest {
             }
         });
 
-        MvcResult postResult = mvc.perform(builder.file(file))
+        return mvc.perform(builder.file(file))
                 .andExpect(status().isOk()).andReturn();
+    }
 
+    @Test
+    @WithMockUser(authorities = "Student")
+    String testGetImageUrl() throws Exception {
+        testPutImage();
+        int id = Integer.parseInt(testGetId());
+        return mvc.perform(get("/rest/users/image/getUrl/" + id)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    @WithMockUser(authorities = "Student")
+    void testDownloadImage() throws Exception {
+        String url = testGetImageUrl().substring(16); // String without the http://localhost/
+        MockHttpServletResponse res = mvc.perform(get(url)).andExpect(status().isOk())
+                .andReturn().getResponse();
+        byte[] response = res.getContentAsByteArray();
+
+        assertArrayEquals(response, "image".getBytes());
+        assertEquals(res.getContentType(), "image/jpeg");
     }
 
 }
