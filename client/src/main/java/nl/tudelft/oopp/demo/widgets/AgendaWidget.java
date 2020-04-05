@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.demo.widgets;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,7 +23,7 @@ public class AgendaWidget extends VBox {
     private int minHour = 0;
     private int maxHour = 23;
 
-    private int topBlock = 10;
+    private int topBlock;
 
     private int selectedBlock = -1;
 
@@ -31,7 +32,7 @@ public class AgendaWidget extends VBox {
     private Button downButton;
 
     private List<AgendaBlock> agendaBlocks = new ArrayList<>();
-    private boolean[] availabilites = new boolean[24];
+    private boolean[] availabilities = new boolean[24];
 
     /**
      * Creates an AgendaWidget.
@@ -39,6 +40,9 @@ public class AgendaWidget extends VBox {
      *                 specified in the interface
      */
     public AgendaWidget(Listener listener, int numBlocks) {
+        Calendar now = Calendar.getInstance();
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+        topBlock = hour - 2;
         this.listener = listener;
         setNumBlocks(numBlocks);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
@@ -58,7 +62,7 @@ public class AgendaWidget extends VBox {
                         listener.onBlockSelected(
                                 topBlock + finalI,
                                 topBlock + finalI + 1,
-                                availabilites[topBlock + finalI]
+                                availabilities[topBlock + finalI]
                         );
                     }
                 }
@@ -108,7 +112,7 @@ public class AgendaWidget extends VBox {
      * @param availabilities an array of size 24 with availabilities for each hour
      */
     public void setAvailabilities(boolean[] availabilities) {
-        this.availabilites = availabilities;
+        this.availabilities = availabilities;
 
         redrawBlocks();
     }
@@ -168,7 +172,7 @@ public class AgendaWidget extends VBox {
                 agendaBlocks.get(i).setSelected(false);
             }
             boolean isWithinRange = (minHour <= hour && hour <= maxHour);
-            agendaBlocks.get(i).setAvailable(availabilites[hour] && isWithinRange);
+            agendaBlocks.get(i).setAvailable(availabilities[hour] && isWithinRange);
             if (!agendaBlocks.get(i).isAvailable || !isWithinRange) {
                 agendaBlocks.get(i).setDisable(true);
             } else {
