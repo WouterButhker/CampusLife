@@ -62,11 +62,6 @@ public class BikeReservation extends Reservation {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), pickUpBuilding, dropOffBuilding);
-    }
-
-    @Override
     public String toString() {
         return "bike reservation{" + super.toString()
                 + ", pickup building: " + this.pickUpBuilding
@@ -80,6 +75,5 @@ public class BikeReservation extends Reservation {
                 + " | Dropoff location: " + dropOffBuilding.getName()
                 + " | " + getDateAndTimeslot();
     }
-
 }
 

@@ -199,7 +199,8 @@ public class BikeReservationWidget extends VBox {
     }
 
     private int[] computeAvailabilities() {
-        return new BikeReservationWidgetLogic().computeAvailabilities(selected, selectedDate);
+        return new BikeReservationWidgetLogic().computeAvailabilities(selected,
+                selectedDate, Calendar.getInstance());
     }
 
     private void resizeDisplay(double newWidth) {
