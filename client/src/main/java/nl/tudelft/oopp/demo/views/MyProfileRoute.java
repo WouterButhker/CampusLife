@@ -210,25 +210,29 @@ public class MyProfileRoute extends Route {
 
             currentReservation.getChildren().add(reservationInformation);
 
+            String styleHovered = "-fx-background-color:#cf3229;" +
+                    "-fx-text-fill: white;";
+            String style = "-fx-background-color:#e4685d;" +
+                    "-fx-text-fill: white;";
             int finalI = i;
-            Button delete = new Button("X");
-            delete.setPrefSize(30, 30);
+            Button delete = new Button("Delete");
+
+            delete.setStyle(style);
+            delete.setOnMouseEntered(event -> delete.setStyle(styleHovered));
+            delete.setOnMouseExited(event -> delete.setStyle(style));
+
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    int id = reservations.get(finalI).getId();
-                    if (reservation instanceof RoomReservation) {
+                    if (PopupWidget.displayBool("Are you sure you want to delete this reservation?" +
+                            "\nThis will be irreversible", "Are you sure?")) {
+                        int id = reservations.get(finalI).getId();
                         RoomReservationCommunication.deleteReservationFromDatabase(id);
-                    } else if (reservation instanceof BikeReservation) {
-                        BikeReservationCommunication.deleteBikeReservation(id);
-                    } else if (reservation instanceof PersonalReservation) {
-                        PersonalReservationCommunication.deleteReservationFromDatabase(id);
-                    }
-
-                    if (past.isSelected()) {
-                        displayPastEvents();
-                    } else if (upcoming.isSelected()) {
-                        displayUpcomingEvents();
+                        if (past.isSelected()) {
+                            displayPastEvents();
+                        } else if (upcoming.isSelected()) {
+                            displayUpcomingEvents();
+                        }
                     }
                 }
             });
@@ -237,6 +241,9 @@ public class MyProfileRoute extends Route {
 
             currentReservation.getChildren().add(deletePane);
             reservationsList.getChildren().add(currentReservation);
+            Separator separator = new Separator();
+            separator.setPrefWidth(500);
+            reservationsList.getChildren().add(separator);
         }
         scrollPane.setContent(reservationsList);
         scrollPane.fitToWidthProperty().set(true);
