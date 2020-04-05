@@ -196,50 +196,19 @@ public class MyProfileRoute extends Route {
 
         for (int i = 0; i < reservations.size(); i++) {
             HBox currentReservation = new HBox();
-            Background background = new Background(
-                    new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
-            currentReservation.setBackground(background);
-            currentReservation.setAlignment(Pos.CENTER_LEFT);
-            currentReservation.setSpacing(7);
-            currentReservation.setPadding(new Insets(16, 16, 16, 16));
-
-            Text dateText = new Text();
-            Text timeText = new Text();
-
             Reservation reservation = reservations.get(i);
-            if (reservation instanceof RoomReservation
-                    || reservation instanceof PersonalReservation) {
-                dateText = new Text("Date: " + reservation.getTimeSlot().substring(0, 10));
-                timeText = new Text("Time: " + reservation.getTimeSlot().substring(11, 18)
-                        + " " + reservation.getTimeSlot().substring(30));
-            } else if (reservation instanceof BikeReservation) {
-                BikeReservation bikeReservation = (BikeReservation) reservation;
-                dateText = new Text("Date: " + bikeReservation.getDate());
-                timeText = new Text("Time: " + bikeReservation.getTimeSlot());
-            }
+            ReservationItem reservationInformation;
 
-            currentReservation.getChildren().add(dateText);
-            currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
-
-
-            currentReservation.getChildren().add(timeText);
-            currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
-
-            Text typeText = new Text("Type: my reservation");
             if (reservation instanceof RoomReservation) {
-                RoomReservation roomReservation = (RoomReservation) reservation;
-                if (roomReservation.getRoom() != null) {
-                    typeText = new Text("Room: " + roomReservation.getRoom().getRoomCode());
-                }
+                reservationInformation = new ReservationItem((RoomReservation) reservation);
             } else if (reservation instanceof BikeReservation) {
-                typeText = new Text("Type: bike reservation");
-            } else if (reservation instanceof PersonalReservation) {
-                PersonalReservation personalReservation = (PersonalReservation) reservation;
-                typeText = new Text("Activity: " + personalReservation.getActivity());
+                reservationInformation = new ReservationItem((BikeReservation) reservation);
+            } else {
+                reservationInformation = new ReservationItem((PersonalReservation) reservation);
             }
 
 
-            currentReservation.getChildren().add(typeText);
+            currentReservation.getChildren().add(reservationInformation);
 
             int finalI = i;
             Button delete = new Button("X");
