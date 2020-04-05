@@ -58,19 +58,19 @@ public class RestaurantControllerTest {
                 .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
-        id = 1234;
+        id = 0; // The id is not saved with this value, it is randomly generated.
         name = "Testing";
         building = new Building(1, "Testing", "Testing street", "06:00-18:00, 06:00-18:00,"
                 + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00", 45);
         description = "This is a restaurant created for testing.";
         insertBuildings();
+        restaurant = new Restaurant(id, name, building, description);
     }
 
     private void insertBuildings() throws Exception {
         mvc.perform(post("/buildings/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(building)));
-        restaurant = new Restaurant(id, name, building, description);
     }
 
     private void postFood() throws Exception {
@@ -80,10 +80,16 @@ public class RestaurantControllerTest {
                 .content(new Gson().toJson(food)));
     }
 
-    private void postRestaurant() throws Exception {
+    private Restaurant postRestaurant() throws Exception {
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(restaurant)));
+        String response = mvc.perform(get("/restaurants")).andReturn()
+                .getResponse().getContentAsString();
+        Type listType = new TypeToken<List<Restaurant>>() {}.getType();
+        List<Restaurant> restaurantList = new Gson().fromJson(response, listType);
+        Restaurant responseRestaurant = restaurantList.get(0);
+        return responseRestaurant;
     }
 
     @WithMockUser(authorities = "Admin")
