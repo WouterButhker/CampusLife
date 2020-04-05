@@ -47,12 +47,6 @@ public class AdminSceneRestaurantsController implements Initializable {
     private ChoiceBox<String> buildingList;
 
     @FXML
-    private Button submit;
-
-    @FXML
-    private Button refresh;
-
-    @FXML
     private ChoiceBox<String> buildingList2;
 
     @FXML
@@ -76,9 +70,7 @@ public class AdminSceneRestaurantsController implements Initializable {
 
     private void addStyle() {
         mainBox.getStylesheets().add("css/admin-scene.css");
-        mainBox.setStyle("-fx-background-color: -primary-color-light");
-        submit.getStyleClass().add("adminButton");
-        refresh.getStyleClass().add("adminButton");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
     }
 
     private void addAppBar() {
@@ -263,7 +255,7 @@ public class AdminSceneRestaurantsController implements Initializable {
 
     private void createModifyPopup(Restaurant restaurant) {
         VBox root = new VBox();
-        root.setStyle("-fx-background-color: -primary-color");
+        //root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(400, 500);
 
         Text header = new Text("Modify your restaurant");

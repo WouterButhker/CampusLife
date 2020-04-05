@@ -111,14 +111,9 @@ public class AdminSceneBuildingsController implements Initializable {
 
     private void addStyle() {
         mainBox.getStylesheets().add("css/admin-scene.css");
-        mainBox.setStyle("-fx-background-color: -primary-color-light");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
         submit.getStyleClass().add("adminButton");
         refresh.getStyleClass().add("adminButton");
-        fromChoicebox.getStyleClass().add("choice-box");
-        toChoicebox.getStyleClass().add("choice-box");
-        open.getStyleClass().add("choice-box");
-        options.getStyleClass().add("choice-box");
-        nameInput.getStyleClass().add("text-field");
     }
 
     private void addAppBar() {
@@ -328,13 +323,7 @@ public class AdminSceneBuildingsController implements Initializable {
                 deletePane.setPadding(new Insets(10, 0, 10, 10));
 
                 building.setPadding(new Insets(5, 5, 5,5));
-                String css = "-fx-border-color: black;\n"
-                        + "-fx-border-insets: 4\n;"
-                        + "-fx-border-style: solid\n;"
-                        + "-fx-border-width: 1;"
-                        + "-fx-border-radius: 10;"
-                        + "-fx-background-color: -primary-color";
-                building.setStyle(css);
+                building.getStyleClass().add("boxContainer");
                 building.getChildren().addAll(imageView, text, modifyPane, deletePane);
                 buildingsBox.getChildren().add(building);
             }
@@ -420,7 +409,7 @@ public class AdminSceneBuildingsController implements Initializable {
 
     private void createModifyPopup(Building building) {
         VBox root = new VBox();
-        root.setStyle("-fx-background-color: -primary-color");
+        //root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(600, 700);
 
         Text header = new Text("Modify your building");

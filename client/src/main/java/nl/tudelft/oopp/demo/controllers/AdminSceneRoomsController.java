@@ -90,7 +90,7 @@ public class AdminSceneRoomsController implements Initializable {
 
     private void addStyle() {
         mainBox.getStylesheets().add("css/admin-scene.css");
-        mainBox.setStyle("-fx-background-color: -primary-color-light");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
         submit.getStyleClass().add("adminButton");
         refresh.getStyleClass().add("adminButton");
     }
@@ -272,10 +272,10 @@ public class AdminSceneRoomsController implements Initializable {
                 rightsString = "Admin";
             }
             Label text = new Label("Building Code: " + rooms.get(i).getBuilding().getCode()
-                    + " | Room Code: "  + rooms.get(i).getRoomCode() + "\n" + rooms.get(i).getName()
-                    + " " + rightsString + " capacity: " + rooms.get(i).getCapacity()
-                    + "\nWhiteboard: " + rooms.get(i).isHasWhiteboard() + " TV: "
-                    + rooms.get(i).isHasTV());
+                    + " | Room Code: "  + rooms.get(i).getRoomCode() + "\nRoom name: "
+                    + rooms.get(i).getName() + " | capacity: " + rooms.get(i).getCapacity()
+                    + "\nAllowed: " + rightsString + " | Whiteboard: "
+                    + rooms.get(i).isHasWhiteboard() + " TV: " + rooms.get(i).isHasTV());
             text.setPrefSize(295, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
@@ -317,7 +317,7 @@ public class AdminSceneRoomsController implements Initializable {
 
     private void createModifyPopup(Room room) {
         VBox root = new VBox();
-        root.setStyle("-fx-background-color: -primary-color");
+        //root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(400, 650);
 
         Text header = new Text("Modify your room");

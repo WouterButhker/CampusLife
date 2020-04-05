@@ -46,45 +46,44 @@
     -fx-border-style: solid;
     -fx-border-width: 1;
     -fx-border-radius: 10;
-    -fx-background-color: -primary-color
 }
 
-.choice-box {
-    -fx-background-color: -primary-color-dark;
-    -fx-mark-color: -accent-color;
-}
+/*.choice-box {*/
+/*    -fx-background-color: -secondary-color;*/
+/*    -fx-mark-color: -accent-color;*/
+/*}*/
 
-.choice-box .context-menu {
-    -fx-background-color: -primary-color-dark;
-}
+/*.choice-box .context-menu {*/
+/*    -fx-background-color: -secondary-color;*/
+/*}*/
 
-.choice-box .menu-item > .label {
-    -fx-text-fill: white;
-}
+/*.choice-box .menu-item > .label {*/
+/*    -fx-text-fill: white;*/
+/*}*/
 
-.choice-box .menu-item:focused {
-    -fx-background-color: -accent-color;
-}
+/*.choice-box .menu-item:focused {*/
+/*    -fx-background-color: -accent-color;*/
+/*}*/
 
-.choice-box .menu-item:focused > .label {
-    -fx-text-fill: black;
-}
+/*.choice-box .menu-item:focused > .label {*/
+/*    -fx-text-fill: black;*/
+/*}*/
 
-.choice-box > .label {
-    -fx-text-fill: black;
-}
+/*.choice-box > .label {*/
+/*    -fx-text-fill: black;*/
+/*}*/
 
-.text-field {
-    -fx-background-color: -primary-color-dark;
-    -fx-text-fill: black;
-    -fx-prompt-text-fill: -accent-color;
-}
+/*.text-field {*/
+/*    -fx-background-color: -secondary-color;*/
+/*    -fx-text-fill: black;*/
+/*    -fx-prompt-text-fill: white;*/
+/*}*/
 
-.check-box {
-    -fx-mark-color: -accent-color;
-}
+/*.check-box {*/
+/*    -fx-mark-color: -accent-color;*/
+/*}*/
 
-.check-box .box {
-    -fx-background-color: -primary-color-dark;
-}
+/*.check-box .box {*/
+/*    -fx-background-color: -secondary-color;*/
+/*}*/
 

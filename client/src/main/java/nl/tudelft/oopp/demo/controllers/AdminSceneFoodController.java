@@ -70,9 +70,7 @@ public class AdminSceneFoodController implements Initializable {
 
     private void addStyle() {
         mainBox.getStylesheets().add("css/admin-scene.css");
-        mainBox.setStyle("-fx-background-color: -primary-color-light");
-        submit.getStyleClass().add("adminButton");
-        refresh.getStyleClass().add("adminButton");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
     }
 
     private void addAppBar() {
@@ -167,7 +165,12 @@ public class AdminSceneFoodController implements Initializable {
             StackPane deletePane = new StackPane(delete);
             deletePane.setPadding(new Insets(10, 0, 10, 0));
             restaurant.setPadding(new Insets(5, 5, 5, 5));
-            restaurant.getStyleClass().add("boxContainer");
+            String css = "-fx-border-color: black;\n"
+                    + "-fx-border-insets: 4\n;"
+                    + "-fx-border-style: solid\n;"
+                    + "-fx-border-width: 1;"
+                    + "-fx-border-radius: 10";
+            restaurant.setStyle(css);
             restaurant.getChildren().addAll(imageView, text, modifyPane, deletePane);
             foodsList.getChildren().add(restaurant);
         }
@@ -175,7 +178,7 @@ public class AdminSceneFoodController implements Initializable {
 
     private void createModifyPopup(Food food) {
         VBox root = new VBox();
-        root.setStyle("-fx-background-color: -primary-color");
+        //root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(400, 500);
 
         Text header = new Text("Modify the food item");

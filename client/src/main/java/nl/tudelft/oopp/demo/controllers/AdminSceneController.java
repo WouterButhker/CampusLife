@@ -52,7 +52,7 @@ public class AdminSceneController implements Initializable {
         modifyFoodEnter.getStyleClass().add("adminButton");
         modifyRightsEnter.getStyleClass().add("adminButton");
         modifyReservationsEnter.getStyleClass().add("adminButton");
-        mainBox.setStyle("-fx-background-color: -primary-color-light");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
     }
 
     private void addAppBar() {
