@@ -24,16 +24,14 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.PersonalReservationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 import nl.tudelft.oopp.demo.entities.reservation.PersonalReservation;
 import nl.tudelft.oopp.demo.entities.reservation.Reservation;
-import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
-import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
-import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.*;
 
