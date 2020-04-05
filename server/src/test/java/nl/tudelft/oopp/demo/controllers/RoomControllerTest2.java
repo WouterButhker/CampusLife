@@ -11,14 +11,25 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -180,23 +191,61 @@ class RoomControllerTest2 {
     void deleteRoomTest() {
     }
 
-    @WithMockUser(authorities = "Admin")
     @Test
-    void uploadFileTest() {
+    @WithMockUser(authorities = "Admin")
+    void testPutImage() throws Exception {
+        addToDatabaseTest();
+        String contentType = "image/jpeg";
+        byte[] bytes = "image".getBytes();
+        MockMultipartFile file = new MockMultipartFile("file", "orig.jpg", contentType, bytes);
+
+        MockMultipartHttpServletRequestBuilder builder =
+                MockMvcRequestBuilders.multipart("/rooms/image/" + roomCode);
+        builder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("PUT");
+                return request;
+            }
+        });
+
+        mockMvc.perform(builder.file(file))
+                .andExpect(status().isOk());
     }
 
-    @WithMockUser(authorities = "Admin")
     @Test
-    void getUrlTest() {
+    @WithMockUser(authorities = "Admin")
+    String testGetImageUrl() throws Exception {
+        testPutImage();
+
+        return mockMvc.perform(RestDocumentationRequestBuilders.get("/rooms/image/getUrl/" + roomCode)).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
     }
 
-    @WithMockUser(authorities = "Admin")
     @Test
-    void downloadFileTest() {
+    @WithMockUser(authorities = "Admin")
+    void testDownloadImage() throws Exception {
+        List<String> urls = parseLinkList(testGetImageUrl());
+        for (String url: urls) {
+            MockHttpServletResponse res = mockMvc.perform(RestDocumentationRequestBuilders.get(url))
+                    .andExpect(status().isOk())
+                    .andReturn().getResponse();
+            byte[] response = res.getContentAsByteArray();
+
+            assertArrayEquals(response, "image".getBytes());
+            assertEquals(res.getContentType(), "image/jpeg");
+        }
+
     }
 
-    @WithMockUser(authorities = "Admin")
-    @Test
-    void deleteImageTest() {
+    private List<String> parseLinkList(String list) {
+        String[] link = list.replace("\"", "").replace("[", "").replace("]", "")
+                .split(",");
+        List<String> out = Arrays.asList(link);
+        for (String s: out) {
+            s = s.replace("[", "").replace("\"", "").replace("]", "");
+            s = s.substring(16);
+        }
+        return out;
     }
 }
