@@ -19,6 +19,17 @@ public class WeekdaysTest {
     }
 
     @Test
+    void testIsOpen() {
+        assertFalse(weekdays.isOpenAt(0, 11, 59));
+        assertTrue(weekdays.isOpenAt(0, 12, 0));
+        assertTrue(weekdays.isOpenAt(0, 12, 1));
+
+        assertTrue(weekdays.isOpenAt(0, 23, 59));
+        assertFalse(weekdays.isOpenAt(0, 24, 0));
+        assertFalse(weekdays.isOpenAt(0, 24, 1));
+    }
+
+    @Test
     void filledConstructorTest() {
         assertNotNull(weekdays);
     }
