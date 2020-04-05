@@ -13,11 +13,6 @@ import org.junit.jupiter.api.Test;
 
 public class GetAllBuildingsTest {
 
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
-
     @Test
     public void testGetAllBuildings() {
         List<Building> buildings = BuildingCommunication.getAllBuildings();

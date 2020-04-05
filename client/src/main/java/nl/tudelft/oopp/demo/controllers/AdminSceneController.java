@@ -3,9 +3,11 @@ package nl.tudelft.oopp.demo.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
@@ -39,13 +41,18 @@ public class AdminSceneController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addAppBar();
+        addStyle();
+    }
 
-        modifyBuildingsEnter.setStyle("-fx-font-size: 17");
-        modifyRoomsEnter.setStyle("-fx-font-size: 17");
-        modifyRestaurantEnter.setStyle("-fx-font-size: 17");
-        modifyFoodEnter.setStyle("-fx-font-size: 17");
-        modifyRightsEnter.setStyle("-fx-font-size: 17");
-        modifyReservationsEnter.setStyle("-fx-font-size: 17");
+    private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
+        modifyBuildingsEnter.getStyleClass().add("adminButton");
+        modifyRoomsEnter.getStyleClass().add("adminButton");
+        modifyRestaurantEnter.getStyleClass().add("adminButton");
+        modifyFoodEnter.getStyleClass().add("adminButton");
+        modifyRightsEnter.getStyleClass().add("adminButton");
+        modifyReservationsEnter.getStyleClass().add("adminButton");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
     }
 
     private void addAppBar() {

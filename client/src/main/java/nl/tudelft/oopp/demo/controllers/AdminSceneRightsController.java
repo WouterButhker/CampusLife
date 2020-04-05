@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.UserCommunication;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
 public class AdminSceneRightsController implements Initializable {
 
@@ -33,13 +34,27 @@ public class AdminSceneRightsController implements Initializable {
     private VBox usersBox;
 
     @FXML
+    private Button search;
+
+    @FXML
+    private Button reset;
+
+    @FXML
     private ScrollPane scrollPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addAppBar();
         loadUsers(null);
+        addStyle();
         setGlobalEventHandler(mainBox);
+    }
+
+    private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
+        search.getStyleClass().add("adminButtonSmall");
+        reset.getStyleClass().add("adminButtonSmall");
     }
 
     private void addAppBar() {
@@ -49,6 +64,7 @@ public class AdminSceneRightsController implements Initializable {
     @FXML
     private void resetUsers() {
         loadUsers(null);
+        searchInput.setText("");
     }
 
     @FXML
@@ -68,16 +84,11 @@ public class AdminSceneRightsController implements Initializable {
         }
 
         for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
             HBox box = new HBox();
             box.setAlignment(Pos.CENTER_LEFT);
-            String css = "-fx-border-color: black;\n"
-                    + "-fx-border-insets: 4\n;"
-                    + "-fx-border-style: solid\n;"
-                    + "-fx-border-width: 1;"
-                    + "-fx-border-radius: 10;";
-            box.setStyle(css);
+            box.getStyleClass().add("boxContainer");
             box.setPrefHeight(50);
+            User user = users.get(i);
             Label usernameText = new Label(" Username : " + user.getUsername());
             Label role = new Label("Current role : " + user.getRole());
             usernameText.setStyle("-fx-font-size: 18");
@@ -90,6 +101,7 @@ public class AdminSceneRightsController implements Initializable {
             options.setValue(user.getRole());
             HBox.setMargin(options, new Insets(0, 10, 0,10));
             Button confirm = new Button("Confirm");
+            confirm.getStyleClass().add("adminButtonSmall");
             confirm.setStyle("-fx-font-size: 14");
             confirm.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -100,12 +112,17 @@ public class AdminSceneRightsController implements Initializable {
             });
             HBox.setMargin(confirm, new Insets(0, 0, 0,10));
             Button delete = new Button("Delete");
+            delete.getStyleClass().add("adminButtonSmall");
             delete.setStyle("-fx-font-size: 14");
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    deleteUser(user.getId());
-                    loadUsers(search);
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        deleteUser(user.getId());
+                        loadUsers(search);
+                    }
                 }
             });
             HBox.setMargin(delete, new Insets(0, 0, 0,50));

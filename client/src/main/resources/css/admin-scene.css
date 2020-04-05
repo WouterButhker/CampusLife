@@ -1,0 +1,89 @@
+@import url("palette.css");
+
+.button {
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.button:hover {
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color-dark;
+    -fx-background-radius: 8;
+}
+
+.adminButton {
+    -fx-font-size: 17;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.adminButton:hover {
+    -fx-font-size: 17;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color-dark;
+    -fx-background-radius: 8;
+}
+
+.adminButtonSmall {
+    -fx-font-size: 12;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color;
+    -fx-background-radius: 8;
+}
+
+.adminButtonSmall:hover {
+    -fx-font-size: 12;
+    -fx-font-family: -primary-font-name;
+    -fx-background-color: -secondary-color-dark;
+    -fx-background-radius: 8;
+}
+
+.boxContainer {
+    -fx-border-color: black;
+    -fx-border-insets: 4;
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+/*.choice-box {*/
+/*    -fx-background-color: -secondary-color;*/
+/*    -fx-mark-color: -accent-color;*/
+/*}*/
+
+/*.choice-box .context-menu {*/
+/*    -fx-background-color: -secondary-color;*/
+/*}*/
+
+/*.choice-box .menu-item > .label {*/
+/*    -fx-text-fill: white;*/
+/*}*/
+
+/*.choice-box .menu-item:focused {*/
+/*    -fx-background-color: -accent-color;*/
+/*}*/
+
+/*.choice-box .menu-item:focused > .label {*/
+/*    -fx-text-fill: black;*/
+/*}*/
+
+/*.choice-box > .label {*/
+/*    -fx-text-fill: black;*/
+/*}*/
+
+/*.text-field {*/
+/*    -fx-background-color: -secondary-color;*/
+/*    -fx-text-fill: black;*/
+/*    -fx-prompt-text-fill: white;*/
+/*}*/
+
+/*.check-box {*/
+/*    -fx-mark-color: -accent-color;*/
+/*}*/
+
+/*.check-box .box {*/
+/*    -fx-background-color: -secondary-color;*/
+/*}*/
+

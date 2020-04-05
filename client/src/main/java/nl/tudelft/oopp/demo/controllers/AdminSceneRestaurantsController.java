@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -21,12 +23,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
 public class AdminSceneRestaurantsController implements Initializable {
     @FXML
@@ -42,9 +47,6 @@ public class AdminSceneRestaurantsController implements Initializable {
     private ChoiceBox<String> buildingList;
 
     @FXML
-    private Button submit;
-
-    @FXML
     private ChoiceBox<String> buildingList2;
 
     @FXML
@@ -56,10 +58,19 @@ public class AdminSceneRestaurantsController implements Initializable {
     @FXML
     private VBox restaurantsList;
 
+    @FXML
+    private ImageSelectorWidget imageSelectorWidget;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadBuildings();
         addAppBar();
+        addStyle();
+    }
+
+    private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
     }
 
     private void addAppBar() {
@@ -102,26 +113,35 @@ public class AdminSceneRestaurantsController implements Initializable {
 
         String restaurantDescription = restaurantDescriptionInput.getText();
 
-        Text submitStatus = new Text();
+        String submitStatus;
+        boolean correct = false;
 
-        if (!restaurantName.equals("") && buildingFound) {
-            RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
+        if (!restaurantName.equals("") && buildingFound && imageSelectorWidget.imageSelected()) {
+            Restaurant result =
+                    RestaurantCommunication.createRestaurant(new Restaurant(restaurantID,
                                                                     restaurantName,
                                                                     buildingCode,
                                                                     restaurantDescription));
-            submitStatus.setText("Restaurant has been successfully added to "
-                    + buildingList.getValue().split(" ")[1]);
+            ImageCommunication.updateRestaurantImage(result.getId(),
+                    imageSelectorWidget.getImage());
+            submitStatus = "Restaurant has been successfully added to \n"
+                    + buildingList.getValue().split(" ")[1];
+            correct = true;
             try {
                 refreshRestaurantsPage();
             } catch (Exception e) {
                 System.out.println("Refresh failed");
             }
         } else {
-            submitStatus.setText("All fields have to be entered");
+            submitStatus = ("All fields have to be entered");
         }
 
         if (!buildingFound) {
-            submitStatus.setText("Please select a building");
+            submitStatus = ("Please select a building");
+        }
+
+        if (!imageSelectorWidget.imageSelected()) {
+            submitStatus = ("Image has to be selected");
         }
 
         Button back = new Button("Okay! take me back");
@@ -133,7 +153,7 @@ public class AdminSceneRestaurantsController implements Initializable {
                 stage.close();
             }
         });
-        VBox restaurantBox = new VBox(submitStatus, back);
+        VBox restaurantBox = new VBox(Double.parseDouble(submitStatus), back);
         restaurantBox.setPrefSize(300, 200);
         restaurantBox.setAlignment(Pos.CENTER);
         AnchorPane root = new AnchorPane(restaurantBox);
@@ -143,6 +163,12 @@ public class AdminSceneRestaurantsController implements Initializable {
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
+
+        if (correct) {
+            PopupWidget.displaySuccess(submitStatus, "Success!");
+        } else {
+            PopupWidget.displayError(submitStatus, "Error!");
+        }
     }
 
     private void loadRestaurants(String buildingCodeString) {
@@ -170,7 +196,8 @@ public class AdminSceneRestaurantsController implements Initializable {
         for (int i = 0; i < numRestaurants; i++) {
             HBox restaurant = new HBox();
             restaurant.setMaxWidth(400);
-            Image image = new Image("images/main-screen-food.jpg");
+            Image image = new Image(ImageCommunication
+                    .getRestaurantImageUrl(restaurants.get(i).getId()).get(0));
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(65);
             imageView.setFitHeight(60);
@@ -181,6 +208,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             text.setPrefSize(225, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
+            modify.getStyleClass().add("adminButtonSmall");
             int finalI = i;
             modify.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -193,12 +221,17 @@ public class AdminSceneRestaurantsController implements Initializable {
             StackPane modifyPane = new StackPane(modify);
             modifyPane.setPadding(new Insets(10, 0, 10, 0));
             Button delete = new Button("delete");
+            delete.getStyleClass().add("adminButtonSmall");
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    RestaurantCommunication.deleteRestaurantFromDatabase(
-                            restaurants.get(finalI).getId());
-                    loadRestaurants(buildingList2.getValue());
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        RestaurantCommunication.deleteRestaurantFromDatabase(
+                                restaurants.get(finalI).getId());
+                        loadRestaurants(buildingList2.getValue());
+                    }
                 }
             });
             delete.setPrefSize(45, 40);
@@ -206,12 +239,7 @@ public class AdminSceneRestaurantsController implements Initializable {
             StackPane deletePane = new StackPane(delete);
             deletePane.setPadding(new Insets(10, 0, 10, 0));
             restaurant.setPadding(new Insets(5, 5, 5, 5));
-            String css = "-fx-border-color: black;\n"
-                    + "-fx-border-insets: 4\n;"
-                    + "-fx-border-style: solid\n;"
-                    + "-fx-border-width: 1;"
-                    + "-fx-border-radius: 10;";
-            restaurant.setStyle(css);
+            restaurant.getStyleClass().add("boxContainer");
             restaurant.getChildren().addAll(imageView, text, modifyPane, deletePane);
             restaurantsList.getChildren().add(restaurant);
         }
@@ -227,6 +255,7 @@ public class AdminSceneRestaurantsController implements Initializable {
 
     private void createModifyPopup(Restaurant restaurant) {
         VBox root = new VBox();
+        //root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(400, 500);
 
         Text header = new Text("Modify your restaurant");
@@ -234,17 +263,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         HBox headerBox = new HBox(header);
         headerBox.setPadding(new Insets(20, 125, 10, 125));
 
-        /*Label idText = new Label("Id :");
-        HBox idTextBox = new HBox(idText);
-        idTextBox.setPadding(new Insets(10, 175, 0, 175));
-
-        Pane spacer = new Pane();
-        spacer.setPrefSize(125, 20);
-        TextField id = new TextField(Integer.toString(restaurant.getId()));
-        id.setPrefSize(150, 20);
-        HBox idBox = new HBox(spacer, id);
-        idBox.setPadding(new Insets(10, 0, 0, 0));*/
-
+        // Name
         Label nameText = new Label("Name :");
         HBox nameTextBox = new HBox(nameText);
         nameTextBox.setPadding(new Insets(10, 175, 0, 175));
@@ -256,6 +275,7 @@ public class AdminSceneRestaurantsController implements Initializable {
         HBox nameBox = new HBox(spacer1, name);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
+        // Description
         Label descriptionText = new Label("Description :");
         HBox descriptionTextBox = new HBox(descriptionText);
         descriptionTextBox.setPadding(new Insets(10, 175, 0, 175));
@@ -267,17 +287,27 @@ public class AdminSceneRestaurantsController implements Initializable {
         final HBox descriptionBox = new HBox(spacer2, description);
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
+        // Images
+        ImageSelectorWidget imageUpdateWidget = new ImageSelectorWidget();
+        HBox imageUpdateWidgetBox = new HBox();
+        imageUpdateWidgetBox.setAlignment(Pos.CENTER);
+        imageUpdateWidgetBox.getChildren().add(imageUpdateWidget);
+
+        // Submit button
         Button submit = new Button("Submit");
+        submit.getStyleClass().add("adminButtonSmall");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
-        submitBox.setPadding(new Insets(10, 150, 10, 150));
+        submitBox.setPadding(new Insets(10, 0,10, 0));
+        submitBox.setAlignment(Pos.CENTER);
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Label status = updateRestaurant(restaurant.getId(),
                         name.getText(),
                         restaurant.getBuildingCode(),
-                        description.getText());
+                        description.getText(),
+                        imageUpdateWidget.getImage());
                 if (status == null) {
                     Button button = (Button) event.getSource();
                     Stage stage = (Stage) button.getScene().getWindow();
@@ -298,26 +328,80 @@ public class AdminSceneRestaurantsController implements Initializable {
         root.getChildren().addAll(headerBox,
                 nameTextBox, nameBox,
                 descriptionTextBox, descriptionBox,
-                submitBox);
+                imageUpdateWidgetBox, submitBox);
         Stage stage = new Stage();
+        stage.setTitle("Modifying " + restaurant.getName());
+        stage.getIcons().add(new Image("images/modifyingImage.png"));
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("css/palette.css");
+        scene.getStylesheets().add("css/admin-scene.css");
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(buildingList.getScene().getWindow());
         stage.showAndWait();
     }
 
-    private Label updateRestaurant(int id, String name, int buildingCode, String description) {
+    private Label updateRestaurant(int id,
+                                   String name,
+                                   int buildingCode,
+                                   String description,
+                                   File image) {
         if (!name.equals("") && !description.equals("")) {
             RestaurantCommunication.updateRestaurant(new Restaurant(id,
                                                                     name,
                                                                     buildingCode,
                                                                     description));
+            if (image != null) {
+                ImageCommunication.updateRestaurantImage(id, image);
+            }
         } else {
             return new Label("All fields have to be entered");
         }
 
         return null;
+    }
+
+    private Node addImage(Restaurant restaurant, File image) {
+        if (image != null) {
+            ImageCommunication.updateRestaurantImage(restaurant.getId(), image);
+            return null;
+        }
+        Label message = new Label("An image has to be selected");
+
+
+        message.setStyle("-fx-text-fill: red");
+        HBox res = new HBox(message);
+        res.setAlignment(Pos.CENTER);
+        return res;
+    }
+
+    private void loadImages(Restaurant restaurant, HBox images) {
+        images.getChildren().clear();
+        List<String> imageUrls = ImageCommunication.getRestaurantImageUrl(restaurant.getId());
+        for (int i = 0; i < imageUrls.size(); i++) {
+            Image image = new Image(imageUrls.get(i));
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            Button delete = new Button("X");
+            delete.setPrefSize(20, 20);
+            HBox deleteContainer = new HBox(delete);
+            deleteContainer.setPrefHeight(20);
+            deleteContainer.setAlignment(Pos.TOP_RIGHT);
+            deleteContainer.setPadding(new Insets(5, 5, 0, 0));
+            int finalI = i;
+            delete.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    ImageCommunication.deleteRestaurantImage(imageUrls.get(finalI));
+                    loadImages(restaurant, images);
+                }
+            });
+            StackPane container = new StackPane(imageView, deleteContainer);
+            container.setPrefSize(100, 100);
+            container.setPadding(new Insets(5));
+            images.getChildren().add(container);
+        }
     }
 
 }

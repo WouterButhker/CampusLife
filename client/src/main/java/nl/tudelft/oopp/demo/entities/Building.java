@@ -6,7 +6,6 @@ public class Building {
     private String name;
     private String location;
     private String openingHours;
-    private String image;
     private Integer bikes;
 
     /**
@@ -22,13 +21,11 @@ public class Building {
                     String name,
                     String location,
                     String openingHours,
-                    //String image,
                     Integer bikes) {
         this.buildingCode = buildingCode;
         this.name = name;
         this.location = location;
         this.openingHours = openingHours;
-        //this.image = image;
         this.bikes = bikes;
     }
 
@@ -72,14 +69,6 @@ public class Building {
         this.openingHours = openingHours;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public Integer getBikes() {
         return bikes;
     }
@@ -90,7 +79,7 @@ public class Building {
 
     public String toString() {
         return "{" + buildingCode + ", " + name + ", "
-                + location + ", " + openingHours + ", " + "image" + ", " + bikes + "}";
+                + location + ", " + openingHours + ", " + bikes + "}";
     }
 
     public String getNameAndCode() {
@@ -110,7 +99,6 @@ public class Building {
                 && name.equals(building.name)
                 && location.equals(building.location)
                 && openingHours.equals(building.openingHours)
-                //&& image.equals(building.image)
                 && bikes.equals(building.bikes);
     }
 }

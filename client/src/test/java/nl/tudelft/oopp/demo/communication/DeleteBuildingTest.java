@@ -8,11 +8,6 @@ import org.junit.jupiter.api.Test;
 
 public class DeleteBuildingTest {
 
-    @BeforeEach
-    void doBeforeEach() {
-        AuthenticationCommunication.login("admin", "admin");
-    }
-
     @Test
     public void testDeleteBuilding() {
         Integer buildingCode = 1;

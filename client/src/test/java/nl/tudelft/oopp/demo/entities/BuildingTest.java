@@ -17,6 +17,7 @@ class BuildingTest {
     private Integer bikes;
     private Building building;
 
+
     @BeforeEach
     void setUpper() {
         code = 42069;

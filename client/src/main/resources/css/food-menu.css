@@ -1,5 +1,100 @@
 @import url("palette.css");
 
+.food-item-name {
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 16;
+}
+
+.food-item-quantity {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+.info-text {
+    -fx-font-family: -primary-font-name;
+    -fx-font-style: italic;
+    -fx-text-fill: #BDBDBD;
+    -fx-fill: #BDBDBD;
+}
+
+.list-item-bg:hover {
+    -fx-background-color: #00000033;
+}
+
+.list-item-ptext {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}
+
+.food-item-price {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-fill: -primary-color-dark;
+    -fx-font-size: 16;
+}
+
+.food-order-item-title {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 18;
+}
+
+.food-order-item-time {
+    -fx-fill: #9E9E9E;
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 14;
+}
+
+.list-item-stext {
+    -fx-fill: #9E9E9E;
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 14;
+}
+
+.list-popup-title {
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+.list-popup-body {
+    -fx-font-family: -primary-font-name;
+    -fx-font-size: 16;
+}
+
+.food-order-item-bg:hover {
+    -fx-background-color: #00000033;
+}
+
+.expand-button {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/expand_icon.png');
+}
+
+.expand-button:selected {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/expanded_icon.png');
+}
+
+.popup-bg {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8px;
+}
+
+.popup-button {
+    -fx-background-color: -secondary-color;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.popup-button:hover {
+    -fx-background-color: -secondary-color-dark;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
 .order-button {
     -fx-background-color: -secondary-color;
     -fx-font-family: -primary-font-name;
@@ -8,6 +103,12 @@
 
 .order-button:hover {
     -fx-background-color: -secondary-color-dark;
+    -fx-font-family: -primary-font-name;
+    -fx-font-weight: bold;
+}
+
+.order-button-disabled {
+    -fx-background-color: #E0E0E0;
     -fx-font-family: -primary-font-name;
     -fx-font-weight: bold;
 }
@@ -30,6 +131,32 @@
 .remove-button:hover {
     -fx-background-color: #00000033;
     -fx-background-image: url('/images/remove_icon.png');
+}
+
+.favorite-button {
+    -fx-background-color: #FFFFFF99;
+    -fx-background-image: url('/images/favorite_empty.png');
+    -fx-background-radius: 0 8 0 0;
+}
+
+.favorite-button:selected {
+    -fx-background-color: #FFFFFF99;
+    -fx-background-image: url('/images/favorite_filled.png');
+    -fx-background-radius: 0 8 0 0;
+}
+
+.favorite-button2 {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/favorite_empty.png');
+}
+
+.favorite-button2:selected {
+    -fx-background-color: #00000000;
+    -fx-background-image: url('/images/favorite_filled.png');
+}
+
+.fav-hover:hover {
+    -fx-background-color: #00000033;
 }
 
 .order-name-text {

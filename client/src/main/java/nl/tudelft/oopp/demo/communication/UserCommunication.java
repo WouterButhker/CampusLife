@@ -33,8 +33,8 @@ public class UserCommunication {
      */
     public static User updateUserRole(User user) {
         try {
-            String responseString = ServerCommunication.authenticatedPutRequest("/rest/users", user)
-                    .getBody();
+            String responseString = ServerCommunication.authenticatedPutRequest(
+                    "/rest/users/changeRole", user).getBody();
             Gson gson = new Gson();
             return gson.fromJson(responseString, User.class);
         } catch (Exception e) {

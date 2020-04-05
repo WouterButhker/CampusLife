@@ -1,12 +1,15 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.food.Food;
 import nl.tudelft.oopp.demo.entities.image.BuildingImage;
 import nl.tudelft.oopp.demo.entities.image.RestaurantImage;
+import nl.tudelft.oopp.demo.entities.image.RoomImage;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
@@ -146,12 +149,17 @@ public class RestaurantController {
     }
 
     @GetMapping("/image/getUrl/{restaurantCode}")
-    String getUrl(@PathVariable Integer restaurantCode) {
+    List<String> getUrl(@PathVariable Integer restaurantCode) {
         Restaurant restaurant = restaurantRepository.findRestaurantById(restaurantCode);
         if (restaurantImageRepository.existsByRestaurant(restaurant)) {
-            RestaurantImage restaurantImage =
+            List<RestaurantImage> restaurantImages =
                     restaurantImageRepository.findByRestaurant(restaurant);
-            return ImageController.getUrl("/restaurants/image/downloadFile/", restaurantImage);
+            List<String> response = new ArrayList<>();
+            for (RestaurantImage restaurantImage : restaurantImages) {
+                response.add(ImageController.getUrl(
+                        "/restaurants/image/downloadFile/", restaurantImage));
+            }
+            return response;
         }
         return null;
     }
@@ -159,6 +167,11 @@ public class RestaurantController {
     @GetMapping("/image/downloadFile/{imageId}")
     ResponseEntity<Resource> downloadFile(@PathVariable String imageId) {
         return ImageController.downloadFile(restaurantImageRepository.findByImageId(imageId));
+    }
+
+    @DeleteMapping("/image/{imageId}")
+    String deleteImage(@PathVariable String imageId) {
+        return restaurantImageRepository.deleteByImageId(imageId);
     }
 
 }

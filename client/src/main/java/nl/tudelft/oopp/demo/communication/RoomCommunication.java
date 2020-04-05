@@ -29,7 +29,15 @@ public class RoomCommunication {
             ResponseEntity<String> response = ServerCommunication.authenticatedRequest(url);
             if (response != null) {
                 Type listType = new TypeToken<List<Room>>() {}.getType();
-                return new Gson().fromJson(response.getBody(), listType);
+                List<Room> rooms =  new Gson().fromJson(response.getBody(), listType);
+                for (int i = 0; i < rooms.size(); i++) {
+                    Room room = rooms.get(i);
+                    if (!room.getBuilding().getCode().equals(building)) {
+                        rooms.remove(i);
+                        i--;
+                    }
+                }
+                return rooms;
             }
         } catch (Exception e) {
             e.printStackTrace();
