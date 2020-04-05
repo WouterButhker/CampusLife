@@ -252,10 +252,6 @@ public class RestaurantControllerTest {
         Type listType = new TypeToken<List<String>>() {}.getType();
         List<String> outList = new Gson().fromJson(response, listType);
         String out = outList.get(0);
-        System.out.println(out);
-        System.out.println("---------------------------"
-                + "--------------------------------------\n\n\n\n\n\n");
-
         return out;
     }
 
@@ -263,9 +259,6 @@ public class RestaurantControllerTest {
     @WithMockUser(authorities = "Admin")
     void testDownloadImage() throws Exception {
         String url = getImageUrl().substring(16); // String without the http://localhost/
-        System.out.println("---------------------------"
-                + "--------------------------------------\n\n\n\n\n\n");
-        System.out.println(url);
         MockHttpServletResponse res = mvc.perform(get(url)).andExpect(status().isOk())
                 .andReturn().getResponse();
         byte[] response = res.getContentAsByteArray();
@@ -273,5 +266,14 @@ public class RestaurantControllerTest {
         assertArrayEquals(response, "image".getBytes());
         assertEquals(res.getContentType(), "image/jpeg");
     }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void deleteImageTest() throws Exception {
+        String url = "/restaurants/image/1";
+        mvc.perform(delete(url))
+                .andExpect(status().isOk());
+    }
+
 
 }
