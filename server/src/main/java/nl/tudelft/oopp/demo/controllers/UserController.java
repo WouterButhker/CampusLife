@@ -54,9 +54,8 @@ public class UserController {
         return res;
     }
 
-
     @PutMapping(path = "/changePassword")
-    public ResponseEntity<User> changePassword(@RequestBody User user) {
+    ResponseEntity<User> changePassword(@RequestBody User user) {
         if (usersRepository.existsById(user.getId())) {
             int affectedRows = usersRepository.updatePassword(
                     user.getUsername(), user.getPassword());
