@@ -93,19 +93,13 @@ public class RestaurantControllerTest {
     }
 
     private Restaurant postRestaurant() throws Exception {
-            String response = mvc.perform(post("/restaurants")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(new Gson().toJson(restaurant)))
-                    .andReturn().getResponse().getContentAsString();
-            Restaurant responseRestaurant = new Gson().fromJson(response, Restaurant.class);
-            restaurant.setId(responseRestaurant.getId());
-            return responseRestaurant;
-        /*String response = mvc.perform(get("/restaurants")).andReturn()
-                .getResponse().getContentAsString();
-        Type listType = new TypeToken<List<Restaurant>>() {}.getType();
-        List<Restaurant> restaurantList = new Gson().fromJson(response, listType);
-        Restaurant responseRestaurant = restaurantList.get(0);
-        return responseRestaurant;*/
+        String response = mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(restaurant)))
+                .andReturn().getResponse().getContentAsString();
+        Restaurant responseRestaurant = new Gson().fromJson(response, Restaurant.class);
+        restaurant.setId(responseRestaurant.getId());
+        return responseRestaurant;
     }
 
     @WithMockUser(authorities = "Admin")
