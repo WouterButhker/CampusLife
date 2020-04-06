@@ -60,4 +60,11 @@ class FavoriteRoomTest {
         fr.setUser(new User(1212));
         assertEquals(1212, fr.getUser().getId());
     }
+
+    @Test
+    void toStringTest() {
+        assertEquals("FavoriteRoom{id=42, room=room{roomcode: null, name: null, capacity:"
+                + " null, rights: null, hasTV: false, hasWhiteboard: false, building: null},"
+                + " user=user{id: null, name:null, role: null}}", fr.toString());
+    }
 }

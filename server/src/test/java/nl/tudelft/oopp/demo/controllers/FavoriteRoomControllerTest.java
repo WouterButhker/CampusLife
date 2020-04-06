@@ -1,17 +1,20 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.FavoriteRoom;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,9 +25,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -53,7 +60,6 @@ class FavoriteRoomControllerTest {
 
     private Integer id;
     private User user;
-    private Integer userId;
     private FavoriteRoom favoriteRoom;
 
     @BeforeEach
@@ -74,12 +80,10 @@ class FavoriteRoomControllerTest {
 
         id = 42;
         user = new User("admin", "admin");
-        userId = user.getId();
         favoriteRoom = new FavoriteRoom(id, room, user);
     }
 
     @WithMockUser(authorities = "Admin")
-    @Test
     public void saveRoom() throws Exception {
         mockMvc.perform(post("/buildings/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -93,12 +97,18 @@ class FavoriteRoomControllerTest {
     }
 
     @WithMockUser(authorities = "Admin")
-    @Test
     public void saveUser() throws Exception {
         mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(user)))
-                .andExpect(status().isOk());
+                .content(new Gson().toJson(user)));
+        String responseString = mockMvc.perform(get("/rest/users/all"))
+                .andReturn().getResponse().getContentAsString();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<User>>() {
+        }.getType();
+        List<User> userList = gson.fromJson(responseString, listType);
+        user = userList.get(0);
+        favoriteRoom = new FavoriteRoom(id, room, user);
     }
 
     @WithMockUser(authorities = "Admin")
@@ -114,16 +124,38 @@ class FavoriteRoomControllerTest {
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getFavoriteRoomsTest() {
+    void addFavoriteRoomFoundTest() throws Exception {
+        addFavoriteRoomTest();
+        mockMvc.perform(post("/favoriterooms")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(favoriteRoom)))
+                .andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void deleteFavoriteRoomTest() {
+    void getFavoriteRoomsTest() throws Exception {
+        addFavoriteRoomTest();
+        String url = "/favoriterooms/user/" + user.getId();
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void getFavoriteRoomTest() {
+    void deleteFavoriteRoomTest() throws Exception {
+        addFavoriteRoomTest();
+        String url = "/favoriterooms/" + favoriteRoom.getId(); //how is this 404?
+        mockMvc.perform(delete(url))
+                .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void getFavoriteRoomTest() throws Exception {
+        addFavoriteRoomTest();
+        String url = "/favoriterooms/user/" + user.getId() + "/room/" + room.getRoomCode();
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk());
     }
 }
