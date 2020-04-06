@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(path = "/restaurants")
@@ -72,9 +73,14 @@ public class RestaurantController {
     @PutMapping (value = "/{id}", consumes = "application/json", produces = "application/json")
     public Restaurant updateRestaurant(@PathVariable Integer id,
                                        @RequestBody Restaurant restaurant) {
-        Building building = buildingRepository.findById(restaurant.getBuildingCode()).get();
-        restaurant.setBuilding(building);
-        return restaurantRepository.save(restaurant);
+        if (!restaurantRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Restaurant does not exists!");
+        } else {
+            Building building = buildingRepository.findById(restaurant.getBuildingCode()).get();
+            restaurant.setBuilding(building);
+            return restaurantRepository.save(restaurant);
+        }
     }
 
     /**
@@ -100,7 +106,7 @@ public class RestaurantController {
     }
 
     /**
-     * Retrieves all the foods ids and names from the database.
+     * Retrieves all the restaurants ids and names from the database.
      *
      * @return a list with format "id name"
      */
@@ -131,7 +137,7 @@ public class RestaurantController {
     @Modifying
     @PutMapping(value = "/image/{restaurantCode}")
     ResponseEntity<RestaurantImage> uploadFile(@PathVariable Integer restaurantCode,
-                                             @RequestParam("file") MultipartFile file)
+                                               @RequestParam("file") MultipartFile file)
             throws IOException {
         if (!restaurantRepository.existsById(restaurantCode)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -150,18 +156,18 @@ public class RestaurantController {
 
     @GetMapping("/image/getUrl/{restaurantCode}")
     List<String> getUrl(@PathVariable Integer restaurantCode) {
+        List<String> response = null;
         Restaurant restaurant = restaurantRepository.findRestaurantById(restaurantCode);
         if (restaurantImageRepository.existsByRestaurant(restaurant)) {
             List<RestaurantImage> restaurantImages =
                     restaurantImageRepository.findByRestaurant(restaurant);
-            List<String> response = new ArrayList<>();
+            response = new ArrayList<>();
             for (RestaurantImage restaurantImage : restaurantImages) {
                 response.add(ImageController.getUrl(
                         "/restaurants/image/downloadFile/", restaurantImage));
             }
-            return response;
         }
-        return null;
+        return response;
     }
 
     @GetMapping("/image/downloadFile/{imageId}")
