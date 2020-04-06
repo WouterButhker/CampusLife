@@ -77,10 +77,4 @@ public class Restaurant {
                 && buildingCode.equals(restaurant.buildingCode)
                 && description.equals(restaurant.description);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, buildingCode, description);
-    }
-
 }

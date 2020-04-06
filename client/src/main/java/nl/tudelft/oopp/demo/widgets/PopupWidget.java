@@ -1,6 +1,10 @@
 package nl.tudelft.oopp.demo.widgets;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -8,8 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-
-
+import nl.tudelft.oopp.demo.communication.UserCommunication;
 
 public class PopupWidget {
 
@@ -47,7 +50,7 @@ public class PopupWidget {
         Stage popUpWindow = new Stage();
         popUpWindow.setTitle(title);
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
-        Label label1 = new Label("  " + message);
+        Label label1 = new Label(message);
         label1.setStyle("-fx-font-size: 14");
 
         Button button1 = new Button(" OK ");
@@ -59,7 +62,7 @@ public class PopupWidget {
         error.setImage(errorImage);
 
         errorMessage.setAlignment(Pos.CENTER_LEFT);
-        errorMessage.getChildren().addAll(new Label("    "), error, label1);
+        errorMessage.getChildren().addAll(new Label("    "), error, new Label("  "), label1);
 
 
 
@@ -84,7 +87,7 @@ public class PopupWidget {
         Stage popUpWindow = new Stage();
         popUpWindow.setTitle(title);
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
-        Label label1 = new Label("  " + message);
+        Label label1 = new Label(message);
         label1.setStyle("-fx-font-size: 14");
 
         Button button1 = new Button(" OK ");
@@ -96,7 +99,7 @@ public class PopupWidget {
         error.setImage(errorImage);
 
         errorMessage.setAlignment(Pos.CENTER_LEFT);
-        errorMessage.getChildren().addAll(new Label("    "), error, label1);
+        errorMessage.getChildren().addAll(new Label("    "), error, new Label("  "), label1);
 
         button1.setOnAction(e -> popUpWindow.close());
 
@@ -128,6 +131,129 @@ public class PopupWidget {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Displays the passwordChange.
+     * @param username the users username
+     */
+    public static void displayPasswordChange(String username) {
+        Stage popUpWindow = new Stage();
+        popUpWindow.initModality(Modality.APPLICATION_MODAL);
+        popUpWindow.setTitle(" Change Password");
+        Label label1 = new Label(" New Password must:");
+        Label label2 = new Label(" -Be at least 8 characters long");
+        Label label3 = new Label(" -Contain an uppercase and lowercase character");
+
+
+        label1.setStyle("-fx-font-family: -primary-font-name;"
+                + "-fx-font-weight: bold;"
+                + "-fx-font-size: 18;");
+        String style = "-fx-font-family: -primary-font-name;"
+                + "-fx-font-size: 16;";
+        label2.setStyle(style);
+        label3.setStyle(style);
+
+        Label label4 = new Label(" -Contain at least one number and one special character");
+        label4.setStyle(style);
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(label1, label2, label3, label4);
+
+        PasswordField newPassword = new PasswordField();
+        PasswordField retypeNewPassword = new PasswordField();
+
+        newPassword.setStyle(style);
+        retypeNewPassword.setStyle(style);
+
+        HBox pass1 = new HBox();
+        Label passLabel = new Label(" New Password      ");
+        passLabel.setStyle(style);
+        pass1.getChildren().addAll(passLabel, newPassword);
+        HBox pass2 = new HBox();
+        Label retypePassLabel = new Label(" Retype Password  ");
+        retypePassLabel.setStyle(style);
+        pass2.getChildren().addAll(retypePassLabel, retypeNewPassword);
+
+
+        Button button1 = new Button(" Change Password ");
+
+        String styleHovered = "-fx-background-color:#4d70ff;"
+                + "-fx-text-fill: white; -fx-font-size: 16;";
+        String stylebutton = "-fx-background-color: #7ca7fc;"
+                + "-fx-text-fill: white; -fx-font-size: 16;";
+        button1.setStyle(stylebutton);
+        button1.setOnMouseEntered(event -> button1.setStyle(styleHovered));
+        button1.setOnMouseExited(event -> button1.setStyle(stylebutton));
+        button1.setPrefWidth(200);
+
+        HBox button = new HBox();
+        Pane spacer = new Pane();
+        spacer.setPrefWidth(133);
+        button.getChildren().addAll(spacer, button1);
+
+        Label errorMessage = new Label("");
+        errorMessage.setStyle(style);
+
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (!(newPassword.getText().equals(retypeNewPassword.getText()))) {
+                    errorMessage.setText(" Passwords do not match");
+                    newPassword.setText("");
+                    retypeNewPassword.setText("");
+                } else {
+                    String pass = newPassword.getText();
+                    boolean hasUppercase = !(pass.equals(pass.toLowerCase()));
+                    boolean hasLowercase = !(pass.equals(pass.toUpperCase()));
+                    boolean hasNumber = pass.matches(".*\\d.*");
+
+                    if (pass.length() < 8) {
+                        errorMessage.setText(" Password must be at least 8 characters long");
+                        newPassword.setText("");
+                        retypeNewPassword.setText("");
+                        return;
+                    }
+                    if (!(hasLowercase && hasUppercase)) {
+                        errorMessage.setText(
+                                " Password must have at least one uppercase and one lowercase");
+                        newPassword.setText("");
+                        retypeNewPassword.setText("");
+                        return;
+                    }
+                    if (!hasNumber) {
+                        errorMessage.setText(" Password must have at least one number");
+                        newPassword.setText("");
+                        retypeNewPassword.setText("");
+                        return;
+                    }
+
+                    Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+                    Matcher m = p.matcher(pass);
+                    boolean hasSpecialCharacter = m.find();
+
+                    if (!hasSpecialCharacter) {
+                        errorMessage.setText(" Password must have at least one special character");
+                        newPassword.setText("");
+                        retypeNewPassword.setText("");
+                        return;
+                    }
+                    if (PopupWidget.displayBool(
+                            "Are you sure you want to change your password?",
+                            "Are you sure?")) {
+                        UserCommunication.changePassword(username, newPassword.getText());
+                        popUpWindow.close();
+                    }
+                }
+            }
+        });
+
+
+        layout.getChildren().addAll(pass1, pass2, errorMessage, button);
+        layout.setAlignment(Pos.CENTER_LEFT);
+        Scene scene1 = new Scene(layout, 466, 370);
+        popUpWindow.setScene(scene1);
+        popUpWindow.showAndWait();
     }
 
 }

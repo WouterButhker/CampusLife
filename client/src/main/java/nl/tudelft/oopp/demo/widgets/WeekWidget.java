@@ -44,7 +44,7 @@ public class WeekWidget extends VBox {
                 + "-fx-border-style: solid\n;"
                 + "-fx-border-width: 1;"
                 + "-fx-border-radius: 10;"
-                + "-fx-background-color: #6cffab;"
+                + "-fx-background-color: -accent-color;"
                 + "-fx-background-insets: 4;"
                 + "-fx-background-radius: 10;";
         for (int i = 0; i < 7; i++) {
@@ -74,7 +74,7 @@ public class WeekWidget extends VBox {
                     + "-fx-border-style: solid\n;"
                     + "-fx-border-width: 1;"
                     + "-fx-border-radius: 10;"
-                    + "-fx-background-color: yellow;"
+                    + "-fx-background-color: -secondary-color;"
                     + "-fx-background-insets: 4;"
                     + "-fx-background-radius: 10;";
             container.setStyle(css);
@@ -109,7 +109,7 @@ public class WeekWidget extends VBox {
                 + "-fx-border-style: solid\n;"
                 + "-fx-border-width: 1;"
                 + "-fx-border-radius: 10;"
-                + "-fx-background-color: yellow;"
+                + "-fx-background-color: -secondary-color;"
                 + "-fx-background-insets: 4;"
                 + "-fx-background-radius: 10;";
         for (int i = 0; i < 7; i++) {
@@ -120,7 +120,7 @@ public class WeekWidget extends VBox {
                 + "-fx-border-style: solid\n;"
                 + "-fx-border-width: 1;"
                 + "-fx-border-radius: 10;"
-                + "-fx-background-color: orange;"
+                + "-fx-background-color: -secondary-color-dark;"
                 + "-fx-background-insets: 4;"
                 + "-fx-background-radius: 10;";
         if (current >= 0 && current < 7) {

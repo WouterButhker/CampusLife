@@ -15,10 +15,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.FavoriteRoomCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
+import nl.tudelft.oopp.demo.entities.FavoriteRoom;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ButtonsGridView;
@@ -63,16 +65,21 @@ public class RoomsListRoute extends Route {
         filters.setTranslateX(5);
 
         //making filter boxes
-        CheckBox hasWhiteboard = new CheckBox("white board");
+        CheckBox hasWhiteboard = new CheckBox("White board");
         hasWhiteboard.setStyle("-fx-background-color: -secondary-color; "
                                 + "-fx-background-radius: 16;");
         hasWhiteboard.setPadding(new Insets(8, 16, 8, 16));
-        hasWhiteboard.setPrefWidth(130);
+        hasWhiteboard.setPrefWidth(160);
 
         CheckBox hasTV = new CheckBox("TV");
         hasTV.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
         hasTV.setPadding(new Insets(8, 16, 8, 16));
-        hasTV.setPrefWidth(130);
+        hasTV.setPrefWidth(160);
+
+        CheckBox isFavorite = new CheckBox("Favorites");
+        isFavorite.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
+        isFavorite.setPadding(new Insets(8, 16, 8, 16));
+        isFavorite.setPrefWidth(160);
 
         TextField minCap = new TextField();
         minCap.setPromptText("Min");
@@ -83,7 +90,7 @@ public class RoomsListRoute extends Route {
         HBox capacities = new HBox(10, minCap, maxCap);
         capacities.setStyle("-fx-background-color: -secondary-color; -fx-background-radius: 16;");
         capacities.setPadding(new Insets(4, 16, 4, 16));
-        capacities.setPrefWidth(130);
+        capacities.setPrefWidth(160);
 
         Button apply = new Button("Apply filters");
         apply.setStyle("-fx-background-radius: 16;");
@@ -92,7 +99,8 @@ public class RoomsListRoute extends Route {
 
         Text errorMessage = new Text();
 
-        filters.getChildren().addAll(hasWhiteboard, hasTV, capacities, apply, errorMessage);
+        filters.getChildren().addAll(hasWhiteboard, hasTV, isFavorite,
+                capacities, apply, errorMessage);
         filters.setSpacing(5);
         horizontalBox.getChildren().add(filters);
 
@@ -144,8 +152,39 @@ public class RoomsListRoute extends Route {
                 }
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
-                RoomsListRoute.this.roomList = RoomCommunication.getFilteredRooms(buildingCode,
-                        myRights, hasTvBool, hasWhiteboardBool, minCapInt, maxCapInt);
+
+                RoomsListRoute.this.roomList = RoomCommunication.getAllRooms();
+                for (int i = 0; i < RoomsListRoute.this.roomList.size(); i++) {
+                    Room room = RoomsListRoute.this.roomList.get(i);
+                    if ((hasTvBool && !room.isHasTV())
+                            || (hasWhiteboardBool && !room.isHasWhiteboard())
+                            || room.getCapacity() < minCapInt
+                            || room.getCapacity() > maxCapInt
+                            || (buildingCode != -1
+                            && !room.getBuilding().getCode().equals(buildingCode))) {
+                        RoomsListRoute.this.roomList.remove(i);
+                        i--;
+                    }
+                }
+
+                if (isFavorite.isSelected()) {
+                    List<FavoriteRoom> favoriteRooms = FavoriteRoomCommunication.getAll();
+                    for (int i = 0; i < RoomsListRoute.this.roomList.size(); i++) {
+                        Room room = RoomsListRoute.this.roomList.get(i);
+                        boolean isFav = false;
+                        for (FavoriteRoom favoriteRoom : favoriteRooms) {
+                            if (favoriteRoom.getRoom().getRoomCode().equals(room.getRoomCode())) {
+                                isFav = true;
+                                break;
+                            }
+                        }
+                        if (!isFav) {
+                            RoomsListRoute.this.roomList.remove(i);
+                            i--;
+                        }
+                    }
+                }
+
                 setRooms();
                 if (errorMessage.getText().equals("")) {
                     errorMessage.setText("Filters applied!");

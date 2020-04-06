@@ -30,11 +30,11 @@ public class RestaurantImage extends Image {
         this.restaurant = restaurant;
     }
 
-    public Restaurant getBuilding() {
+    public Restaurant getRestaurant() {
         return restaurant;
     }
 
-    public void setBuilding(Restaurant restaurant) {
+    public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 

@@ -51,9 +51,4 @@ public class FoodOrderQuantityKey implements Serializable {
         return foodId == that.foodId
                 && orderId == that.orderId;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(foodId, orderId);
-    }
 }

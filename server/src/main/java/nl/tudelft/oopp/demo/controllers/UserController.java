@@ -39,7 +39,7 @@ public class UserController {
         return usersRepository.findRoleByUsername(username);
     }
 
-    @PutMapping
+    @PutMapping(path = "changeRole")
     public User changeRole(@RequestBody User user) {
         return usersRepository.save(user);
     }
@@ -52,6 +52,20 @@ public class UserController {
             res = new ResponseEntity<>(id, HttpStatus.OK);
         }
         return res;
+    }
+
+    @PutMapping(path = "/changePassword")
+    ResponseEntity<User> changePassword(@RequestBody User user) {
+        if (usersRepository.existsById(user.getId())) {
+            int affectedRows = usersRepository.updatePassword(
+                    user.getUsername(), user.getPassword());
+            if (affectedRows < 1) {
+                return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
     }
 
     @Modifying

@@ -28,7 +28,7 @@ public class RoutingScene extends Scene {
      */
     public void pushRoute(Route route) {
         routes.add(route);
-        route.routingScene = this;
+        route.setRoutingScene(this);
         setRoot(route.getRootElement());
     }
 
@@ -42,7 +42,7 @@ public class RoutingScene extends Scene {
             throw new Exception("Cannot pop last route");
         }
 
-        routes.peek().routingScene = null;
+        routes.peek().setRoutingScene(null);
         routes.pop();
         setRoot(routes.peek().getRootElement());
     }

@@ -39,14 +39,10 @@ public class AuthenticationCommunication {
      */
     public static void login(String username, String password) throws HttpClientErrorException {
         authenticationHeader = createHeaders(username, password);
-        if (authenticationHeader != null) {
-            myUsername = username;
-            saveUserId(username);
-            saveUserRole(username);
-            saveUserImageUrl(myUserId);
-        } else {
-            System.out.println("Login failed");
-        }
+        myUsername = username;
+        saveUserId(username);
+        saveUserRole(username);
+        saveUserImageUrl(myUserId);
     }
 
     /**
@@ -56,7 +52,18 @@ public class AuthenticationCommunication {
         authenticationHeader = null;
         myUserId = null;
         myUserRole = null;
+        myUsername = null;
+        myImageUrl = null;
     }
+
+    /**
+     * Update the headers in case the password was changed.
+     * @param password the new password
+     */
+    public static void updateHeaders(String password) {
+        authenticationHeader = createHeaders(myUsername, password);
+    }
+
 
     /**
      * Save the Id of the logged in User in a static variable.

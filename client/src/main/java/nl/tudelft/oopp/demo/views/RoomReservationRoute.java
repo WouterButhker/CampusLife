@@ -9,11 +9,12 @@ import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.ReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
+import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.Weekdays;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AgendaWidget;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.CalendarWidget;
@@ -46,7 +47,7 @@ public class RoomReservationRoute extends Route {
         openingHours = new Weekdays(room.getBuilding().getOpeningHours());
         rootElement = new VBox();
 
-        reservations = ReservationCommunication.getAllReservations();
+        reservations = RoomReservationCommunication.getAllReservations();
 
         AppBar appBar = new AppBar();
         rootElement.getChildren().add(appBar);
@@ -86,17 +87,18 @@ public class RoomReservationRoute extends Route {
             @Override
             public void onReserveClicked() {
                 if (fromTime != null) {
-                    int user = AuthenticationCommunication.myUserId;
+                    int userId = AuthenticationCommunication.myUserId;
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
                     String fromString = format.format(fromTime.getTime());
                     String toString = format.format(toTime.getTime());
                     String timeslot = String.format("%s - %s", fromString, toString);
-                    ReservationCommunication.addReservationToDatabase(user,
-                            room.getRoomCode(), timeslot);
-                    reservations.add(new RoomReservation(-1, user, room, timeslot));
+                    String date = timeslot.substring(0, 9);
+                    RoomReservationCommunication
+                            .addReservationToDatabase(userId, room.getRoomCode(), timeslot);
+                    reservations.add(new RoomReservation(new User(userId), room, date, timeslot));
                     agendaWidget.setAvailabilities(computeAvailabilities());
                     reservationWidget.setAvailable(false);
-                    System.out.println(user + " " + room.getRoomCode() + " " + timeslot);
+                    System.out.println(userId + " " + room.getRoomCode() + " " + timeslot);
                 }
             }
         });
@@ -132,8 +134,22 @@ public class RoomReservationRoute extends Route {
         String openingTime = openingHours.getWeekdays().get(dayOfWeek);
         if (!openingTime.equals(Weekdays.CLOSED)) {
             int openingHour = Integer.parseInt(openingTime.substring(0, 2));
-            int closingHour = Integer.parseInt(openingTime.substring(6, 8));
+            Calendar now = Calendar.getInstance();
+            int nowDay = now.get(Calendar.DAY_OF_WEEK);
+            int nowMonth = now.get(Calendar.DAY_OF_MONTH);
+            int dayClean = selectedDate.get(Calendar.DAY_OF_WEEK);
+            int month = selectedDate.get(Calendar.DAY_OF_MONTH);
+            int hours = now.get(Calendar.HOUR_OF_DAY);
+            int minutes = now.get(Calendar.MINUTE);
+            if (minutes != 0) {
+                hours++;
+            }
+            if (nowDay == dayClean
+                    && nowMonth == month && hours > openingHour) {
+                openingHour = hours;
+            }
             agendaWidget.setMinHour(openingHour);
+            int closingHour = Integer.parseInt(openingTime.substring(6, 8));
             agendaWidget.setMaxHour(closingHour - 1);
         } else {
             agendaWidget.setMinHour(-1);

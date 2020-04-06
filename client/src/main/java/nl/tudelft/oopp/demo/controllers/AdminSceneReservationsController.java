@@ -19,8 +19,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.oopp.demo.communication.ReservationCommunication;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 
 
@@ -81,13 +81,13 @@ public class AdminSceneReservationsController {
     private void loadReservations(String choice) {
         List<RoomReservation> reservations = new ArrayList<>();
         if (choice.equals("Show by user")) {
-            reservations = ReservationCommunication
+            reservations = RoomReservationCommunication
                     .getAllReservationsForUser(Integer.parseInt(userOrRoomField.getText()));
         } else if (choice.equals("Show by room")) {
-            reservations = ReservationCommunication
+            reservations = RoomReservationCommunication
                     .getAllReservationsForRoom(userOrRoomField.getText());
         } else {
-            reservations = ReservationCommunication.getAllReservations();
+            reservations = RoomReservationCommunication.getAllReservations();
         }
 
         reservationsList.getChildren().clear();
@@ -96,8 +96,9 @@ public class AdminSceneReservationsController {
         for (int i = 0; i < reservations.size(); i++) {
             HBox reservation = new HBox();
             reservation.setMaxWidth(1011);
+
             Label text = new Label("Reservation ID: " + reservations.get(i).getId() + " | "
-                    + "User: " + reservations.get(i).getUser() + " | "
+                    + "User: " + reservations.get(i).getId() + " | "
                     + "Room: " + reservations.get(i).getRoom().getRoomCode() + " | "
                     + "TimeSlot: " + reservations.get(i).getTimeSlot());
             text.setPrefSize(900, 60);
@@ -110,7 +111,7 @@ public class AdminSceneReservationsController {
                 @Override
                 public void handle(ActionEvent event) {
                     Integer id = finalReservations.get(finalI).getId();
-                    ReservationCommunication.deleteReservationFromDatabase(id);
+                    RoomReservationCommunication.deleteReservationFromDatabase(id);
                     loadReservations(choiceBox.getValue().toString());
                 }
             });
@@ -126,6 +127,12 @@ public class AdminSceneReservationsController {
             reservationsList.getChildren().add(reservation);
         }
 
+    }
+
+    private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
+        ok.getStyleClass().add("adminButton");
     }
 
     @FXML
@@ -170,6 +177,7 @@ public class AdminSceneReservationsController {
                         }
                     }
                 });
+        addStyle();
     }
 
 }

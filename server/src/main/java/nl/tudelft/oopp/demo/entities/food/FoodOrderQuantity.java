@@ -5,6 +5,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+
 @Entity
 @Table(name = "food_order_quantity")
 public class FoodOrderQuantity {
@@ -13,16 +14,16 @@ public class FoodOrderQuantity {
     private FoodOrderQuantityKey id;
 
     @ManyToOne
-    @MapsId("foodId")
-    @JoinColumn(name = "food_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Food food;
-
-    @ManyToOne
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private FoodOrder foodOrder;
+
+    @ManyToOne
+    @MapsId("foodId")
+    @JoinColumn(name = "food_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Food food;
 
     private int quantity;
 
@@ -30,12 +31,10 @@ public class FoodOrderQuantity {
 
     }
 
-
-    /// TODO ADD JAVADOC
     /**
-     * Comment.
-     * @param food This
-     * @param foodOrder Please
+     * creates a object to link a food to a foodorder.
+     * @param food the food
+     * @param foodOrder the foodorder
      */
     public FoodOrderQuantity(Food food, FoodOrder foodOrder) {
         this.food = food;
@@ -43,11 +42,10 @@ public class FoodOrderQuantity {
         this.id = new FoodOrderQuantityKey(food.getId(), foodOrder.getId());
     }
 
-    /// TODO ADD JAVADOC
     /**
-     * Comment.
-     * @param food This
-     * @param foodOrder Please
+     * creates a object to link a food to a foodorder with a given quantity.
+     * @param food the food
+     * @param foodOrder the foodorder
      */
     public FoodOrderQuantity(Food food, FoodOrder foodOrder, int quantity) {
         this.food = food;
@@ -99,10 +97,5 @@ public class FoodOrderQuantity {
         FoodOrderQuantity that = (FoodOrderQuantity) o;
         return food.equals(that.food)
                 && foodOrder.equals(that.foodOrder);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(food, foodOrder);
     }
 }

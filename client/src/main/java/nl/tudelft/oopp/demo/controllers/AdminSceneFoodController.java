@@ -28,6 +28,7 @@ import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.core.XmlRoute;
 import nl.tudelft.oopp.demo.entities.Food;
 import nl.tudelft.oopp.demo.widgets.AppBar;
+import nl.tudelft.oopp.demo.widgets.PopupWidget;
 
 public class AdminSceneFoodController implements Initializable {
     @FXML
@@ -57,10 +58,19 @@ public class AdminSceneFoodController implements Initializable {
     @FXML
     private Button submit;
 
+    @FXML
+    private Button refresh;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadRestaurants();
         addAppBar();
+        addStyle();
+    }
+
+    private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
     }
 
     private void addAppBar() {
@@ -124,6 +134,7 @@ public class AdminSceneFoodController implements Initializable {
             text.setPrefSize(225, 60);
             text.setPadding(new Insets(0, 0, 0, 10));
             Button modify = new Button("modify");
+            modify.getStyleClass().add("adminButtonSmall");
             int finalI = i;
             modify.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -136,12 +147,17 @@ public class AdminSceneFoodController implements Initializable {
             StackPane modifyPane = new StackPane(modify);
             modifyPane.setPadding(new Insets(10, 0, 10, 0));
             Button delete = new Button("delete");
+            delete.getStyleClass().add("adminButtonSmall");
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    FoodCommunication.deleteFood(
-                            foods.get(finalI).getId());
-                    loadFoods(restaurantsList2.getValue());
+                    boolean confirmation = PopupWidget.displayBool("Are you sure about deleting "
+                            + "this?\nThe change will be irreversible.", "Confirmation");
+                    if (confirmation) {
+                        FoodCommunication.deleteFood(
+                                foods.get(finalI).getId());
+                        loadFoods(restaurantsList2.getValue());
+                    }
                 }
             });
             delete.setPrefSize(45, 40);
@@ -153,7 +169,7 @@ public class AdminSceneFoodController implements Initializable {
                     + "-fx-border-insets: 4\n;"
                     + "-fx-border-style: solid\n;"
                     + "-fx-border-width: 1;"
-                    + "-fx-border-radius: 10;";
+                    + "-fx-border-radius: 10";
             restaurant.setStyle(css);
             restaurant.getChildren().addAll(imageView, text, modifyPane, deletePane);
             foodsList.getChildren().add(restaurant);
@@ -162,6 +178,7 @@ public class AdminSceneFoodController implements Initializable {
 
     private void createModifyPopup(Food food) {
         VBox root = new VBox();
+        //root.setStyle("-fx-background-color: -primary-color");
         root.setPrefSize(400, 500);
 
         Text header = new Text("Modify the food item");
@@ -192,6 +209,7 @@ public class AdminSceneFoodController implements Initializable {
         nameBox.setPadding(new Insets(10, 0, 0, 0));
 
         Button submit = new Button("Submit");
+        submit.getStyleClass().add("adminButtonSmall");
         submit.setPrefSize(100, 20);
         HBox submitBox = new HBox(submit);
         submitBox.setPadding(new Insets(10, 150, 10, 150));
@@ -224,7 +242,11 @@ public class AdminSceneFoodController implements Initializable {
                 priceTextBox, priceBox,
                 submitBox);
         Stage stage = new Stage();
+        stage.setTitle("Modifying " + food.getName());
+        stage.getIcons().add(new Image("images/modifyingImage.png"));
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("css/palette.css");
+        scene.getStylesheets().add("css/admin-scene.css");
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(restaurantsList1.getScene().getWindow());
@@ -259,7 +281,8 @@ public class AdminSceneFoodController implements Initializable {
 
         String foodName = foodNameInput.getText();
 
-        Text submitStatus = new Text();
+        String submitStatus;
+        boolean correct = false;
 
         try {
             Double foodPrice = Double.parseDouble(foodPriceInput.getText());
@@ -269,43 +292,30 @@ public class AdminSceneFoodController implements Initializable {
                         foodName,
                         restaurantId,
                         foodPrice));
-                submitStatus.setText("Food has been successfully added to "
-                        + restaurantsList1.getValue().split(",")[0]);
+                submitStatus = "Food has been successfully added to \n"
+                        + restaurantsList1.getValue().split(",")[0];
+                correct = true;
                 try {
                     refreshFoodPage();
                 } catch (Exception e) {
                     System.out.println("Refresh failed");
                 }
             } else {
-                submitStatus.setText("All fields have to be entered");
+                submitStatus = ("All fields have to be entered");
             }
 
             if (!restaurantFound) {
-                submitStatus.setText("Please select a restaurants");
+                submitStatus = ("Please select a restaurants");
             }
         } catch (NumberFormatException nfe) {
-            submitStatus.setText("Price must be a number");
+            submitStatus = ("Price must be a number");
         }
 
-        Button back = new Button("Okay! take me back");
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Button button = (Button) event.getSource();
-                Stage stage = (Stage) button.getScene().getWindow();
-                stage.close();
-            }
-        });
-        VBox foodBox = new VBox(submitStatus, back);
-        foodBox.setPrefSize(300, 200);
-        foodBox.setAlignment(Pos.CENTER);
-        AnchorPane root = new AnchorPane(foodBox);
-        root.setPrefSize(300, 200);
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        if (correct) {
+            PopupWidget.displaySuccess(submitStatus, "Success!");
+        } else {
+            PopupWidget.displayError(submitStatus, "Error!");
+        }
     }
     
     @FXML

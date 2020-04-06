@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.entities.reservation;
 
+import java.util.Objects;
 import javax.persistence.*;
 import nl.tudelft.oopp.demo.entities.User;
 import org.hibernate.annotations.OnDelete;
@@ -15,7 +16,7 @@ public abstract class Reservation {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "users")
+    @JoinColumn(name = "users", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
@@ -29,18 +30,19 @@ public abstract class Reservation {
 
     }
 
-    /// TODO ADD JAVADOC COMMENT PLEASE.
     /**
-     * ADD JAVADOC COMMENT PLEASE.
-     * @param user ADD JAVADOC COMMENT PLEASE.
-     * @param date ADD JAVADOC COMMENT PLEASE.
-     * @param timeSlot ADD JAVADOC COMMENT PLEASE.
+     * parent constructor to create a new reservation.
+     * @param user the user that made the reservation
+     * @param date the date of the reservation
+     * @param timeSlot the time of the reservation
      */
     public Reservation(User user, String date, String timeSlot) {
         this.user = user;
         this.date = date;
         this.timeSlot = timeSlot;
     }
+
+
 
     public void setId(int id) {
         this.id = id;
@@ -74,5 +76,30 @@ public abstract class Reservation {
         this.timeSlot = timeSlot;
     }
 
-    public abstract String toString();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Reservation)) {
+            return false;
+        }
+        Reservation that = (Reservation) o;
+        return id == that.id
+                && Objects.equals(user, that.user)
+                && Objects.equals(date, that.date)
+                && Objects.equals(timeSlot, that.timeSlot);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, date, timeSlot);
+    }
+
+    @Override
+    public String toString() {
+        return "user: " + this.user
+                + ", date: " + this.date
+                + ", timeslot: " + this.timeSlot;
+    }
 }

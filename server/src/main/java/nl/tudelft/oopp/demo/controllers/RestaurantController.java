@@ -1,12 +1,15 @@
 package nl.tudelft.oopp.demo.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Restaurant;
+import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.food.Food;
 import nl.tudelft.oopp.demo.entities.image.BuildingImage;
 import nl.tudelft.oopp.demo.entities.image.RestaurantImage;
+import nl.tudelft.oopp.demo.entities.image.RoomImage;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.repositories.FoodRepository;
 import nl.tudelft.oopp.demo.repositories.RestaurantRepository;
@@ -19,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(path = "/restaurants")
@@ -69,9 +73,14 @@ public class RestaurantController {
     @PutMapping (value = "/{id}", consumes = "application/json", produces = "application/json")
     public Restaurant updateRestaurant(@PathVariable Integer id,
                                        @RequestBody Restaurant restaurant) {
-        Building building = buildingRepository.findById(restaurant.getBuildingCode()).get();
-        restaurant.setBuilding(building);
-        return restaurantRepository.save(restaurant);
+        if (!restaurantRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Restaurant does not exists!");
+        } else {
+            Building building = buildingRepository.findById(restaurant.getBuildingCode()).get();
+            restaurant.setBuilding(building);
+            return restaurantRepository.save(restaurant);
+        }
     }
 
     /**
@@ -97,7 +106,7 @@ public class RestaurantController {
     }
 
     /**
-     * Retrieves all the foods ids and names from the database.
+     * Retrieves all the restaurants ids and names from the database.
      *
      * @return a list with format "id name"
      */
@@ -128,7 +137,7 @@ public class RestaurantController {
     @Modifying
     @PutMapping(value = "/image/{restaurantCode}")
     ResponseEntity<RestaurantImage> uploadFile(@PathVariable Integer restaurantCode,
-                                             @RequestParam("file") MultipartFile file)
+                                               @RequestParam("file") MultipartFile file)
             throws IOException {
         if (!restaurantRepository.existsById(restaurantCode)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -146,19 +155,29 @@ public class RestaurantController {
     }
 
     @GetMapping("/image/getUrl/{restaurantCode}")
-    String getUrl(@PathVariable Integer restaurantCode) {
+    List<String> getUrl(@PathVariable Integer restaurantCode) {
+        List<String> response = null;
         Restaurant restaurant = restaurantRepository.findRestaurantById(restaurantCode);
         if (restaurantImageRepository.existsByRestaurant(restaurant)) {
-            RestaurantImage restaurantImage =
+            List<RestaurantImage> restaurantImages =
                     restaurantImageRepository.findByRestaurant(restaurant);
-            return ImageController.getUrl("/restaurants/image/downloadFile/", restaurantImage);
+            response = new ArrayList<>();
+            for (RestaurantImage restaurantImage : restaurantImages) {
+                response.add(ImageController.getUrl(
+                        "/restaurants/image/downloadFile/", restaurantImage));
+            }
         }
-        return null;
+        return response;
     }
 
     @GetMapping("/image/downloadFile/{imageId}")
     ResponseEntity<Resource> downloadFile(@PathVariable String imageId) {
         return ImageController.downloadFile(restaurantImageRepository.findByImageId(imageId));
+    }
+
+    @DeleteMapping("/image/{imageId}")
+    String deleteImage(@PathVariable String imageId) {
+        return restaurantImageRepository.deleteByImageId(imageId);
     }
 
 }

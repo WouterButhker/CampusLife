@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,12 +23,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
-import nl.tudelft.oopp.demo.communication.ReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.PersonalReservationCommunication;
+import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.Route;
-import nl.tudelft.oopp.demo.entities.RoomReservation;
-import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.ImageSelectorWidget;
-import nl.tudelft.oopp.demo.widgets.RectangularImageButton;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
+import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
+import nl.tudelft.oopp.demo.entities.reservation.PersonalReservation;
+import nl.tudelft.oopp.demo.entities.reservation.Reservation;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
+import nl.tudelft.oopp.demo.widgets.*;
 
 public class MyProfileRoute extends Route {
     private VBox rootElement;
@@ -40,12 +46,13 @@ public class MyProfileRoute extends Route {
     ToggleButton upcoming;
     ToggleButton past;
     ToggleButton newEvent;
+    ToggleButton foodToggle;
     private Rectangle rect;
 
-    private List<RoomReservation> pastReservations;
-    private List<RoomReservation> futureReservations;
+    private List<Reservation> pastReservations;
+    private List<Reservation> futureReservations;
 
-    private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy,HH:mm");
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm");
     private String currentDate;
 
     private ScrollPane scrollPane;
@@ -59,7 +66,7 @@ public class MyProfileRoute extends Route {
         if (AuthenticationCommunication.myUserRole.equals("Admin")) {
             isAdmin = true;
         }
-        AppBar appBar = new AppBar(isAdmin);
+        AppBar appBar = new AppBar(isAdmin, true, false);
         rootElement.getChildren().add(appBar);
         addUserInformation();
         eventContainer = new VBox();
@@ -72,12 +79,22 @@ public class MyProfileRoute extends Route {
 
         final ToggleGroup group = new ToggleGroup();
         upcoming = new ToggleButton("Upcoming events");
+        upcoming.getStyleClass().add("profile-page-tab");
+        upcoming.getStyleClass().add("profile-page-tab-hov");
         upcoming.setSelected(true);
         upcoming.setToggleGroup(group);
         past = new ToggleButton("Past events");
+        past.getStyleClass().add("profile-page-tab");
+        past.getStyleClass().add("profile-page-tab-hov");
         past.setToggleGroup(group);
         newEvent = new ToggleButton("New event");
+        newEvent.getStyleClass().add("profile-page-tab");
+        newEvent.getStyleClass().add("profile-page-tab-hov");
         newEvent.setToggleGroup(group);
+        foodToggle = new ToggleButton("Food orders");
+        foodToggle.getStyleClass().add("profile-page-tab");
+        foodToggle.getStyleClass().add("profile-page-tab-hov");
+        foodToggle.setToggleGroup(group);
 
         past.setUserData(Color.LIGHTBLUE);
         newEvent.setUserData(Color.SALMON);
@@ -87,7 +104,8 @@ public class MyProfileRoute extends Route {
             public void changed(ObservableValue<? extends Toggle> ov,
                                 Toggle toggle, Toggle newToggle) {
 
-                if (!upcoming.isSelected() && !past.isSelected() && !newEvent.isSelected()) {
+                if (!upcoming.isSelected() && !past.isSelected()
+                        && !newEvent.isSelected() && !foodToggle.isSelected()) {
                     upcoming.setSelected(true);
                 }
 
@@ -95,13 +113,15 @@ public class MyProfileRoute extends Route {
                     displayPastEvents();
                 } else if (newEvent.isSelected()) {
                     displayNewEvent();
-                } else {
+                } else if (upcoming.isSelected()) {
                     displayUpcomingEvents();
+                } else {
+                    displayFoodOrders();
                 }
             }
         });
         HBox toggleGroupBox = new HBox();
-        toggleGroupBox.getChildren().addAll(upcoming, past, newEvent);
+        toggleGroupBox.getChildren().addAll(upcoming, past, newEvent, foodToggle);
         eventContainer.getChildren().addAll(toggleGroupBox, rect);
         displayUpcomingEvents();
     }
@@ -123,10 +143,36 @@ public class MyProfileRoute extends Route {
         futureReservations = new ArrayList<>();
         Date dateObj = new Date();
         currentDate = dateFormat.format(dateObj);
-        List<RoomReservation> allMyReservations = ReservationCommunication.getMyReservations();
-        for (RoomReservation reservation : allMyReservations) {
-            String endTime = reservation.getTimeSlot().substring(19);
-            if (endTime.compareTo(currentDate) <= 0) {
+
+        List<Reservation> allMyReservations = new ArrayList<>();
+
+        List<RoomReservation> allMyRoomReservations =
+                RoomReservationCommunication.getMyReservations();
+        allMyReservations.addAll(allMyRoomReservations);
+
+        List<BikeReservation> allMyBikeReservations =
+                BikeReservationCommunication.getMyReservations();
+        allMyReservations.addAll(allMyBikeReservations);
+
+        List<PersonalReservation> allMyPersonalReservations =
+                PersonalReservationCommunication.getMyReservations();
+        allMyReservations.addAll(allMyPersonalReservations);
+
+        for (Reservation reservation : allMyReservations) {
+            String endTime = "";
+            if (reservation instanceof BikeReservation) {
+                BikeReservation bikeReservation = (BikeReservation) reservation;
+                endTime = bikeReservation.getDate() + ","
+                        + bikeReservation.getTimeSlot().substring(6);
+            } else {
+                endTime = reservation.getTimeSlot().substring(19);
+            }
+
+            String sortingEndTime = endTime.substring(6, 10) + "/"
+                    + endTime.substring(3, 5) + "/"
+                    + endTime.substring(0, 2) + ","
+                    + endTime.substring(11);
+            if (sortingEndTime.compareTo(currentDate) <= 0) {
                 pastReservations.add(reservation);
             } else {
                 futureReservations.add(reservation);
@@ -143,49 +189,57 @@ public class MyProfileRoute extends Route {
         return separator;
     }
 
-    private void makeListOfReservations(List<RoomReservation> reservations) {
+    private void makeListOfReservations(List<Reservation> reservations) {
         scrollPane = new ScrollPane();
         VBox reservationsList = new VBox();
         reservationsList.setSpacing(2);
 
         for (int i = 0; i < reservations.size(); i++) {
-            RoomReservation reservation = reservations.get(i);
             HBox currentReservation = new HBox();
-            Background background = new Background(
-                    new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
-            currentReservation.setBackground(background);
-            currentReservation.setAlignment(Pos.CENTER_LEFT);
-            currentReservation.setSpacing(7);
-            currentReservation.setPadding(new Insets(16, 16, 16, 16));
+            Reservation reservation = reservations.get(i);
+            ReservationItem reservationInformation;
 
-            Text dateText = new Text("Date: " + reservation.getTimeSlot().substring(0, 10));
-            currentReservation.getChildren().add(dateText);
-            currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
-
-            Text timeText = new Text("Time: " + reservation.getTimeSlot().substring(11, 18)
-                    + " " + reservation.getTimeSlot().substring(30));
-            currentReservation.getChildren().add(timeText);
-            currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
-
-            Text roomText = new Text("Type: my reservation");
-            if (reservation.getRoom() != null) {
-                roomText = new Text("Room: " + reservation.getRoom().getRoomCode());
+            if (reservation instanceof RoomReservation) {
+                reservationInformation = new ReservationItem((RoomReservation) reservation);
+            } else if (reservation instanceof BikeReservation) {
+                reservationInformation = new ReservationItem((BikeReservation) reservation);
+            } else {
+                reservationInformation = new ReservationItem((PersonalReservation) reservation);
             }
 
-            currentReservation.getChildren().add(roomText);
 
+            currentReservation.getChildren().add(reservationInformation);
+
+            String styleHovered = "-fx-background-color:#cf3229;"
+                    + "-fx-text-fill: white; -fx-font-size: 16;";
+            String style = "-fx-background-color:#e4685d;"
+                    + "-fx-text-fill: white; -fx-font-size: 16;";
             int finalI = i;
-            Button delete = new Button("X");
-            delete.setPrefSize(30, 30);
+            Button delete = new Button("Delete");
+
+            delete.setStyle(style);
+            delete.setOnMouseEntered(event -> delete.setStyle(styleHovered));
+            delete.setOnMouseExited(event -> delete.setStyle(style));
+
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    int id = reservations.get(finalI).getId();
-                    ReservationCommunication.deleteReservationFromDatabase(id);
-                    if (past.isSelected()) {
-                        displayPastEvents();
-                    } else if (upcoming.isSelected()) {
-                        displayUpcomingEvents();
+                    if (PopupWidget.displayBool("Are you sure you want to delete this reservation?"
+                            + "\nThis will be irreversible", "Are you sure?")) {
+                        int id = reservations.get(finalI).getId();
+                        if (reservation instanceof RoomReservation) {
+                            RoomReservationCommunication.deleteReservationFromDatabase(id);
+                        } else if (reservation instanceof BikeReservation) {
+                            BikeReservationCommunication.deleteBikeReservation(id);
+                        } else if (reservation instanceof PersonalReservation) {
+                            PersonalReservationCommunication.deleteReservationFromDatabase(id);
+                        }
+
+                        if (past.isSelected()) {
+                            displayPastEvents();
+                        } else if (upcoming.isSelected()) {
+                            displayUpcomingEvents();
+                        }
                     }
                 }
             });
@@ -194,6 +248,9 @@ public class MyProfileRoute extends Route {
 
             currentReservation.getChildren().add(deletePane);
             reservationsList.getChildren().add(currentReservation);
+            Separator separator = new Separator();
+            separator.setPrefWidth(500);
+            reservationsList.getChildren().add(separator);
         }
         scrollPane.setContent(reservationsList);
         scrollPane.fitToWidthProperty().set(true);
@@ -235,21 +292,42 @@ public class MyProfileRoute extends Route {
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String type = "-" + t1.getText();
+                String activity = t1.getText();
                 String timeslot = t2.getText() + "," + t3.getText()
                         + " - " + t2.getText() + "," + t4.getText();
                 if (t1.getText() != null
                         && t2.getText() != null
                         && t3.getText() != null
                         && t4.getText() != null) {
-                    ReservationCommunication.addReservationToDatabase(
-                            AuthenticationCommunication.myUserId, type, timeslot);
+                    PersonalReservationCommunication.addReservationToDatabase(
+                            AuthenticationCommunication.myUserId, timeslot, activity);
                 }
 
             }
         });
         newEventBox.getChildren().addAll(txt1, t1, txt2, t2, txt3, t3, txt4, t4, submit);
         eventContainer.getChildren().addAll(newEventBox);
+    }
+
+    private void displayFoodOrders() {
+        cleanBeforeDisplaying();
+
+        List<FoodOrder> foodOrders = FoodOrderCommunication.getAll();
+
+        VBox list = new VBox();
+        for (int i = 0; i < foodOrders.size(); i++) {
+            FoodOrder foodOrder = foodOrders.get(i);
+            list.getChildren().add(new FoodOrderItem(foodOrder));
+
+            Rectangle separator = new Rectangle();
+            separator.setWidth(500);
+            separator.setHeight(1);
+            separator.setFill(Color.LIGHTGRAY);
+            list.getChildren().add(separator);
+        }
+
+        scrollPane = new ScrollPane(list);
+        eventContainer.getChildren().add(scrollPane);
     }
 
     private void addUserInformation() {
@@ -296,7 +374,18 @@ public class MyProfileRoute extends Route {
             }
         });
         imageSelectorWidget.addChild(save);
-        horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget);
+        Pane spacer = new Pane();
+        spacer.setPrefWidth(63);
+        Button changePassword = new Button("Change Password");
+        changePassword.setPadding(new Insets(3, 10, 3, 10));
+        changePassword.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PopupWidget.displayPasswordChange(AuthenticationCommunication.myUsername);
+            }
+        });
+        horizontalContainer.getChildren().addAll(
+                userDetails, imageSelectorWidget, spacer, changePassword);
         //
     }
 

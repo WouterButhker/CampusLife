@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.demo.widgets;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,12 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import nl.tudelft.oopp.demo.communication.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.communication.BuildingCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
-import nl.tudelft.oopp.demo.entities.BikeReservation;
+import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Weekdays;
+import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 
 
 public class BikeReservationWidget extends VBox {
@@ -201,7 +199,8 @@ public class BikeReservationWidget extends VBox {
     }
 
     private int[] computeAvailabilities() {
-        return new BikeReservationWidgetLogic().computeAvailabilities(selected, selectedDate);
+        return new BikeReservationWidgetLogic().computeAvailabilities(selected,
+                selectedDate, Calendar.getInstance());
     }
 
     private void resizeDisplay(double newWidth) {
@@ -267,7 +266,6 @@ public class BikeReservationWidget extends VBox {
             String labelText = label.getText().split("bikes : ")[0];
             label.setText(labelText + "bikes : " + bikes);
         }
-
     }
 
     public Building getSelected() {
