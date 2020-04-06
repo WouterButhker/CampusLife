@@ -73,7 +73,7 @@ class PersonalReservationTest {
 
     @Test
     void toStringTest() {
-        assertEquals("personal reservation{user: user{id: 123, name:null, role: null},"
+        assertEquals("personal reservation{user: user{id: 123, name:null, role: Student},"
                 + " date: 2-2-2020, timeslot: 16:00-23:00, activity: jumping}",
                 testRes.toString());
     }

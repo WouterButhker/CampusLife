@@ -1,26 +1,28 @@
-package nl.tudelft.oopp.demo;
+package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import nl.tudelft.oopp.demo.entities.FavoriteRoom;
-import nl.tudelft.oopp.demo.entities.Room;
+import nl.tudelft.oopp.demo.entities.Building;
+import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class FavoriteRoomTest {
+class FavoriteRestaurantTest {
 
     private Integer id;
-    private Room room;
+    private Restaurant restaurant;
     private User user;
-    private FavoriteRoom fr;
+    private FavoriteRestaurant fr;
 
     @BeforeEach
     void setUpper() {
         id = 42;
-        room = new Room();
-        user = new User();
-        fr = new FavoriteRoom(id, room, user);
+        restaurant = new Restaurant();
+        restaurant.setId(123);
+        user = new User(11);
+        fr = new FavoriteRestaurant(id, restaurant, user);
     }
 
     @Test
@@ -40,14 +42,14 @@ class FavoriteRoomTest {
     }
 
     @Test
-    void getRoomTest() {
-        assertEquals(room, fr.getRoom());
+    void getRestaurantTest() {
+        assertEquals(restaurant, fr.getRestaurant());
     }
 
     @Test
-    void setRoomTest() {
-        fr.setRoom(new Room("PC1", null, 1, false, false, 1, null));
-        assertEquals("PC1", fr.getRoom().getRoomCode());
+    void setRestaurantTest() {
+        fr.setRestaurant(new Restaurant(5, null, new Building(), null));
+        assertEquals(5, fr.getRestaurant().getId());
     }
 
     @Test

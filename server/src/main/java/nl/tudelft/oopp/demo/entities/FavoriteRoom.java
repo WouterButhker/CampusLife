@@ -61,4 +61,9 @@ public class FavoriteRoom {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "FavoriteRoom{" + "id=" + id + ", room=" + room + ", user=" + user + '}';
+    }
 }

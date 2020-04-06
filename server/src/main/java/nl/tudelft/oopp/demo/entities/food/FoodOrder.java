@@ -19,6 +19,7 @@ public class FoodOrder extends Reservation {
 
     @ManyToOne
     @JoinColumn(name = "restaurant", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "foodOrder")
@@ -116,6 +117,10 @@ public class FoodOrder extends Reservation {
 
     public List<List<Integer>> getFoodsList() {
         return foodsList;
+    }
+
+    public void setFoodsList(List<List<Integer>> foodsList) {
+        this.foodsList = foodsList;
     }
 
 
