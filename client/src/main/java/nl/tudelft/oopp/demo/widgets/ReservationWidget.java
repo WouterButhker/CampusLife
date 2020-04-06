@@ -40,7 +40,7 @@ public class ReservationWidget extends VBox {
      * @param room the room for which the reservation will be made
      * @param listener the listener who will listen to callbacks specified in the interface
      */
-    public ReservationWidget(Room room, Listener listener) {
+    public ReservationWidget(Image image, Room room, Listener listener) {
         this.room = room;
 
         setAlignment(Pos.CENTER);
@@ -49,7 +49,6 @@ public class ReservationWidget extends VBox {
         roomName = new Text(room.getName());
         roomName.getStyleClass().add("reservation-date-text");
         getChildren().add(roomName);
-        Image image = new Image(ImageCommunication.getRoomImageUrl(room.getRoomCode()).get(0));
         roomImage = new ImageView(image);
         roomImage.setPreserveRatio(true);
         getChildren().add(roomImage);
