@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -23,11 +24,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
+import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.PersonalReservationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 import nl.tudelft.oopp.demo.entities.reservation.PersonalReservation;
@@ -35,7 +42,7 @@ import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.*;
 
-public class MyProfileRoute extends Route {
+public class MyProfileRoute extends PopupRoute {
     private VBox rootElement;
     private VBox userDetails;
     private VBox eventContainer;
@@ -61,7 +68,8 @@ public class MyProfileRoute extends Route {
      * Instantiates a new MyProfileRoute.
      */
     public MyProfileRoute() {
-        rootElement = new VBox();
+        super(new VBox());
+        rootElement = (VBox) getMainElement();
         Boolean isAdmin = false;
         if (AuthenticationCommunication.myUserRole.equals("Admin")) {
             isAdmin = true;
@@ -72,6 +80,7 @@ public class MyProfileRoute extends Route {
         eventContainer = new VBox();
         eventContainer.setPadding(new Insets(0, 16, 16, 16));
         addToggleButton();
+        rootElement.getChildren().add(horizontalContainer);
         rootElement.getChildren().addAll(eventContainer);
     }
 
@@ -257,17 +266,34 @@ public class MyProfileRoute extends Route {
     }
 
     private void displayUpcomingEvents() {
+
         cleanBeforeDisplaying();
-        sortMyReservationsByDate();
-        makeListOfReservations(futureReservations);
-        eventContainer.getChildren().addAll(scrollPane);
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+            sortMyReservationsByDate();
+            makeListOfReservations(futureReservations);
+
+            Platform.runLater(() -> {
+                removePopup();
+                eventContainer.getChildren().addAll(scrollPane);
+            });
+        });
+        thread.start();
     }
 
     private void displayPastEvents() {
         cleanBeforeDisplaying();
-        sortMyReservationsByDate();
-        makeListOfReservations(pastReservations);
-        eventContainer.getChildren().addAll(scrollPane);
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+            sortMyReservationsByDate();
+            makeListOfReservations(pastReservations);
+
+            Platform.runLater(() -> {
+                removePopup();
+                eventContainer.getChildren().addAll(scrollPane);
+            });
+        });
+        thread.start();
     }
 
     private void displayNewEvent() {
@@ -310,24 +336,32 @@ public class MyProfileRoute extends Route {
     }
 
     private void displayFoodOrders() {
+
         cleanBeforeDisplaying();
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+            List<FoodOrder> foodOrders = FoodOrderCommunication.getAll();
 
-        List<FoodOrder> foodOrders = FoodOrderCommunication.getAll();
+            VBox list = new VBox();
+            for (int i = 0; i < foodOrders.size(); i++) {
+                FoodOrder foodOrder = foodOrders.get(i);
+                list.getChildren().add(new FoodOrderItem(foodOrder));
 
-        VBox list = new VBox();
-        for (int i = 0; i < foodOrders.size(); i++) {
-            FoodOrder foodOrder = foodOrders.get(i);
-            list.getChildren().add(new FoodOrderItem(foodOrder));
+                Rectangle separator = new Rectangle();
+                separator.setWidth(500);
+                separator.setHeight(1);
+                separator.setFill(Color.LIGHTGRAY);
+                list.getChildren().add(separator);
+            }
 
-            Rectangle separator = new Rectangle();
-            separator.setWidth(500);
-            separator.setHeight(1);
-            separator.setFill(Color.LIGHTGRAY);
-            list.getChildren().add(separator);
-        }
+            scrollPane = new ScrollPane(list);
 
-        scrollPane = new ScrollPane(list);
-        eventContainer.getChildren().add(scrollPane);
+            Platform.runLater(() -> {
+                removePopup();
+                eventContainer.getChildren().add(scrollPane);
+            });
+        });
+        thread.start();
     }
 
     private void addUserInformation() {
@@ -342,7 +376,7 @@ public class MyProfileRoute extends Route {
         //String imageId = AuthenticationCommunication.ids.get(rand);
 
 
-        rootElement.getChildren().add(horizontalContainer);
+
     }
 
     private void loadHorizontalContainer() {
@@ -398,8 +432,4 @@ public class MyProfileRoute extends Route {
         return boldAndRegular;
     }
 
-    @Override
-    public Parent getRootElement() {
-        return rootElement;
-    }
 }

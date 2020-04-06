@@ -3,6 +3,7 @@ package nl.tudelft.oopp.demo.communication.reservation;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
@@ -38,7 +39,12 @@ public class FoodOrderCommunication {
             ).getBody();
             Gson gson = new Gson();
             Type listType = new TypeToken<List<FoodOrder>>() {}.getType();
-            return gson.fromJson(responseString, listType);
+            List<FoodOrder> foodOrders = gson.fromJson(responseString, listType);
+            List<FoodOrder> reversedList = new ArrayList<>();
+            while (!foodOrders.isEmpty()) {
+                reversedList.add(foodOrders.remove(foodOrders.size() - 1));
+            }
+            return reversedList;
         } catch (Exception e) {
             e.printStackTrace();
         }

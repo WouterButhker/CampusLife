@@ -11,6 +11,7 @@ import nl.tudelft.oopp.demo.entities.User;
 public class FoodOrder extends Reservation {
 
     private Restaurant restaurant;
+    private RoomReservation room;
     private RoomReservation reservation;
     private List<List<Integer>> foodsList;
 
@@ -88,6 +89,15 @@ public class FoodOrder extends Reservation {
 
     public void setRoom(RoomReservation room) {
         this.reservation = room;
+    }
+
+    /**
+     * Returns the reservation given by the back end.
+     * Gson doesn't seem to set it to reservation so this var is necessary
+     * @return the reservation
+     */
+    public RoomReservation getRealRoom() {
+        return room;
     }
 
     public Restaurant getRestaurant() {

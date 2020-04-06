@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
 import nl.tudelft.oopp.demo.entities.FoodOrderQuantity;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
+import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 
 public class FoodOrderItem extends Group {
     private FoodOrder foodOrder;
@@ -102,8 +103,29 @@ public class FoodOrderItem extends Group {
     }
 
     private void expand() {
-        boolean isTakeout = (foodOrder.getRoom() == null);
-        Text orderType = new Text("Order type: " + (isTakeout ? "Takeout" : "Delivery"));
+        boolean isTakeout = (foodOrder.getRealRoom() == null);
+        String orderString;
+        if (isTakeout) {
+            orderString = "Takeout at restaurant";
+        } else {
+            RoomReservation reservation = foodOrder.getRealRoom();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
+            Calendar deliveryTime = Calendar.getInstance();
+            try {
+                deliveryTime.setTime(format.parse(reservation.getTimeSlot()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Calendar now = Calendar.getInstance();
+            boolean isDelivered = now.getTimeInMillis() > deliveryTime.getTimeInMillis();
+            SimpleDateFormat deliveryFormat = new SimpleDateFormat("EEE. d MMMM");
+            orderString = String.format("%s to %s, %s on %s",
+                    isDelivered ? "Delivered" : "Delivery",
+                    reservation.getRoom().getName(),
+                    reservation.getRoom().getBuilding().getName(),
+                    deliveryFormat.format(deliveryTime.getTime()));
+        }
+        Text orderType = new Text(orderString);
         orderType.getStyleClass().add("food-item-name");
         innerContainer.getChildren().add(orderType);
         Rectangle padding = new Rectangle();

@@ -19,6 +19,7 @@ public class FoodOrder extends Reservation {
 
     @ManyToOne
     @JoinColumn(name = "restaurant", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "foodOrder")
