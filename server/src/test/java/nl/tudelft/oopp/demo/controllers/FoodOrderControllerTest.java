@@ -81,9 +81,10 @@ public class FoodOrderControllerTest {
         mvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(user)));
-        mvc.perform(post("/foods")
+        food = new Gson().fromJson(mvc.perform(post("/foods")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(food)));
+                .content(new Gson().toJson(food)))
+                .andReturn().getResponse().getContentAsString(), Food.class);
         int userId = Integer.parseInt(mvc.perform(get("/rest/users/getId?username=test"))
                 .andReturn().getResponse().getContentAsString());
         user = new User(userId);
@@ -102,7 +103,7 @@ public class FoodOrderControllerTest {
 
     @WithMockUser(authorities = "Admin")
     @Test
-    public void addFoodOrderTest() throws Exception {
+    FoodOrder addFoodOrderTest() throws Exception {
         setupDatabase();
         foodOrder = new FoodOrder(user, date, timeslot, restaurant);
         List<List<Integer>> list = new ArrayList<List<Integer>>();
@@ -113,7 +114,25 @@ public class FoodOrderControllerTest {
         foodQuantity.add(quantity);
         list.add(foodQuantity);
         foodOrder.setFoodsList(list);
-        mvc.perform(post("/foodOrder").contentType(MediaType.APPLICATION_JSON)
-        .content(new Gson().toJson(foodOrder))).andExpect(status().isOk());
+        String response = mvc.perform(post("/foodOrder")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(foodOrder)))
+                .andExpect(status().isOk()).andReturn()
+                .getResponse().getContentAsString();
+        return new Gson().fromJson(response, FoodOrder.class);
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void getFoodOrderTest() throws Exception {
+        addFoodOrderTest();
+        mvc.perform(get("/foodOrder/user/" + user.getId())).andExpect(status().isOk());
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void getFoodsTest() throws Exception {
+        int id = addFoodOrderTest().getId();
+        mvc.perform(get("/foodOrder/" + id)).andExpect(status().isOk());
     }
 }
