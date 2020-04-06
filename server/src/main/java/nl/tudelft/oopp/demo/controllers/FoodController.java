@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping(path = "/foods")
@@ -48,7 +49,12 @@ public class FoodController {
     @PutMapping (value = "/{id}", consumes = "application/json", produces = "application/json")
     public Food updateFood(@PathVariable Integer id,
                                        @RequestBody Food food) {
-        return foodRepository.save(food);
+        if (!foodRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Food does not exists!");
+        } else {
+            return foodRepository.save(food);
+        }
     }
 
     @GetMapping
