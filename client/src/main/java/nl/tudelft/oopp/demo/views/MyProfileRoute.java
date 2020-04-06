@@ -374,7 +374,17 @@ public class MyProfileRoute extends Route {
             }
         });
         imageSelectorWidget.addChild(save);
-        horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget);
+        Pane spacer = new Pane();
+        spacer.setPrefWidth(63);
+        Button changePassword = new Button("Change Password");
+        changePassword.setPadding(new Insets(3, 10, 3, 10));
+        changePassword.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               PopupWidget.displayPasswordChange(AuthenticationCommunication.myUsername);
+            }
+        });
+        horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget, spacer, changePassword);
         //
     }
 
