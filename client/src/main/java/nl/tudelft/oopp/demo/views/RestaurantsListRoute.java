@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -12,14 +14,16 @@ import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
 import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ButtonsGridView;
+import nl.tudelft.oopp.demo.widgets.LoadingPopup;
 
-public class RestaurantsListRoute extends Route {
+public class RestaurantsListRoute extends PopupRoute {
     private AppBar appBar;
     private VBox rootContainer;
     private ScrollPane scrollPane;
@@ -37,7 +41,8 @@ public class RestaurantsListRoute extends Route {
      * A route that displays all the restaurants.
      */
     public RestaurantsListRoute() {
-        rootContainer = new VBox();
+        super(new VBox());
+        rootContainer = (VBox) getMainElement();
 
         appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
@@ -93,44 +98,59 @@ public class RestaurantsListRoute extends Route {
     }
 
     private void refreshRestaurants() {
-        favorites = FavoriteRestaurantCommunication.getAll();
+        favoritesTitle.setVisible(false);
+        favoritesGrid.setVisible(false);
+        restaurantsTitle.setVisible(false);
+        restaurantsGrid.setVisible(false);
 
-        favoritesTitle.setVisible(!favorites.isEmpty());
-        favoritesTitle.setManaged(!favorites.isEmpty());
-        favoritesGrid.setVisible(!favorites.isEmpty());
-        favoritesGrid.setManaged(!favorites.isEmpty());
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+            favorites = FavoriteRestaurantCommunication.getAll();
 
-        List<Image> favoriteImages = new ArrayList<>();
-        List<String> favoriteNames = new ArrayList<>();
-        for (FavoriteRestaurant favoriteRestaurant : favorites) {
-            String imageUrl = ImageCommunication.getRestaurantImageUrl(
-                    favoriteRestaurant.getRestaurant().getId()).get(0);
-            favoriteImages.add(new Image(imageUrl));
-            favoriteNames.add(favoriteRestaurant.getRestaurant().getName());
-        }
-        favoritesGrid.setButtons(favoriteImages, favoriteNames);
-
-        restaurants = RestaurantCommunication.getRestaurants();
-        for (int i = 0; i < restaurants.size(); i++) {
-            Restaurant restaurant = restaurants.get(i);
+            List<Image> favoriteImages = new ArrayList<>();
+            List<String> favoriteNames = new ArrayList<>();
             for (FavoriteRestaurant favoriteRestaurant : favorites) {
-                if (restaurant.getId().equals(favoriteRestaurant.getRestaurant().getId())) {
-                    restaurants.remove(i);
-                    i--;
-                    break;
+                String imageUrl = ImageCommunication.getRestaurantImageUrl(
+                        favoriteRestaurant.getRestaurant().getId()).get(0);
+                favoriteImages.add(new Image(imageUrl));
+                favoriteNames.add(favoriteRestaurant.getRestaurant().getName());
+            }
+
+            restaurants = RestaurantCommunication.getRestaurants();
+            for (int i = 0; i < restaurants.size(); i++) {
+                Restaurant restaurant = restaurants.get(i);
+                for (FavoriteRestaurant favoriteRestaurant : favorites) {
+                    if (restaurant.getId().equals(favoriteRestaurant.getRestaurant().getId())) {
+                        restaurants.remove(i);
+                        i--;
+                        break;
+                    }
                 }
             }
-        }
 
-        List<Image> restaurantImages = new ArrayList<>();
-        List<String> restaurantNames = new ArrayList<>();
-        for (Restaurant restaurant : restaurants) {
-            String imageUrl = ImageCommunication.getRestaurantImageUrl(
-                    restaurant.getId()).get(0);
-            restaurantImages.add(new Image(imageUrl));
-            restaurantNames.add(restaurant.getName());
-        }
-        restaurantsGrid.setButtons(restaurantImages, restaurantNames);
+            List<Image> restaurantImages = new ArrayList<>();
+            List<String> restaurantNames = new ArrayList<>();
+            for (Restaurant restaurant : restaurants) {
+                String imageUrl = ImageCommunication.getRestaurantImageUrl(
+                        restaurant.getId()).get(0);
+                restaurantImages.add(new Image(imageUrl));
+                restaurantNames.add(restaurant.getName());
+            }
+
+            Platform.runLater(() -> {
+                favoritesTitle.setVisible(!favorites.isEmpty());
+                favoritesTitle.setManaged(!favorites.isEmpty());
+                favoritesGrid.setVisible(!favorites.isEmpty());
+                favoritesGrid.setManaged(!favorites.isEmpty());
+                restaurantsTitle.setVisible(true);
+                restaurantsGrid.setVisible(true);
+                favoritesGrid.setButtons(favoriteImages, favoriteNames);
+                restaurantsGrid.setButtons(restaurantImages, restaurantNames);
+
+                removePopup();
+            });
+        });
+        thread.start();
     }
 
     private void resizeDisplay(double newWidth) {
@@ -142,10 +162,5 @@ public class RestaurantsListRoute extends Route {
         restaurantsTitle.setStyle("-fx-font-size: " + textSize);
 
         scrollPane.setPrefHeight(getRoutingScene().getHeight() * 0.9);
-    }
-
-    @Override
-    public Parent getRootElement() {
-        return rootContainer;
     }
 }
