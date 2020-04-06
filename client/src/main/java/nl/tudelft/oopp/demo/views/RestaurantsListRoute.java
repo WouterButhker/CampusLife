@@ -154,13 +154,15 @@ public class RestaurantsListRoute extends PopupRoute {
     }
 
     private void resizeDisplay(double newWidth) {
-        favoritesGrid.setPrefWidth(newWidth);
-        restaurantsGrid.setPrefWidth(newWidth);
+        if (getRoutingScene() != null) {
+            favoritesGrid.setPrefWidth(newWidth);
+            restaurantsGrid.setPrefWidth(newWidth);
 
-        double textSize = getRoutingScene().getHeight() * 0.045;
-        favoritesTitle.setStyle("-fx-font-size: " + textSize);
-        restaurantsTitle.setStyle("-fx-font-size: " + textSize);
+            double textSize = getRoutingScene().getHeight() * 0.045;
+            favoritesTitle.setStyle("-fx-font-size: " + textSize);
+            restaurantsTitle.setStyle("-fx-font-size: " + textSize);
 
-        scrollPane.setPrefHeight(getRoutingScene().getHeight() * 0.9);
+            scrollPane.setPrefHeight(getRoutingScene().getHeight() * 0.9);
+        }
     }
 }
