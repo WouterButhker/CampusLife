@@ -63,6 +63,7 @@ public class User implements UserDetails {
 
     public User(int id) {
         this.id = id;
+        this.role = "Student";
     }
 
     public User() {

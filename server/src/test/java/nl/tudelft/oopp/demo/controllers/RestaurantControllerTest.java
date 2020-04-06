@@ -100,12 +100,6 @@ public class RestaurantControllerTest {
         Restaurant responseRestaurant = new Gson().fromJson(response, Restaurant.class);
         restaurant.setId(responseRestaurant.getId());
         return responseRestaurant;
-        /*String response = mvc.perform(get("/restaurants")).andReturn()
-                .getResponse().getContentAsString();
-        Type listType = new TypeToken<List<Restaurant>>() {}.getType();
-        List<Restaurant> restaurantList = new Gson().fromJson(response, listType);
-        Restaurant responseRestaurant = restaurantList.get(0);
-        return responseRestaurant;*/
     }
 
     @WithMockUser(authorities = "Admin")

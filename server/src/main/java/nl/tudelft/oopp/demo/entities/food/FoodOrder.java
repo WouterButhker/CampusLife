@@ -119,5 +119,9 @@ public class FoodOrder extends Reservation {
         return foodsList;
     }
 
+    public void setFoodsList(List<List<Integer>> foodsList) {
+        this.foodsList = foodsList;
+    }
+
 
 }

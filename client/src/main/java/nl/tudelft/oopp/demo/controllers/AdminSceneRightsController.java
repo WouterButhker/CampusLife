@@ -136,7 +136,7 @@ public class AdminSceneRightsController implements Initializable {
         rights[0] = "Student";
         rights[1] = "Employee";
         rights[2] = "Admin";
-        choiceBox.getItems().addAll(rights);
+        choiceBox.getItems().addAll(rights[0], rights[1], rights[2]);
     }
 
     private List<User> searchUsers(String search, List<User> users) {
