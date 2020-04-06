@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,21 +20,25 @@ import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.FavoriteRoomCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.FavoriteRoom;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ButtonsGridView;
+import nl.tudelft.oopp.demo.widgets.LoadingPopup;
 
 //import javafx.scene.control.*;
 
-public class RoomsListRoute extends Route {
+public class RoomsListRoute extends PopupRoute {
 
     private ScrollPane scrollPane;
     private VBox rootContainer;
     private HBox horizontalBox;
 
+    private List<Image> images;
+    private List<String> texts;
     private List<Room> roomList;
     private VBox filters;
     private ButtonsGridView roomsGrid;
@@ -42,6 +48,7 @@ public class RoomsListRoute extends Route {
      * @param buildingCode the number of the building being displayed
      */
     public RoomsListRoute(Integer buildingCode) {
+        super(new VBox());
         createRootElement(RoomCommunication.getAllRoomsFromBuilding(buildingCode), buildingCode);
     }
 
@@ -49,12 +56,13 @@ public class RoomsListRoute extends Route {
      * Instantiates a RoomsListRoute that displays all rooms.
      */
     public RoomsListRoute() {
+        super(new VBox());
         createRootElement(RoomCommunication.getAllRooms(), -1);
     }
 
     private void createRootElement(List<Room> roomList, Integer buildingCode) {
         this.roomList = roomList;
-        rootContainer = new VBox();
+        rootContainer = (VBox) getMainElement();
         horizontalBox = new HBox();
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
@@ -117,7 +125,15 @@ public class RoomsListRoute extends Route {
                         RoomsListRoute.this.roomList.get(buttonIndex)));
             }
         });
-        setRooms();
+
+        loadRooms(
+                false,
+                false,
+                Integer.MIN_VALUE,
+                Integer.MAX_VALUE,
+                buildingCode,
+                isFavorite.isSelected()
+        );
 
         apply.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -153,37 +169,14 @@ public class RoomsListRoute extends Route {
                 Boolean hasTvBool = hasTV.isSelected();
                 Boolean hasWhiteboardBool = hasWhiteboard.isSelected();
 
-                RoomsListRoute.this.roomList = RoomCommunication.getAllRooms();
-                for (int i = 0; i < RoomsListRoute.this.roomList.size(); i++) {
-                    Room room = RoomsListRoute.this.roomList.get(i);
-                    if ((hasTvBool && !room.isHasTV())
-                            || (hasWhiteboardBool && !room.isHasWhiteboard())
-                            || room.getCapacity() < minCapInt
-                            || room.getCapacity() > maxCapInt
-                            || (buildingCode != -1
-                            && !room.getBuilding().getCode().equals(buildingCode))) {
-                        RoomsListRoute.this.roomList.remove(i);
-                        i--;
-                    }
-                }
-
-                if (isFavorite.isSelected()) {
-                    List<FavoriteRoom> favoriteRooms = FavoriteRoomCommunication.getAll();
-                    for (int i = 0; i < RoomsListRoute.this.roomList.size(); i++) {
-                        Room room = RoomsListRoute.this.roomList.get(i);
-                        boolean isFav = false;
-                        for (FavoriteRoom favoriteRoom : favoriteRooms) {
-                            if (favoriteRoom.getRoom().getRoomCode().equals(room.getRoomCode())) {
-                                isFav = true;
-                                break;
-                            }
-                        }
-                        if (!isFav) {
-                            RoomsListRoute.this.roomList.remove(i);
-                            i--;
-                        }
-                    }
-                }
+                loadRooms(
+                        hasTvBool,
+                        hasWhiteboardBool,
+                        minCapInt,
+                        maxCapInt,
+                        buildingCode,
+                        isFavorite.isSelected()
+                );
 
                 setRooms();
                 if (errorMessage.getText().equals("")) {
@@ -211,19 +204,65 @@ public class RoomsListRoute extends Route {
         });
     }
 
-    private void setRooms() {
-        List<Image> images = new ArrayList<>();
-        List<String> texts = new ArrayList<>();
+    private void loadRooms(boolean hasTv, boolean hasWhiteboard,
+                           int minCapInt, int maxCapInt, int buildingCode,
+                           boolean isFavorite) {
+        showPopup(new LoadingPopup(), false);
+        new Thread(() -> {
+            refreshRooms(hasTv, hasWhiteboard, minCapInt, maxCapInt, buildingCode, isFavorite);
+
+            Platform.runLater(() -> {
+                setRooms();
+                removePopup();
+            });
+        }).start();
+    }
+
+    private void refreshRooms(boolean hasTv, boolean hasWhiteboard,
+                              int minCapInt, int maxCapInt, int buildingCode,
+                              boolean isFavorite) {
+        RoomsListRoute.this.roomList = RoomCommunication.getAllRooms();
+        for (int i = 0; i < RoomsListRoute.this.roomList.size(); i++) {
+            Room room = RoomsListRoute.this.roomList.get(i);
+            if ((hasTv && !room.isHasTV())
+                    || (hasWhiteboard && !room.isHasWhiteboard())
+                    || room.getCapacity() < minCapInt
+                    || room.getCapacity() > maxCapInt
+                    || (buildingCode != -1
+                    && !room.getBuilding().getCode().equals(buildingCode))) {
+                RoomsListRoute.this.roomList.remove(i);
+                i--;
+            }
+        }
+
+        if (isFavorite) {
+            List<FavoriteRoom> favoriteRooms = FavoriteRoomCommunication.getAll();
+            for (int i = 0; i < RoomsListRoute.this.roomList.size(); i++) {
+                Room room = RoomsListRoute.this.roomList.get(i);
+                boolean isFav = false;
+                for (FavoriteRoom favoriteRoom : favoriteRooms) {
+                    if (favoriteRoom.getRoom().getRoomCode().equals(room.getRoomCode())) {
+                        isFav = true;
+                        break;
+                    }
+                }
+                if (!isFav) {
+                    RoomsListRoute.this.roomList.remove(i);
+                    i--;
+                }
+            }
+        }
+
+        images = new ArrayList<>();
+        texts = new ArrayList<>();
         for (Room room : roomList) {
             images.add(new Image(ImageCommunication.getRoomImageUrl(room.getRoomCode()).get(0)));
             texts.add(room.getName());
         }
-        roomsGrid.setButtons(images, texts);
     }
 
-    @Override
-    public Parent getRootElement() {
-        return rootContainer;
+    private void setRooms() {
+        roomsGrid.setButtons(images, texts);
     }
 
     private void resizeDisplay(Number newWidth) {
