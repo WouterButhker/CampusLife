@@ -71,6 +71,7 @@ public class UserCommunication {
         String url = "/rest/users/changePassword";
         String encryptedPw = new BCryptPasswordEncoder().encode(password);
         User user = new User(username, encryptedPw);
+        user.setId(AuthenticationCommunication.myUserId);
         try {
             ServerCommunication.authenticatedPutRequest(url, user);
             AuthenticationCommunication.updateHeaders(encryptedPw);
