@@ -57,7 +57,7 @@ public class AuthenticationCommunication {
     }
 
     /**
-     * Update the headers in case the password was changed
+     * Update the headers in case the password was changed.
      * @param password the new password
      */
     public static void updateHeaders(String password) {

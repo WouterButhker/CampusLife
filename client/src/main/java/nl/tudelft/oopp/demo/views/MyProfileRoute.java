@@ -381,10 +381,11 @@ public class MyProfileRoute extends Route {
         changePassword.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               PopupWidget.displayPasswordChange(AuthenticationCommunication.myUsername);
+                PopupWidget.displayPasswordChange(AuthenticationCommunication.myUsername);
             }
         });
-        horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget, spacer, changePassword);
+        horizontalContainer.getChildren().addAll(
+                userDetails, imageSelectorWidget, spacer, changePassword);
         //
     }
 

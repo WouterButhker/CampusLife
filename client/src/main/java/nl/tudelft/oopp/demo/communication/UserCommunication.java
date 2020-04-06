@@ -58,7 +58,7 @@ public class UserCommunication {
     }
 
     /**
-     * changes the password of a user
+     * changes the password of a user.
      * @param username the user to edit the password of
      * @param password the password to change it to
      */

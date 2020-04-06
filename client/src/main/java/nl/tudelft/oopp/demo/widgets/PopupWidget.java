@@ -3,7 +3,6 @@ package nl.tudelft.oopp.demo.widgets;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -14,9 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import nl.tudelft.oopp.demo.communication.UserCommunication;
-
-import static nl.tudelft.oopp.demo.communication.ImageCommunication.updateUserImage;
-
 
 public class PopupWidget {
 
@@ -137,6 +133,10 @@ public class PopupWidget {
         }
     }
 
+    /**
+     * Displays the passwordChange.
+     * @param username the users username
+     */
     public static void displayPasswordChange(String username) {
         Stage popUpWindow = new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
@@ -144,8 +144,8 @@ public class PopupWidget {
         Label label1 = new Label(" New Password must:");
         Label label2 = new Label(" -Be at least 8 characters long");
         Label label3 = new Label(" -Contain an uppercase and lowercase character");
-        Label label4 = new Label(" -Contain at least one number and one special character");
-        VBox layout = new VBox(10);
+
+
         label1.setStyle("-fx-font-family: -primary-font-name;"
                 + "-fx-font-weight: bold;"
                 + "-fx-font-size: 18;");
@@ -153,7 +153,11 @@ public class PopupWidget {
                 + "-fx-font-size: 16;";
         label2.setStyle(style);
         label3.setStyle(style);
+
+        Label label4 = new Label(" -Contain at least one number and one special character");
         label4.setStyle(style);
+
+        VBox layout = new VBox(10);
         layout.getChildren().addAll(label1, label2, label3, label4);
 
         PasswordField newPassword = new PasswordField();
@@ -211,7 +215,8 @@ public class PopupWidget {
                         return;
                     }
                     if (!(hasLowercase && hasUppercase)) {
-                        errorMessage.setText(" Password must have at least one uppercase and one lowercase");
+                        errorMessage.setText(
+                                " Password must have at least one uppercase and one lowercase");
                         newPassword.setText("");
                         retypeNewPassword.setText("");
                         return;
@@ -233,8 +238,9 @@ public class PopupWidget {
                         retypeNewPassword.setText("");
                         return;
                     }
-                    if(PopupWidget.displayBool("Are you sure you want to change your password?"
-                            , "Are you sure?")) {
+                    if (PopupWidget.displayBool(
+                            "Are you sure you want to change your password?",
+                            "Are you sure?")) {
                         UserCommunication.changePassword(username, newPassword.getText());
                         popUpWindow.close();
                     }
