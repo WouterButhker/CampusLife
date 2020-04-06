@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -426,8 +425,4 @@ public class MyProfileRoute extends PopupRoute {
         return boldAndRegular;
     }
 
-//    @Override
-//    public Parent getRootElement() {
-//        return rootElement;
-//    }
 }
