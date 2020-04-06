@@ -1,20 +1,24 @@
 package nl.tudelft.oopp.demo.controllers;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
 import nl.tudelft.oopp.demo.DemoApplication;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.FavoriteRoom;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
-import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,15 +28,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.lang.reflect.Type;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -143,11 +138,29 @@ class FavoriteRoomControllerTest {
 
     @WithMockUser(authorities = "Admin")
     @Test
-    void deleteFavoriteRoomTest() throws Exception {
+    void deleteFavoriteRoomNotFoundTest() throws Exception {
         addFavoriteRoomTest();
-        String url = "/favoriterooms/" + favoriteRoom.getId(); //how is this 404?
+        String url = "/favoriterooms/" + favoriteRoom.getId();
         mockMvc.perform(delete(url))
                 .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(authorities = "Admin")
+    @Test
+    void deleteFavoriteRoomTest() throws Exception {
+        addFavoriteRoomTest();
+
+        String responseString = mockMvc.perform(get("/favoriterooms/user/" + user.getId()))
+                .andReturn().getResponse().getContentAsString();
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<FavoriteRoom>>() {
+        }.getType();
+        List<FavoriteRoom> favoriteRoomList = gson.fromJson(responseString, listType);
+        favoriteRoom = favoriteRoomList.get(0);
+
+        String url = "/favoriterooms/" + favoriteRoom.getId();
+        mockMvc.perform(delete(url))
+                .andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = "Admin")

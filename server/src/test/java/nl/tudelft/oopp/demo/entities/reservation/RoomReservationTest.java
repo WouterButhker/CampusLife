@@ -78,7 +78,8 @@ class RoomReservationTest {
 
     @Test
     void toStringTest() {
-        assertEquals("Roomreservation{user: user{id: 123, name:null, role: Student}, date: 1-1-2020,"
+        assertEquals(
+                "Roomreservation{user: user{id: 123, name:null, role: Student}, date: 1-1-2020,"
                 + " timeslot: 11:00-15:00, room: room{roomcode: A1, name: Auditorium, capacity:"
                 + " 200, rights: 2, hasTV: true, hasWhiteboard: true, building: building{"
                 + "buildingcode: 54, name: building, location: asb, opening hours: always closed"

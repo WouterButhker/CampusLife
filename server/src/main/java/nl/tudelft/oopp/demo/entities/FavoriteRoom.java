@@ -64,10 +64,6 @@ public class FavoriteRoom {
 
     @Override
     public String toString() {
-        return "FavoriteRoom{" +
-                "id=" + id +
-                ", room=" + room +
-                ", user=" + user +
-                '}';
+        return "FavoriteRoom{" + "id=" + id + ", room=" + room + ", user=" + user + '}';
     }
 }
