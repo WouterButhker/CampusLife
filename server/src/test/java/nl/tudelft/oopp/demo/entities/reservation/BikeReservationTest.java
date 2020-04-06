@@ -94,7 +94,7 @@ class BikeReservationTest {
 
     @Test
     void toStringTest() {
-        assertEquals("bike reservation{user: user{id: 5, name:null, role: null}, date: 22/03/2020"
+        assertEquals("bike reservation{user: user{id: 5, name:null, role: Student}, date: 22/03/2020"
                 + ", timeslot: 14:00-19:00, pickup building: building{buildingcode: 1, name: Test"
                 + ", location: Test street, opening hours: 06:00-18:00, 06:00-18:00, 06:00-18:00,"
                 + " 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00, bikes: 45}, dropoff"

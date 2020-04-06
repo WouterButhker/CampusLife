@@ -112,7 +112,7 @@ class FoodOrderTest {
 
     @Test
     void toStringTest() {
-        assertEquals("food order{user: user{id: 123, name:null, role: null}, date: 2-4-2019,"
+        assertEquals("food order{user: user{id: 123, name:null, role: Student}, date: 2-4-2019,"
                         + " timeslot: 13:00-15:00, restaurant: {789, test restaurant, null, d}"
                         + ", delivery room: null}", order.toString());
     }

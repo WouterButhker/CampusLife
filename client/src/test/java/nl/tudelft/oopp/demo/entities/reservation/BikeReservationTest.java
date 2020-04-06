@@ -148,7 +148,7 @@ class BikeReservationTest {
 
     @Test
     void toStringTest() {
-        String out = "bike reservation{user: Id: 5 user: null pass: null role: Student,"
+        String out = "bike reservation{user: Id: 5 name: null pass: null role: Student,"
                 + " date: 22/03/2020, timeslot: 14:00-19:00, "
                 + "pickup building: {1, Test, Test street, 06:00-18:00, 06:00-18:00, "
                 + "06:00-18:00, 06:00-18:00, 06:00-18:00, 06:00-18:00, 19:00-21:00,"
