@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -56,6 +58,8 @@ public class RestaurantMenuRoute extends PopupRoute {
 
     private FavoriteRestaurant favorite;
     private List<RoomReservation> roomReservations;
+    private Building building;
+    private Image restaurantImage;
 
     /**
      * Creates a RestaurantMenuRoute.
@@ -65,6 +69,31 @@ public class RestaurantMenuRoute extends PopupRoute {
      */
     public RestaurantMenuRoute(Restaurant restaurant) {
         super(new VBox());
+        this.restaurant = restaurant;
+
+        rootContainer = (VBox) getMainElement();
+        rootContainer.getChildren().add(new AppBar());
+
+        showPopup(new LoadingPopup(), false);
+        new Thread(() -> {
+           loadData();
+
+            Platform.runLater(() -> {
+                buildDisplay();
+                removePopup();
+            });
+        }).start();
+    }
+
+    private void loadData() {
+        foods = RestaurantCommunication.getAllFood(restaurant.getId());
+        roomReservations = RoomReservationCommunication.getMyReservations();
+        building = BuildingCommunication.getBuildingByCode(restaurant.getBuildingCode());
+        favorite = FavoriteRestaurantCommunication.isFavorite(restaurant);
+        restaurantImage = new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()).get(0));
+    }
+
+    private void buildDisplay() {
         Calendar now = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         foodOrder = new FoodOrder(
@@ -74,10 +103,8 @@ public class RestaurantMenuRoute extends PopupRoute {
                 restaurant,
                 null
         );
-        foods = RestaurantCommunication.getAllFood(restaurant.getId());
 
         // Get reservations of rooms only and remove past events
-        roomReservations = RoomReservationCommunication.getMyReservations();
         for (int i = 0; i < roomReservations.size(); i++) {
             RoomReservation reservation = roomReservations.get(i);
             if (reservation.getRoom() == null) {
@@ -103,9 +130,6 @@ public class RestaurantMenuRoute extends PopupRoute {
             }
         }
 
-        rootContainer = (VBox) getMainElement();
-        rootContainer.getChildren().add(new AppBar());
-
         mainContainer = new HBox();
         rootContainer.getChildren().add(mainContainer);
         menuContainer = new VBox();
@@ -114,7 +138,6 @@ public class RestaurantMenuRoute extends PopupRoute {
         menuContainer.setPadding(new Insets(16));
         mainContainer.getChildren().add(menuScroll);
 
-        Building building = BuildingCommunication.getBuildingByCode(restaurant.getBuildingCode());
         Weekdays weekdays = new Weekdays(building.getOpeningHours());
         int dayOfWeek = new CalendarWidgetLogic().getDayOfWeek(Calendar.getInstance());
         boolean isBuildingOpen = weekdays.isOpenAt(
@@ -128,21 +151,22 @@ public class RestaurantMenuRoute extends PopupRoute {
         restaurantContainer = new HBox();
         menuContainer.getChildren().add(restaurantContainer);
 
-        favorite = FavoriteRestaurantCommunication.isFavorite(restaurant);
-
         favoriteButton = new ToggleButton();
         favoriteButton.setSelected(favorite != null);
         favoriteButton.getStyleClass().add("favorite-button");
         favoriteButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!oldValue) {
-                favorite = FavoriteRestaurantCommunication.addFavorite(restaurant);
-            } else {
-                FavoriteRestaurantCommunication.removeFavorite(favorite.getId());
-            }
+            showPopup(new LoadingPopup(), false);
+            new Thread(() -> {
+                if (!oldValue) {
+                    favorite = FavoriteRestaurantCommunication.addFavorite(restaurant);
+                } else {
+                    FavoriteRestaurantCommunication.removeFavorite(favorite.getId());
+                }
+
+                Platform.runLater(this::removePopup);
+            }).start();
         });
 
-        Image restaurantImage =
-                new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()).get(0));
         restaurantPicture = new ImageView(restaurantImage);
         restaurantPicture.setPreserveRatio(true);
 
@@ -179,16 +203,12 @@ public class RestaurantMenuRoute extends PopupRoute {
             menuContainer.getChildren().add(foodItemWidget);
         }
 
-        rootContainer.sceneProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                resizeRoute(newValue.getWidth(), newValue.getHeight());
-                newValue.heightProperty().addListener((observable1, oldValue1, newValue1) -> {
-                    resizeRoute(newValue.getWidth(), newValue.getHeight());
-                });
-                newValue.widthProperty().addListener((observable1, oldValue1, newValue1) -> {
-                    resizeRoute(newValue.getWidth(), newValue.getHeight());
-                });
-            }
+        resizeRoute(getRoutingScene().getWidth(), getRoutingScene().getHeight());
+        getRoutingScene().heightProperty().addListener((observable1, oldValue1, newValue1) -> {
+            resizeRoute(getRoutingScene().getWidth(), getRoutingScene().getHeight());
+        });
+        getRoutingScene().widthProperty().addListener((observable1, oldValue1, newValue1) -> {
+            resizeRoute(getRoutingScene().getWidth(), getRoutingScene().getHeight());
         });
     }
 
