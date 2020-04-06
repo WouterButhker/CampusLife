@@ -3,24 +3,23 @@ package nl.tudelft.oopp.demo.views;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
-import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.Weekdays;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
-import nl.tudelft.oopp.demo.widgets.AgendaWidget;
-import nl.tudelft.oopp.demo.widgets.AppBar;
-import nl.tudelft.oopp.demo.widgets.CalendarWidget;
-import nl.tudelft.oopp.demo.widgets.ReservationWidget;
+import nl.tudelft.oopp.demo.widgets.*;
 
-public class RoomReservationRoute extends Route {
+public class RoomReservationRoute extends PopupRoute {
     private VBox rootElement;
 
     private HBox horizontalContainer;
@@ -35,6 +34,7 @@ public class RoomReservationRoute extends Route {
 
     private List<RoomReservation> reservations;
     private Room room;
+    private Image roomImage;
     private Weekdays openingHours;
 
     /**
@@ -43,84 +43,23 @@ public class RoomReservationRoute extends Route {
      * @param room the room to be reserved
      */
     public RoomReservationRoute(Room room) {
+        super(new VBox());
         this.room = room;
         openingHours = new Weekdays(room.getBuilding().getOpeningHours());
-        rootElement = new VBox();
-
-        reservations = RoomReservationCommunication.getAllReservations();
+        rootElement = (VBox) getMainElement();
 
         AppBar appBar = new AppBar();
         rootElement.getChildren().add(appBar);
 
-        horizontalContainer = new HBox();
-        horizontalContainer.setAlignment(Pos.CENTER);
-        horizontalContainer.setPadding(new Insets(16, 16, 16, 16));
-        horizontalContainer.setSpacing(32);
-        rootElement.getChildren().add(horizontalContainer);
+        showPopup(new LoadingPopup(), false);
+        new Thread(() -> {
+            loadData();
 
-        calendarWidget = new CalendarWidget();
-        calendarWidget.setListener(new CalendarWidget.Listener() {
-            @Override
-            public void onDayClicked(Calendar day) {
-                agendaWidget.removeSelection();
-                selectedDate = day;
-                reservationWidget.setPeriod(null, null);
-                agendaWidget.setAvailabilities(computeAvailabilities());
-                setOpeningTime();
-            }
-        });
-        agendaWidget = new AgendaWidget(new AgendaWidget.Listener() {
-            @Override
-            public void onBlockSelected(int begin, int end, boolean available) {
-                fromTime = (Calendar) selectedDate.clone();
-                fromTime.set(Calendar.HOUR_OF_DAY, begin);
-                fromTime.set(Calendar.MINUTE, 0);
-                toTime = (Calendar) selectedDate.clone();
-                toTime.set(Calendar.HOUR_OF_DAY, end);
-                toTime.set(Calendar.MINUTE, 0);
-
-                reservationWidget.setPeriod(fromTime, toTime);
-                reservationWidget.setAvailable(available);
-            }
-        }, 5);
-        reservationWidget = new ReservationWidget(room, new ReservationWidget.Listener() {
-            @Override
-            public void onReserveClicked() {
-                if (fromTime != null) {
-                    int userId = AuthenticationCommunication.myUserId;
-                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
-                    String fromString = format.format(fromTime.getTime());
-                    String toString = format.format(toTime.getTime());
-                    String timeslot = String.format("%s - %s", fromString, toString);
-                    String date = timeslot.substring(0, 9);
-                    RoomReservationCommunication
-                            .addReservationToDatabase(userId, room.getRoomCode(), timeslot);
-                    reservations.add(new RoomReservation(new User(userId), room, date, timeslot));
-                    agendaWidget.setAvailabilities(computeAvailabilities());
-                    reservationWidget.setAvailable(false);
-                    System.out.println(userId + " " + room.getRoomCode() + " " + timeslot);
-                }
-            }
-        });
-        horizontalContainer.getChildren().add(calendarWidget);
-        horizontalContainer.getChildren().add(agendaWidget);
-        horizontalContainer.getChildren().add(reservationWidget);
-
-        horizontalContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            if (newScene != null) {
-                resizeDisplay(newScene.getWidth());
-                agendaWidget.setPrefHeight(newScene.getHeight() * 0.65);
-                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                    resizeDisplay(newWidth.doubleValue());
-                });
-                newScene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-                    agendaWidget.setPrefHeight(newHeight.doubleValue() * 0.65);
-                });
-            }
-        });
-
-        agendaWidget.setAvailabilities(computeAvailabilities());
-        setOpeningTime();
+            Platform.runLater(() -> {
+                buildDisplay();
+                removePopup();
+            });
+        }).start();
     }
 
     private void setOpeningTime() {
@@ -155,6 +94,135 @@ public class RoomReservationRoute extends Route {
             agendaWidget.setMinHour(-1);
             agendaWidget.setMaxHour(-1);
         }
+    }
+
+    private void loadData() {
+        reservations = RoomReservationCommunication.getAllReservations();
+        roomImage = new Image(ImageCommunication.getRoomImageUrl(room.getRoomCode()).get(0));
+    }
+
+    private void buildDisplay() {
+        horizontalContainer = new HBox();
+        horizontalContainer.setAlignment(Pos.CENTER);
+        horizontalContainer.setPadding(new Insets(16, 16, 16, 16));
+        horizontalContainer.setSpacing(32);
+        rootElement.getChildren().add(horizontalContainer);
+
+        calendarWidget = new CalendarWidget();
+        calendarWidget.setListener(new CalendarWidget.Listener() {
+            @Override
+            public void onDayClicked(Calendar day) {
+                agendaWidget.removeSelection();
+                selectedDate = day;
+                reservationWidget.setPeriod(null, null);
+                agendaWidget.setAvailabilities(computeAvailabilities());
+                setOpeningTime();
+            }
+        });
+        agendaWidget = new AgendaWidget(new AgendaWidget.Listener() {
+            @Override
+            public void onBlockSelected(int begin, int end, boolean available) {
+                fromTime = (Calendar) selectedDate.clone();
+                fromTime.set(Calendar.HOUR_OF_DAY, begin);
+                fromTime.set(Calendar.MINUTE, 0);
+                toTime = (Calendar) selectedDate.clone();
+                toTime.set(Calendar.HOUR_OF_DAY, end);
+                toTime.set(Calendar.MINUTE, 0);
+
+                reservationWidget.setPeriod(fromTime, toTime);
+                reservationWidget.setAvailable(available);
+            }
+        }, 5);
+        reservationWidget = new ReservationWidget(
+                roomImage, room, new ReservationWidget.Listener() {
+                    @Override
+                    public void onReserveClicked() {
+                        if (fromTime != null) {
+                            SimpleDateFormat dayFormat = new SimpleDateFormat("EEE. d MMMM");
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                            String confirmationString = String.format(
+                                    "Are you sure you want to reserve %s on %s from %s to %s?",
+                                    room.getName(),
+                                    dayFormat.format(fromTime.getTime()),
+                                    timeFormat.format(fromTime.getTime()),
+                                    timeFormat.format(toTime.getTime())
+                            );
+                            showPopup(new ConfirmationPopup(
+                                    "Confirm reservation",
+                                    confirmationString,
+                                    new ConfirmationPopup.Listener() {
+                                        @Override
+                                        public void onConfirmClicked() {
+                                            reserveRoom();
+                                        }
+
+                                        @Override
+                                        public void onCancelClicked() {
+                                            removePopup();
+                                        }
+                                    }), true);
+                        }
+                    }
+                });
+        horizontalContainer.getChildren().add(calendarWidget);
+        horizontalContainer.getChildren().add(agendaWidget);
+        horizontalContainer.getChildren().add(reservationWidget);
+
+        resizeDisplay(getRoutingScene().getWidth());
+        agendaWidget.setPrefHeight(getRoutingScene().getHeight() * 0.65);
+        getRoutingScene().widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            if (getRoutingScene() != null) {
+                resizeDisplay(newWidth.doubleValue());
+            }
+        });
+        getRoutingScene().heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            if (getRoutingScene() != null) {
+                agendaWidget.setPrefHeight(newHeight.doubleValue() * 0.65);
+            }
+        });
+
+        agendaWidget.setAvailabilities(computeAvailabilities());
+        setOpeningTime();
+    }
+
+    private void reserveRoom() {
+        showPopup(new LoadingPopup(), false);
+        new Thread(() -> {
+            int userId = AuthenticationCommunication.myUserId;
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy,HH:mm");
+            String fromString = format.format(fromTime.getTime());
+            String toString = format.format(toTime.getTime());
+            String timeslot = String.format("%s - %s", fromString, toString);
+            String date = timeslot.substring(0, 9);
+            RoomReservationCommunication
+                    .addReservationToDatabase(userId, room.getRoomCode(), timeslot);
+            reservations.add(new RoomReservation(new User(userId), room, date, timeslot));
+            agendaWidget.setAvailabilities(computeAvailabilities());
+            reservationWidget.setAvailable(false);
+            System.out.println(userId + " " + room.getRoomCode() + " " + timeslot);
+
+            Platform.runLater(() -> {
+                SimpleDateFormat dayFormat = new SimpleDateFormat("EEE. d MMMM");
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                String infoString = String.format(
+                        "%s has been successfully reserved on %s from %s to %s",
+                        room.getName(),
+                        dayFormat.format(fromTime.getTime()),
+                        timeFormat.format(fromTime.getTime()),
+                        timeFormat.format(toTime.getTime())
+                );
+                showPopup(new InformationPopup(
+                        "Success",
+                        infoString,
+                        new InformationPopup.Listener() {
+                            @Override
+                            public void onOkClicked() {
+                                removePopup();
+                            }
+                        }
+                ), false);
+            });
+        }).start();
     }
 
     private boolean[] computeAvailabilities() {
@@ -200,10 +268,5 @@ public class RoomReservationRoute extends Route {
         calendarWidget.setPrefWidth(newWidth * 0.3);
         agendaWidget.setPrefWidth(newWidth * 0.3);
         reservationWidget.setPrefWidth(newWidth * 0.3);
-    }
-
-    @Override
-    public Parent getRootElement() {
-        return rootElement;
     }
 }
