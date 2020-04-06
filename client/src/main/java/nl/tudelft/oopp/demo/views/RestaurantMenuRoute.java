@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -76,8 +75,7 @@ public class RestaurantMenuRoute extends PopupRoute {
 
         showPopup(new LoadingPopup(), false);
         new Thread(() -> {
-           loadData();
-
+            loadData();
             Platform.runLater(() -> {
                 buildDisplay();
                 removePopup();
@@ -90,7 +88,8 @@ public class RestaurantMenuRoute extends PopupRoute {
         roomReservations = RoomReservationCommunication.getMyReservations();
         building = BuildingCommunication.getBuildingByCode(restaurant.getBuildingCode());
         favorite = FavoriteRestaurantCommunication.isFavorite(restaurant);
-        restaurantImage = new Image(ImageCommunication.getRestaurantImageUrl(restaurant.getId()).get(0));
+        restaurantImage = new Image(ImageCommunication
+                .getRestaurantImageUrl(restaurant.getId()).get(0));
     }
 
     private void buildDisplay() {
