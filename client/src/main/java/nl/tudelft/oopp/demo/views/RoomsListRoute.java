@@ -2,12 +2,10 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
@@ -21,7 +19,6 @@ import nl.tudelft.oopp.demo.communication.FavoriteRoomCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RoomCommunication;
 import nl.tudelft.oopp.demo.core.PopupRoute;
-import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.FavoriteRoom;
 import nl.tudelft.oopp.demo.entities.Room;

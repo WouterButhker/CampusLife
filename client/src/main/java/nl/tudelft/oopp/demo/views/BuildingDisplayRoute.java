@@ -2,15 +2,12 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,11 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import nl.tudelft.oopp.demo.communication.FavoriteRoomCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.core.PopupRoute;
-import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.*;
 import nl.tudelft.oopp.demo.widgets.AppBar;
@@ -131,7 +126,7 @@ public class BuildingDisplayRoute extends PopupRoute {
         String timetableString  = "";
         Weekdays weekdays = new Weekdays(building.getOpeningHours());
         String[] days = new String[]{"Monday      ", "Tuesday     ", "Wednesday", "Thursday    ",
-                "Friday         ", "Saturday     ", "Sunday       "};
+            "Friday         ", "Saturday     ", "Sunday       "};
         for (int i = 0; i < 7; i++) {
             timetableString += String.format("%s: %s", days[i], weekdays.getWeekdays().get(i));
             if (i + 1 != 7) {

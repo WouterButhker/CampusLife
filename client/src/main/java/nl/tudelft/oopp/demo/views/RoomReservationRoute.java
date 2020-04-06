@@ -3,11 +3,9 @@ package nl.tudelft.oopp.demo.views;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,7 +13,6 @@ import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
 import nl.tudelft.oopp.demo.core.PopupRoute;
-import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.entities.User;
 import nl.tudelft.oopp.demo.entities.Weekdays;
@@ -136,36 +133,37 @@ public class RoomReservationRoute extends PopupRoute {
                 reservationWidget.setAvailable(available);
             }
         }, 5);
-        reservationWidget = new ReservationWidget(roomImage, room, new ReservationWidget.Listener() {
-            @Override
-            public void onReserveClicked() {
-                if (fromTime != null) {
-                    SimpleDateFormat dayFormat = new SimpleDateFormat("EEE. d MMMM");
-                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                    String confirmationString = String.format(
-                            "Are you sure you want to reserve %s on %s from %s to %s?",
-                            room.getName(),
-                            dayFormat.format(fromTime.getTime()),
-                            timeFormat.format(fromTime.getTime()),
-                            timeFormat.format(toTime.getTime())
-                    );
-                    showPopup(new ConfirmationPopup(
-                            "Confirm reservation",
-                            confirmationString,
-                            new ConfirmationPopup.Listener() {
-                                @Override
-                                public void onConfirmClicked() {
-                                    reserveRoom();
-                                }
+        reservationWidget = new ReservationWidget(
+                roomImage, room, new ReservationWidget.Listener() {
+                    @Override
+                    public void onReserveClicked() {
+                        if (fromTime != null) {
+                            SimpleDateFormat dayFormat = new SimpleDateFormat("EEE. d MMMM");
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                            String confirmationString = String.format(
+                                    "Are you sure you want to reserve %s on %s from %s to %s?",
+                                    room.getName(),
+                                    dayFormat.format(fromTime.getTime()),
+                                    timeFormat.format(fromTime.getTime()),
+                                    timeFormat.format(toTime.getTime())
+                            );
+                            showPopup(new ConfirmationPopup(
+                                    "Confirm reservation",
+                                    confirmationString,
+                                    new ConfirmationPopup.Listener() {
+                                        @Override
+                                        public void onConfirmClicked() {
+                                            reserveRoom();
+                                        }
 
-                                @Override
-                                public void onCancelClicked() {
-                                    removePopup();
-                                }
-                            }), true);
-                }
-            }
-        });
+                                        @Override
+                                        public void onCancelClicked() {
+                                            removePopup();
+                                        }
+                                    }), true);
+                        }
+                    }
+                });
         horizontalContainer.getChildren().add(calendarWidget);
         horizontalContainer.getChildren().add(agendaWidget);
         horizontalContainer.getChildren().add(reservationWidget);

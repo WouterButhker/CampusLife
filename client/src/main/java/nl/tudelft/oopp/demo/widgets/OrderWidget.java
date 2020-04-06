@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

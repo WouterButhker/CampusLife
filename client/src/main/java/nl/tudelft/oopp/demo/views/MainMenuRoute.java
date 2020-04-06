@@ -2,12 +2,10 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -17,7 +15,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.*;
 import nl.tudelft.oopp.demo.core.PopupRoute;
-import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.widgets.AppBar;
