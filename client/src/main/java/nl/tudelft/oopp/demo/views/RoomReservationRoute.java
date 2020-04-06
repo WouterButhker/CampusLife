@@ -134,8 +134,22 @@ public class RoomReservationRoute extends Route {
         String openingTime = openingHours.getWeekdays().get(dayOfWeek);
         if (!openingTime.equals(Weekdays.CLOSED)) {
             int openingHour = Integer.parseInt(openingTime.substring(0, 2));
-            int closingHour = Integer.parseInt(openingTime.substring(6, 8));
+            Calendar now = Calendar.getInstance();
+            int nowDay = now.get(Calendar.DAY_OF_WEEK);
+            int nowMonth = now.get(Calendar.DAY_OF_MONTH);
+            int dayClean = selectedDate.get(Calendar.DAY_OF_WEEK);
+            int month = selectedDate.get(Calendar.DAY_OF_MONTH);
+            int hours = now.get(Calendar.HOUR_OF_DAY);
+            int minutes = now.get(Calendar.MINUTE);
+            if (minutes != 0) {
+                hours++;
+            }
+            if (nowDay == dayClean
+                    && nowMonth == month && hours > openingHour) {
+                openingHour = hours;
+            }
             agendaWidget.setMinHour(openingHour);
+            int closingHour = Integer.parseInt(openingTime.substring(6, 8));
             agendaWidget.setMaxHour(closingHour - 1);
         } else {
             agendaWidget.setMinHour(-1);
