@@ -54,6 +54,20 @@ public class UserController {
         return res;
     }
 
+    @PutMapping(path = "/changePassword")
+    ResponseEntity<User> changePassword(@RequestBody User user) {
+        if (usersRepository.existsById(user.getId())) {
+            int affectedRows = usersRepository.updatePassword(
+                    user.getUsername(), user.getPassword());
+            if (affectedRows < 1) {
+                return new ResponseEntity<>(user, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+    }
+
     @Modifying
     @PutMapping(value = "/image/{userId}")
     ResponseEntity<UserImage> uploadFile(@PathVariable Integer userId,

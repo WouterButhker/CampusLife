@@ -196,70 +196,50 @@ public class MyProfileRoute extends Route {
 
         for (int i = 0; i < reservations.size(); i++) {
             HBox currentReservation = new HBox();
-            Background background = new Background(
-                    new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
-            currentReservation.setBackground(background);
-            currentReservation.setAlignment(Pos.CENTER_LEFT);
-            currentReservation.setSpacing(7);
-            currentReservation.setPadding(new Insets(16, 16, 16, 16));
-
-            Text dateText = new Text();
-            Text timeText = new Text();
-
             Reservation reservation = reservations.get(i);
-            if (reservation instanceof RoomReservation
-                    || reservation instanceof PersonalReservation) {
-                dateText = new Text("Date: " + reservation.getTimeSlot().substring(0, 10));
-                timeText = new Text("Time: " + reservation.getTimeSlot().substring(11, 18)
-                        + " " + reservation.getTimeSlot().substring(30));
-            } else if (reservation instanceof BikeReservation) {
-                BikeReservation bikeReservation = (BikeReservation) reservation;
-                dateText = new Text("Date: " + bikeReservation.getDate());
-                timeText = new Text("Time: " + bikeReservation.getTimeSlot());
-            }
+            ReservationItem reservationInformation;
 
-            currentReservation.getChildren().add(dateText);
-            currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
-
-
-            currentReservation.getChildren().add(timeText);
-            currentReservation.getChildren().add(makeSeparator(dateText.getFont().getSize()));
-
-            Text typeText = new Text("Type: my reservation");
             if (reservation instanceof RoomReservation) {
-                RoomReservation roomReservation = (RoomReservation) reservation;
-                if (roomReservation.getRoom() != null) {
-                    typeText = new Text("Room: " + roomReservation.getRoom().getRoomCode());
-                }
+                reservationInformation = new ReservationItem((RoomReservation) reservation);
             } else if (reservation instanceof BikeReservation) {
-                typeText = new Text("Type: bike reservation");
-            } else if (reservation instanceof PersonalReservation) {
-                PersonalReservation personalReservation = (PersonalReservation) reservation;
-                typeText = new Text("Activity: " + personalReservation.getActivity());
+                reservationInformation = new ReservationItem((BikeReservation) reservation);
+            } else {
+                reservationInformation = new ReservationItem((PersonalReservation) reservation);
             }
 
 
-            currentReservation.getChildren().add(typeText);
+            currentReservation.getChildren().add(reservationInformation);
 
+            String styleHovered = "-fx-background-color:#cf3229;"
+                    + "-fx-text-fill: white; -fx-font-size: 16;";
+            String style = "-fx-background-color:#e4685d;"
+                    + "-fx-text-fill: white; -fx-font-size: 16;";
             int finalI = i;
-            Button delete = new Button("X");
-            delete.setPrefSize(30, 30);
+            Button delete = new Button("Delete");
+
+            delete.setStyle(style);
+            delete.setOnMouseEntered(event -> delete.setStyle(styleHovered));
+            delete.setOnMouseExited(event -> delete.setStyle(style));
+
             delete.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    int id = reservations.get(finalI).getId();
-                    if (reservation instanceof RoomReservation) {
-                        RoomReservationCommunication.deleteReservationFromDatabase(id);
-                    } else if (reservation instanceof BikeReservation) {
-                        BikeReservationCommunication.deleteBikeReservation(id);
-                    } else if (reservation instanceof PersonalReservation) {
-                        PersonalReservationCommunication.deleteReservationFromDatabase(id);
-                    }
+                    if (PopupWidget.displayBool("Are you sure you want to delete this reservation?"
+                            + "\nThis will be irreversible", "Are you sure?")) {
+                        int id = reservations.get(finalI).getId();
+                        if (reservation instanceof RoomReservation) {
+                            RoomReservationCommunication.deleteReservationFromDatabase(id);
+                        } else if (reservation instanceof BikeReservation) {
+                            BikeReservationCommunication.deleteBikeReservation(id);
+                        } else if (reservation instanceof PersonalReservation) {
+                            PersonalReservationCommunication.deleteReservationFromDatabase(id);
+                        }
 
-                    if (past.isSelected()) {
-                        displayPastEvents();
-                    } else if (upcoming.isSelected()) {
-                        displayUpcomingEvents();
+                        if (past.isSelected()) {
+                            displayPastEvents();
+                        } else if (upcoming.isSelected()) {
+                            displayUpcomingEvents();
+                        }
                     }
                 }
             });
@@ -268,6 +248,9 @@ public class MyProfileRoute extends Route {
 
             currentReservation.getChildren().add(deletePane);
             reservationsList.getChildren().add(currentReservation);
+            Separator separator = new Separator();
+            separator.setPrefWidth(500);
+            reservationsList.getChildren().add(separator);
         }
         scrollPane.setContent(reservationsList);
         scrollPane.fitToWidthProperty().set(true);
@@ -391,7 +374,18 @@ public class MyProfileRoute extends Route {
             }
         });
         imageSelectorWidget.addChild(save);
-        horizontalContainer.getChildren().addAll(userDetails, imageSelectorWidget);
+        Pane spacer = new Pane();
+        spacer.setPrefWidth(63);
+        Button changePassword = new Button("Change Password");
+        changePassword.setPadding(new Insets(3, 10, 3, 10));
+        changePassword.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PopupWidget.displayPasswordChange(AuthenticationCommunication.myUsername);
+            }
+        });
+        horizontalContainer.getChildren().addAll(
+                userDetails, imageSelectorWidget, spacer, changePassword);
         //
     }
 
