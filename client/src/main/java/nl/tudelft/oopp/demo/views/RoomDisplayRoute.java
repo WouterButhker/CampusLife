@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,14 +20,16 @@ import javafx.scene.text.Text;
 import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.FavoriteRoomCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.FavoriteRoom;
 import nl.tudelft.oopp.demo.entities.Room;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.GalleryWidget;
+import nl.tudelft.oopp.demo.widgets.LoadingPopup;
 
-public class RoomDisplayRoute extends Route {
+public class RoomDisplayRoute extends PopupRoute {
     private Room room;
 
     private VBox rootContainer;
@@ -46,19 +50,38 @@ public class RoomDisplayRoute extends Route {
     private Button reserveButton;
 
     private FavoriteRoom favorite;
+    private List<Image> roomImages;
 
     /**
      * Instantiates the room display route for the room passed as parameter.
      * @param room the room to be displayed
      */
     public RoomDisplayRoute(Room room) {
+        super(new VBox());
         this.room = room;
 
-        rootContainer = new VBox();
+        rootContainer = (VBox) getMainElement();
 
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
 
+        showPopup(new LoadingPopup(), false);
+        new Thread(() -> {
+            loadData();
+
+            Platform.runLater(() -> {
+                buildDisplay();
+                removePopup();
+            });
+        }).start();
+    }
+
+    private void loadData() {
+        favorite = FavoriteRoomCommunication.isFavorite(room);
+        roomImages = getRoomImages();
+    }
+
+    private void buildDisplay() {
         contentContainer = new HBox();
         rootContainer.getChildren().add(contentContainer);
 
@@ -68,7 +91,7 @@ public class RoomDisplayRoute extends Route {
         leftContainer.setPadding(new Insets(32));
         contentContainer.getChildren().add(leftContainer);
 
-        galleryWidget = new GalleryWidget(getRoomImages());
+        galleryWidget = new GalleryWidget(roomImages);
         contentContainer.getChildren().add(galleryWidget);
 
         // Add title
@@ -81,17 +104,21 @@ public class RoomDisplayRoute extends Route {
         title.getStyleClass().add("gallery-text");
         titleContainer.getChildren().add(title);
 
-        favorite = FavoriteRoomCommunication.isFavorite(room);
         favoriteButton = new ToggleButton();
         favoriteButton.setSelected(favorite != null);
         favoriteButton.getStyleClass().add("favorite-button2");
         favoriteButton.getStyleClass().add("fav-hover");
         favoriteButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!oldValue) {
-                favorite = FavoriteRoomCommunication.addFavorite(room);
-            } else {
-                FavoriteRoomCommunication.removeFavorite(favorite.getId());
-            }
+            showPopup(new LoadingPopup(), false);
+            new Thread(() -> {
+                if (!oldValue) {
+                    favorite = FavoriteRoomCommunication.addFavorite(room);
+                } else {
+                    FavoriteRoomCommunication.removeFavorite(favorite.getId());
+                }
+
+                Platform.runLater(this::removePopup);
+            }).start();
         });
         titleContainer.getChildren().add(favoriteButton);
 
@@ -146,15 +173,15 @@ public class RoomDisplayRoute extends Route {
         });
         leftContainer.getChildren().add(reserveButton);
 
-        rootContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            if (newScene != null) {
-                resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
-                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                    resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
-                });
-                newScene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-                    resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
-                });
+        resizeDisplay(getRoutingScene().getWidth(), getRoutingScene().getHeight() * 0.9);
+        getRoutingScene().widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            if (getRoutingScene() != null) {
+                resizeDisplay(getRoutingScene().getWidth(), getRoutingScene().getHeight() * 0.9);
+            }
+        });
+        getRoutingScene().heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            if (getRoutingScene() != null) {
+                resizeDisplay(getRoutingScene().getWidth(), getRoutingScene().getHeight() * 0.9);
             }
         });
     }
@@ -196,11 +223,6 @@ public class RoomDisplayRoute extends Route {
             roomImages.add(new Image(url));
         }
         return roomImages;
-    }
-
-    @Override
-    public Parent getRootElement() {
-        return rootContainer;
     }
 
     private static class TextWithIcon extends HBox {
