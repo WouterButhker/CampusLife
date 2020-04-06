@@ -62,7 +62,7 @@ public class FoodOrderControllerTest {
      * runs a setup before every test.
      */
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(springSecurity())
