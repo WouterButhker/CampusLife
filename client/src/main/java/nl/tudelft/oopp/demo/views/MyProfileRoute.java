@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -23,11 +25,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;
+import nl.tudelft.oopp.demo.communication.FavoriteRestaurantCommunication;
+import nl.tudelft.oopp.demo.communication.ImageCommunication;
+import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.BikeReservationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.FoodOrderCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.PersonalReservationCommunication;
 import nl.tudelft.oopp.demo.communication.reservation.RoomReservationCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.Route;
+import nl.tudelft.oopp.demo.entities.FavoriteRestaurant;
+import nl.tudelft.oopp.demo.entities.Restaurant;
 import nl.tudelft.oopp.demo.entities.reservation.BikeReservation;
 import nl.tudelft.oopp.demo.entities.reservation.FoodOrder;
 import nl.tudelft.oopp.demo.entities.reservation.PersonalReservation;
@@ -35,7 +43,7 @@ import nl.tudelft.oopp.demo.entities.reservation.Reservation;
 import nl.tudelft.oopp.demo.entities.reservation.RoomReservation;
 import nl.tudelft.oopp.demo.widgets.*;
 
-public class MyProfileRoute extends Route {
+public class MyProfileRoute extends PopupRoute {
     private VBox rootElement;
     private VBox userDetails;
     private VBox eventContainer;
@@ -61,18 +69,32 @@ public class MyProfileRoute extends Route {
      * Instantiates a new MyProfileRoute.
      */
     public MyProfileRoute() {
-        rootElement = new VBox();
+        super(new VBox());
+        rootElement = (VBox) getMainElement();
         Boolean isAdmin = false;
         if (AuthenticationCommunication.myUserRole.equals("Admin")) {
             isAdmin = true;
         }
         AppBar appBar = new AppBar(isAdmin, true, false);
         rootElement.getChildren().add(appBar);
-        addUserInformation();
-        eventContainer = new VBox();
-        eventContainer.setPadding(new Insets(0, 16, 16, 16));
-        addToggleButton();
-        rootElement.getChildren().addAll(eventContainer);
+        load();
+    }
+
+    private void load() {
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+
+            addUserInformation();
+            eventContainer = new VBox();
+            eventContainer.setPadding(new Insets(0, 16, 16, 16));
+            addToggleButton();
+            Platform.runLater(() -> {
+                removePopup();
+                rootElement.getChildren().add(horizontalContainer);
+                rootElement.getChildren().addAll(eventContainer);
+            });
+        });
+        thread.start();
     }
 
     private void addToggleButton() {
@@ -359,7 +381,7 @@ public class MyProfileRoute extends Route {
         //String imageId = AuthenticationCommunication.ids.get(rand);
 
 
-        rootElement.getChildren().add(horizontalContainer);
+
     }
 
     private void loadHorizontalContainer() {
@@ -404,8 +426,8 @@ public class MyProfileRoute extends Route {
         return boldAndRegular;
     }
 
-    @Override
-    public Parent getRootElement() {
-        return rootElement;
-    }
+//    @Override
+//    public Parent getRootElement() {
+//        return rootElement;
+//    }
 }
