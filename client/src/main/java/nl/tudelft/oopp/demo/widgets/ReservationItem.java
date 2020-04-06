@@ -34,7 +34,7 @@ public class ReservationItem extends Group {
         reservationType.setPadding(new Insets(10, 0, 10,9));
 
         Label reservationData = new Label("Building: "
-                + reservation.getRoom().getBuilding().getName() + "Room: "
+                + reservation.getRoom().getBuilding().getName() + " Room: "
                 + reservation.getRoom().getName());
 
         reservationData.setStyle("-fx-text-fill: #9E9E9E;"
