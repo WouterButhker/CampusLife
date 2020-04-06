@@ -155,11 +155,16 @@ public class RestaurantMenuRoute extends PopupRoute {
         favoriteButton.setSelected(favorite != null);
         favoriteButton.getStyleClass().add("favorite-button");
         favoriteButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (!oldValue) {
-                favorite = FavoriteRestaurantCommunication.addFavorite(restaurant);
-            } else {
-                FavoriteRestaurantCommunication.removeFavorite(favorite.getId());
-            }
+            showPopup(new LoadingPopup(), false);
+            new Thread(() -> {
+                if (!oldValue) {
+                    favorite = FavoriteRestaurantCommunication.addFavorite(restaurant);
+                } else {
+                    FavoriteRestaurantCommunication.removeFavorite(favorite.getId());
+                }
+
+                Platform.runLater(this::removePopup);
+            }).start();
         });
 
         restaurantPicture = new ImageView(restaurantImage);
