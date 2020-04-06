@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.views;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,14 +23,16 @@ import javafx.scene.text.TextAlignment;
 import nl.tudelft.oopp.demo.communication.FavoriteRoomCommunication;
 import nl.tudelft.oopp.demo.communication.ImageCommunication;
 import nl.tudelft.oopp.demo.communication.RestaurantCommunication;
+import nl.tudelft.oopp.demo.core.PopupRoute;
 import nl.tudelft.oopp.demo.core.Route;
 import nl.tudelft.oopp.demo.core.RoutingScene;
 import nl.tudelft.oopp.demo.entities.*;
 import nl.tudelft.oopp.demo.widgets.AppBar;
 import nl.tudelft.oopp.demo.widgets.ButtonsGridView;
 import nl.tudelft.oopp.demo.widgets.GalleryWidget;
+import nl.tudelft.oopp.demo.widgets.LoadingPopup;
 
-public class BuildingDisplayRoute extends Route {
+public class BuildingDisplayRoute extends PopupRoute {
     private Building building;
 
     private VBox rootContainer;
@@ -49,22 +53,53 @@ public class BuildingDisplayRoute extends Route {
     private Text restaurantsTitle;
     private ButtonsGridView restaurantsGrid;
 
+    private List<Restaurant> restaurants;
+    private List<Image> restaurantImages;
+    private List<String> restaurantNames;
+    private List<Image> buildingImages;
+
     /**
      * Instantiates the building display route for the room passed as parameter.
      * @param building the building to be displayed
      */
     public BuildingDisplayRoute(Building building) {
+        super(new VBox());
         this.building = building;
 
-        rootContainer = new VBox();
+        rootContainer = (VBox) getMainElement();
 
         AppBar appBar = new AppBar();
         rootContainer.getChildren().add(appBar);
 
+        showPopup(new LoadingPopup(), false);
+        new Thread(() -> {
+            loadData();
+
+            Platform.runLater(() -> {
+                buildDisplay();
+                removePopup();
+            });
+        }).start();
+    }
+
+    private void loadData() {
+        restaurants = RestaurantCommunication
+                .getAllRestaurantsFromBuilding(building.getCode());
+        restaurantImages = new ArrayList<>();
+        restaurantNames = new ArrayList<>();
+        for (Restaurant restaurant : restaurants) {
+            restaurantImages.add(new Image(
+                    ImageCommunication.getRestaurantImageUrl(restaurant.getId()).get(0)));
+            restaurantNames.add(restaurant.getName());
+        }
+        buildingImages = getBuildingImages();
+    }
+
+    private void buildDisplay() {
         contentContainer = new HBox();
         rootContainer.getChildren().add(contentContainer);
 
-        galleryWidget = new GalleryWidget(getBuildingImages());
+        galleryWidget = new GalleryWidget(buildingImages);
         contentContainer.getChildren().add(galleryWidget);
 
         rightContainer = new VBox();
@@ -96,7 +131,7 @@ public class BuildingDisplayRoute extends Route {
         String timetableString  = "";
         Weekdays weekdays = new Weekdays(building.getOpeningHours());
         String[] days = new String[]{"Monday      ", "Tuesday     ", "Wednesday", "Thursday    ",
-            "Friday         ", "Saturday     ", "Sunday       "};
+                "Friday         ", "Saturday     ", "Sunday       "};
         for (int i = 0; i < 7; i++) {
             timetableString += String.format("%s: %s", days[i], weekdays.getWeekdays().get(i));
             if (i + 1 != 7) {
@@ -126,16 +161,6 @@ public class BuildingDisplayRoute extends Route {
         buttonPadding.setHeight(60);
         rightContainer.getChildren().add(buttonPadding);
 
-        List<Restaurant> restaurants = RestaurantCommunication
-                .getAllRestaurantsFromBuilding(building.getCode());
-        List<Image> restaurantImages = new ArrayList<>();
-        List<String> restaurantNames = new ArrayList<>();
-        for (Restaurant restaurant : restaurants) {
-            restaurantImages.add(new Image(
-                    ImageCommunication.getRestaurantImageUrl(restaurant.getId()).get(0)));
-            restaurantNames.add(restaurant.getName());
-        }
-
         restaurantsTitle = new Text("Restaurants");
         restaurantsTitle.getStyleClass().add("gallery-text");
         restaurantsTitle.setTextAlignment(TextAlignment.CENTER);
@@ -154,15 +179,15 @@ public class BuildingDisplayRoute extends Route {
             rightContainer.getChildren().add(restaurantsGrid);
         }
 
-        rootContainer.sceneProperty().addListener((obs2, oldScene, newScene) -> {
-            if (newScene != null) {
-                resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
-                newScene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                    resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
-                });
-                newScene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-                    resizeDisplay(newScene.getWidth(), newScene.getHeight() * 0.9);
-                });
+        resizeDisplay(getRoutingScene().getWidth(), getRoutingScene().getHeight() * 0.9);
+        getRoutingScene().widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            if (getRoutingScene() != null) {
+                resizeDisplay(getRoutingScene().getWidth(), getRoutingScene().getHeight() * 0.9);
+            }
+        });
+        getRoutingScene().heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            if (getRoutingScene() != null) {
+                resizeDisplay(getRoutingScene().getWidth(), getRoutingScene().getHeight() * 0.9);
             }
         });
     }
@@ -195,11 +220,6 @@ public class BuildingDisplayRoute extends Route {
         List<Image> roomImages = new ArrayList<>();
         roomImages.add(new Image(imageUrl));
         return roomImages;
-    }
-
-    @Override
-    public Parent getRootElement() {
-        return rootContainer;
     }
 
     private static class TextWithIcon extends HBox {
