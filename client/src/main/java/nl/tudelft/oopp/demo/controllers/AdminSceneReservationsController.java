@@ -129,6 +129,12 @@ public class AdminSceneReservationsController {
 
     }
 
+    private void addStyle() {
+        mainBox.getStylesheets().add("css/admin-scene.css");
+        //mainBox.setStyle("-fx-background-color: -primary-color-light");
+        ok.getStyleClass().add("adminButton");
+    }
+
     @FXML
     private void initialize() {
         assert anchorPaneReservations != null : "fx:id=\"anchorPaneReservations\" "
@@ -171,6 +177,7 @@ public class AdminSceneReservationsController {
                         }
                     }
                 });
+        addStyle();
     }
 
 }
