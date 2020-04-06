@@ -42,7 +42,8 @@ public class AgendaWidget extends VBox {
     public AgendaWidget(Listener listener, int numBlocks) {
         Calendar now = Calendar.getInstance();
         int hour = now.get(Calendar.HOUR_OF_DAY);
-        topBlock = hour - 2;
+        topBlock = Math.min(hour, maxHour - numBlocks + 1);
+        topBlock = Math.max(topBlock, minHour);
         this.listener = listener;
         setNumBlocks(numBlocks);
         setStyle("-fx-background-color: -primary-color-light; -fx-background-radius: 8;");
