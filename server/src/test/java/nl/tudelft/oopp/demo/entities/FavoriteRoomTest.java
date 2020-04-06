@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo;
+package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
