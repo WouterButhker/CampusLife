@@ -76,24 +76,12 @@ public class MyProfileRoute extends PopupRoute {
         }
         AppBar appBar = new AppBar(isAdmin, true, false);
         rootElement.getChildren().add(appBar);
-        load();
-    }
-
-    private void load() {
-        showPopup(new LoadingPopup(), false);
-        Thread thread = new Thread(() -> {
-
-            addUserInformation();
-            eventContainer = new VBox();
-            eventContainer.setPadding(new Insets(0, 16, 16, 16));
-            addToggleButton();
-            Platform.runLater(() -> {
-                removePopup();
-                rootElement.getChildren().add(horizontalContainer);
-                rootElement.getChildren().addAll(eventContainer);
-            });
-        });
-        thread.start();
+        addUserInformation();
+        eventContainer = new VBox();
+        eventContainer.setPadding(new Insets(0, 16, 16, 16));
+        addToggleButton();
+        rootElement.getChildren().add(horizontalContainer);
+        rootElement.getChildren().addAll(eventContainer);
     }
 
     private void addToggleButton() {
@@ -295,17 +283,34 @@ public class MyProfileRoute extends PopupRoute {
     }
 
     private void displayUpcomingEvents() {
+
         cleanBeforeDisplaying();
-        sortMyReservationsByDate();
-        makeListOfReservations(futureReservations);
-        eventContainer.getChildren().addAll(scrollPane);
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+            sortMyReservationsByDate();
+            makeListOfReservations(futureReservations);
+
+            Platform.runLater(() -> {
+                removePopup();
+                eventContainer.getChildren().addAll(scrollPane);
+            });
+        });
+        thread.start();
     }
 
     private void displayPastEvents() {
         cleanBeforeDisplaying();
-        sortMyReservationsByDate();
-        makeListOfReservations(pastReservations);
-        eventContainer.getChildren().addAll(scrollPane);
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+            sortMyReservationsByDate();
+            makeListOfReservations(pastReservations);
+
+            Platform.runLater(() -> {
+                removePopup();
+                eventContainer.getChildren().addAll(scrollPane);
+            });
+        });
+        thread.start();
     }
 
     private void displayNewEvent() {
@@ -348,24 +353,32 @@ public class MyProfileRoute extends PopupRoute {
     }
 
     private void displayFoodOrders() {
+
         cleanBeforeDisplaying();
+        showPopup(new LoadingPopup(), false);
+        Thread thread = new Thread(() -> {
+            List<FoodOrder> foodOrders = FoodOrderCommunication.getAll();
 
-        List<FoodOrder> foodOrders = FoodOrderCommunication.getAll();
+            VBox list = new VBox();
+            for (int i = 0; i < foodOrders.size(); i++) {
+                FoodOrder foodOrder = foodOrders.get(i);
+                list.getChildren().add(new FoodOrderItem(foodOrder));
 
-        VBox list = new VBox();
-        for (int i = 0; i < foodOrders.size(); i++) {
-            FoodOrder foodOrder = foodOrders.get(i);
-            list.getChildren().add(new FoodOrderItem(foodOrder));
+                Rectangle separator = new Rectangle();
+                separator.setWidth(500);
+                separator.setHeight(1);
+                separator.setFill(Color.LIGHTGRAY);
+                list.getChildren().add(separator);
+            }
 
-            Rectangle separator = new Rectangle();
-            separator.setWidth(500);
-            separator.setHeight(1);
-            separator.setFill(Color.LIGHTGRAY);
-            list.getChildren().add(separator);
-        }
+            scrollPane = new ScrollPane(list);
 
-        scrollPane = new ScrollPane(list);
-        eventContainer.getChildren().add(scrollPane);
+            Platform.runLater(() -> {
+                removePopup();
+                eventContainer.getChildren().add(scrollPane);
+            });
+        });
+        thread.start();
     }
 
     private void addUserInformation() {
