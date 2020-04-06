@@ -80,6 +80,7 @@ public class ImageCommunication {
      * @return "200 OK" / "400 BAD_REQUEST"
      */
     public static String updateRoomImage(String roomCode, File image) {
+        roomCode = roomCode.replace(" ", "%20");
         String url = "/rooms/image/" + roomCode;
         return updateImage(image, url);
     }
