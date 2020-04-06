@@ -125,6 +125,7 @@ public class RectangularImageButton extends StackPane {
      */
     public void setFitWidth(double width) {
         imageView.setFitWidth(width);
+        label.setWrappingWidth(width);
     }
 
     /**
