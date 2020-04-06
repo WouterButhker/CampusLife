@@ -2,19 +2,11 @@ package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.repositories.BuildingRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@DataJpaTest
 public class BuildingTest {
-
-    @Autowired
-    private BuildingRepository buildingRepository;
 
     private Integer code;
     private String name;
@@ -97,15 +89,15 @@ public class BuildingTest {
 
     @Test
     void setBikesTest() {
-        building.setBikes(21);
-        assertEquals(21, building.getBikes());
+        Integer bikeAmount = 22;
+        building.setBikes(bikeAmount);
+        assertEquals(bikeAmount, building.getBikes());
     }
 
     @Test
     void toStringTest() {
-        String res = "building{buildingcode: 42069, name: The Arena, location: "
-                + "CityStreetRoute, opening hours: 08:00-22:00, bikes: 5}";
-        assertEquals(building.toString(), res);
+        assertEquals("building{buildingcode: 42069, name: The Arena, location: CityStreetRoute"
+                + ", opening hours: 08:00-22:00, bikes: 5}", building.toString());
     }
 
     @Test

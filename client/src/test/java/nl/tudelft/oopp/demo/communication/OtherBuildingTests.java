@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.testfolder;
+package nl.tudelft.oopp.demo.communication;
 
 import java.util.List;
 import nl.tudelft.oopp.demo.communication.AuthenticationCommunication;

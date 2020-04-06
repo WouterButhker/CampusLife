@@ -158,4 +158,11 @@ class RoomTest {
         assertEquals(1, room.getRights());
     }
 
+    @Test
+    void toStringTest() {
+        assertEquals("room{roomcode: 69, name: TestRoom, capacity: 69, rights: 2, hasTV: true"
+                + ", hasWhiteboard: true, building: building{buildingcode: 123, name: Test "
+                + "Building, location: Somewhere, opening hours: 11:11-22:22, bikes: 42}}",
+                room.toString());
+    }
 }

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.testfolder;
+package nl.tudelft.oopp.demo.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +25,7 @@ class BuildingTest {
         openingHours = "08:00-22:00, 08:00-22:00, 08:00-22:00, 08:00-22:00, "
                 + "08:00-22:00, 08:00-22:00, 08:00-22:00";
         bikes = 5;
-        building = new Building(code, name, location, openingHours, bikes); //image,
+        building = new Building(code, name, location, openingHours, bikes);
     }
 
     @Test
@@ -43,6 +43,17 @@ class BuildingTest {
         int num = 1337;
         building.setCode(num);
         assertEquals(num, building.getCode().intValue());
+    }
+
+    @Test
+    void getBuildingCodeTest() {
+        assertEquals(code, building.getBuildingCode());
+    }
+
+    @Test
+    void setBuildingCodeTest() {
+        building.setBuildingCode(321123);
+        assertEquals(321123, building.getBuildingCode().intValue());
     }
 
     @Test
@@ -84,15 +95,31 @@ class BuildingTest {
     }
 
     @Test
+    void setBikesTest() {
+        building.setBikes(405);
+        assertEquals(405, building.getBikes().intValue());
+    }
+
+    @Test
     void toStringTest() {
         assertEquals("{" + code + ", " + name + ", " + location
                 + ", " + openingHours + ", " + bikes + "}", building.toString());
     }
 
     @Test
+    void getNameAndCodeTest() {
+        assertEquals("42069 The Arena", building.getNameAndCode());
+    }
+
+    @Test
     void equalsTest() {
         Building buildingCopy = new Building(code, name, location, openingHours, bikes); //image,
         assertTrue(building.equals(buildingCopy));
+    }
+
+    @Test
+    void equalsTestFalse() {
+        assertFalse(building.equals(new Object()));
     }
 
     @Test

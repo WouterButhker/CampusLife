@@ -123,9 +123,4 @@ public class Restaurant {
                 && building.equals(restaurant.building)
                 && description.equals(restaurant.description);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, building, description);
-    }
 }
