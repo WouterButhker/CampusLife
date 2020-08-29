@@ -1,9 +1,14 @@
 ﻿# Campus Life
 
+A campus management system for room reservations, food orders and bike renting
+
+![](docs/Pictures/Main.png)
+
+
 ## Description of project
 
-Campus Life is a generic campus managment software that can make the life of both students and teachers easier.
-Some of it's features are:
+Campus Life is a generic campus management software that can make the life of both students and teachers easier.
+Some of its features are:
 * Reserve rooms on campus
   * With a permission system so only teachers can reserve lecture halls
 * Reserve a bike from a bike station
@@ -16,13 +21,27 @@ Some of it's features are:
   * Building's opening times and picture can be changed
   * Restrictions for rooms can be added
   * Restaurant menu's and pictures can be updated
-  * Bikes stations can be added or the number of available bikes can be updated
+  * Bike stations can be added, or the number of available bikes can be updated
 * And many other things
 
-### Design and architecture 
+<details>
+    <summary>More pictures</summary> 
+     
+    ![](docs/Pictures/Building.png)
+    ![](docs/Pictures/Rooms.png)
+    ![](docs/Pictures/ReserveRoom.png)
+    ![](docs/Pictures/EditBuilding.png)
+    ![](docs/Pictures/UserPermissions.png)
+</details>
+
+## How to run it
+Add a valid application.properties file under server/resources to make sure the server can connect to a database.
+<!-- how to run server and client --> 
+
+## Design and architecture 
 Note: This is a copy of the private TU Delft Gitlab repository, therefore merge requests and issue boards are unfortunately unavailable
 
-The client is written using Spring and JavaFX. The server is written using Spring
+The client is written using Spring and JavaFX. The server is written using Spring.
 <!-- Add more --> 
 
 ## Group members
@@ -38,9 +57,7 @@ The client is written using Spring and JavaFX. The server is written using Sprin
 | ![](https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/2556/avatar.png?width=400) | Andra-Diana Maglas | A.D.Maglas@student.tudelft.nl |
 
 
-## How to run it
-Add a valid application.properties file under server/resources to make sure the server can connect to a database.
-<!-- how to run server and client --> 
+
 
 
 ## Copyright / License
