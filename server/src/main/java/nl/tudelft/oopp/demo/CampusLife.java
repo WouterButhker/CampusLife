@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories(basePackages = "nl.tudelft.oopp.demo.repositories")
 @SpringBootApplication
-public class DemoApplication {
+public class CampusLife {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        SpringApplication.run(CampusLife.class, args);
     }
 
 }

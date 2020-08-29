@@ -13,6 +13,8 @@ dependencies {
     compile "org.apache.httpcomponents:httpcore:4.4.13"
     compile "org.apache.httpcomponents:httpmime:4.5.12"
 
+    compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.3')
+
     implementation 'com.google.code.gson:gson:2.8.6'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'

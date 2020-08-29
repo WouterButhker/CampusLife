@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.List;
-import nl.tudelft.oopp.demo.DemoApplication;
+import nl.tudelft.oopp.demo.CampusLife;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.Room;
@@ -38,7 +38,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = {
-        DemoApplication.class,
+        CampusLife.class,
         SecurityConfiguration.class,
         PlatformTransactionManager.class
 })
