@@ -4,24 +4,17 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.google.gson.Gson;
-import nl.tudelft.oopp.demo.DemoApplication;
+import nl.tudelft.oopp.demo.CampusLife;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
-import nl.tudelft.oopp.demo.entities.Building;
-import nl.tudelft.oopp.demo.entities.Room;
-import nl.tudelft.oopp.demo.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = {
-        DemoApplication.class,
+        CampusLife.class,
         SecurityConfiguration.class,
         PlatformTransactionManager.class
 })

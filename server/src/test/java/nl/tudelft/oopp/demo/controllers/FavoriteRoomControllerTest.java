@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
-import nl.tudelft.oopp.demo.DemoApplication;
+import nl.tudelft.oopp.demo.CampusLife;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import nl.tudelft.oopp.demo.entities.Building;
 import nl.tudelft.oopp.demo.entities.FavoriteRoom;
@@ -32,7 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = {
-        DemoApplication.class,
+        CampusLife.class,
         SecurityConfiguration.class,
         PlatformTransactionManager.class
 })

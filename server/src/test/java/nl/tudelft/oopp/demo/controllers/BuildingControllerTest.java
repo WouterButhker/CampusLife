@@ -7,17 +7,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import nl.tudelft.oopp.demo.DemoApplication;
+import nl.tudelft.oopp.demo.CampusLife;
 import nl.tudelft.oopp.demo.config.SecurityConfiguration;
 import nl.tudelft.oopp.demo.entities.Building;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +35,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = {
-        DemoApplication.class,
+        CampusLife.class,
         SecurityConfiguration.class,
         PlatformTransactionManager.class
 })

@@ -37,8 +37,10 @@ Some of its features are:
 </details>
 
 ## How to run it
-Add a valid application.properties file under [server/src/main/resources](server/src/main/resources) to make sure the server can connect to a database. There is an [example file](server/src/main/resources/application.properties.example) for ease of use.
-<!-- how to run server and client --> 
+1. Add a valid application.properties file under [server/src/main/resources](server/src/main/resources) to make sure the server can connect to a database. There is an [example file](server/src/main/resources/application.properties.example) for ease of use.
+2. Run the server by starting [CampusLife.java](server/src/main/java/nl/tudelft/oopp/demo/CampusLife.java).
+3. (Optional) Change the client's SERVER_URL in [ServerCommunication.java](client/src/main/java/nl/tudelft/oopp/demo/communication/ServerCommunication.java) to the IP of your server.
+4. Run the client by starting [MainApp.java](client/src/main/java/nl/tudelft/oopp/demo/MainApp.java).
 
 
 ## Group members
