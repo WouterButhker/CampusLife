@@ -26,8 +26,8 @@ Some of its features are:
 
 <details>
     <summary>More pictures</summary> 
-     
-    ![](docs/Pictures/Building.png)
+    
+   ![](docs/Pictures/Building.png)
     ![](docs/Pictures/Rooms.png)
     ![](docs/Pictures/ReserveRoom.png)
     ![](docs/Pictures/EditBuilding.png)
