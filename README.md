@@ -1,6 +1,7 @@
 ﻿# Campus Life
 
-A campus management system for room reservations, food orders and bike renting
+> A campus management system for room reservations, food orders and bike renting.
+
 
 ![](docs/Pictures/Main.png)
 
@@ -24,8 +25,9 @@ Some of its features are:
   * Bike stations can be added, or the number of available bikes can be updated
 * And many other things
 
+### More pictures
 <details>
-    <summary>More pictures</summary> 
+    <summary>Pictures</summary> 
     
    ![](docs/Pictures/Building.png)
     ![](docs/Pictures/Rooms.png)
@@ -35,14 +37,9 @@ Some of its features are:
 </details>
 
 ## How to run it
-Add a valid application.properties file under server/resources to make sure the server can connect to a database.
+Add a valid application.properties file under [server/src/main/resources](server/src/main/resources) to make sure the server can connect to a database. There is an [example file](server/src/main/resources/application.properties.example) for ease of use.
 <!-- how to run server and client --> 
 
-## Design and architecture 
-Note: This is a copy of the private TU Delft Gitlab repository, therefore merge requests and issue boards are unfortunately unavailable
-
-The client is written using Spring and JavaFX. The server is written using Spring.
-<!-- Add more --> 
 
 ## Group members
 
@@ -58,7 +55,7 @@ The client is written using Spring and JavaFX. The server is written using Sprin
 
 
 
-
+Note: This is a copy of the private TU Delft Gitlab repository, therefore merge requests and issue boards are unfortunately unavailable
 
 ## Copyright / License
 [MIT](LICENSE)
